@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property integer          $role_id
  * @property integer          $mall_id
  * @property string           $remember_token
+ * @property string           $api_token
  * @property \App\Models\Role $role
  * @property \App\Models\Mall $mall
  *
@@ -47,6 +48,7 @@ class User extends Model implements
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token',
     ];
 
     /**
@@ -80,6 +82,18 @@ class User extends Model implements
     ];
 
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (User $user): void {
+            if ($user->role_id == Role::DEVELOPER) {
+                $user->attributes['api_token'] = str_random(60);
+            }
+        });
+    }
+
+
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      *
@@ -103,6 +117,7 @@ class User extends Model implements
 
         return parent::scopeFilter($builder);
     }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
