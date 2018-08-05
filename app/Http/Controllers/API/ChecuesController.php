@@ -16,10 +16,12 @@ class ChecuesController extends Controller
 
         \DB::table('tests')->insert([
             'body' => json_encode($data),
+            'method' => 'POST',
         ]);
 
         return $data;
     }
+
 
     public function test_get()
     {
@@ -27,6 +29,7 @@ class ChecuesController extends Controller
 
         \DB::table('tests')->insert([
             'body' => json_encode($data),
+            'method' => 'GET',
         ]);
 
         return $data;
