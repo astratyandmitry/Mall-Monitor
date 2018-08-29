@@ -8,9 +8,9 @@
                 <span class="text-grey-darker font-normal">/ {{ $globals['title'] }}</span>
             </h1>
 
-            <canvas id="statistics" class="rounded-sm mb-8" height="80vh"></canvas>
-
             @if (count($statistics))
+                <canvas id="statistics" class="rounded-sm mb-8" height="80vh"></canvas>
+
                 <div class="statistics">
                     <h2 class="mb-4">
                         Статистика последних дней
