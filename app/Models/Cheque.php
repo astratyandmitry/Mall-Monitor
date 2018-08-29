@@ -3,13 +3,13 @@
 namespace App\Models;
 
 /**
- * @property integer             $id
- * @property string              $code
- * @property float               $amount
- * @property string              $data
- * @property integer             $cashbox_id
- * @property \Carbon\Carbon      $created_at
- * @property \App\Models\Cashbox $cashbox
+ * @property integer          $id
+ * @property string           $code
+ * @property float            $amount
+ * @property string           $data
+ * @property integer          $mall_id
+ * @property \Carbon\Carbon   $created_at
+ * @property \App\Models\Mall $mall
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -30,7 +30,7 @@ class Cheque extends Model
         'code',
         'amount',
         'data',
-        'cashbox_id',
+        'mall_id',
         'created_at',
     ];
 
@@ -40,7 +40,7 @@ class Cheque extends Model
     protected $casts = [
         'amount' => 'float',
         'data' => 'array',
-        'cashbox_id' => 'integer',
+        'mall_id' => 'integer',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Cheque extends Model
         'code' => 'required|max:200',
         'amount' => 'required|numeric',
         'data' => 'nullable',
-        'cashbox_id' => 'required|exists:cashboxes,id',
+        'mall_id' => 'required|exists:malls,id',
         'created_at' => 'sometimes',
     ];
 
@@ -65,7 +65,7 @@ class Cheque extends Model
     protected $messages = [
         'code' => 'код/номер',
         'amount' => 'сумма',
-        'cashbox_id' => 'касса',
+        'mall_id' => 'ТРЦ',
         'data' => 'данные',
         'created_at' => 'время',
     ];
@@ -74,9 +74,9 @@ class Cheque extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function cashbox(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Cashnox::class);
+        return $this->belongsTo(Mall::class);
     }
 
 
