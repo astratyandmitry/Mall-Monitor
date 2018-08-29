@@ -57,6 +57,7 @@ class ImportKeruenCityAstanaCommand extends Command
 
                     Cheque::create([
                         'mall_id' => 1,
+                        'store_id' => 1,
                         'code' => $doc->DOC_ID,
                         'amount' => $doc->PLU_AMNTN,
                         'created_at' => $doc->DOC_DATE,

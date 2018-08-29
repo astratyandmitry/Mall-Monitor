@@ -3,13 +3,15 @@
 namespace App\Models;
 
 /**
- * @property integer          $id
- * @property string           $code
- * @property float            $amount
- * @property string           $data
- * @property integer          $mall_id
- * @property \Carbon\Carbon   $created_at
- * @property \App\Models\Mall $mall
+ * @property integer           $id
+ * @property string            $code
+ * @property float             $amount
+ * @property string            $data
+ * @property integer           $mall_id
+ * @property integer           $store_id
+ * @property \Carbon\Carbon    $created_at
+ * @property \App\Models\Mall  $mall
+ * @property \App\Models\Store $store
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -31,6 +33,7 @@ class Cheque extends Model
         'amount',
         'data',
         'mall_id',
+        'store_id',
         'created_at',
     ];
 
@@ -41,6 +44,14 @@ class Cheque extends Model
         'amount' => 'float',
         'data' => 'array',
         'mall_id' => 'integer',
+        'store_id' => 'integer',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
     ];
 
     /**
@@ -56,6 +67,7 @@ class Cheque extends Model
         'amount' => 'required|numeric',
         'data' => 'nullable',
         'mall_id' => 'required|exists:malls,id',
+        'store_id' => 'required|exists:stores,id',
         'created_at' => 'sometimes',
     ];
 
@@ -65,7 +77,8 @@ class Cheque extends Model
     protected $messages = [
         'code' => 'код/номер',
         'amount' => 'сумма',
-        'mall_id' => 'ТРЦ',
+        'mall_id' => 'ТЦ',
+        'store_id' => 'заведение',
         'data' => 'данные',
         'created_at' => 'время',
     ];
@@ -77,6 +90,15 @@ class Cheque extends Model
     public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Mall::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 
 

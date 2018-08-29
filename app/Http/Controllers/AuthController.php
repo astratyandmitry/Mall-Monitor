@@ -50,7 +50,7 @@ class AuthController extends Controller
             return $_GET['return'];
         }
 
-        return $this->redirectTo;
+        return '/';
     }
 
 
@@ -63,7 +63,7 @@ class AuthController extends Controller
     {
         $this->guard()->logout();
 
-        return redirect($this->redirectTo);
+        return redirect()->route('dashboard');
     }
 
 }

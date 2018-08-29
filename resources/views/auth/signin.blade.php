@@ -8,18 +8,30 @@
                 <div class="ml-2 font-bold bg-indigo text-2xl text-indigo-lightest shadow py-2 px-4 rounded-full">Monitor</div>
             </div>
 
-            <form class="bg-white shadow-md rounded p-8 my-8">
+            <form method="post" class="bg-white shadow-md rounded p-8 my-8">
+                @csrf
+
                 <div class="mb-4">
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker focus:outline-none"
-                           id="email" name="email" type="text" placeholder="E-mail">
+                           id="email" name="email" type="text" placeholder="E-mail" value="{{ old('email') }}">
+
+                    @if ($errors->has('email'))
+                        <div class="text-red text-xs mt-2 italic">
+                            {{ $errors->first('email') }}
+                        </div>
+                    @endif
                 </div>
 
                 <div class="mb-6">
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker focus:outline-none"
-                           id="password" type="password" placeholder="******">
-                    {{--<div class="text-red text-xs mt-2 italic">Please choose a password.</div>--}}
-                </div>
+                           id="password" type="password" name="password" placeholder="******">
 
+                    @if ($errors->has('password'))
+                        <div class="text-red text-xs mt-2 italic">
+                            {{ $errors->first('password') }}
+                        </div>
+                    @endif
+                </div>
 
                 <button class="bg-indigo hover:bg-indigo-dark text-white py-2 px-4 rounded focus:outline-none" type="submit">
                     Войти

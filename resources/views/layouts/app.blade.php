@@ -16,17 +16,20 @@
 </head>
 <body class="bg-grey-lightest font-sans pt-16">
 
-@include('layouts.partials.header')
+<div id="app">
+    @include('layouts.partials.header')
 
-<section class="my-16">
-    <div class="container">
-        @yield('content')
-    </div>
-</section>
+    <section class="my-16">
+        <div class="container">
+            @yield('content')
+        </div>
+    </section>
 
-@include('layouts.partials.footer')
+    @include('layouts.partials.footer')
+</div>
 
 <script src="{{ mix('js/app.js') }}"></script>
+@stack('scripts')
 
 </body>
 </html>

@@ -3,10 +3,11 @@
 namespace App\Models;
 
 /**
- * @property integer          $id
- * @property string           $name
- * @property integer          $city_id
- * @property \App\Models\City $city
+ * @property integer              $id
+ * @property string               $name
+ * @property integer              $city_id
+ * @property \App\Models\City     $city
+ * @property \App\Models\Cheque[] $cheques
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -57,6 +58,15 @@ class Mall extends Model
     public function city(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cheques(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Cheque::class);
     }
 
 }

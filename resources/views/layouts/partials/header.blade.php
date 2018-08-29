@@ -19,20 +19,15 @@
                         Заведения
                     </a>
                 </li>
-                <li class="inline-block mr-4">
-                    <a href="{{ route('statistics.index') }}"
-                       class="no-underline  hover:text-white {{ $active == 'statistics' ? 'font-normal text-white' : 'text-indigo-lightest' }}">
-                        Статистика
-                    </a>
-                </li>
             </ul>
         </div>
 
         @isset ($currentMall)
             <div>
-                <div class="cursor-pointer font-hairline text-indigo-lightest hover:text-white">
-                    {{ $currentMall }}
-                </div>
+                <a href="{{ route('auth.signout') }}" class="no-underline font-hairline text-indigo-lightest hover:text-white">Выйти</a>
+                {{--<div class="cursor-pointer font-hairline text-indigo-lightest hover:text-white">--}}
+                    {{--{{ $currentMall->name }}--}}
+                {{--</div>--}}
             </div>
         @endisset
     </div>
