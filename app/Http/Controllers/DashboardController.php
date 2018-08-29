@@ -29,6 +29,7 @@ class DashboardController extends Controller
 
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE(created_at) as date'))
+            ->where('mall_id', auth()->user()->mall_id)
             ->groupBy(\DB::raw('DATE(created_at)'))
             ->orderBy('date', 'desk')
             ->limit(10)

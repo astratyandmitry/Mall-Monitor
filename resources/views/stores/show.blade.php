@@ -62,11 +62,11 @@
                     <div class="rounded-sm font-bold flex w-full py-4 bg-grey-light">
                         <div class="pl-4 text-grey-darker w-full"></div>
 
-                        <div class="px-4 text-grey-darker w-48">
+                        <div class="px-4 text-grey-darker w-48 px-4">
                             {{ number_format($count) }}
                         </div>
 
-                        <div class="px-4 text-grey-darker w-48">
+                        <div class="px-4 text-grey-darker w-48 px-4">
                             {{ number_format($amount) }} ₸
                         </div>
 
@@ -84,38 +84,38 @@
                     </h2>
 
                     <div class="mb-2 font-bold flex w-full py-2">
-                        <div class="text-grey-darker w-full">
+                        <div class="text-grey-darker w-full pl-4">
                             Код транзакции
                         </div>
 
-                        <div class="text-grey-darker w-64">
-                            Дата
+                        <div class="text-grey-darker w-64 px-4">
+                            Дата и время
                         </div>
 
-                        <div class="text-grey-darker w-48">
+                        <div class="text-grey-darker w-48 px-4">
                             Сумма
                         </div>
 
-                        <div class="text-grey-darker text-right w-48">
+                        <div class="text-grey-darker text-right w-48 pr-4">
                             Комиссия {{ $store->commission }}%
                         </div>
                     </div>
 
                     @foreach($cheques as $cheque)
                         <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter">
-                            <div class="text-grey-darkest w-full pl-2">
+                            <div class="text-grey-darkest w-full pl-4">
                                 {{ $cheque->code }}
                             </div>
 
-                            <div class="text-grey-darkest w-64 px-2">
+                            <div class="text-grey-darkest w-64 px-4">
                                 {{ $cheque->created_at->format('d.m.Y H:i') }}
                             </div>
 
-                            <div class="text-grey-darkest w-48 px-2">
+                            <div class="text-grey-darkest w-48 px-4">
                                 {{ number_format($cheque->amount) }} ₸
                             </div>
 
-                            <div class="text-grey-darkest text-right w-48 pr-2">
+                            <div class="text-grey-darkest text-right w-48 pr-4">
                                 {{ number_format(($store->commission / 100) * $cheque->amount) }} ₸
                             </div>
                         </div>

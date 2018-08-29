@@ -12,5 +12,7 @@ Route::group(['middleware' => 'loggined'], function (): void {
 
     Route::get('/stores', 'StoresController@index')->name('stores.index');
     Route::get('/store/{store}', 'StoresController@show')->name('stores.show');
+
+    Route::get('/report', 'ReportController')->name('report.index');
 });
 

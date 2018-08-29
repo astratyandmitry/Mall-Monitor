@@ -19,6 +19,12 @@
                         Заведения
                     </a>
                 </li>
+                <li class="inline-block mr-4">
+                    <a href="{{ route('report.index') }}"
+                       class="no-underline  hover:text-white {{ $active == 'report' ? 'font-normal text-white' : 'text-indigo-lightest' }}">
+                        Отчет
+                    </a>
+                </li>
             </ul>
         </div>
 
