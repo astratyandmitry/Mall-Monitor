@@ -96,13 +96,16 @@
                     </div>
 
                     @foreach($cheques as $cheque)
-                        <div class="border-t border-grey-lighter flex w-full py-2 hover:bg-grey-lighter">
+                        <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter">
                             <div class="text-grey-darkest w-full pl-4">
                                 {{ $cheque->code }}
                             </div>
 
-                            <div class="text-grey-darkest w-128 px-4">
-                                {{ $cheque->store->name }}
+                            <div class="w-128 px-4">
+                                <a href="{{ $cheque->store->link() }}" target="_blank"
+                                   class="text-grey-darkest no-underline border-b border-grey hover:border-transparent">
+                                    {{ $cheque->store->name }}
+                                </a>
                             </div>
 
                             <div class="text-grey-darkest w-96 px-4">

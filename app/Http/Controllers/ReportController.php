@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Store;
-
 /**
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>

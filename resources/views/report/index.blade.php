@@ -4,6 +4,10 @@
     <div class="shadow-lg rounded">
         <div class="p-8">
             <h1 class="mb-8">
+                {{--<div class="float-right text-sm bg-indigo py-2 px-4 text-white rounded font-normal hover:bg-indigo-dark cursor-pointer">--}}
+                    {{--Экспортировать--}}
+                {{--</div>--}}
+
                 {{ $currentMall->name }}
                 <span class="text-grey-darker font-normal">/ {{ $globals['title'] }}</span>
             </h1>
@@ -38,8 +42,11 @@
                         @php $commission += ($store->commission / 100) * $statistic->amount @endphp
 
                         <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
-                            <div class="text-grey-darkest w-full pl-4">
-                                {{ $store->name }}
+                            <div class="w-full pl-4">
+                                <a href="{{ $store->link() }}" target="_blank"
+                                   class="text-grey-darkest no-underline border-b border-grey hover:border-transparent">
+                                    {{ $store->name }}
+                                </a>
                             </div>
 
                             <div class="text-grey-darkest w-64 px-4">

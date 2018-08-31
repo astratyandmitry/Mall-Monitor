@@ -20,8 +20,17 @@ class StoresController extends Controller
         $this->setTitle('Заведения');
         $this->setActive('stores');
 
+        $statistics = \DB::table('cheques')
+            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
+            ->where('created_at', '>=', date('m') . '-01-' . date('Y') . ' 00:00:00')
+            ->where('mall_id', auth()->user()->mall_id)
+            ->groupBy('store_id')
+            ->pluck('amount', 'store_id')
+            ->toArray();
+
         return view('stores.index', $this->withData([
-            'stores' => Store::where('mall_id', auth()->user()->mall_id)->orderBy('name')->paginate(60),
+            'statistics' => $statistics,
+            'stores' => Store::where('mall_id', auth()->user()->mall_id)->orderBy('name')->get(),
         ]));
     }
 
@@ -63,7 +72,7 @@ class StoresController extends Controller
             'graph' => $graph,
             'store' => $store,
             'statistics' => $statistics,
-            'cheques' => $store->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->paginate(50),
+            'cheques' => $store->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->paginate(25),
         ]));
     }
 
