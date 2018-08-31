@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <div class="flex mt-4 items-center justify-center text-sm">
+    <div class="flex mt-8 items-center justify-center text-sm">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
             <span class="rounded mr-2 rounded-sm bg-grey-lighter text-grey-dark px-3 py-2 cursor-not-allowed no-underline">&laquo;</span>

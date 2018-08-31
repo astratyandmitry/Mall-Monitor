@@ -9,10 +9,10 @@
             </h1>
 
             @if (count($statistics))
-                <canvas id="statistics" class="rounded-sm mb-8" height="80vh"></canvas>
+                <canvas id="statistics" class="rounded-sm" height="80vh"></canvas>
 
-                <div class="statistics">
-                    <h2 class="mb-4">
+                <div class="statistics mt-16">
+                    <h2 class="mb-8 text-grey-darkest">
                         Статистика последних дней
                     </h2>
 
@@ -78,8 +78,8 @@
             @endif
 
             @if (count($cheques))
-                <div class="cheques mt-8">
-                    <h2 class="mb-4">
+                <div class="cheques mt-16">
+                    <h2 class="mb-8 text-grey-darkest">
                         Сегодняшние транзакции
                     </h2>
 

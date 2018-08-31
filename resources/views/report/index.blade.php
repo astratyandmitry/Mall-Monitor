@@ -13,6 +13,10 @@
             </h1>
 
             @if (count($statistics))
+                <h2 class="mb-8 text-grey-darkest">
+                    За текущий месяц
+                </h2>
+
                 <div class="statistics">
                     <div class="pb-4 font-bold flex w-full">
                         <div class="pl-4 text-grey-darker w-full">

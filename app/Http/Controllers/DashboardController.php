@@ -53,7 +53,7 @@ class DashboardController extends Controller
         return view('dashboard.index', $this->withData([
             'graph' => $graph,
             'statistics' => $statistics,
-            'cheques' => auth()->user()->mall->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->paginate(25),
+            'cheques' => auth()->user()->mall->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->limit(25)->get(),
         ]));
 
         return view('dashboard.index', $this->withData());
