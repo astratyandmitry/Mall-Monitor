@@ -55,16 +55,22 @@ class StoresController extends Controller
 
         $graph = [
             'labels' => [],
-            'values' => [],
+            'amount' => [],
+            'count' => [],
+            'avg' => [],
         ];
 
         foreach ($statistics as $statistic) {
             $graph['labels'][] = date('d.m.Y', strtotime($statistic->date));
-            $graph['values'][] = round($statistic->amount);
+            $graph['amount'][] = round($statistic->amount);
+            $graph['count'][] = round($statistic->count);
+            $graph['avg'][] = round($statistic->amount / $statistic->count);
         }
 
         $graph['labels'] = array_reverse($graph['labels']);
-        $graph['values'] = array_reverse($graph['values']);
+        $graph['amount'] = array_reverse($graph['amount']);
+        $graph['count'] = array_reverse($graph['count']);
+        $graph['avg'] = array_reverse($graph['avg']);
 
         $today = (env('APP_ENV') == 'local') ? '2018-08-23' : date('Y-m-d');
 

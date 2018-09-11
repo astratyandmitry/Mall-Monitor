@@ -9,7 +9,25 @@
             </h1>
 
             @if (count($statistics))
-                <canvas id="statistics" class="rounded-sm" height="80vh"></canvas>
+                <div class="graphs">
+                    <h2 class="mb-8 text-grey-darkest">
+                        Сумма продаж
+                    </h2>
+
+                    <canvas id="statistics-amount" class="rounded-sm mb-16" height="80vh"></canvas>
+
+                    <h2 class="mb-8 text-grey-darkest">
+                        Количество продаж
+                    </h2>
+
+                    <canvas id="statistics-count" class="rounded-sm mb-16" height="80vh"></canvas>
+
+                    <h2 class="mb-8 text-grey-darkest">
+                        Средний чек
+                    </h2>
+
+                    <canvas id="statistics-avg" class="rounded-sm" height="80vh"></canvas>
+                </div>
 
                 <div class="statistics mt-16">
                     <h2 class="mb-8 text-grey-darkest">
@@ -26,11 +44,11 @@
                         </div>
 
                         <div class="px-4 text-grey-darker w-48">
-                            Сумма
+                            Средний чек
                         </div>
 
-                        <div class="pr-4 text-grey-darker text-right w-48">
-                            Комиссия {{ $store->commission }}%
+                        <div class="pr-4 text-grey-darker text-right w-64">
+                            Сумма
                         </div>
                     </div>
 
@@ -42,7 +60,10 @@
 
                         <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
                             <div class="text-grey-darkest w-full pl-4">
-                                {{ date('d.m.Y', strtotime($statistic->date)) }}
+                                <a class="text-grey-darkest no-underline border-b border-grey hover:border-transparent"
+                                   href="{{ route('report.index', ['date_type' => 4, 'date_from' => $statistic->date, 'date_to' => $statistic->date]) }}">
+                                    {{ date('d.m.Y', strtotime($statistic->date)) }}
+                                </a>
                             </div>
 
                             <div class="text-grey-darkest w-48 px-4">
@@ -50,11 +71,11 @@
                             </div>
 
                             <div class="text-grey-darkest w-48 px-4">
-                                {{ number_format($statistic->amount) }} ₸
+                                {{ number_format(round($statistic->amount / $statistic->count)) }} ₸
                             </div>
 
-                            <div class="text-grey-darkest text-right w-48 pr-4">
-                                {{ number_format(($store->commission / 100) * $statistic->amount) }} ₸
+                            <div class="text-grey-darkest text-right w-64 pr-4">
+                                {{ number_format($statistic->amount) }} ₸
                             </div>
                         </div>
                     @endforeach
@@ -67,11 +88,11 @@
                         </div>
 
                         <div class="px-4 text-grey-darker w-48 px-4">
-                            {{ number_format($amount) }} ₸
+                            {{ number_format(round($amount / $count)) }} ₸
                         </div>
 
-                        <div class="pr-4 text-grey-darker text-right w-48">
-                            {{ number_format(($store->commission / 100) * $amount) }} ₸
+                        <div class="pr-4 text-grey-darker text-right w-64">
+                            {{ number_format($amount) }} ₸
                         </div>
                     </div>
                 </div>
@@ -141,14 +162,38 @@
     <script>
         Chart.defaults.global.legend.display = false;
 
-        new Chart('statistics', {
+        new Chart('statistics-amount', {
             type: 'line',
             data: {
                 labels: @json($graph['labels']),
                 datasets: [ {
                     label: 'Сумма продаж',
                     borderColor: '#2f365f',
-                    data: @json($graph['values']),
+                    data: @json($graph['amount']),
+                } ]
+            }
+        });
+
+        new Chart('statistics-count', {
+            type: 'line',
+            data: {
+                labels: @json($graph['labels']),
+                datasets: [ {
+                    label: 'Количество чеков',
+                    borderColor: '#2f365f',
+                    data: @json($graph['count']),
+                } ]
+            }
+        });
+
+        new Chart('statistics-avg', {
+            type: 'line',
+            data: {
+                labels: @json($graph['labels']),
+                datasets: [ {
+                    label: 'Средний чек',
+                    borderColor: '#2f365f',
+                    data: @json($graph['avg']),
                 } ]
             }
         });
