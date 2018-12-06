@@ -3,15 +3,22 @@
 namespace App\Models;
 
 /**
- * @property integer           $id
- * @property string            $code
- * @property float             $amount
- * @property string            $data
- * @property integer           $mall_id
- * @property integer           $store_id
- * @property \Carbon\Carbon    $created_at
- * @property \App\Models\Mall  $mall
- * @property \App\Models\Store $store
+ * @property integer                   $id
+ * @property string                    $kkm_code
+ * @property string                    $code
+ * @property string                    $number
+ * @property float                     $amount
+ * @property string                    $data
+ * @property integer                   $mall_id
+ * @property integer                   $store_id
+ * @property integer                   $type_id
+ * @property integer                   $payment_id
+ * @property \Carbon\Carbon            $created_at
+ * @property \App\Models\Mall          $mall
+ * @property \App\Models\Store         $store
+ * @property \App\Models\ChequeType    $type
+ * @property \App\Models\ChequePayment $payment
+ * @property \App\Models\ChequeItem[]  $items
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -29,11 +36,15 @@ class Cheque extends Model
      * @var array
      */
     protected $fillable = [
+        'kkm_code',
         'code',
+        'number',
         'amount',
         'data',
         'mall_id',
         'store_id',
+        'type_id',
+        'payment_id',
         'created_at',
     ];
 
@@ -45,6 +56,8 @@ class Cheque extends Model
         'data' => 'array',
         'mall_id' => 'integer',
         'store_id' => 'integer',
+        'type_id' => 'integer',
+        'payment_id' => 'integer',
     ];
 
     /**
@@ -63,22 +76,30 @@ class Cheque extends Model
      * @var array
      */
     protected $rules = [
+        'kkm_code' => 'required|max:200',
         'code' => 'required|max:200',
+        'number' => 'required|max:200',
         'amount' => 'required|numeric',
         'data' => 'nullable',
         'mall_id' => 'required|exists:malls,id',
         'store_id' => 'required|exists:stores,id',
-        'created_at' => 'sometimes',
+        'type_id' => 'required|exists:cheque_types,id',
+        'payment_id' => 'required|exists:cheque_payments,id',
+        'created_at' => 'required',
     ];
 
     /**
      * @var array
      */
     protected $messages = [
-        'code' => 'код/номер',
+        'kkm_code' => 'ККМ код',
+        'code' => 'код',
+        'number' => 'номер',
         'amount' => 'сумма',
         'mall_id' => 'ТЦ',
         'store_id' => 'заведение',
+        'type_id' => 'тип транзакции',
+        'payment_id' => 'вид платежа',
         'data' => 'данные',
         'created_at' => 'время',
     ];
@@ -103,11 +124,29 @@ class Cheque extends Model
 
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ChequeType::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function payment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ChequePayment::class);
+    }
+
+
+    /**
      * @param null|string $created_at
      */
     public function setCreatedAtAttribute(?string $created_at): void
     {
-        $this->attributes['created_at'] = date('Y-m-d H:i:s', strtotime(($created_at) ? $created_at : 'NOW'));
+        $this->attributes['created_at'] = date('Y-m-d H:i:s', strtotime(explode(',', $created_at)[0]));
     }
 
 }

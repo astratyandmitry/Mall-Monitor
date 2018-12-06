@@ -9,9 +9,9 @@
             </h1>
 
             <div class="flex w-full">
-                @foreach($stores->chunk(round(count($stores) / 3)) as $chunk)
-                    <div class="w-1/3 @if ( ! $loop->first) ml-8 @endif">
-                        @foreach($chunk as $store)
+{{--                @foreach($stores->chunk(round(count($stores) / 3)) as $chunk)--}}
+                    <div class="w-1/3">
+                        @foreach($stores as $store)
                             <div class="mb-4 w-full">
                                 <h2 class="font-normal m-0">
                                     <div class="float-right text-grey text-sm mt-2">
@@ -24,7 +24,7 @@
                             </div>
                         @endforeach
                     </div>
-                @endforeach
+                {{--@endforeach--}}
             </div>
         </div>
     </div>

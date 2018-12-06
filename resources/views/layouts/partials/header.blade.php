@@ -9,19 +9,19 @@
             <ul class="list-reset font-light flex-grow">
                 <li class="inline-block mr-4">
                     <a href="{{ route('dashboard') }}"
-                       class="no-underline  hover:text-white {{ $active == 'dashboard' ? 'font-normal text-white' : 'text-indigo-lightest' }}">
+                       class="no-underline font-normal hover:text-white {{ $active == 'dashboard' ? 'text-white' : 'text-indigo-lightest' }}">
                         Обзор
                     </a>
                 </li>
                 <li class="inline-block mr-4">
                     <a href="{{ route('stores.index') }}"
-                       class="no-underline  hover:text-white {{ $active == 'stores' ? 'font-normal text-white' : 'text-indigo-lightest' }}">
+                       class="no-underline font-normal hover:text-white {{ $active == 'stores' ? 'text-white' : 'text-indigo-lightest' }}">
                         Заведения
                     </a>
                 </li>
                 <li class="inline-block mr-4">
                     <a href="{{ route('report.index') }}"
-                       class="no-underline  hover:text-white {{ $active == 'report' ? 'font-normal text-white' : 'text-indigo-lightest' }}">
+                       class="no-underline font-normal hover:text-white {{ $active == 'report' ? 'text-white' : 'text-indigo-lightest' }}">
                         Отчет
                     </a>
                 </li>
@@ -30,7 +30,7 @@
 
         @isset ($currentMall)
             <div>
-                <a href="{{ route('auth.signout') }}" class="no-underline font-hairline text-indigo-lightest hover:text-white">Выйти</a>
+                <a href="{{ route('auth.signout') }}" class="no-underline text-indigo-lightest hover:text-white">Выйти</a>
                 {{--<div class="cursor-pointer font-hairline text-indigo-lightest hover:text-white">--}}
                     {{--{{ $currentMall->name }}--}}
                 {{--</div>--}}
