@@ -22,7 +22,8 @@ class StoresController extends Controller
 
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
-            ->where('created_at', '>=', date('m') . '-01-' . date('Y') . ' 00:00:00')
+            ->where('created_at', '>=', '2018-04-01' . ' 00:00:00')
+//            ->where('created_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
             ->where('mall_id', auth()->user()->mall_id)
             ->groupBy('store_id')
             ->pluck('amount', 'store_id')

@@ -10,18 +10,18 @@ use App\WSDL\TestProsystemsWSDL;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class IntegrateProsystemsCommand extends Command
+class IntegrateProsystemsMultiCommand extends Command
 {
 
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:integrate-prosystems';
+    protected $signature = 'mallmonitor:integrate-prosystems-multi';
 
     /**
      * @var string
      */
-    protected $description = 'Integrate with Prosystems';
+    protected $description = 'Integrate with Prosystems Multi Queries';
 
     /**
      * @var \App\WSDL\TestProsystemsWSDL
@@ -41,6 +41,17 @@ class IntegrateProsystemsCommand extends Command
      * @return void
      */
     public function handle(): void
+    {
+        do {
+            $status = $this->work();
+        } while ($status == true);
+    }
+
+
+    /**
+     * @return bool
+     */
+    protected function work(): bool
     {
         if ($this->wsdl->authorize()) {
             if ($this->wsdl->provoidData()) {
@@ -76,11 +87,13 @@ class IntegrateProsystemsCommand extends Command
                 }
 
                 $this->wsdl->confirmData();
+
+                return true;
             } else {
-                $this->error('There are no available files for import');
+                return false;
             }
         } else {
-            $this->error('Unauthorized');
+            return false;
         }
     }
 

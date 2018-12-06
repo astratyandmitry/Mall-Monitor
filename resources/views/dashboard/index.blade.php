@@ -119,12 +119,8 @@
                             Дата и время
                         </div>
 
-                        <div class="text-grey-darker w-48 px-4">
-                            Сумма
-                        </div>
-
                         <div class="text-grey-darker text-right w-48 pr-4">
-                            Комиссия
+                            Сумма
                         </div>
                     </div>
 
@@ -145,13 +141,8 @@
                                 {{ $cheque->created_at->format('d.m.Y H:i') }}
                             </div>
 
-                            <div class="text-grey-darkest w-48 px-4">
-                                {{ number_format($cheque->amount) }} ₸
-                            </div>
-
                             <div class="text-grey-darkest text-right w-48 pr-4">
-                                {{ number_format(($cheque->store->commission / 100) * $cheque->amount) }} ₸
-                                <span class="text-grey-dark"> / {{ $cheque->store->commission }}%</span>
+                                {{ number_format($cheque->amount) }} ₸
                             </div>
                         </div>
                     @endforeach

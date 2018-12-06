@@ -28,10 +28,10 @@ class DashboardController extends Controller
         $this->setActive('dashboard');
 
         $statistics = \DB::table('cheques')
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE(created_at) as date'))
+            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE_FORMAT(created_at, "%Y-%m") as date'))
             ->where('mall_id', auth()->user()->mall_id)
-            ->groupBy(\DB::raw('DATE(created_at)'))
-            ->orderBy('date', 'desk')
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
             ->limit(10)
             ->get();
 
@@ -43,7 +43,7 @@ class DashboardController extends Controller
         ];
 
         foreach ($statistics as $statistic) {
-            $graph['labels'][] = date('d.m.Y', strtotime($statistic->date));
+            $graph['labels'][] = $this->formatDate($statistic->date);
             $graph['amount'][] = round($statistic->amount);
             $graph['count'][] = round($statistic->count);
             $graph['avg'][] = round($statistic->amount / $statistic->count);
@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $graph['count'] = array_reverse($graph['count']);
         $graph['avg'] = array_reverse($graph['avg']);
 
-        $today = (env('APP_ENV') == 'local') ? '2018-08-23' : date('Y-m-d');
+        $today = '2018-04-15';
 
         return view('dashboard.index', $this->withData([
             'graph' => $graph,
@@ -63,6 +63,33 @@ class DashboardController extends Controller
         ]));
 
         return view('dashboard.index', $this->withData());
+    }
+
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     */
+    protected function formatDate(string $date): string
+    {
+        $dates = explode('-', $date);
+        $months = [
+            1 => 'янв.',
+            2 => 'фев.',
+            3 => 'мар.',
+            4 => 'апр.',
+            5 => 'май.',
+            6 => 'июн.',
+            7 => 'июл.',
+            8 => 'авг.',
+            9 => 'сен.',
+            10 => 'окт.',
+            11 => 'ноя.',
+            12 => 'дек.',
+        ];
+
+        return $months[(int)$dates[1]] . " {$dates[0]}";
     }
 
 }
