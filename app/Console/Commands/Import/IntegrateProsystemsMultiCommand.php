@@ -63,23 +63,6 @@ class IntegrateProsystemsMultiCommand extends Command
         if ($this->integration->authorize()) {
             if ($this->integration->provoidData()) {
                 foreach ($this->integration->getData() as $item) {
-                    // Only selling
-//                    if ( ! isset($item->Type) || ! in_array($item->Type, ['Sell', 'SellReturn'])) {
-//                        $this->error("Skip because of type {$item->UniqueId}");
-//
-//                        continue;
-//                    }
-
-                    // Only card and cash
-//                    if (
-//                        ! isset($item->Payments) || ! isset($item->Payments->Payment) || ! isset($item->Payments->Payment->Type) ||
-//                        ! in_array($item->Payments->Payment->Type, ['Cash', 'Card'])
-//                    ) {
-//                        $this->error("Skip because of paymet {$item->UniqueId}");
-//
-//                        continue;
-//                    }
-
                     $this->info("Adding {$item->UniqueId}");
 
                     ImportChequeProsystem::dispatch($this->mall, $item);

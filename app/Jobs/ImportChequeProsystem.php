@@ -25,7 +25,7 @@ class ImportChequeProsystem
      */
     protected $mall;
 
-    /**
+    /**got
      * @var array
      */
     protected $payments = [

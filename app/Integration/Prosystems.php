@@ -129,7 +129,7 @@ class Prosystems
 
             $data['packetGuid'] = $this->packageGUID = $packet->Guid;
 
-            $this->data = $packet->Content->Operations->BaseOperation;
+            $this->data = (is_array($packet->Content->Operations->BaseOperation)) ? $packet->Content->Operations->BaseOperation : $packet->Content->Operations;
         }
 
         $this->log('ProvideData', $response->ProvideDataResult, $data);
