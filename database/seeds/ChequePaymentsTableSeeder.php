@@ -18,6 +18,14 @@ class ChequePaymentsTableSeeder extends Seeder
             'name' => 'Картой',
             'system_key' => 'card',
         ],
+        [
+            'name' => 'Кредит',
+            'system_key' => 'credit',
+        ],
+        [
+            'name' => 'Тара',
+            'system_key' => 'tare',
+        ],
     ];
 
 

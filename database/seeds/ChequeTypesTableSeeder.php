@@ -18,6 +18,22 @@ class ChequeTypesTableSeeder extends Seeder
             'name' => 'Возврат продажи',
             'system_key' => 'sale_return',
         ],
+        [
+            'name' => 'Покупка',
+            'system_key' => 'buy',
+        ],
+        [
+            'name' => 'Возврат покупки',
+            'system_key' => 'buy_return',
+        ],
+        [
+            'name' => 'Депозит',
+            'system_key' => 'deposit',
+        ],
+        [
+            'name' => 'Выплата',
+            'system_key' => 'withdrawal',
+        ],
     ];
 
 

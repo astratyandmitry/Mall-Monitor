@@ -16,6 +16,10 @@ class ChequeType extends Model
 
     const SELL = 1;
     const SELL_RETURN = 2;
+    const BUY = 3;
+    const BUY_RETURN = 4;
+    const DEPOSIT = 5;
+    const WITHDRAWAL = 6;
 
     /**
      * @var string

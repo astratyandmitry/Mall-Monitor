@@ -16,6 +16,8 @@ class ChequePayment extends Model
 
     const CASH = 1;
     const CARD = 2;
+    const CREDIT = 2;
+    const TARE = 2;
 
     /**
      * @var string
