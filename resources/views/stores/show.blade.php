@@ -157,6 +157,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script>
         Chart.defaults.global.legend.display = false;
+        Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
+            return addCommas(tooltipItem.yLabel);
+        }
+
+        function addCommas(nStr) {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[ 0 ];
+            x2 = x.length > 1 ? '.' + x[ 1 ] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
 
         new Chart('statistics-amount', {
             type: 'line',
