@@ -55,7 +55,16 @@ class ProsystemsWSDL
      */
     public function __construct()
     {
-        $this->client = new \SoapClient($this->url, ['local_cert' => base_path('prosystems.cer')]);
+        $this->client = new \SoapClient($this->url, [
+            'stream_context' => stream_context_create([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                    'cafile' => base_path('prosystems.cer')
+                ],
+            ]),
+        ]);
     }
 
 
