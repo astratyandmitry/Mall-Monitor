@@ -158,21 +158,21 @@ class IntegrateProsystemsMultiCommand extends Command
 
 
     /**
-     * @param int $bin
+     * @param string $bin
      *
-     * @return \App\Models\Store
+     * @return int
      */
-    protected function loadStore(int $bin): Store
+    protected function loadStore(string $bin): int
     {
-        if ($store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->first()) {
-            return $store;
+        if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->first()) {
+            $store = Store::create([
+                'mall_id' => $this->mall->id,
+                'name' => 'Без названия',
+                'business_identification_number' => $bin,
+            ]);
         }
 
-        return Store::create([
-            'mall_id' => $this->mall->id,
-            'name' => 'Без названия',
-            'business_identification_number' => $bin,
-        ]);
+        return $store->id;
     }
 
 }

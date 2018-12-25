@@ -89,7 +89,8 @@ class IntegrateProsystemsCommand extends Command
                         $this->createChequeItem($cheque, $item->Items->Item);
                     }
                 }
-//                $this->wsdl->confirmData();
+
+                $this->wsdl->confirmData();
             } else {
                 $this->error('There are no available files for import');
             }
