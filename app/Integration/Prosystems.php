@@ -1,27 +1,12 @@
 <?php
 
-namespace App\WSDL;
+namespace App\Integration;
 
 use App\Models\IntegrationLog;
-use App\Models\IntegrationSystem;
+use App\Models\MallIntegration;
 
-class TestProsystemsWSDL
+class Prosystems
 {
-
-    /**
-     * @var string
-     */
-    protected $url = 'http://91.205.49.174:5000/TRK-KERUEN/FSCDataProvider/KERUENBONUS/STREAMING_INCOME_OPERATION/INSTANCE.asmx?wsdl';
-
-    /**
-     * @var string
-     */
-    protected $username = 'KERUEN';
-
-    /**
-     * @var string
-     */
-    protected $password = 'KERUENKERUEN~1';
 
     /**
      * @var \SoapClient
@@ -49,23 +34,43 @@ class TestProsystemsWSDL
      */
     private static $instance;
 
+    /**
+     * @var \App\Models\MallIntegration
+     */
+    protected $integration;
+
 
     /**
-     * ProsystemTestWSDL constructor.
+     * ProsystemsWSDL constructor.
+     *
+     * @param \App\Models\MallIntegration $integration
      */
-    public function __construct()
+    public function __construct(MallIntegration $integration)
     {
-        $this->client = new \SoapClient($this->url);
+        $this->integration = $integration;
+
+        $this->client = new \SoapClient($this->integration->host, [
+            'stream_context' => stream_context_create([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                    'cafile' => base_path('prosystems.cer')
+                ],
+            ]),
+        ]);
     }
 
 
     /**
-     * @return \App\WSDL\TestProsystemsWSDL
+     * @param \App\Models\MallIntegration $integration
+     *
+     * @return \App\Integration\Prosystems
      */
-    public static function init(): TestProsystemsWSDL
+    public static function init(MallIntegration $integration): Prosystems
     {
         if (is_null(self::$instance)) {
-            self::$instance = new TestProsystemsWSDL;
+            self::$instance = new Prosystems($integration);
         }
 
         return self::$instance;
@@ -81,8 +86,8 @@ class TestProsystemsWSDL
         $data = [];
 
         $params = [
-            'login' => $this->username,
-            'password' => $this->password,
+            'login' => $this->integration->username,
+            'password' => $this->integration->password,
         ];
 
         $response = $this->client->Authorize($params);
@@ -176,7 +181,7 @@ class TestProsystemsWSDL
     protected function log(string $operation, \stdClass $response, array $data = []): void
     {
         IntegrationLog::store(
-            IntegrationSystem::PROSYSTEMS, $operation, $response, $data
+            $this->integration->system_id, $this->integration->mall_id, $operation, $response, $data
         );
     }
 

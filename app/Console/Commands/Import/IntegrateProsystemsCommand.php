@@ -2,12 +2,15 @@
 
 namespace App\Console\Commands\Import;
 
+use App\Models\Mall;
+use App\Models\Store;
 use App\Models\Cheque;
 use App\Models\ChequeItem;
 use App\Models\ChequeType;
-use App\WSDL\ProsystemsWSDL;
 use App\Models\ChequePayment;
+use App\Integration\Prosystems;
 use Illuminate\Console\Command;
+use App\Models\IntegrationSystem;
 
 class IntegrateProsystemsCommand extends Command
 {
@@ -23,14 +26,27 @@ class IntegrateProsystemsCommand extends Command
     protected $description = 'Integrate with Prosystems';
 
     /**
-     * @var \App\WSDL\ProsystemsWSDL
+     * @var \App\Integration\Prosystems
      */
-    protected $wsdl;
+    protected $integration;
+
+    /**
+     * @var \App\Models\Mall
+     */
+    protected $mall;
 
 
     public function __construct()
     {
-        $this->wsdl = ProsystemsWSDL::init();
+        $this->mall = Mall::find(Mall::KERUEN_CITY);
+
+        if ($this->mall) {
+            $integration = $this->mall->getIntegration(IntegrationSystem::PROSYSTEMS);
+
+            if ($integration) {
+                $this->integration = Prosystems::init($integration);
+            }
+        }
 
         parent::__construct();
     }
@@ -41,10 +57,9 @@ class IntegrateProsystemsCommand extends Command
      */
     public function handle(): void
     {
-        if ($this->wsdl->authorize()) {
-            if ($this->wsdl->provoidData()) {
-                foreach ($this->wsdl->getData() as $item) {
-                    dd($item);
+        if ($this->integration->authorize()) {
+            if ($this->integration->provoidData()) {
+                foreach ($this->integration->getData() as $item) {
                     // Only selling
                     if ( ! isset($item->Type) || ! in_array($item->Type, ['Sell', 'SellReturn'])) {
                         $this->error("Skip because of type {$item->UniqueId}");
@@ -74,7 +89,6 @@ class IntegrateProsystemsCommand extends Command
                         $this->createChequeItem($cheque, $item->Items->Item);
                     }
                 }
-
 //                $this->wsdl->confirmData();
             } else {
                 $this->error('There are no available files for import');
@@ -93,8 +107,8 @@ class IntegrateProsystemsCommand extends Command
     protected function createCheque(\stdClass $item): Cheque
     {
         return Cheque::create([
-            'mall_id' => 1,
-            'store_id' => 1,
+            'mall_id' => $this->mall->id,
+            'store_id' => $this->loadStore($item->TaxPayerBIN),
             'kkm_code' => $item->KKMCode,
             'code' => $item->UniqueId,
             'number' => $item->DocumentNumber,
@@ -126,6 +140,25 @@ class IntegrateProsystemsCommand extends Command
             'quantity' => (int)$item->Quantity,
             'sum' => (float)$item->Sum,
         ]);
+    }
+
+
+    /**
+     * @param string $bin
+     *
+     * @return int
+     */
+    protected function loadStore(string $bin): int
+    {
+        if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->first()) {
+            $store = Store::create([
+                'mall_id' => $this->mall->id,
+                'name' => 'Без названия',
+                'business_identification_number' => $bin,
+            ]);
+        }
+
+        return $store->id;
     }
 
 }

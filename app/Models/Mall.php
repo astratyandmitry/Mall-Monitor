@@ -16,6 +16,8 @@ namespace App\Models;
 class Mall extends Model
 {
 
+    const KERUEN_CITY = 1;
+
     /**
      * @var string
      */
@@ -51,6 +53,11 @@ class Mall extends Model
         'city_id' => 'город',
     ];
 
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -67,6 +74,26 @@ class Mall extends Model
     public function cheques(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Cheque::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function integrations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(MallIntegration::class);
+    }
+
+
+    /**
+     * @param int $system_id
+     *
+     * @return \App\Models\MallIntegration|null
+     */
+    public function getIntegration(int $system_id): ?MallIntegration
+    {
+        return $this->integrations()->where('system_id', $system_id)->first();
     }
 
 }

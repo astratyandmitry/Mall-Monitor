@@ -15,6 +15,8 @@ namespace App\Models;
 class City extends Model
 {
 
+    const ASTANA = 1;
+
     /**
      * @var string
      */
@@ -28,7 +30,7 @@ class City extends Model
         'country_id',
     ];
 
-    /**
+    /**e
      * @var array
      */
     protected $casts = [
@@ -49,6 +51,11 @@ class City extends Model
     protected $messages = [
         'country_id' => 'страна',
     ];
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
 
 
     /**

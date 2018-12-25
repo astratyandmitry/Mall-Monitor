@@ -5,7 +5,7 @@ namespace App\Models;
 /**
  * @property integer              $id
  * @property string               $name
- * @property float                $commission
+ * @property integer              $business_identification_number
  * @property integer              $mall_id
  * @property \App\Models\Mall     $mall
  * @property \App\Models\Cheque[] $cheques
@@ -27,8 +27,8 @@ class Store extends Model
      */
     protected $fillable = [
         'name',
+        'business_identification_number',
         'mall_id',
-        'commission',
     ];
 
     /**
@@ -36,7 +36,7 @@ class Store extends Model
      */
     protected $casts = [
         'mall_id' => 'integer',
-        'commission' => 'float',
+        'business_identification_number' => 'integer',
     ];
 
     /**
@@ -45,8 +45,8 @@ class Store extends Model
     protected $rules = [
         'name' => 'required|max:200',
         'mall_id' => 'required|exists:malls,id',
+        'business_identification_number' => 'required|regex:/^(\d{12})$/i',
         'store_id' => 'required|exists:stores,id',
-        'commission' => 'required|numeric',
     ];
 
     /**
@@ -54,8 +54,12 @@ class Store extends Model
      */
     protected $messages = [
         'mall_id' => 'ТЦ',
-        'commission' => 'комиссия',
     ];
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
 
 
     /**
