@@ -5,23 +5,23 @@ namespace App\WSDL;
 use App\Models\IntegrationLog;
 use App\Models\IntegrationSystem;
 
-class TestProsystemsWSDL
+class ProsystemsWSDL
 {
 
     /**
      * @var string
      */
-    protected $url = 'http://91.205.49.174:5000/TRK-KERUEN/FSCDataProvider/KERUENBONUS/STREAMING_INCOME_OPERATION/INSTANCE.asmx?wsdl';
+    protected $url = 'https://88.204.142.178:8014/FSCDataProvider/KERUENBONUS/STREAMING/INSTANCE-A.asmx?wsdl';
 
     /**
      * @var string
      */
-    protected $username = 'KERUEN';
+    protected $username = 'keruen';
 
     /**
      * @var string
      */
-    protected $password = 'KERUENKERUEN~1';
+    protected $password = 'h^M1IpW3ovxq1$5I';
 
     /**
      * @var \SoapClient
@@ -51,21 +51,21 @@ class TestProsystemsWSDL
 
 
     /**
-     * ProsystemTestWSDL constructor.
+     * ProsystemsWSDL constructor.
      */
     public function __construct()
     {
-        $this->client = new \SoapClient($this->url);
+        $this->client = new \SoapClient($this->url, ['local_cert' => base_path('prosystems.cer')]);
     }
 
 
     /**
-     * @return \App\WSDL\TestProsystemsWSDL
+     * @return \App\WSDL\ProsystemsWSDL
      */
-    public static function init(): TestProsystemsWSDL
+    public static function init(): ProsystemsWSDL
     {
         if (is_null(self::$instance)) {
-            self::$instance = new TestProsystemsWSDL;
+            self::$instance = new ProsystemsWSDL;
         }
 
         return self::$instance;

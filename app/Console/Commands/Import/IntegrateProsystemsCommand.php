@@ -4,11 +4,10 @@ namespace App\Console\Commands\Import;
 
 use App\Models\Cheque;
 use App\Models\ChequeItem;
-use App\Models\ChequePayment;
 use App\Models\ChequeType;
-use App\WSDL\TestProsystemsWSDL;
+use App\WSDL\ProsystemsWSDL;
+use App\Models\ChequePayment;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 
 class IntegrateProsystemsCommand extends Command
 {
@@ -24,14 +23,14 @@ class IntegrateProsystemsCommand extends Command
     protected $description = 'Integrate with Prosystems';
 
     /**
-     * @var \App\WSDL\TestProsystemsWSDL
+     * @var \App\WSDL\ProsystemsWSDL
      */
     protected $wsdl;
 
 
     public function __construct()
     {
-        $this->wsdl = TestProsystemsWSDL::init();
+        $this->wsdl = ProsystemsWSDL::init();
 
         parent::__construct();
     }
@@ -45,6 +44,7 @@ class IntegrateProsystemsCommand extends Command
         if ($this->wsdl->authorize()) {
             if ($this->wsdl->provoidData()) {
                 foreach ($this->wsdl->getData() as $item) {
+                    dd($item);
                     // Only selling
                     if ( ! isset($item->Type) || ! in_array($item->Type, ['Sell', 'SellReturn'])) {
                         $this->error("Skip because of type {$item->UniqueId}");
@@ -75,7 +75,7 @@ class IntegrateProsystemsCommand extends Command
                     }
                 }
 
-                $this->wsdl->confirmData();
+//                $this->wsdl->confirmData();
             } else {
                 $this->error('There are no available files for import');
             }

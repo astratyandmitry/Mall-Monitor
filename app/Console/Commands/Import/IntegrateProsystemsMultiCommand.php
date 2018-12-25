@@ -4,11 +4,10 @@ namespace App\Console\Commands\Import;
 
 use App\Models\Cheque;
 use App\Models\ChequeItem;
-use App\Models\ChequePayment;
 use App\Models\ChequeType;
-use App\WSDL\TestProsystemsWSDL;
+use App\Models\ChequePayment;
+use App\WSDL\ProsystemsWSDL;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 
 class IntegrateProsystemsMultiCommand extends Command
 {
@@ -24,14 +23,14 @@ class IntegrateProsystemsMultiCommand extends Command
     protected $description = 'Integrate with Prosystems Multi Queries';
 
     /**
-     * @var \App\WSDL\TestProsystemsWSDL
+     * @var \App\WSDL\ProsystemsWSDL
      */
     protected $wsdl;
 
 
     public function __construct()
     {
-        $this->wsdl = TestProsystemsWSDL::init();
+        $this->wsdl = ProsystemsWSDL::init();
 
         parent::__construct();
     }
