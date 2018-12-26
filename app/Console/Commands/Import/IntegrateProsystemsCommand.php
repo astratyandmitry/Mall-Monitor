@@ -57,7 +57,7 @@ class IntegrateProsystemsCommand extends Command
                     ImportChequeProsystem::dispatch($this->mall, $item);
                 }
 
-                $this->wsdl->confirmData();
+                $this->integration->confirmData();
             } else {
                 $this->error('There are no available files for import');
             }
