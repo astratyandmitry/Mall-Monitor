@@ -3,23 +3,23 @@
 namespace App\Console\Commands\Import;
 
 use App\Models\Mall;
-use App\Integration\Prosystems;
+use App\Integration\WebKassa;
 use Illuminate\Console\Command;
 use App\Models\IntegrationSystem;
-use App\Jobs\ImportChequeProsystem;
+use App\Jobs\ImportChequeWebKassa;
 
-class IntegrateProsystemsCommand extends Command
+class IntegrateWebKassaCommand extends Command
 {
 
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:integrate-prosystems';
+    protected $signature = 'mallmonitor:integrate-webkassa';
 
     /**
      * @var string
      */
-    protected $description = 'Integrate with Prosystems';
+    protected $description = 'Integrate with WebKassa';
 
     /**
      * @var \App\Integration\Prosystems
@@ -32,12 +32,15 @@ class IntegrateProsystemsCommand extends Command
     protected $mall;
 
 
+    /**
+     * IntegrateWebKassaCommand constructor.
+     */
     public function __construct()
     {
         $this->mall = Mall::find(Mall::KERUEN_CITY);
 
-        $this->integration = Prosystems::init(
-            $this->mall->getIntegration(IntegrationSystem::PROSYSTEMS)
+        $this->integration = WebKassa::init(
+            $this->mall->getIntegration(IntegrationSystem::WEBKASSA)
         );
 
         parent::__construct();
@@ -49,12 +52,15 @@ class IntegrateProsystemsCommand extends Command
      */
     public function handle(): void
     {
+        dd($this->integration->authorize());
+
+        exit;
         if ($this->integration->authorize()) {
             if ($this->integration->provoidData()) {
                 foreach ($this->integration->getData() as $item) {
                     $this->info("Adding {$item->UniqueId}");
 
-                    ImportChequeProsystem::dispatch($this->mall, $item);
+                    ImportChequeWebKassa::dispatch($this->mall, $item);
                 }
 
                 $this->wsdl->confirmData();

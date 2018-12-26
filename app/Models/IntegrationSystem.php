@@ -15,6 +15,7 @@ class IntegrationSystem extends Model
 {
 
     const PROSYSTEMS = 1;
+    const WEBKASSA = 2;
 
     /**
      * @var string

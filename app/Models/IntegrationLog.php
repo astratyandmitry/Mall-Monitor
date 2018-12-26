@@ -46,22 +46,29 @@ class IntegrationLog extends Model
 
 
     /**
-     * @param int       $system_id
-     * @param int       $mall_id
-     * @param string    $operation
-     * @param \stdClass $response
-     * @param array     $data
+     * @param int    $system_id
+     * @param int    $mall_id
+     * @param string $operation
+     * @param int    $code
+     * @param string $message
+     * @param array  $data
      *
      * @return \App\Models\IntegrationLog
      */
-    public static function store(int $system_id, int $mall_id, string $operation, \stdClass $response, array $data = []): IntegrationLog
-    {
+    public static function store(
+        int $system_id,
+        int $mall_id,
+        string $operation,
+        int $code = 0,
+        ?string $message = null,
+        array $data = []
+    ): IntegrationLog {
         return IntegrationLog::create([
             'system_id' => $system_id,
             'mall_id' => $mall_id,
             'operation' => $operation,
-            'code' => $response->Code ?? 00,
-            'message' => $response->Message ?? null,
+            'code' => $code,
+            'message' => $message,
             'data' => $data,
         ]);
     }

@@ -14,6 +14,10 @@ class IntegrationSystemsTableSeeder extends Seeder
             'name' => 'ПроСистемы',
             'system_key' => 'prosystems',
         ],
+        [
+            'name' => 'WebKassa',
+            'system_key' => 'webkassa',
+        ],
     ];
 
 

@@ -20,6 +20,14 @@ class MallIntegrationsTableSeeder extends Seeder
             'password' => 'h^M1IpW3ovxq1$5I',
             'data' => null,
         ],
+        [
+            'system_id' => IntegrationSystem::WEBKASSA,
+            'mall_id' => Mall::KERUEN_CITY,
+            'host' => 'https://devkkm.webkassa.kz',
+            'username' => 'astratyandmitry@gmail.com',
+            'password' => 'Kassa123',
+            'data' => null,
+        ],
     ];
 
 

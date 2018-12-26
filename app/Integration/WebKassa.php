@@ -2,14 +2,16 @@
 
 namespace App\Integration;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use App\Models\IntegrationLog;
 use App\Models\MallIntegration;
 
-class Prosystems
+class WebKassa
 {
 
     /**
-     * @var \SoapClient
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
@@ -24,11 +26,6 @@ class Prosystems
     protected $data;
 
     /**
-     * @var string
-     */
-    protected $packageGUID;
-
-    /**
      *
      * @var Singleton
      */
@@ -41,7 +38,7 @@ class Prosystems
 
 
     /**
-     * Prosystems constructor.
+     * WebKassa constructor.
      *
      * @param \App\Models\MallIntegration $integration
      */
@@ -49,15 +46,8 @@ class Prosystems
     {
         $this->integration = $integration;
 
-        $this->client = new \SoapClient($this->integration->host, [
-            'stream_context' => stream_context_create([
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true,
-                    'cafile' => base_path('prosystems.cer')
-                ],
-            ]),
+        $this->client = new Client([
+            'base_uri' => $this->integration->host,
         ]);
     }
 
@@ -65,12 +55,12 @@ class Prosystems
     /**
      * @param \App\Models\MallIntegration $integration
      *
-     * @return \App\Integration\Prosystems
+     * @return \App\Integration\WebKassa
      */
-    public static function init(MallIntegration $integration): Prosystems
+    public static function init(MallIntegration $integration): WebKassa
     {
         if (is_null(self::$instance)) {
-            self::$instance = new Prosystems($integration);
+            self::$instance = new WebKassa($integration);
         }
 
         return self::$instance;
@@ -82,27 +72,28 @@ class Prosystems
      */
     public function authorize(): bool
     {
-        $success = true;
-        $data = [];
-
         $params = [
-            'login' => $this->integration->username,
-            'password' => $this->integration->password,
+            'Login' => $this->integration->username,
+            'Password' => $this->integration->password,
         ];
 
-        $response = $this->client->Authorize($params);
+        $request = new Request('POST', '/api/Authorize', [
+            'Content-Type' => 'application/json',
+        ], json_encode($params));
 
-        if ($response->AuthorizeResult->Code != '000') {
-            $success = false;
+        $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-            $data = $params;
-        } else {
-            $data['token'] = $this->token = $response->AuthorizeResult->ResultObject->enc_value->Token;
+        if ( ! is_null($response->Errors)) {
+            $this->log('Authorize', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+
+            return false;
         }
 
-        $this->log('Authorize', $response->AuthorizeResult, $data);
+        $this->log('Authorize', 0, null, [
+            'token' => $this->token = $response->Data->Token,
+        ]);
 
-        return $success;
+        return true;
     }
 
 
@@ -172,16 +163,17 @@ class Prosystems
 
 
     /**
-     * @param string    $operation
-     * @param \stdClass $response
-     * @param array     $data
+     * @param string $operation
+     * @param int    $code
+     * @param string $message
+     * @param array  $data
      *
      * @return void
      */
-    protected function log(string $operation, \stdClass $response, array $data = []): void
+    protected function log(string $operation, int $code = 0, ?string $message = null, array $data = []): void
     {
         IntegrationLog::store(
-            $this->integration->system_id, $this->integration->mall_id, $operation, $response->Code ?? 0, $response->Message ?? null, $data
+            $this->integration->system_id, $this->integration->mall_id, $operation, $code, $message, $data
         );
     }
 
