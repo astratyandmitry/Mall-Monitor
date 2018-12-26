@@ -91,7 +91,7 @@ class ImportChequeProsystem
             'number' => $item->DocumentNumber,
             'amount' => $item->Amount,
             'type_id' => $this->types[$item->Type],
-            'payment_id' => $this->payments[$item->Payments->Payment->Type],
+            'payment_id' => $this->payments[(is_array($item->Payments->Payment)) ? $item->Payments->Payment[0]->Type : $item->Payments->Payment->Type],
             'created_at' => $item->DateTime,
             'data' => [
                 'Cashier' => $item->Cashier,
