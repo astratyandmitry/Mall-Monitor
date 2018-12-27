@@ -57,7 +57,11 @@ class IntegrateProsystemsCommand extends Command
                     ImportChequeProsystem::dispatch($this->mall, $item);
                 }
 
-                $this->integration->confirmData();
+                if ($this->integration->authorize()) {
+                    $this->integration->confirmData();
+                } else {
+                    $this->error('Unauthorized');
+                }
             } else {
                 $this->error('There are no available files for import');
             }

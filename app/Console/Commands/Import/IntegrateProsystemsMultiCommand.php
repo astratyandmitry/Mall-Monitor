@@ -68,7 +68,11 @@ class IntegrateProsystemsMultiCommand extends Command
                     ImportChequeProsystem::dispatch($this->mall, $item);
                 }
 
-                $this->integration->confirmData();
+                if ($this->integration->authorize()) {
+                    $this->integration->confirmData();
+                } else {
+                    $this->error('Unauthorized');
+                }
 
                 return true;
             } else {
