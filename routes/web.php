@@ -15,5 +15,8 @@ Route::group(['middleware' => 'loggined'], function (): void {
 
     Route::get('/report', 'ReportController@index')->name('report.index');
     Route::get('/report/export', 'ReportController@export')->name('report.export');
+
+    Route::get('/daily_report', 'DailyReportController@index')->name('daily_report.index');
+    Route::get('/daily_report/export', 'DailyReportController@export')->name('daily_report.export');
 });
 

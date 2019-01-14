@@ -1,4 +1,4 @@
-<header class="bg-indigo-darker fixed w-full pin-t shadow-md py-4">
+<header class="bg-indigo-darker fixed w-full pin-t shadow-md py-4 z-50">
     <div class="container flex items-center justify-between flex-wrap">
         <a href="{{ route('dashboard') }}" class="mr-12 no-underline flex flex-wrap items-center font-light text-indigo-darker uppercase">
             <div class="text-white text-white text-2xl font-bold">Mall</div>
@@ -20,9 +20,9 @@
                     </a>
                 </li>
                 <li class="inline-block mr-4">
-                    <a href="{{ route('report.index') }}"
-                       class="no-underline font-normal hover:text-white {{ $active == 'report' ? 'text-white' : 'text-indigo-lightest' }}">
-                        Отчет
+                    <a href="{{ route('daily_report.index') }}"
+                       class="no-underline font-normal hover:text-white {{ $active == 'daily_report' ? 'text-white' : 'text-indigo-lightest' }}">
+                        Ежедневный отчет
                     </a>
                 </li>
             </ul>

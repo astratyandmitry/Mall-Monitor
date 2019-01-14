@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @property integer                   $id
  * @property string                    $kkm_code
@@ -147,6 +149,29 @@ class Cheque extends Model
     public function setCreatedAtAttribute(?string $created_at): void
     {
         $this->attributes['created_at'] = date('Y-m-d H:i:s', strtotime(explode(',', $created_at)[0]));
+    }
+
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \Carbon\Carbon                        $date
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeDailyReport(Builder $builder, \Carbon\Carbon $date): Builder
+    {
+        $builder->where('mall_id', auth()->user()->mall_id);
+
+        $builder->when(request()->query('store_id'), function ($builder) {
+            return $builder->where('store_id', request()->query('store_id'));
+        });
+
+        $builder->where('created_at', '>=', $date->format('Y-m-d') . " 03:00:00");
+        $builder->where('created_at', '<=', $date->addDay()->format('Y-m-d') . ' 03:00:00');
+
+        $builder->orderBy('id', 'asc');
+
+        return $builder;
     }
 
 }

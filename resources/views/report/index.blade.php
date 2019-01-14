@@ -4,7 +4,7 @@
     <div class="shadow-lg rounded">
         <div class="p-8">
             <h1 class="mb-8">
-                <a target="_blank" href="{{ route('report.export', ['date_type' => @$_GET['date_type'], 'date_from' => @$_GET['date_from'], 'date_to' => @$_GET['date_to']]) }}"
+                <a target="_blank" href="{{ route('daily_report.export', ['date_type' => @$_GET['date_type'], 'date_from' => @$_GET['date_from'], 'date_to' => @$_GET['date_to']]) }}"
                    class="float-right no-underline text-sm bg-green py-2 px-4 text-white rounded font-normal hover:bg-green-light cursor-pointer">
                     Экспортировать в Excel
                 </a>

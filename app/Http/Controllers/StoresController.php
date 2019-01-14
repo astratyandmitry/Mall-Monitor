@@ -73,13 +73,13 @@ class StoresController extends Controller
         $graph['count'] = array_reverse($graph['count']);
         $graph['avg'] = array_reverse($graph['avg']);
 
-        $today = (env('APP_ENV') == 'local') ? '2018-08-23' : date('Y-m-d');
+        $today = date('Y-m-d');
 
         return view('stores.show', $this->withData([
             'graph' => $graph,
             'store' => $store,
             'statistics' => $statistics,
-            'cheques' => $store->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->paginate(25),
+            'cheques' => $store->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->limit(100)->get(),
         ]));
     }
 

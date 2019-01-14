@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $this->setActive('dashboard');
 
         $statistics = \DB::table('cheques')
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE_FORMAT(created_at, "%Y-%m") as date'))
+            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE(created_at) as date'))
             ->where('mall_id', auth()->user()->mall_id)
             ->groupBy('date')
             ->orderBy('date', 'desc')

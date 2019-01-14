@@ -87,6 +87,8 @@ class ReportController extends Controller
             $export[$place_id]['Отчетный период'] = $dates;
         }
 
+        dd($export);
+
         \Excel::create("mallmonitor_report_{$date}", function ($excel) use ($export) {
             $excel->sheet("Отчет", function ($sheet) use ($export) {
                 $sheet->fromArray($export);

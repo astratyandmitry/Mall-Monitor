@@ -61,7 +61,7 @@
                         <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
                             <div class="text-grey-darkest w-full pl-4">
                                 <a class="text-grey-darkest no-underline border-b border-grey hover:border-transparent"
-                                   href="{{ route('report.index', ['date_type' => 4, 'date_from' => $statistic->date, 'date_to' => $statistic->date]) }}">
+                                   href="{{ route('daily_report.index', ['date' => $statistic->date, 'store_id' => $store->id]) }}">
                                     {{ date('d.m.Y', strtotime($statistic->date)) }}
                                 </a>
                             </div>
@@ -101,44 +101,55 @@
             @if (count($cheques))
                 <div class="cheques mt-16">
                     <h2 class="mb-8 text-grey-darkest">
-                        Сегодняшние транзакции
+                        Последние тразакции за сегодня
                     </h2>
 
-                    <div class="mb-2 font-bold flex w-full py-2">
-                        <div class="text-grey-darker w-full pl-4">
-                            Код транзакции
+                    <div class="pb-4 font-bold flex w-full">
+                        <div class="pl-4 text-grey-darker w-full">
+                            Код касссы
                         </div>
 
-                        <div class="text-grey-darker w-64 px-4">
-                            Дата и время
+                        <div class="px-4 text-grey-darker w-96">
+                            Номер документа
                         </div>
 
-                        <div class="text-grey-darker text-right w-48 pr-4">
+                        <div class="px-4 text-grey-darker w-64 text-right">
                             Сумма
+                        </div>
+
+                        <div class="pr-4 text-grey-darker text-right w-96">
+                            Дата и время
                         </div>
                     </div>
 
                     @foreach($cheques as $cheque)
-                        <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter">
-                            <div class="text-grey-darkest w-full pl-4">
-                                {{ $cheque->code }}
+                        <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
+                            <div class="w-full pl-4">
+                                {{ $cheque->kkm_code }}
                             </div>
 
-                            <div class="text-grey-darkest w-64 px-4">
-                                {{ $cheque->created_at->format('d.m.Y H:i') }}
+                            <div class="text-grey-darkest w-96 px-4">
+                                {{ $cheque->number }}
                             </div>
 
-                            <div class="text-grey-darkest w-48 px-4">
-
-                            </div>
-
-                            <div class="text-grey-darkest text-right w-48 pr-4">
+                            <div class="text-grey-darkest w-64 px-4 text-right">
                                 {{ number_format($cheque->amount) }} ₸
+                            </div>
+
+                            <div class="text-grey-darkest text-right w-96 pr-4">
+                                {{ $cheque->created_at->format('d.m.Y H:i:s') }}
                             </div>
                         </div>
                     @endforeach
 
-                    {{ $cheques->links('vendor.pagination.default') }}
+                    <div class="rounded-sm flex w-full py-4 bg-grey-light">
+                        <div class="pr-4 text-grey-darker text-center w-full">
+                            <a href="{{ route('daily_report.index', ['store_id' => $store->id]) }}"
+                               class="text-grey-darkest no-underline border-b border-grey hover:border-transparent">
+                                Получить полный отчет за {{ date('d.m.Y') }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
             @endif
 

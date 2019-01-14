@@ -63,7 +63,7 @@
                         <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
                             <div class="text-grey-darkest w-full pl-4">
                                 <a class="text-grey-darkest no-underline border-b border-grey hover:border-transparent"
-                                   href="{{ route('report.index', ['date_type' => 4, 'date_from' => $statistic->date, 'date_to' => $statistic->date]) }}">
+                                   href="{{ route('daily_report.index', ['date' => $statistic->date]) }}">
                                     {{ date('d.m.Y', strtotime($statistic->date)) }}
                                 </a>
                             </div>
