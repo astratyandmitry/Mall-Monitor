@@ -78,7 +78,9 @@ class DailyReportController extends Controller
 
             $export[$cheque->id]['Код касссы'] = $cheque->kkm_code;
             $export[$cheque->id]['Номер документа'] = $cheque->number;
-            $export[$cheque->id]['Сумма'] = number_format($cheque->amount) . ' ₸';
+            $export[$cheque->id]['Тип операции'] = $cheque->type->name;
+            $export[$cheque->id]['Вид оплаты'] = $cheque->payment->name;
+            $export[$cheque->id]['Сумма'] = $cheque->amount;
             $export[$cheque->id]['Дата и время'] = $cheque->created_at->format('d.m.Y H:i:s');
         }
 

@@ -85,6 +85,10 @@
                             Номер документа
                         </div>
 
+                        <div class="px-4 text-grey-darker w-96">
+                            Тип операции
+                        </div>
+
                         <div class="px-4 text-grey-darker w-64 text-right">
                             Сумма
                         </div>
@@ -114,6 +118,10 @@
 
                             <div class="text-grey-darkest w-96 px-4">
                                 {{ $cheque->number }}
+                            </div>
+
+                            <div class="text-grey-darkest w-96 px-4">
+                                {{ $cheque->type->name }}
                             </div>
 
                             <div class="text-grey-darkest w-64 px-4 text-right">
