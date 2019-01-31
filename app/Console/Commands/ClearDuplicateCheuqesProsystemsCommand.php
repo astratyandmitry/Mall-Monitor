@@ -44,6 +44,8 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
                 \DB::table('cheques')->whereIn('id', $ids)->delete();
                 \DB::table('cheque_items')->whereIn('cheque_id', $ids)->delete();
             }
+        } else {
+            $this->error('No available cheques.');
         }
     }
 

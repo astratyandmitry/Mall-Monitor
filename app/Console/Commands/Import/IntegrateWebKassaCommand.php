@@ -52,9 +52,6 @@ class IntegrateWebKassaCommand extends Command
      */
     public function handle(): void
     {
-        dd($this->integration->authorize());
-
-        exit;
         if ($this->integration->authorize()) {
             if ($this->integration->provoidData()) {
                 foreach ($this->integration->getData() as $item) {

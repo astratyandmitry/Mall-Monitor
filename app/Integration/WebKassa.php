@@ -102,30 +102,39 @@ class WebKassa
      */
     public function provoidData(): bool
     {
-        $success = true;
-        $data = [];
-
         $params = [
-            'token' => $this->token,
+            'Token' => $this->token,
         ];
 
-        $response = $this->client->ProvideData($params);
+        $request = new Request('POST', '/api/cashboxes/availableForReadHistory', [
+            'Content-Type' => 'application/json',
+        ], json_encode($params));
 
-        if ($response->ProvideDataResult->Code != '000') {
-            $success = false;
+        $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-            $data = $params;
-        } else {
+        dd($response);
+
+        if ( ! is_null($response->Errors)) {
+            $this->log('Authorize', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+
+            return false;
+        }
+
+        if (! is_null($response->Errors)) {
+            $this->log('Authorize', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+
+            return false;
+        }
+
             $packet = $response->ProvideDataResult->ResultObject->enc_value->Packet;
 
             $data['packetGuid'] = $this->packageGUID = $packet->Guid;
 
             $this->data = (is_array($packet->Content->Operations->BaseOperation)) ? $packet->Content->Operations->BaseOperation : $packet->Content->Operations;
-        }
 
         $this->log('ProvideData', $response->ProvideDataResult, $data);
 
-        return $success;
+        return true;
     }
 
 

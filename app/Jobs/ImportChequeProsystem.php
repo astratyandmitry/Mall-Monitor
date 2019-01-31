@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Mall;
 use App\Models\Store;
 use App\Models\Cheque;
+use App\Models\Cashbox;
 use App\Models\ChequeItem;
 use App\Models\ChequeType;
 use App\Models\ChequePayment;
@@ -26,6 +27,7 @@ class ImportChequeProsystem
     protected $mall;
 
     /**got
+     *
      * @var array
      */
     protected $payments = [
@@ -47,6 +49,11 @@ class ImportChequeProsystem
         'Withdrawal' => ChequeType::WITHDRAWAL,
     ];
 
+    /**
+     * @var array
+     */
+    protected $cashbox_codes = [];
+
 
     /**
      * @param \App\Models\Mall $mall
@@ -56,6 +63,21 @@ class ImportChequeProsystem
     {
         $this->mall = $mall;
         $this->item = $item;
+
+        $this->loadCashboxCodes();
+    }
+
+
+    /**
+     * @return void
+     */
+    protected function loadCashboxCodes(): void
+    {
+        $cashboxes = Cashbox::all();
+
+        foreach ($cashboxes as $cashbox) {
+            $this->cashbox_codes[$cashbox->mall_id][$cashbox->store_id][$cashbox->code] = $cashbox->id;
+        }
     }
 
 
@@ -83,9 +105,12 @@ class ImportChequeProsystem
      */
     protected function createCheque(\stdClass $item): Cheque
     {
+        $storeId = $this->loadStore($item->TaxPayerBIN);
+
         return Cheque::create([
             'mall_id' => $this->mall->id,
-            'store_id' => $this->loadStore($item->TaxPayerBIN),
+            'store_id' => $storeId,
+            'cashbox_id' => $this->getCashboxCodeId($storeId, $item->KKMCode),
             'kkm_code' => $item->KKMCode,
             'code' => $item->UniqueId,
             'number' => $item->DocumentNumber,
@@ -98,6 +123,26 @@ class ImportChequeProsystem
                 'WorkSessionNumber' => $item->WorkSessionNumber,
             ],
         ]);
+    }
+
+
+    /**
+     * @param int    $storeId
+     * @param string $code
+     *
+     * @return int
+     */
+    protected function getCashboxCodeId(int $storeId, string $code): int
+    {
+        if ( ! isset($this->cashbox_codes[$this->mall->id][$storeId][$code])) {
+            $this->cashbox_codes[$this->mall->id][$storeId][$code] = Cashbox::create([
+                'mall_id' => $this->mall->id,
+                'store_id' => $storeId,
+                'code' => $code,
+            ])->id;
+        }
+
+        return $this->cashbox_codes[$this->mall->id][$storeId][$code];
     }
 
 

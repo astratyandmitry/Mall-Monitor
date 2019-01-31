@@ -13,11 +13,13 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string                    $data
  * @property integer                   $mall_id
  * @property integer                   $store_id
+ * @property integer                   $cashbox_id
  * @property integer                   $type_id
  * @property integer                   $payment_id
  * @property \Carbon\Carbon            $created_at
  * @property \App\Models\Mall          $mall
  * @property \App\Models\Store         $store
+ * @property \App\Models\Cashbox       $cashbox
  * @property \App\Models\ChequeType    $type
  * @property \App\Models\ChequePayment $payment
  * @property \App\Models\ChequeItem[]  $items
@@ -45,6 +47,7 @@ class Cheque extends Model
         'data',
         'mall_id',
         'store_id',
+        'cashbox_id',
         'type_id',
         'payment_id',
         'created_at',
@@ -58,6 +61,7 @@ class Cheque extends Model
         'data' => 'array',
         'mall_id' => 'integer',
         'store_id' => 'integer',
+        'cashbox_id' => 'integer',
         'type_id' => 'integer',
         'payment_id' => 'integer',
     ];
@@ -85,6 +89,7 @@ class Cheque extends Model
         'data' => 'nullable',
         'mall_id' => 'required|exists:malls,id',
         'store_id' => 'required|exists:stores,id',
+        'cashbox_id' => 'required|exists:cashboxes,id',
         'type_id' => 'required|exists:cheque_types,id',
         'payment_id' => 'required|exists:cheque_payments,id',
         'created_at' => 'required',
@@ -100,6 +105,7 @@ class Cheque extends Model
         'amount' => 'сумма',
         'mall_id' => 'ТЦ',
         'store_id' => 'заведение',
+        'cashbox_id' => 'касса',
         'type_id' => 'тип транзакции',
         'payment_id' => 'вид платежа',
         'data' => 'данные',
@@ -122,6 +128,15 @@ class Cheque extends Model
     public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Store::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cashbox(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Cashbox::class);
     }
 
 
@@ -162,8 +177,16 @@ class Cheque extends Model
     {
         $builder->where('mall_id', auth()->user()->mall_id);
 
+        $builder->when(request('mall_id'), function (Builder $builder): Builder {
+            return $builder->where('mall_id', request('mall_id'));
+        });
+
         $builder->when(request()->query('store_id'), function ($builder) {
             return $builder->where('store_id', request()->query('store_id'));
+        });
+
+        $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
+            return $builder->where('cashbox_id', request('cashbox_id'));
         });
 
         $builder->where('created_at', '>=', $date->format('Y-m-d') . " 03:00:00");
