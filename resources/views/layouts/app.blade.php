@@ -20,7 +20,7 @@
     @include('layouts.partials.header')
 
     <section class="my-16">
-        <div class="container">
+        <div class="px-4">
             @yield('content')
         </div>
     </section>

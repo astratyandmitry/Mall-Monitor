@@ -62,7 +62,7 @@ class StoresController extends Controller
         ];
 
         foreach ($statistics as $statistic) {
-            $graph['labels'][] = date('d.m.Y', strtotime($statistic->date));
+            $graph['labels'][] = $this->formatDate($statistic->date);
             $graph['amount'][] = round($statistic->amount);
             $graph['count'][] = round($statistic->count);
             $graph['avg'][] = round($statistic->amount / $statistic->count);
@@ -81,6 +81,33 @@ class StoresController extends Controller
             'statistics' => $statistics,
             'cheques' => $store->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->limit(100)->get(),
         ]));
+    }
+
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     */
+    protected function formatDate(string $date): string
+    {
+        $dates = explode('-', $date);
+        $months = [
+            1 => 'янв.',
+            2 => 'фев.',
+            3 => 'мар.',
+            4 => 'апр.',
+            5 => 'май.',
+            6 => 'июн.',
+            7 => 'июл.',
+            8 => 'авг.',
+            9 => 'сен.',
+            10 => 'окт.',
+            11 => 'ноя.',
+            12 => 'дек.',
+        ];
+
+        return (int)$dates[2] . " " . $months[(int)$dates[1]] . " {$dates[0]}";
     }
 
 }

@@ -159,6 +159,15 @@ class Cheque extends Model
 
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ChequeItem::class);
+    }
+
+
+    /**
      * @param null|string $created_at
      */
     public function setCreatedAtAttribute(?string $created_at): void
@@ -169,11 +178,12 @@ class Cheque extends Model
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param \Carbon\Carbon                        $date
+     * @param string|null                           $dateFrom
+     * @param string|null                           $dateTo
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function scopeDailyReport(Builder $builder, \Carbon\Carbon $date): Builder
+    public static function scopeReportDetail(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
     {
         $builder->where('mall_id', auth()->user()->mall_id);
 
@@ -189,10 +199,75 @@ class Cheque extends Model
             return $builder->where('cashbox_id', request('cashbox_id'));
         });
 
-        $builder->where('created_at', '>=', $date->format('Y-m-d') . " 03:00:00");
-        $builder->where('created_at', '<=', $date->addDay()->format('Y-m-d') . ' 03:00:00');
+        if ($dateFrom) {
+            $builder->where('created_at', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $builder->where('created_at', '<=', $dateTo);
+        }
 
         $builder->orderBy('id', 'asc');
+
+        return $builder;
+    }
+
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string|null                           $dateFrom
+     * @param string|null                           $dateTo
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeReportStore(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
+    {
+        $builder->where('mall_id', auth()->user()->mall_id);
+
+        $builder->when(request('mall_id'), function (Builder $builder): Builder {
+            return $builder->where('mall_id', request('mall_id'));
+        });
+
+        $builder->when(request()->query('store_id'), function ($builder) {
+            return $builder->where('store_id', request()->query('store_id'));
+        });
+
+        if ($dateFrom) {
+            $builder->where('created_at', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $builder->where('created_at', '<=', $dateTo);
+        }
+
+        $builder->orderBy('id', 'asc');
+
+        return $builder;
+    }
+
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string|null                           $dateFrom
+     * @param string|null                           $dateTo
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeReportMall(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
+    {
+        $builder->where('mall_id', auth()->user()->mall_id);
+
+        $builder->when(request('mall_id'), function (Builder $builder): Builder {
+            return $builder->where('mall_id', request('mall_id'));
+        });
+
+        if ($dateFrom) {
+            $builder->where('created_at', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $builder->where('created_at', '<=', $dateTo);
+        }
 
         return $builder;
     }

@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('currentUser', auth()->user());
                 $view->with('currentMall', auth()->user()->mall);
             }
+
+            $view->with('dates', [
+                'По датам',
+                'По месяцам',
+                'По годам',
+            ]);
         });
     }
 

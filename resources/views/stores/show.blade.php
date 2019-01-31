@@ -61,7 +61,7 @@
                         <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
                             <div class="text-grey-darkest w-full pl-4">
                                 <a class="text-grey-darkest no-underline border-b border-grey hover:border-transparent"
-                                   href="{{ route('daily_report.index', ['date' => $statistic->date, 'store_id' => $store->id]) }}">
+                                   href="{{ route('report_detail.index', ['date' => $statistic->date, 'store_id' => $store->id]) }}">
                                     {{ date('d.m.Y', strtotime($statistic->date)) }}
                                 </a>
                             </div>
@@ -152,7 +152,7 @@
 
                     <div class="rounded-sm flex w-full py-4 bg-grey-light">
                         <div class="pr-4 text-grey-darker text-center w-full">
-                            <a href="{{ route('daily_report.index', ['store_id' => $store->id]) }}"
+                            <a href="{{ route('report_detail.index', ['store_id' => $store->id]) }}"
                                class="text-grey-darkest no-underline border-b border-grey hover:border-transparent">
                                 Получить полный отчет за {{ date('d.m.Y') }}
                             </a>

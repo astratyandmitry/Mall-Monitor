@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $graph['count'] = array_reverse($graph['count']);
         $graph['avg'] = array_reverse($graph['avg']);
 
-        $today = '2018-04-15';
+        $today = '2019-01-20';
 
         return view('dashboard.index', $this->withData([
             'graph' => $graph,
@@ -89,7 +89,7 @@ class DashboardController extends Controller
             12 => 'дек.',
         ];
 
-        return $months[(int)$dates[1]] . " {$dates[0]}";
+        return (int)$dates[2] . " " . $months[(int)$dates[1]] . " {$dates[0]}";
     }
 
 }
