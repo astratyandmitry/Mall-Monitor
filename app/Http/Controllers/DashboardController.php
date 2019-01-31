@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $graph['count'] = array_reverse($graph['count']);
         $graph['avg'] = array_reverse($graph['avg']);
 
-        $today = '2019-01-20';
+        $today = date('Y-m-d');
 
         return view('dashboard.index', $this->withData([
             'graph' => $graph,
