@@ -58,7 +58,7 @@ class IntegrateProsystemsCommand extends Command
                 }
 
                 if ($this->integration->authorize()) {
-//                    $this->integration->confirmData();
+                    $this->integration->confirmData();
                 } else {
                     $this->error('Unauthorized');
                 }
