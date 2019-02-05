@@ -2,32 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Models\Mall;
-use App\Models\Store;
 use App\Models\Cheque;
-use App\Models\Cashbox;
 use App\Models\ChequeItem;
 use App\Models\ChequeType;
 use App\Models\ChequePayment;
-use Illuminate\Foundation\Bus\Dispatchable;
 
-class ImportChequeProsystem
+class ImportChequeProsystem extends ImportCheque
 {
 
-    use Dispatchable;
-
     /**
-     * @var \stdClass
-     */
-    protected $item;
-
-    /**
-     * @var \App\Models\Mall
-     */
-    protected $mall;
-
-    /**got
-     *
      * @var array
      */
     protected $payments = [
@@ -49,37 +32,6 @@ class ImportChequeProsystem
         'Withdrawal' => ChequeType::WITHDRAWAL,
     ];
 
-    /**
-     * @var array
-     */
-    protected $cashbox_codes = [];
-
-
-    /**
-     * @param \App\Models\Mall $mall
-     * @param \stdClass        $item
-     */
-    public function __construct(Mall $mall, \stdClass $item)
-    {
-        $this->mall = $mall;
-        $this->item = $item;
-
-        $this->loadCashboxCodes();
-    }
-
-
-    /**
-     * @return void
-     */
-    protected function loadCashboxCodes(): void
-    {
-        $cashboxes = Cashbox::all();
-
-        foreach ($cashboxes as $cashbox) {
-            $this->cashbox_codes[$cashbox->mall_id][$cashbox->store_id][$cashbox->code] = $cashbox->id;
-        }
-    }
-
 
     /**
      * @return void
@@ -87,6 +39,10 @@ class ImportChequeProsystem
     public function handle(): void
     {
         $cheque = $this->createCheque($this->item);
+
+        if ( ! property_exists($this->item, 'Items') || ! count($this->item->Items)) {
+            return;
+        }
 
         if (is_array($this->item->Items->Item)) {
             foreach ($this->item->Items->Item as $_item) {
@@ -106,6 +62,7 @@ class ImportChequeProsystem
     protected function createCheque(\stdClass $item): Cheque
     {
         $storeId = $this->loadStore($item->TaxPayerBIN);
+        $typeId = $this->getType($item->Type);
 
         return Cheque::create([
             'mall_id' => $this->mall->id,
@@ -114,9 +71,9 @@ class ImportChequeProsystem
             'kkm_code' => $item->KKMCode,
             'code' => $item->UniqueId,
             'number' => $item->DocumentNumber,
-            'amount' => $item->Amount,
-            'type_id' => $this->types[$item->Type],
-            'payment_id' => $this->payments[(is_array($item->Payments->Payment)) ? $item->Payments->Payment[0]->Type : $item->Payments->Payment->Type],
+            'amount' => $this->getAmount($item->Amount, $typeId),
+            'type_id' => $typeId,
+            'payment_id' => $this->getPaymentId($item),
             'created_at' => $item->DateTime,
             'data' => [
                 'Cashier' => $item->Cashier,
@@ -127,22 +84,17 @@ class ImportChequeProsystem
 
 
     /**
-     * @param int    $storeId
-     * @param string $code
+     * @param \stdClass $item
      *
      * @return int
      */
-    protected function getCashboxCodeId(int $storeId, string $code): int
+    protected function getPaymentId(\stdClass $item): int
     {
-        if ( ! isset($this->cashbox_codes[$this->mall->id][$storeId][$code])) {
-            $this->cashbox_codes[$this->mall->id][$storeId][$code] = Cashbox::create([
-                'mall_id' => $this->mall->id,
-                'store_id' => $storeId,
-                'code' => $code,
-            ])->id;
+        if ( ! property_exists($item, 'Payments') || ! property_exists($item->Payments, 'Payment')) {
+            return ChequePayment::CASH;
         }
 
-        return $this->cashbox_codes[$this->mall->id][$storeId][$code];
+        return $this->getPayment((is_array($item->Payments->Payment)) ? $item->Payments->Payment[0]->Type : $item->Payments->Payment->Type);
     }
 
 
@@ -150,37 +102,17 @@ class ImportChequeProsystem
      * @param \App\Models\Cheque $cheque
      * @param \stdClass          $item
      *
-     * @return mixed
+     * @return \App\Models\ChequeItem|null
      */
-    protected function createChequeItem(Cheque $cheque, \stdClass $item)
+    protected function createChequeItem(Cheque $cheque, \stdClass $item): ?ChequeItem
     {
-        return ChequeItem::create([
-            'cheque_id' => $cheque->id,
+        return $cheque->items()->create([
             'code' => $item->Code,
             'name' => $item->Name,
             'price' => (float)$item->Price,
             'quantity' => (int)$item->Quantity,
             'sum' => (float)$item->Sum,
         ]);
-    }
-
-
-    /**
-     * @param string $bin
-     *
-     * @return int
-     */
-    protected function loadStore(string $bin): int
-    {
-        if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->first()) {
-            $store = Store::create([
-                'mall_id' => $this->mall->id,
-                'name' => 'Без названия',
-                'business_identification_number' => $bin,
-            ]);
-        }
-
-        return $store->id;
     }
 
 }

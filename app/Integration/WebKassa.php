@@ -36,6 +36,21 @@ class WebKassa
      */
     protected $integration;
 
+    /**
+     * @var array
+     */
+    protected $cashboxes = [];
+
+    /**
+     * @var array
+     */
+    protected $shifts = [];
+
+    /**
+     * @var array
+     */
+    protected $cheques = [];
+
 
     /**
      * WebKassa constructor.
@@ -98,10 +113,25 @@ class WebKassa
 
 
     /**
-     * @return bool
+     * @return array
      */
-    public function provoidData(): bool
+    public function availableForReadHistory(): array
     {
+        return [
+            (object)[
+                'CashboxUniqueNumber' => 'SWK00031028',
+                'Xin' => '46576868568568',
+                'OrganizationName' => 'Test',
+            ],
+            (object)[
+                'CashboxUniqueNumber' => 'SWK00031029',
+                'Xin' => '46576868568568',
+                'OrganizationName' => 'Test',
+            ],
+        ];
+
+        return $this->cashboxes;
+
         $params = [
             'Token' => $this->token,
         ];
@@ -112,62 +142,93 @@ class WebKassa
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        dd($response);
-
         if ( ! is_null($response->Errors)) {
-            $this->log('Authorize', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+            $this->log('availableForReadHistory', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
 
-            return false;
+            return [];
         }
 
-        if (! is_null($response->Errors)) {
-            $this->log('Authorize', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+        $this->log('availableForReadHistory', 0, null, $params);
 
-            return false;
-        }
-
-            $packet = $response->ProvideDataResult->ResultObject->enc_value->Packet;
-
-            $data['packetGuid'] = $this->packageGUID = $packet->Guid;
-
-            $this->data = (is_array($packet->Content->Operations->BaseOperation)) ? $packet->Content->Operations->BaseOperation : $packet->Content->Operations;
-
-        $this->log('ProvideData', $response->ProvideDataResult, $data);
-
-        return true;
+        return $response->Data;
     }
 
 
     /**
-     * @return bool
+     * @param string $cashboxNumber
+     * @param int    $skip
+     * @param int    $take
+     *
+     * @return array
      */
-    public function confirmData(): bool
+    public function shiftHistory(string $cashboxNumber, int $skip = 0, int $take = 50): array
     {
-        $success = false;
-
         $params = [
-            'token' => $this->token,
-            'packetGuid' => $this->packageGUID,
+            'Token' => $this->token,
+            'CashboxUniqueNumber' => $cashboxNumber,
+            'Skip' => $skip,
+            'Take' => $take,
         ];
 
-        $response = $this->client->ConfirmData($params);
+        $request = new Request('POST', '/api/Cashbox/ShiftHistory', [
+            'Content-Type' => 'application/json',
+        ], json_encode($params));
 
-        if ($response->ConfirmDataResult->Code == '000') {
-            $success = true;
+        $response = json_decode($this->client->send($request)->getBody()->getContents());
+
+        if ( ! is_null($response->Errors)) {
+            $this->log('ShiftHistory', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+
+            return [];
         }
 
-        $this->log('ConfirmData', $response->ConfirmDataResult, $params);
+        $this->log('ShiftHistory', 0, null, $params);
 
-        return $success;
+        if ( ! count($response->Data->Shifts)) {
+            return [];
+        }
+
+        return $response->Data->Shifts;
     }
 
 
     /**
-     * @return mixed
+     * @param string $cashboxNumber
+     * @param string $shiftNubmer
+     * @param int    $skip
+     * @param int    $take
+     *
+     * @return array
      */
-    public function getData()
+    public function history(string $cashboxNumber, string $shiftNubmer, int $skip = 0, int $take = 50): array
     {
-        return $this->data;
+        $params = [
+            'Token' => $this->token,
+            'CashboxUniqueNumber' => $cashboxNumber,
+            'ShiftNumber' => $shiftNubmer,
+            'Skip' => $skip,
+            'Take' => $take,
+        ];
+
+        $request = new Request('POST', '/api/Check/History', [
+            'Content-Type' => 'application/json',
+        ], json_encode($params));
+
+        $response = json_decode($this->client->send($request)->getBody()->getContents());
+
+        if ( ! is_null($response->Errors)) {
+            $this->log('History', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+
+            return [];
+        }
+
+        $this->log('History', 0, null, $params);
+
+        if ( ! count($response->Data->Items)) {
+            return [];
+        }
+
+        return $response->Data->Items;
     }
 
 

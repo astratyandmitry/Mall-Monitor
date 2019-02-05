@@ -53,14 +53,34 @@ class IntegrateWebKassaCommand extends Command
     public function handle(): void
     {
         if ($this->integration->authorize()) {
-            if ($this->integration->provoidData()) {
-                foreach ($this->integration->getData() as $item) {
-                    $this->info("Adding {$item->UniqueId}");
+            if ($cashboxes = $this->integration->availableForReadHistory()) {
+                foreach ($cashboxes as $cashbox) {
+                    $cashboxNumber = $cashbox->CashboxUniqueNumber;
+                    $shiftsIndex = 0;
 
-                    ImportChequeWebKassa::dispatch($this->mall, $item);
+                    $this->info("Woring with Cashbox {$cashboxNumber}");
+
+                    while ($shifts = $this->integration->shiftHistory($cashboxNumber, $shiftsIndex * 50)) {
+                        $shiftsIndex++;
+
+                        foreach ($shifts as $shift) {
+                            $this->info("Woring with Shift {$shift->ShiftNumber}");
+
+                            $chequesIndex = 0;
+
+                            $this->info("Getting Cheques for Cashbox {$cashboxNumber} Shift {$shift->ShiftNumber}");
+                            while ($cheques = $this->integration->history($cashboxNumber, $shift->ShiftNumber, $chequesIndex * 50)) {
+                                $chequesIndex++;
+
+                                foreach ($cheques as $cheque) {
+                                    $this->info("Working with Cheque {$cheque->Number}");
+
+                                    ImportChequeWebKassa::dispatch($this->mall, $cheque, $cashbox->Xin);
+                                }
+                            }
+                        }
+                    }
                 }
-
-                $this->wsdl->confirmData();
             } else {
                 $this->error('There are no available files for import');
             }

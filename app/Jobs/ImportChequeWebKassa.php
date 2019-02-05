@@ -2,61 +2,37 @@
 
 namespace App\Jobs;
 
-use App\Models\Mall;
-use App\Models\Store;
 use App\Models\Cheque;
 use App\Models\ChequeItem;
 use App\Models\ChequeType;
 use App\Models\ChequePayment;
-use Illuminate\Foundation\Bus\Dispatchable;
 
-class ImportChequeWebKassa
+class ImportChequeWebKassa extends ImportCheque
 {
 
-    use Dispatchable;
-
     /**
-     * @var \stdClass
-     */
-    protected $item;
-
-    /**
-     * @var \App\Models\Mall
-     */
-    protected $mall;
-
-    /**got
      * @var array
      */
     protected $payments = [
-        'Cash' => ChequePayment::CASH,
-        'Card' => ChequePayment::CARD,
-        'Credit' => ChequePayment::CREDIT,
-        'Tare' => ChequePayment::TARE,
+        'Наличные' => ChequePayment::CASH,
+        'Банковская карта' => ChequePayment::CARD,
+        'Оплата в кредит' => ChequePayment::CREDIT,
+        'Оплата тарой' => ChequePayment::TARE,
+        0 => ChequePayment::CASH,
+        1 => ChequePayment::CARD,
+        2 => ChequePayment::CREDIT,
+        3 => ChequePayment::TARE,
     ];
 
     /**
      * @var array
      */
     protected $types = [
-        'Sell' => ChequeType::SELL,
-        'SellReturn' => ChequeType::SELL_RETURN,
-        'Buy' => ChequeType::BUY,
-        'BuyReturn' => ChequeType::BUY_RETURN,
-        'Deposit' => ChequeType::DEPOSIT,
-        'Withdrawal' => ChequeType::WITHDRAWAL,
+        0 => ChequeType::BUY,
+        1 => ChequeType::BUY_RETURN,
+        2 => ChequeType::SELL,
+        3 => ChequeType::SELL_RETURN,
     ];
-
-
-    /**
-     * @param \App\Models\Mall $mall
-     * @param \stdClass        $item
-     */
-    public function __construct(Mall $mall, \stdClass $item)
-    {
-        $this->mall = $mall;
-        $this->item = $item;
-    }
 
 
     /**
@@ -64,14 +40,14 @@ class ImportChequeWebKassa
      */
     public function handle(): void
     {
-        $cheque = $this->createCheque($this->item);
-
-        if (is_array($this->item->Items->Item)) {
-            foreach ($this->item->Items->Item as $_item) {
-                $this->createChequeItem($cheque, $_item);
+        if ($cheque = $this->createCheque($this->item)) {
+            if ( ! property_exists($this->item, 'Positions') || ! count($this->item->Positions)) {
+                return;
             }
-        } else {
-            $this->createChequeItem($cheque, $this->item->Items->Item);
+
+            foreach ($this->item->Positions as $item) {
+                $this->createChequeItem($cheque, $item);
+            }
         }
     }
 
@@ -83,21 +59,41 @@ class ImportChequeWebKassa
      */
     protected function createCheque(\stdClass $item): Cheque
     {
+        $storeId = $this->loadStore();
+        $typeId = $this->getType($item->OperationType);
+
         return Cheque::create([
             'mall_id' => $this->mall->id,
-            'store_id' => $this->loadStore($item->TaxPayerBIN),
-            'kkm_code' => $item->KKMCode,
-            'code' => $item->UniqueId,
-            'number' => $item->DocumentNumber,
-            'amount' => $item->Amount,
-            'type_id' => $this->types[$item->Type],
-            'payment_id' => $this->payments[$item->Payments->Payment->Type],
-            'created_at' => $item->DateTime,
+            'store_id' => $storeId,
+            'cashbox_id' => $this->getCashboxCodeId($storeId, $item->CashboxUniqueNumber),
+            'kkm_code' => $item->CashboxUniqueNumber,
+            'code' => $item->Number,
+            'number' => $item->OrderNumber,
+            'amount' => $this->getAmount($item->Total, $typeId),
+            'type_id' => $typeId,
+            'payment_id' => $this->getPaymentId($item),
+            'created_at' => date('Y-m-d H:i:s', strtotime($item->RegistratedOn)),
             'data' => [
-                'Cashier' => $item->Cashier,
-                'WorkSessionNumber' => $item->WorkSessionNumber,
+                'CashboxRegistrationNumber' => $item->CashboxRegistrationNumber,
+                'CashboxIdentityNumber' => $item->CashboxIdentityNumber,
+                'ShiftNumber' => $item->ShiftNumber,
             ],
         ]);
+    }
+
+
+    /**
+     * @param \stdClass $item
+     *
+     * @return int
+     */
+    protected function getPaymentId(\stdClass $item): int
+    {
+        if ( ! property_exists($item, 'Payments') || ! count($item->Payments) || ! property_exists($item->Payments[0], 'PaymentTypeName')) {
+            return ChequePayment::CASH;
+        }
+
+        return $this->getPayment($item->Payments[0]->PaymentTypeName);
     }
 
 
@@ -105,37 +101,17 @@ class ImportChequeWebKassa
      * @param \App\Models\Cheque $cheque
      * @param \stdClass          $item
      *
-     * @return mixed
+     * @return \App\Models\ChequeItem|null
      */
-    protected function createChequeItem(Cheque $cheque, \stdClass $item)
+    protected function createChequeItem(Cheque $cheque, \stdClass $item): ?ChequeItem
     {
-        return ChequeItem::create([
-            'cheque_id' => $cheque->id,
-            'code' => $item->Code,
-            'name' => $item->Name,
+        return $cheque->items()->create([
+            'code' => $item->PositionCode,
+            'name' => $item->PositionName,
             'price' => (float)$item->Price,
-            'quantity' => (int)$item->Quantity,
+            'quantity' => (int)$item->Count,
             'sum' => (float)$item->Sum,
         ]);
-    }
-
-
-    /**
-     * @param string $bin
-     *
-     * @return int
-     */
-    protected function loadStore(string $bin): int
-    {
-        if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->first()) {
-            $store = Store::create([
-                'mall_id' => $this->mall->id,
-                'name' => 'Без названия',
-                'business_identification_number' => $bin,
-            ]);
-        }
-
-        return $store->id;
     }
 
 }
