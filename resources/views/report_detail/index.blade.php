@@ -127,11 +127,11 @@
                             </div>
 
                             <div class="text-grey-darkest w-96 px-4 text-right">
-                                {{ number_format($counts[$cheque->id]['count']) }}
+                                {{ isset($counts[$cheque->id]['count']) ? number_format($counts[$cheque->id]['count']) : 0 }}
                             </div>
 
                             <div class="text-grey-darkest w-96 px-4 text-right">
-                                {{ number_format($counts[$cheque->id]['quantity']) }}
+                                {{ isset($counts[$cheque->id]['quantity']) ? number_format($counts[$cheque->id]['quantity']) : 0 }}
                             </div>
 
                             <div class="text-grey-darkest text-right w-96 pr-4">
