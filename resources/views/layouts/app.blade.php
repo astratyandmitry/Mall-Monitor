@@ -19,7 +19,7 @@
 <div id="app">
     @include('layouts.partials.header')
 
-    <section class="my-16">
+    <section class="my-16" style="margin-left: auto; margin-right: auto; max-width: 1440px;">
         <div class="px-4">
             @yield('content')
         </div>
