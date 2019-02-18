@@ -3,12 +3,14 @@
 namespace App\Models;
 
 /**
- * @property integer              $id
- * @property string               $name
- * @property integer              $business_identification_number
- * @property integer              $mall_id
- * @property \App\Models\Mall     $mall
- * @property \App\Models\Cheque[] $cheques
+ * @property integer               $id
+ * @property string                $name
+ * @property integer               $business_identification_number
+ * @property integer               $mall_id
+ * @property integer               $type_id
+ * @property \App\Models\Mall      $mall
+ * @property \App\Models\StoreType $type
+ * @property \App\Models\Cheque[]  $cheques
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -29,6 +31,7 @@ class Store extends Model
         'name',
         'business_identification_number',
         'mall_id',
+        'type_id',
     ];
 
     /**
@@ -36,6 +39,7 @@ class Store extends Model
      */
     protected $casts = [
         'mall_id' => 'integer',
+        'type_id' => 'integer',
         'business_identification_number' => 'integer',
     ];
 
@@ -46,7 +50,7 @@ class Store extends Model
         'name' => 'required|max:200',
         'mall_id' => 'required|exists:malls,id',
         'business_identification_number' => 'required|regex:/^(\d{12})$/i',
-        'store_id' => 'required|exists:stores,id',
+        'type_id' => 'required|exists:store_types,id',
     ];
 
     /**
@@ -54,6 +58,7 @@ class Store extends Model
      */
     protected $messages = [
         'mall_id' => 'ТЦ',
+        'type_id' => 'вид',
     ];
 
     /**
@@ -68,6 +73,15 @@ class Store extends Model
     public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Mall::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(StoreType::class, 'type_id');
     }
 
 

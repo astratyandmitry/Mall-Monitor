@@ -9,6 +9,7 @@ use App\Models\Cashbox;
 use App\Models\ChequeType;
 use App\Models\ChequeItem;
 use App\Models\ChequePayment;
+use App\Models\StoreType;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 /**
@@ -93,6 +94,7 @@ abstract class ImportCheque
                 'mall_id' => $this->mall->id,
                 'name' => "БИН: {$bin}",
                 'business_identification_number' => $bin,
+                'type_id' => StoreType::DEFAULT,
             ]);
         }
 
