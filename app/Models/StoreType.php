@@ -3,8 +3,10 @@
 namespace App\Models;
 
 /**
- * @property integer $id
- * @property string  $name
+ * @property integer             $id
+ * @property string              $name
+ * @property string              $color
+ * @property \App\Models\Store[] $store
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -25,6 +27,7 @@ class StoreType extends Model
      */
     protected $fillable = [
         'name',
+        'color',
     ];
 
     /**
@@ -37,7 +40,17 @@ class StoreType extends Model
      */
     protected $rules = [
         'name' => 'required|max:80',
+        'color' => 'required|max:10',
         '_unique' => 'name',
     ];
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Store::class, 'type_id');
+    }
 
 }

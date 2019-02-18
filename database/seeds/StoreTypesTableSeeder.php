@@ -12,12 +12,15 @@ class StoreTypesTableSeeder extends Seeder
     protected $data = [
         [
             'name' => 'Прочее',
+            'color' => 'cccccc',
         ],
         [
             'name' => 'Супермаркеты',
+            'color' => '24c971',
         ],
         [
             'name' => 'Развлечения',
+            'color' => '7b23c9',
         ],
     ];
 

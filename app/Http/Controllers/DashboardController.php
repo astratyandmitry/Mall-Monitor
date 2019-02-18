@@ -56,13 +56,30 @@ class DashboardController extends Controller
 
         $today = date('Y-m-d');
 
+        $pies = [];
+        $data = \DB::table('store_types')
+            ->select(\DB::raw('SUM(`cheques`.`amount`) as `total`, `store_types`.`name` as `name`, `store_types`.`color` as `color`'))
+            ->leftJoin('stores', 'stores.type_id', '=', 'store_types.id')
+            ->leftJoin('cheques', 'cheques.store_id', '=', 'stores.id')
+            ->where('cheques.created_at', 'LIKE',  date('Y-m-d') . '%')
+            ->groupBy('store_types.id')
+            ->get();
+
+
+        if (count($data)) {
+            foreach ($data as $item) {
+                $pies['totals'][] = (int)$item->total;
+                $pies['colors'][] = "#{$item->color}";
+                $pies['names'][] = $item->name;
+            }
+        }
+
         return view('dashboard.index', $this->withData([
             'graph' => $graph,
+            'pies' => $pies,
             'statistics' => $statistics,
             'cheques' => auth()->user()->mall->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->limit(25)->get(),
         ]));
-
-        return view('dashboard.index', $this->withData());
     }
 
 
