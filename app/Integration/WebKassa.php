@@ -98,7 +98,7 @@ class WebKassa
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if ( ! is_null($response->Errors)) {
+        if (isset($response->Errors) && count($response->Errors)) {
             $this->log('Authorize', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
 
             return false;
@@ -117,21 +117,6 @@ class WebKassa
      */
     public function availableForReadHistory(): array
     {
-        return [
-            (object)[
-                'CashboxUniqueNumber' => 'SWK00031028',
-                'Xin' => '46576868568568',
-                'OrganizationName' => 'Test',
-            ],
-            (object)[
-                'CashboxUniqueNumber' => 'SWK00031029',
-                'Xin' => '46576868568568',
-                'OrganizationName' => 'Test',
-            ],
-        ];
-
-        return $this->cashboxes;
-
         $params = [
             'Token' => $this->token,
         ];
@@ -142,7 +127,7 @@ class WebKassa
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if ( ! is_null($response->Errors)) {
+        if (isset($response->Errors) && count($response->Errors))  {
             $this->log('availableForReadHistory', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
 
             return [];
@@ -176,7 +161,7 @@ class WebKassa
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if ( ! is_null($response->Errors)) {
+        if (isset($response->Errors) && count($response->Errors)) {
             $this->log('ShiftHistory', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
 
             return [];
@@ -216,7 +201,7 @@ class WebKassa
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if ( ! is_null($response->Errors)) {
+        if (isset($response->Errors) && count($response->Errors)) {
             $this->log('History', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
 
             return [];

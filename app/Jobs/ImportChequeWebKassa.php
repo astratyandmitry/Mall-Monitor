@@ -106,8 +106,8 @@ class ImportChequeWebKassa extends ImportCheque
     protected function createChequeItem(Cheque $cheque, \stdClass $item): ?ChequeItem
     {
         return $cheque->items()->create([
-            'code' => $item->PositionCode,
-            'name' => $item->PositionName,
+            'code' => isset($item->PositionCode) ? $item->PositionCode : null,
+            'name' => isset($item->PositionName) ? $item->PositionName : 'Товар',
             'price' => (float)$item->Price,
             'quantity' => (int)$item->Count,
             'sum' => (float)$item->Sum,
