@@ -207,7 +207,7 @@ class Cheque extends Model
             $builder->where('created_at', '<=', $dateTo);
         }
 
-        $builder->orderBy('id', 'asc');
+        $builder->orderBy('id', 'desc');
 
         return $builder;
     }
