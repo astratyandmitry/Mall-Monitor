@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Import;
 
+use App\Models\Cheque;
 use App\Models\Mall;
 use App\Integration\WebKassa;
 use Illuminate\Console\Command;
@@ -60,23 +61,24 @@ class IntegrateWebKassaCommand extends Command
 
                     $this->info("Woring with Cashbox {$cashboxNumber}");
 
-                    while ($shifts = $this->integration->shiftHistory($cashboxNumber, $shiftsIndex * 50)) {
+                    while ($shifts = $this->integration->shiftHistory($cashboxNumber, $shiftsIndex * 100)) {
                         $shiftsIndex++;
 
                         foreach ($shifts as $shift) {
                             $this->info("Woring with Shift {$shift->ShiftNumber}");
 
-                            $chequesIndex = 0;
-
                             $this->info("Getting Cheques for Cashbox {$cashboxNumber} Shift {$shift->ShiftNumber}");
-                            while ($cheques = $this->integration->history($cashboxNumber, $shift->ShiftNumber, $chequesIndex * 50)) {
-                                $chequesIndex++;
 
+                            $skipCheques = Cheque::where('kkm_code', $cashboxNumber)->where('shift_number', $shift->ShiftNumber)->count();
+
+                            while ($cheques = $this->integration->history($cashboxNumber, $shift->ShiftNumber, $skipCheques)) {
                                 foreach ($cheques as $cheque) {
                                     $this->info("Working with Cheque {$cheque->Number}");
 
                                     ImportChequeWebKassa::dispatch($this->mall, $cheque, $cashbox->Xin);
                                 }
+
+                                $skipCheques += count($cheques);
                             }
                         }
                     }

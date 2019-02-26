@@ -69,6 +69,7 @@ class ImportChequeWebKassa extends ImportCheque
             'kkm_code' => $item->CashboxUniqueNumber,
             'code' => $item->Number,
             'number' => $item->OrderNumber,
+            'shift_number' => $item->ShiftNumber,
             'amount' => $this->getAmount($item->Total, $typeId),
             'type_id' => $typeId,
             'payment_id' => $this->getPaymentId($item),
@@ -76,7 +77,6 @@ class ImportChequeWebKassa extends ImportCheque
             'data' => [
                 'CashboxRegistrationNumber' => $item->CashboxRegistrationNumber,
                 'CashboxIdentityNumber' => $item->CashboxIdentityNumber,
-                'ShiftNumber' => $item->ShiftNumber,
             ],
         ]);
     }

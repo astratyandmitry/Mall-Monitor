@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string                    $kkm_code
  * @property string                    $code
  * @property string                    $number
+ * @property string                    $shift_number
  * @property float                     $amount
  * @property string                    $data
  * @property integer                   $mall_id
@@ -43,6 +44,7 @@ class Cheque extends Model
         'kkm_code',
         'code',
         'number',
+        'shift_number',
         'amount',
         'data',
         'mall_id',
@@ -85,6 +87,7 @@ class Cheque extends Model
         'kkm_code' => 'required|max:200',
         'code' => 'required|max:200',
         'number' => 'required|max:200',
+        'shift_number' => 'nullable|max:80',
         'amount' => 'required|numeric',
         'data' => 'nullable',
         'mall_id' => 'required|exists:malls,id',
@@ -102,6 +105,7 @@ class Cheque extends Model
         'kkm_code' => 'ККМ код',
         'code' => 'код',
         'number' => 'номер',
+        'shift_number' => 'номер смены',
         'amount' => 'сумма',
         'mall_id' => 'ТЦ',
         'store_id' => 'заведение',

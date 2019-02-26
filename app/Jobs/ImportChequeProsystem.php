@@ -71,13 +71,13 @@ class ImportChequeProsystem extends ImportCheque
             'kkm_code' => $item->KKMCode,
             'code' => $item->UniqueId,
             'number' => $item->DocumentNumber,
+            'shift_number' => $item->WorkSessionNumber,
             'amount' => $this->getAmount($item->Amount, $typeId),
             'type_id' => $typeId,
             'payment_id' => $this->getPaymentId($item),
             'created_at' => $item->DateTime,
             'data' => [
                 'Cashier' => $item->Cashier,
-                'WorkSessionNumber' => $item->WorkSessionNumber,
             ],
         ]);
     }

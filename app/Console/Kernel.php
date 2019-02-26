@@ -2,9 +2,10 @@
 
 namespace App\Console;
 
-use App\Console\Commands\Import\IntegrateProsystemsMultiCommand;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\Import\IntegrateWebKassaCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\Import\IntegrateProsystemsMultiCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'mallmonitor:integrate-prosystems-multi' => IntegrateProsystemsMultiCommand::class,
+        'mallmonitor:integrate-webkassa' => IntegrateWebKassaCommand::class,
     ];
 
 
