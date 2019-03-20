@@ -57,13 +57,14 @@ class IntegrateWebKassaCommand extends Command
             if ($cashboxes = $this->integration->availableForReadHistory()) {
                 foreach ($cashboxes as $cashbox) {
                     $cashboxNumber = $cashbox->CashboxUniqueNumber;
-                    $shiftsIndex = 0;
 
                     $this->info("Woring with Cashbox {$cashboxNumber}");
 
-                    while ($shifts = $this->integration->shiftHistory($cashboxNumber, $shiftsIndex * 100)) {
-                        $shiftsIndex++;
+                    $skipShifts = Cheque::where('kkm_code',
+                        $cashboxNumber)->select(\DB::raw('count(distinct(shift_number)) as count'))->pluck('count')[0];
+                    $skipShifts = ($skipShifts == 0) ? $skipShifts : $skipShifts - 1;
 
+                    while ($shifts = $this->integration->shiftHistory($cashboxNumber, $skipShifts)) {
                         foreach ($shifts as $shift) {
                             $this->info("Woring with Shift {$shift->ShiftNumber}");
 
@@ -81,6 +82,8 @@ class IntegrateWebKassaCommand extends Command
                                 $skipCheques += count($cheques);
                             }
                         }
+
+                        $skipShifts += count($shifts);
                     }
                 }
             } else {
