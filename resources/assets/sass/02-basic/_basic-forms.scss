@@ -89,9 +89,11 @@
 
   select {
     background: url('/images/dropdown-dots.png') $color-white no-repeat calc(100% - 1em) center;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    -ms-appearance: none !important;
+    -o-appearance: none !important;
+    appearance: none !important;
   }
 
   &.is-invalidate {

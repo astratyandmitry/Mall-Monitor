@@ -225,6 +225,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     display: true,
                     position: 'right',
@@ -246,6 +247,10 @@
                     borderColor: '#38c172',
                     data: @json($graph['amount']),
                 } ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
             }
         });
 
@@ -258,6 +263,10 @@
                     borderColor: '#38c172',
                     data: @json($graph['count']),
                 } ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
             }
         });
 
@@ -270,6 +279,10 @@
                     borderColor: '#38c172',
                     data: @json($graph['avg']),
                 } ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
             }
         });
     </script>
