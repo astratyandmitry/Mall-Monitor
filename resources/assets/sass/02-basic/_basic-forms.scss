@@ -64,6 +64,17 @@
     }
   }
 
+  input[type=datetime-local],
+  input[type=datetime],
+  input[type=date],
+  input[type=time] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    min-height: 1.2em;
+    display: block;
+    width: 100%;
+  }
+
   input[type=checkbox],
   input[type=radio] {
     display: inline-block;

@@ -32,6 +32,7 @@
                         'value' => request()->query('date_from'),
                         'label' => 'Дата начала',
                         'type' => 'datetime-local',
+                         'placeholder' => 'yyyy-mm-dd HH:ii',
                     ])
 
                     @include('layouts.includes.form.input', [
@@ -39,6 +40,7 @@
                         'value' => request()->query('date_to'),
                         'label' => 'Дата окончания',
                         'type' => 'datetime-local',
+                         'placeholder' => 'yyyy-mm-dd HH:ii',
                     ])
                 </div>
 
