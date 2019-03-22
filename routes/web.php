@@ -1,7 +1,6 @@
 <?php
 
 Route::get('/', 'HomeController@redirect')->name('home');
-Route::get('/dashboard', 'DashboardController')->name('dashboard');
 
 Route::group(['middleware' => 'guest'], function (): void {
     Route::get('/auth/signin', 'AuthController@signin')->name('auth.signin');
@@ -9,6 +8,7 @@ Route::group(['middleware' => 'guest'], function (): void {
 });
 
 Route::group(['middleware' => 'loggined'], function (): void {
+    Route::get('/dashboard', 'DashboardController')->name('dashboard');
     Route::get('/auth/signout', 'AuthController@signout')->name('auth.signout');
 
     // ajax
