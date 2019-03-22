@@ -1,7 +1,7 @@
-<footer>
-    <div class="container text-center my-8">
-        <div class="text-sm text-grey">
-            Все права защищены {{ config('app.name') }} © {{ date('Y') }}
+<section class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <span class="footer-content-text">Все права защищены {{ config('app.name') }} © {{ date('Y') }}</span>
         </div>
     </div>
-</footer>
+</section>

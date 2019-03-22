@@ -1,45 +1,33 @@
 @extends('layouts.clean')
 
 @section('content')
-    <div class="w-full absolute pin h-full bg-indigo-darker flex items-center justify-center p-8 md:p-16">
-        <div class="w-full max-w-sm">
-            <div class="flex flex-wrap items-center justify-center font-light text-indigo-darker uppercase">
-                <div class="text-white text-5xl font-bold">Mall</div>
-                <div class="ml-2 font-bold bg-indigo text-2xl text-indigo-lightest shadow py-2 px-4 rounded-full">Monitor</div>
-            </div>
-
-            <form method="post" class="bg-white shadow-md rounded p-8 my-8">
-                @csrf
-
-                <div class="mb-4">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker focus:outline-none"
-                           id="email" name="email" type="text" placeholder="E-mail" value="{{ old('email') }}">
-
-                    @if ($errors->has('email'))
-                        <div class="text-red text-xs mt-2 italic">
-                            {{ $errors->first('email') }}
-                        </div>
-                    @endif
+    <div class="promo">
+        <div class="container">
+            <div class="promo-box">
+                <div class="promo-box-brand">
+                    <div class="promo-box-brand-logotype">
+                        <strong>Mall</strong>Monitor
+                    </div>
                 </div>
 
-                <div class="mb-6">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker focus:outline-none"
-                           id="password" type="password" name="password" placeholder="******">
+                <form method="POST" class="promo-box-form">
+                    @csrf
 
-                    @if ($errors->has('password'))
-                        <div class="text-red text-xs mt-2 italic">
-                            {{ $errors->first('password') }}
-                        </div>
-                    @endif
-                </div>
+                    @include('layouts.includes.form.input', [
+                        'attribute' => 'email',
+                        'placeholder' => 'E-mail',
+                        'autofocus' => true,
+                        'required' => true,
+                    ])
 
-                <button class="bg-indigo hover:bg-indigo-dark text-white py-2 px-4 rounded focus:outline-none" type="submit">
-                    Войти
-                </button>
-            </form>
+                    @include('layouts.includes.form.password', [
+                        'attribute' => 'password',
+                        'placeholder' => 'Пароль',
+                        'required' => true,
+                    ])
 
-            <div class="text-center text-grey text-sm">
-                Все права защищены {{ config('app.name') }} © {{ date('Y') }}
+                    <button type="submit" class="btn">Войти в систему</button>
+                </form>
             </div>
         </div>
     </div>

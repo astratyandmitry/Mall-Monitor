@@ -11,21 +11,14 @@ class DashboardController extends Controller
 {
 
     /**
-     * DashboardController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('loggined');
-    }
-
-
-    /**
      * @return \Illuminate\View\View
      */
     public function __invoke(): \Illuminate\View\View
     {
         $this->setTitle('Обзор');
-        $this->setActive('dashboard');
+        $this->setActiveSection('dashboard');
+        $this->setActivePage('dashboard');
+        $this->addBreadcrumb('Обзор', route('dashboard'));
 
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE(created_at) as date'))
@@ -61,10 +54,9 @@ class DashboardController extends Controller
             ->select(\DB::raw('SUM(`cheques`.`amount`) as `total`, `store_types`.`name` as `name`, `store_types`.`color` as `color`'))
             ->leftJoin('stores', 'stores.type_id', '=', 'store_types.id')
             ->leftJoin('cheques', 'cheques.store_id', '=', 'stores.id')
-            ->where('cheques.created_at', 'LIKE',  date('Y-m-d') . '%')
+            ->where('cheques.created_at', 'LIKE', date('Y-m-d') . '%')
             ->groupBy('store_types.id')
             ->get();
-
 
         if (count($data)) {
             foreach ($data as $item) {

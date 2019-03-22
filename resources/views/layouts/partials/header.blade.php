@@ -1,52 +1,95 @@
-<header class="bg-indigo-darker fixed w-full pin-t shadow-md p-4 z-50">
-    <div class="flex items-center justify-between flex-wrap">
-        <a href="{{ route('dashboard') }}" class="mr-12 no-underline flex flex-wrap items-center font-light text-indigo-darker uppercase">
-            <div class="text-white text-white text-2xl font-bold">Mall</div>
-            <div class="ml-2 font-bold text-xs bg-indigo text-indigo-lightest shadow py-2 px-4 rounded-full">Monitor</div>
-        </a>
-
-        <div class="flex-grow">
-            <ul class="list-reset font-light flex-grow">
-                <li class="inline-block mr-4">
-                    <a href="{{ route('dashboard') }}"
-                       class="no-underline font-normal hover:text-white {{ $active == 'dashboard' ? 'text-white' : 'text-indigo-lightest' }}">
-                        Обзор
-                    </a>
-                </li>
-                <li class="inline-block mr-4">
-                    <a href="{{ route('stores.index') }}"
-                       class="no-underline font-normal hover:text-white {{ $active == 'stores' ? 'text-white' : 'text-indigo-lightest' }}">
-                        Заведения
-                    </a>
-                </li>
-                <li class="inline-block mr-4">
-                    <a href="{{ route('report_mall.index') }}"
-                       class="no-underline font-normal hover:text-white {{ $active == 'report_mall' ? 'text-white' : 'text-indigo-lightest' }}">
-                        Отчет по ТРЦ
-                    </a>
-                </li>
-                <li class="inline-block mr-4">
-                    <a href="{{ route('report_store.index') }}"
-                       class="no-underline font-normal hover:text-white {{ $active == 'report_store' ? 'text-white' : 'text-indigo-lightest' }}">
-                        Отчет по арендаторам
-                    </a>
-                </li>
-                <li class="inline-block mr-4">
-                    <a href="{{ route('report_detail.index') }}"
-                       class="no-underline font-normal hover:text-white {{ $active == 'report_detail' ? 'text-white' : 'text-indigo-lightest' }}">
-                        Детальный отчет
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        @isset ($currentMall)
-            <div>
-                <a href="{{ route('auth.signout') }}" class="no-underline text-indigo-lightest hover:text-white">Выйти</a>
-                {{--<div class="cursor-pointer font-hairline text-indigo-lightest hover:text-white">--}}
-                    {{--{{ $currentMall->name }}--}}
-                {{--</div>--}}
+<section class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-logotype">
+                <a href="{{ route('home') }}" title="{{ config('app.name') }}" class="header-logotype-link">
+                    <span>Mall</span>Monitor
+                </a>
             </div>
-        @endisset
+
+            <div class="header-hamburger">
+                <i class="fa fa-bars header-hamburger-icon"></i>
+            </div>
+
+            <div class="header-nav">
+                <ul class="header-nav-list">
+                    <li class="header-nav-list-item {{ isActive($active_section == 'dashboard', false) }}">
+                        <a href="{{ route('dashboard') }}" class="header-nav-list-item-link">
+                            Обзор
+                        </a>
+                    </li>
+                    <li class="header-nav-list-item {{ isActive($active_section == 'stores', false) }}">
+                        <a href="{{ route('stores.index') }}" class="header-nav-list-item-link">
+                            Арендаторы
+                        </a>
+                    </li>
+                    <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'reports', false) }}">
+                        <a href="javascript:void(0)" class="header-nav-list-item-link ">
+                            Отчеты
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+
+                        <ul class="header-nav-list-item-dropdown">
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'reposrt.mall', false) }}">
+                                <a href="{{ route('reports.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                    ТРЦ
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'reports.store', false) }}">
+                                <a href="{{ route('reports.store.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                    Арендаторы
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'reports.detail', false) }}">
+                                <a href="{{ route('reports.detail.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                    Детальный
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'manage', false) }}">
+                        <a href="#" class="header-nav-list-item-link">
+                            Управление
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+
+                        <ul class="header-nav-list-item-dropdown">
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
+                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                                    ТРЦ
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
+                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                                    Арендаторы
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
+                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                                    Кассы
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
+                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                                    Категории
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
+                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                                    Пользователи
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="header-nav-list-item is-right">
+                        <a href="{{ route('auth.signout') }}" class="header-nav-list-item-link">
+                            Выйти
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-</header>
+</section>

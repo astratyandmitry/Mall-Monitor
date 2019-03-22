@@ -48,4 +48,28 @@ class ChequeType extends Model
         '_unique' => 'name|system_key',
     ];
 
+
+    /**
+     * @return string
+     */
+    public function getCssClass(): string
+    {
+        switch ($this->id) {
+            case ChequeType::SELL:
+            case ChequeType::BUY_RETURN:
+                return 'is-success';
+                break;
+            case ChequeType::SELL_RETURN:
+            case ChequeType::BUY:
+                return 'is-danger';
+                break;
+            case ChequeType::DEPOSIT:
+            case ChequeType::WITHDRAWAL:
+                return 'is-warning';
+                break;
+        }
+
+        return '';
+    }
+
 }

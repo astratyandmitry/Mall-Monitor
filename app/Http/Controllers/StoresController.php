@@ -17,8 +17,10 @@ class StoresController extends Controller
      */
     public function index(): \Illuminate\View\View
     {
-        $this->setTitle('Заведения');
-        $this->setActive('stores');
+        $this->setTitle('Арендаторы');
+        $this->setActiveSection('stores');
+        $this->setActivePage('stores');
+        $this->addBreadcrumb('Арендаторы', route('stores.index'));
 
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
@@ -43,7 +45,10 @@ class StoresController extends Controller
     public function show(Store $store): \Illuminate\View\View
     {
         $this->setTitle($store->name);
-        $this->setActive('stores');
+        $this->setActiveSection('stores');
+        $this->setActivePage('stores');
+        $this->addBreadcrumb('Арендаторы', route('stores.index'));
+        $this->addBreadcrumb($store->name, $store->link());
 
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE(created_at) as date'))

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Reports;
 
 use App\Models\Cheque;
 use App\Models\Store;
@@ -10,7 +10,7 @@ use App\Models\Store;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
  */
-class ReportStoreController extends Controller
+class ReportsStoreController extends \App\Http\Controllers\Controller
 {
 
     /**
@@ -29,8 +29,11 @@ class ReportStoreController extends Controller
      */
     public function index(\Illuminate\Http\Request $request): \Illuminate\View\View
     {
-        $this->setTitle('Детальный отчет');
-        $this->setActive('report_store');
+        $this->setTitle('Отчет по арендаторам');
+        $this->setActiveSection('reports');
+        $this->setActivePage('reports.store');
+        $this->addBreadcrumb('Отчеты', route('reports.store.index'));
+        $this->addBreadcrumb('Отчет по арендаторам', null);
 
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');
@@ -39,7 +42,7 @@ class ReportStoreController extends Controller
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
             ->groupBy('store_id')->get()->toArray();
 
-        return view('report_store.index', $this->withData([
+        return view('reports.store.index', $this->withData([
             'statistics' => $statistics,
         ]));
     }
@@ -50,7 +53,7 @@ class ReportStoreController extends Controller
      *
      * @return string
      */
-    public function export(\Illuminate\Http\Request $request)
+    public function exportExcel(\Illuminate\Http\Request $request)
     {
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');
@@ -70,13 +73,19 @@ class ReportStoreController extends Controller
             $export[$store->id]['Сумма чеков'] = (int)$statistic['amount'];
         }
 
-        \Excel::create('mallmonitor_report_store', function ($excel) use ($export) {
+        \Excel::create('mallmonitor_reports.store', function ($excel) use ($export) {
             $excel->sheet("Отчет", function ($sheet) use ($export) {
                 $sheet->fromArray($export);
             });
         })->export('xls');
 
         return '<script>window.close();</script>';
+    }
+
+
+    public function exportPDF()
+    {
+
     }
 
     /**
@@ -92,6 +101,5 @@ class ReportStoreController extends Controller
 
         return null;
     }
-
 
 }

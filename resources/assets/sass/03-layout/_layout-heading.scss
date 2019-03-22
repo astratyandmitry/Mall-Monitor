@@ -1,0 +1,50 @@
+.heading {
+  padding: $size-4 0 $size-2 0;
+
+  @include mobile() {
+    padding: $size-2 0 $size-1-5;
+  }
+
+  .heading-content {
+    &.has-action {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-column-gap: $size-2;
+      align-items: center;
+
+      @include mobile() {
+        grid-template-columns: 1fr;
+        grid-row-gap: $size-1;
+      }
+    }
+  }
+
+  .heading-text {
+    font-size: $font-32;
+    line-height: 1;
+    color: $color-black;
+    font-weight: 500;
+
+    @include mobile() {
+      font-size: $font-28;
+    }
+  }
+
+  .heading-filter {
+    .heading-filter-button {
+      font-size: $font-12;
+      color: $color-grey-dark;
+      @include transition();
+
+      i {
+        margin-right: $size-0-1;
+        opacity: .64;
+      }
+
+      &:hover {
+        color: $color-green-darker;
+        cursor: pointer;
+      }
+    }
+  }
+}

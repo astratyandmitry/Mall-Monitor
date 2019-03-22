@@ -1,0 +1,28 @@
+.badge {
+  text-align: center;
+  background: $color-grey-lighter;
+  color: $color-grey-dark;
+  font-size: $font-12;
+  font-weight: 500;
+  padding: 8px;
+  @include radius($radius);
+
+  &.is-inline {
+    display: inline-block;
+  }
+
+  &.is-success {
+    background: $color-green-lightest;
+    color: $color-green-dark;
+  }
+
+  &.is-warning {
+    background: $color-orange-lightest;
+    color: $color-orange-dark;
+  }
+
+  &.is-danger {
+    background: $color-red-lightest;
+    color: $color-red-dark;
+  }
+}

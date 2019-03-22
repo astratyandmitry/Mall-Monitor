@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Reports;
 
 use App\Models\Cheque;
 
@@ -9,17 +9,8 @@ use App\Models\Cheque;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
  */
-class ReportDetailController extends Controller
+class ReportsDetailController extends \App\Http\Controllers\Controller
 {
-
-    /**
-     * DashboardController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('loggined');
-    }
-
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -29,7 +20,10 @@ class ReportDetailController extends Controller
     public function index(\Illuminate\Http\Request $request): \Illuminate\View\View
     {
         $this->setTitle('Детальный отчет');
-        $this->setActive('report_detail');
+        $this->setActiveSection('reports');
+        $this->setActivePage('reports.detail');
+        $this->addBreadcrumb('Отчеты', route('reports.detail.index'));
+        $this->addBreadcrumb('Детальный отчет', null);
 
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');
@@ -37,8 +31,8 @@ class ReportDetailController extends Controller
         $builder1 = Cheque::query()->reportDetail($dateFrom, $dateTo);
         $builder2 = clone $builder1;
 
-        $cheques = $builder1->paginate(250);
-        $statistic = $builder2->select(\DB::raw('sum(amount) as total, count(id) as count'))->get()->toArray()[0];
+        $cheques = $builder1->paginate(50)->onEachSide(1);
+        $statistics = $builder2->select(\DB::raw('sum(amount) as total, count(id) as count'))->get()->toArray()[0];
 
         $chequesId = $cheques->map(function (Cheque $cheque) {
             return $cheque->id;
@@ -58,8 +52,8 @@ class ReportDetailController extends Controller
             ];
         }
 
-        return view('report_detail.index', $this->withData([
-            'statistic' => $statistic,
+        return view('reports.detail.index', $this->withData([
+            'statistics' => $statistics,
             'counts' => $counts,
             'cheques' => $cheques,
         ]));
@@ -71,12 +65,12 @@ class ReportDetailController extends Controller
      *
      * @return string
      */
-    public function export(\Illuminate\Http\Request $request)
+    public function exportExcel(\Illuminate\Http\Request $request)
     {
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');
 
-        $filename = "mallmonitor_report_detail";
+        $filename = "mallmonitor_reports.detail";
         $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->get();
 
         $chequesId = $cheques->map(function (Cheque $cheque) {
@@ -105,8 +99,8 @@ class ReportDetailController extends Controller
             $export[$cheque->id]['Тип операции'] = $cheque->type->name;
             $export[$cheque->id]['Вид оплаты'] = $cheque->payment->name;
             $export[$cheque->id]['Сумма'] = $cheque->amount;
-            $export[$cheque->id]['Кол-во позиций'] = $counts[$cheque->id]['count'] ? (int)$counts[$cheque->id]['count'] : 0;
-            $export[$cheque->id]['Сумма позиций'] = $counts[$cheque->id]['quantity'] ? (int)$counts[$cheque->id]['quantity'] : 0;
+            $export[$cheque->id]['Кол-во позиций'] = isset($counts[$cheque->id]['count']) ? (int)$counts[$cheque->id]['count'] : 0;
+            $export[$cheque->id]['Сумма позиций'] = isset($counts[$cheque->id]['quantity']) ? (int)$counts[$cheque->id]['quantity'] : 0;
             $export[$cheque->id]['Дата и время'] = $cheque->created_at->format('d.m.Y H:i:s');
         }
 
@@ -117,6 +111,12 @@ class ReportDetailController extends Controller
         })->export('xls');
 
         return '<script>window.close();</script>';
+    }
+
+
+    public function exportPDF()
+    {
+
     }
 
 

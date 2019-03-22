@@ -1,0 +1,16 @@
+.footer {
+  padding: $size-4 0;
+
+  @include mobile() {
+    padding: $size-2 0;
+  }
+
+  .footer-content {
+    text-align: center;
+
+    .footer-content-text {
+      color: $color-grey-dark;
+      font-size: $font-12;
+    }
+  }
+}

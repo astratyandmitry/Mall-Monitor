@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Reports;
 
 use App\Models\Mall;
 use App\Models\Cheque;
@@ -10,7 +10,7 @@ use App\Models\Cheque;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
  */
-class ReportMallController extends Controller
+class ReportsMallController extends \App\Http\Controllers\Controller
 {
 
     /**
@@ -28,7 +28,10 @@ class ReportMallController extends Controller
     public function index(): \Illuminate\View\View
     {
         $this->setTitle('Отчет по ТРЦ');
-        $this->setActive('report_mall');
+        $this->setActiveSection('reports');
+        $this->setActivePage('reports.mall');
+        $this->addBreadcrumb('Отчеты', route('reports.mall.index'));
+        $this->addBreadcrumb('Отчет по ТРЦ', null);
 
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');
@@ -37,7 +40,7 @@ class ReportMallController extends Controller
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
             ->groupBy('mall_id')->get()->toArray();
 
-        return view('report_mall.index', $this->withData([
+        return view('reports.mall.index', $this->withData([
             'statistics' => $statistics,
         ]));
     }
@@ -46,7 +49,7 @@ class ReportMallController extends Controller
     /**
      * @return string
      */
-    public function export()
+    public function exportExcel()
     {
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');
@@ -65,13 +68,19 @@ class ReportMallController extends Controller
             $export[$mall->id]['Сумма чеков'] = (int)$statistic['amount'];
         }
 
-        \Excel::create('mallmonitor_report_mall', function ($excel) use ($export) {
+        \Excel::create('mallmonitor_reports.mall', function ($excel) use ($export) {
             $excel->sheet("Отчет", function ($sheet) use ($export) {
                 $sheet->fromArray($export);
             });
         })->export('xls');
 
         return '<script>window.close();</script>';
+    }
+
+
+    public function exportPDF()
+    {
+
     }
 
 

@@ -34,7 +34,7 @@ class CheckYesterdayChequesCommand extends Command
                 $this->info("Working with Store #{$store->id}");
 
                 $store->update([
-                    'is_errors_yesterday' => ! ChequeRepository::existsForDate($store->id, $yesterdayDate),
+                    'is_errors_yesterday' => ! ChequeRepository::isExistsForDate($store->id, $yesterdayDate),
                 ]);
             }
         } else {

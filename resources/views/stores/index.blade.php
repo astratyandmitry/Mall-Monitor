@@ -1,30 +1,34 @@
+@php /** @var array $statistics */ @endphp
+@php /** @var \App\Models\Store[] $store */ @endphp
+
 @extends('layouts.app', $globals)
 
 @section('content')
-    <div class="shadow-lg rounded">
-        <div class="p-8">
-            <h1 class="mb-8">
-                {{ $currentMall->name }}
-                <span class="text-grey-darker font-normal">/ {{ $globals['title'] }}</span>
-            </h1>
+    <div class="heading">
+        <div class="container">
+            <div class="heading-content">
+                <div class="heading-text">
+                    {{ $globals['title'] }}
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <div class="flex w-full">
-{{--                @foreach($stores->chunk(round(count($stores) / 3)) as $chunk)--}}
-                    <div class="w-1/3">
-                        @foreach($stores as $store)
-                            <div class="mb-4 w-full">
-                                <h2 class="font-normal m-0">
-                                    <div class="float-right text-grey text-sm mt-2">
-                                        {{ (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id])) : 0 }} ₸
-                                    </div>
+    <div class="content">
+        <div class="container">
+            <div class="stores">
+                @foreach($stores as $store)
+                    <a href="{{ $store->link() }}" class="stores-item">
+                        <div class="stores-item-name">
+                            <span class="stores-item-name-text">{{ $store->name }}</span>
+                        </div>
 
-                                    <a href="{{ $store->link() }}"
-                                       class="no-underline text-grey-darker border-b border-grey hover:border-transparent">{{ $store->name }}</a>
-                                </h2>
-                            </div>
-                        @endforeach
-                    </div>
-                {{--@endforeach--}}
+                        <div class="stores-item-detail">
+                            <span class="stores-item-detail-text">Текущая выручка: {{ (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id])) : 0 }}
+                                ₸</span>
+                        </div>
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>

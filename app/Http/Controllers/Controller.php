@@ -47,9 +47,28 @@ class Controller extends BaseController
     /**
      * @param mixed $active
      */
-    public function setActive($active): void
+    public function setActiveSection($active): void
     {
-        $this->data['active'] = $active;
+        $this->data['active_section'] = $active;
+    }
+
+
+    /**
+     * @param mixed $active
+     */
+    public function setActivePage($active): void
+    {
+        $this->data['active_page'] = $active;
+    }
+
+
+    /**
+     * @param string $name
+     * @param string|null $link
+     */
+    public function addBreadcrumb(string $name, ?string $link = null): void
+    {
+        $this->data['breadcrumbs'][$link] = $name;
     }
 
 

@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
         \View::composer('*', function ($view): void {
             if (auth()->check()) {
                 $view->with('currentUser', auth()->user());
-                $view->with('currentMall', auth()->user()->mall);
             }
 
             $view->with('dates', [

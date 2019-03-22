@@ -1,7 +1,4 @@
-let mix = require("laravel-mix");
-
-require("laravel-mix-tailwind");
-require("laravel-mix-purgecss");
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -14,11 +11,9 @@ require("laravel-mix-purgecss");
  |
  */
 
-mix.js("resources/assets/js/app.js", "public/js")
-   .sass("resources/assets/sass/app.scss", "public/css")
-   .tailwind()
-   .purgeCss();
+mix
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .js('resources/assets/js/app.js', 'public/js')
+    .copy('node_modules/font-awesome/fonts', 'public/css/fonts')
+    .version();
 
-if (mix.inProduction()) {
-  mix.version();
-}

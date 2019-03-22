@@ -18,7 +18,7 @@ class ChequeRepository
      *
      * @return bool
      */
-    public static function existsForDate(int $storeId, string $date): bool
+    public static function isExistsForDate(int $storeId, string $date): bool
     {
         return Cheque::query()
             ->where('store_id', $storeId)

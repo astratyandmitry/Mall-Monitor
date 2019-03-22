@@ -1,0 +1,76 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+
+  thead {
+    th {
+      background: $color-grey-lighter;
+      color: $color-grey-dark;
+
+      i {
+        margin-left: $size-0-1;
+        opacity: .32;
+
+        &:hover {
+          opacity: 1;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  tfoot {
+    th {
+      background: $color-grey-light;
+      color: $color-grey-darker;
+
+      &:first-child {
+        @include radius-bottom-left($radius);
+      }
+
+      &:last-child {
+        @include radius-bottom-right($radius);
+      }
+    }
+  }
+
+  tr {
+    th {
+      text-align: left;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: $font-12;
+    }
+
+    td, th {
+      border-bottom: 1px solid $color-grey-lighter;
+      white-space: nowrap;
+      padding: 16px;
+
+      @include mobile() {
+        padding: 10px;
+      }
+
+      &.is-center {
+        text-align: center;
+      }
+
+      &.is-right {
+        text-align: right;
+      }
+    }
+
+    td {
+      font-size: $font-14;
+      @include transition();
+    }
+
+    &:hover {
+      td {
+        background: $color-grey-lightest;
+      }
+    }
+
+  }
+}

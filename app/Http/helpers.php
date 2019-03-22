@@ -72,3 +72,17 @@ function getNotEmptyQueryParameters(): array
 
     return $parameters;
 }
+
+/**
+ * @return bool
+ */
+function isRequestEmpty(): bool
+{
+    $params = getNotEmptyQueryParameters();
+
+    if (isset($params['page'])) {
+        unset($params['page']);
+    }
+
+    return count($params) == 0;
+}

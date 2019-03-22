@@ -1,175 +1,212 @@
+@php /** @var array $graph */ @endphp
+@php /** @var \stdClass[] $statistics */ @endphp
+@php /** @var \App\Models\Cheque[] $cheques */ @endphp
+@php /** @var \App\Models\Store $store */ @endphp
+
+@php $reportParams = ['store_id' => $store->id, 'date_from' => date('Y-m-d') . 'T00:00', 'date_to' => date('Y-m-d') . 'T23:59']; @endphp
+
 @extends('layouts.app', $globals)
 
 @section('content')
-    <div class="shadow-lg rounded">
-        <div class="p-8">
-            <h1 class="mb-8">
-                {{ $currentMall->name }}
-                <span class="text-grey-darker font-normal">/ {{ $globals['title'] }}</span>
-            </h1>
-
-            @if (count($statistics))
-                <div class="graphs">
-                    <h2 class="mb-8 text-grey-darkest">
-                        Сумма продаж
-                    </h2>
-
-                    <canvas id="statistics-amount" class="rounded-sm mb-16" height="80vh"></canvas>
-
-                    <h2 class="mb-8 text-grey-darkest">
-                        Количество продаж
-                    </h2>
-
-                    <canvas id="statistics-count" class="rounded-sm mb-16" height="80vh"></canvas>
-
-                    <h2 class="mb-8 text-grey-darkest">
-                        Средний чек
-                    </h2>
-
-                    <canvas id="statistics-avg" class="rounded-sm" height="80vh"></canvas>
+    <div class="heading">
+        <div class="container">
+            <div class="heading-content has-action">
+                <div class="heading-text">
+                    {{ $globals['title'] }}
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="statistics mt-16">
-                    <h2 class="mb-8 text-grey-darkest">
-                        Статистика последних дней
-                    </h2>
-
-                    <div class="pb-4 font-bold flex w-full">
-                        <div class="pl-4 text-grey-darker w-full">
-                            Дата
-                        </div>
-
-                        <div class="px-4 text-grey-darker w-48">
-                            Количество
-                        </div>
-
-                        <div class="px-4 text-grey-darker w-48">
-                            Средний чек
-                        </div>
-
-                        <div class="pr-4 text-grey-darker text-right w-64">
-                            Сумма
+    <div class="content">
+        <div class="container">
+            @if (count($statistics))
+                <div class="box">
+                    <div class="box-title">
+                        <div class="box-title-text">
+                            Сумма продаж
                         </div>
                     </div>
 
-                    @php $amount = 0 @endphp
-                    @php $count = 0 @endphp
-                    @foreach($statistics as $statistic)
-                        @php $amount += $statistic->amount @endphp
-                        @php $count += $statistic->count @endphp
+                    <div class="box-content">
+                        <canvas id="statistics-amount" class="rounded-sm mb-16" height="80vh"></canvas>
+                    </div>
+                </div>
 
-                        <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
-                            <div class="text-grey-darkest w-full pl-4">
-                                <a class="text-grey-darkest no-underline border-b border-grey hover:border-transparent"
-                                   href="{{ route('report_detail.index', ['date' => $statistic->date, 'store_id' => $store->id]) }}">
-                                    {{ date('d.m.Y', strtotime($statistic->date)) }}
-                                </a>
-                            </div>
-
-                            <div class="text-grey-darkest w-48 px-4">
-                                {{ number_format($statistic->count) }}
-                            </div>
-
-                            <div class="text-grey-darkest w-48 px-4">
-                                {{ number_format(round($statistic->amount / $statistic->count)) }} ₸
-                            </div>
-
-                            <div class="text-grey-darkest text-right w-64 pr-4">
-                                {{ number_format($statistic->amount) }} ₸
-                            </div>
+                <div class="box is-marged">
+                    <div class="box-title">
+                        <div class="box-title-text">
+                            Количество продаж
                         </div>
-                    @endforeach
+                    </div>
 
-                    <div class="rounded-sm font-bold flex w-full py-4 bg-grey-light">
-                        <div class="pl-4 text-grey-darker w-full"></div>
+                    <div class="box-content">
+                        <canvas id="statistics-count" class="rounded-sm mb-16" height="80vh"></canvas>
+                    </div>
+                </div>
 
-                        <div class="px-4 text-grey-darker w-48 px-4">
-                            {{ number_format($count) }}
+                <div class="box is-marged">
+                    <div class="box-title">
+                        <div class="box-title-text">
+                            Средний чек
                         </div>
+                    </div>
 
-                        <div class="px-4 text-grey-darker w-48 px-4">
-                            {{ number_format(round($amount / $count)) }} ₸
-                        </div>
+                    <div class="box-content">
+                        <canvas id="statistics-avg" class="rounded-sm mb-16" height="80vh"></canvas>
+                    </div>
+                </div>
 
-                        <div class="pr-4 text-grey-darker text-right w-64">
-                            {{ number_format($amount) }} ₸
+                <div class="box is-marged">
+                    <div class="box-title">
+                        <div class="box-title-text">
+                            Статистика последних дней
                         </div>
+                    </div>
+
+                    <div class="box-content">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Дата
+                                </th>
+                                <th class="is-center" width="100">
+                                    Кол-во
+                                </th>
+                                <th class="is-right" width="120">
+                                    Сред. чек
+                                </th>
+                                <th class="is-right" width="160">
+                                    Сумма
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @php $amount = 0 @endphp
+                            @php $count = 0 @endphp
+                            @foreach($statistics as $statistic)
+                                @php $amount += $statistic->amount @endphp
+                                @php $count += $statistic->count @endphp
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('reports.detail.index', ['date' => $statistic->date, 'store_id' => $store->id]) }}">
+                                            {{ date('d.m.Y', strtotime($statistic->date)) }}
+                                        </a>
+                                    </td>
+                                    <td class="is-center">
+                                        {{ number_format($statistic->count) }}
+                                    </td>
+                                    <td class="is-right">
+                                        {{ number_format(round($statistic->amount / $statistic->count)) }} ₸
+                                    </td>
+                                    <td class="is-right">
+                                        {{ number_format($statistic->amount) }} ₸
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th></th>
+                                <th class="is-center">
+                                    {{ number_format($count) }}
+                                </th>
+                                <th class="is-right">
+                                    {{ number_format(round($amount / $count)) }} ₸
+                                </th>
+                                <th class="is-right">
+                                    {{ number_format($amount) }} ₸
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             @endif
 
             @if (count($cheques))
-                <div class="cheques mt-16">
-                    <h2 class="mb-8 text-grey-darkest">
-                        Последние тразакции за сегодня
-                    </h2>
-
-                    <div class="pb-4 font-bold flex w-full">
-                        <div class="pl-4 text-grey-darker w-full">
-                            Код касссы
+                <div class="box is-marged">
+                    <div class="box-title has-action">
+                        <div class="box-title-text">
+                            Последние транзакции
                         </div>
 
-                        <div class="px-4 text-grey-darker w-96">
-                            Номер документа
-                        </div>
 
-                        <div class="px-4 text-grey-darker w-96">
-                            Тип операции
-                        </div>
-
-                        <div class="px-4 text-grey-darker w-64 text-right">
-                            Сумма
-                        </div>
-
-                        <div class="pr-4 text-grey-darker text-right w-96">
-                            Дата и время
-                        </div>
+                        <a href="{{ route('reports.detail.index', $reportParams) }}" class="btn is-sm is-outlined">
+                            <i class="fa fa-file-pdf-o"></i>
+                            Детальный отчет за {{ date('d.m.Y') }}
+                        </a>
                     </div>
 
-                    @foreach($cheques as $cheque)
-                        <div class="border-t border-grey-lighter flex w-full py-4 hover:bg-grey-lighter hover:rounded-sm hover:border-transparent">
-                            <div class="w-full pl-4">
-                                {{ $cheque->kkm_code }}
-                            </div>
-
-                            <div class="text-grey-darkest w-96 px-4">
-                                {{ $cheque->number }}
-                            </div>
-
-                            <div class="text-grey-darkest w-96 px-4">
-                                {{ $cheque->type->name }}
-                            </div>
-
-                            <div class="text-grey-darkest w-64 px-4 text-right">
-                                {{ number_format($cheque->amount) }} ₸
-                            </div>
-
-                            <div class="text-grey-darkest text-right w-96 pr-4">
-                                {{ $cheque->created_at->format('d.m.Y H:i:s') }}
-                            </div>
-                        </div>
-                    @endforeach
-
-                    <div class="rounded-sm flex w-full py-4 bg-grey-light">
-                        <div class="pr-4 text-grey-darker text-center w-full">
-                            <a href="{{ route('report_detail.index', ['store_id' => $store->id]) }}"
-                               class="text-grey-darkest no-underline border-b border-grey hover:border-transparent">
-                                Получить полный отчет за {{ date('d.m.Y') }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            @if (! count($statistics))
-                <div class="bg-grey -mx-8 px-8 py-16 -mb-8 rounded-b">
-                    <div class="text-white text-center text-lg font-light">
-                        Информация по данному заведению отсутствует
+                    <div class="box-content">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Код касссы
+                                </th>
+                                <th>
+                                    Док. №
+                                </th>
+                                <th class="is-center" width="100">
+                                    Кол-во поз.
+                                </th>
+                                <th width="160">
+                                    Операция
+                                </th>
+                                <th class="is-right" width="80">
+                                    Сумма
+                                </th>
+                                <th class="is-right" width="140 ">
+                                    Дата и время
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($cheques as $cheque)
+                                <tr>
+                                    <td>
+                                        {{ $cheque->kkm_code }}
+                                    </td>
+                                    <td>
+                                        {{ $cheque->number }}
+                                    </td>
+                                    <td class="is-center">
+                                        {{ isset($counts[$cheque->id]['count']) ? number_format($counts[$cheque->id]['count']) : 0 }}
+                                    </td>
+                                    <td>
+                                        <div class="badge is-inline {{ $cheque->type->getCssClass() }}">
+                                            {{ $cheque->type->name }}
+                                        </div>
+                                    </td>
+                                    <td class="is-right">
+                                        {{ number_format($cheque->amount) }} ₸
+                                    </td>
+                                    <td class="is-right">
+                                        {{ $cheque->created_at->format('d.m.Y H:i:s') }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             @endif
         </div>
     </div>
+
+    @if (! count($statistics))
+        <div class="information">
+            <div class="container">
+                <div class="information-box is-lg">
+                    <div class="information-box-text">
+                        Информация по указанному запросу отсутствует
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 
 @push('scripts')
@@ -198,7 +235,7 @@
                 labels: @json($graph['labels']),
                 datasets: [ {
                     label: 'Сумма продаж',
-                    borderColor: '#2f365f',
+                    borderColor: '#38c172',
                     data: @json($graph['amount']),
                 } ]
             }
@@ -210,7 +247,7 @@
                 labels: @json($graph['labels']),
                 datasets: [ {
                     label: 'Количество чеков',
-                    borderColor: '#2f365f',
+                    borderColor: '#38c172',
                     data: @json($graph['count']),
                 } ]
             }
@@ -222,7 +259,7 @@
                 labels: @json($graph['labels']),
                 datasets: [ {
                     label: 'Средний чек',
-                    borderColor: '#2f365f',
+                    borderColor: '#38c172',
                     data: @json($graph['avg']),
                 } ]
             }

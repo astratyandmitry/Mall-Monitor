@@ -1,0 +1,58 @@
+.box {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.02);
+  background: $color-white;
+  @include radius($radius);
+
+  &.is-marged {
+    margin-top: $size-4;
+
+    @include mobile() {
+      margin-top: $size-1-5;
+    }
+  }
+
+  .box-title {
+    padding: $size-2;
+    border-bottom: 1px solid $color-grey-lighter;
+
+    @include mobile() {
+      padding: $size-1-5;
+    }
+
+    .box-title-text {
+      color: $color-grey-darkest;
+      font-size: $font-18;
+      font-weight: 500;
+
+      @include mobile() {
+        font-size: $font-16;
+      }
+    }
+
+    .box-title-action {
+      @include mobile() {
+        display: none;
+      }
+    }
+
+    &.has-action {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-column-gap: $size-4;
+      align-items: center;
+
+      @include mobile() {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  .box-content {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &.has-padding {
+      padding: 0 $size-2 $size-2 $size-2;
+    }
+  }
+}
