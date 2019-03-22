@@ -8,6 +8,7 @@ namespace App\Models;
  * @property integer               $business_identification_number
  * @property integer               $mall_id
  * @property integer               $type_id
+ * @property boolean               $is_errors_yesterday
  * @property \App\Models\Mall      $mall
  * @property \App\Models\StoreType $type
  * @property \App\Models\Cheque[]  $cheques
@@ -32,6 +33,7 @@ class Store extends Model
         'business_identification_number',
         'mall_id',
         'type_id',
+        'is_errors_yesterday',
     ];
 
     /**
@@ -41,6 +43,7 @@ class Store extends Model
         'mall_id' => 'integer',
         'type_id' => 'integer',
         'business_identification_number' => 'integer',
+        'is_errors_yesterday' => 'boolean',
     ];
 
     /**
