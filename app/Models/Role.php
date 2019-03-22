@@ -14,9 +14,9 @@ namespace App\Models;
 class Role extends Model
 {
 
-    const ROOT = 1;
-    const ADMINISTRATOR = 2;
-    const DEVELOPER = 3;
+    const ADMIN = 1;
+    const MALL = 2;
+    const TENANT = 3;
 
     /**
      * @var string
