@@ -11,6 +11,15 @@ class DashboardController extends Controller
 {
 
     /**
+     * DashboardController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('loggined');
+    }
+
+
+    /**
      * @return \Illuminate\View\View
      */
     public function __invoke(): \Illuminate\View\View

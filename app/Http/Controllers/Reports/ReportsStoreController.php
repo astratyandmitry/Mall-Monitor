@@ -14,15 +14,6 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
 {
 
     /**
-     * DashboardController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('loggined');
-    }
-
-
-    /**
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\View\View

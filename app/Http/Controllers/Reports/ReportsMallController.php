@@ -14,15 +14,6 @@ class ReportsMallController extends \App\Http\Controllers\Controller
 {
 
     /**
-     * DashboardController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('loggined');
-    }
-
-
-    /**
      * @return \Illuminate\View\View
      */
     public function index(): \Illuminate\View\View
