@@ -33,11 +33,13 @@ Hamburger.$button.on('click', function () {
     }
 });
 
-$('.header-nav-list-item.has-dropdown .header-nav-list-item-link').on('click', function(e) {
+$('.header-nav-list-item.has-dropdown .header-nav-list-item-link').on('click', function (e) {
     e.preventDefault();
 
-    $('.header-nav-list-item-dropdown:visible').slideUp(160);
-    $(this).parent().find('.header-nav-list-item-dropdown').slideToggle(160);
+
+    if (!$(this).parent().find('.header-nav-list-item-dropdown').is(':visible')) {
+        $(this).parent().find('.header-nav-list-item-dropdown').slideDown(160);
+    }
 });
 
 $(document).mouseup(function (e) {

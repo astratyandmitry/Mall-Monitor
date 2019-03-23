@@ -133,10 +133,12 @@
                         </div>
 
 
-                        <a href="{{ route('reports.detail.index', $reportParams) }}" class="btn is-sm is-outlined">
-                            <i class="fa fa-file-pdf-o"></i>
-                            Детальный отчет за {{ date('d.m.Y') }}
-                        </a>
+                        <div class="box-title-action">
+                            <a href="{{ route('reports.detail.index', $reportParams) }}" class="btn is-sm is-outlined">
+                                <i class="fa fa-file-pdf-o"></i>
+                                Детальный отчет за {{ date('d.m.Y') }}
+                            </a>
+                        </div>
                     </div>
 
                     <div class="box-content">

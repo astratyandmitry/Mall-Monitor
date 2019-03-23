@@ -19,6 +19,10 @@
     align-items: center;
     display: grid;
 
+    @include tablet() {
+      grid-column-gap: $size-2;
+    }
+
     @include mobile() {
       grid-template-columns: 1fr auto;
       grid-column-gap: $size-2;
@@ -75,6 +79,10 @@
       .header-nav-list-item {
         display: inline-block;
         margin-right: $size-2;
+
+        @include tablet() {
+          margin-right: $size-1;
+        }
 
         @include mobile() {
           display: block;
@@ -138,7 +146,6 @@
             position: static;
             background: transparent;
             box-shadow: none;
-            display: block;
             min-width: auto;
             margin: 0 0 8px 0;
           }

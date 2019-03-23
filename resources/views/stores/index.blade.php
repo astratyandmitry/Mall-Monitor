@@ -1,5 +1,5 @@
 @php /** @var array $statistics */ @endphp
-@php /** @var \App\Models\Store[] $store */ @endphp
+@php /** @var \App\Models\Store[] $stores */ @endphp
 
 @extends('layouts.app', $globals)
 
@@ -18,14 +18,21 @@
         <div class="container">
             <div class="stores">
                 @foreach($stores as $store)
-                    <a href="{{ $store->link() }}" class="stores-item">
+                    @php $total = (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id])) : 0 @endphp
+
+                    <a href="{{ $store->link() }}" class="stores-item {{ $store->is_errors_yesterday ? 'is-danger' : '' }}">
                         <div class="stores-item-name">
                             <span class="stores-item-name-text">{{ $store->name }}</span>
                         </div>
 
                         <div class="stores-item-detail">
-                            <span class="stores-item-detail-text">Текущая выручка: {{ (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id])) : 0 }}
-                                ₸</span>
+                            <span class="stores-item-detail-text">
+                                @if (!$store->is_errors_yesterday)
+                                    Текущая выручка: {{ $total }} ₸
+                                @else
+                                    Отсутствуют вчерашние транзакции
+                                @endif
+                            </span>
                         </div>
                     </a>
                 @endforeach

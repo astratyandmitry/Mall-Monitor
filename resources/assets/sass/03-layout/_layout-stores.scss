@@ -4,7 +4,12 @@
   grid-column-gap: $size-1-5;
   grid-row-gap: $size-1-5;
 
+
   @include tablet() {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include tablet_landscape() {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -36,6 +41,12 @@
       .stores-item-detail-text {
         font-size: $font-12;
         color: $color-grey-dark;
+      }
+    }
+
+    &.is-danger {
+      .stores-item-detail-text {
+        color: $color-red-light;
       }
     }
 
