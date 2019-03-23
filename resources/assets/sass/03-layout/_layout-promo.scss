@@ -30,10 +30,10 @@
       .promo-box-brand-logotype {
         color: $color-white;
         font-size: $font-36;
-        font-weight: 300;
+        font-weight: 700;
 
-        strong {
-          font-weight: 500;
+        @include mobile() {
+          font-size: $font-28;
         }
       }
     }

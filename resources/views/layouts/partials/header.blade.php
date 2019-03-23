@@ -3,7 +3,7 @@
         <div class="header-content">
             <div class="header-logotype">
                 <a href="{{ route('home') }}" title="{{ config('app.name') }}" class="header-logotype-link">
-                    <span>Mall</span>Monitor
+                    {{ config('app.name') }}
                 </a>
             </div>
 
@@ -30,7 +30,7 @@
                         </a>
 
                         <ul class="header-nav-list-item-dropdown">
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'reposrt.mall', false) }}">
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'reports.mall', false) }}">
                                 <a href="{{ route('reports.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
                                     ТРЦ
                                 </a>

@@ -6,7 +6,7 @@
             <div class="promo-box">
                 <div class="promo-box-brand">
                     <div class="promo-box-brand-logotype">
-                        <strong>Mall</strong>Monitor
+                        {{ config('app.name') }}
                     </div>
                 </div>
 

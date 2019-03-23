@@ -45,13 +45,9 @@
   .header-logotype {
     .header-logotype-link {
       border-bottom: none;
-      color: $color-brand-darker;
+      color: $color-white;
       font-size: $font-24;
-      font-weight: 300;
-
-      span {
-        color: $color-white;
-      }
+      font-weight: 700;
     }
   }
 
