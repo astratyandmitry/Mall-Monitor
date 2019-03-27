@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @property integer             $id
  * @property string              $name
@@ -31,6 +33,7 @@ class City extends Model
     ];
 
     /**e
+     *
      * @var array
      */
     protected $casts = [
@@ -64,6 +67,27 @@ class City extends Model
     public function country(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeFilter(Builder $builder): Builder
+    {
+        $builder->with(['country']);
+
+        $builder->when(request('name'), function (Builder $builder): Builder {
+            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+        });
+
+        $builder->when(request('country_id'), function (Builder $builder): Builder {
+            return $builder->where('country_id', request('country_id'));
+        });
+
+        return parent::scopeFilter($builder);
     }
 
 }

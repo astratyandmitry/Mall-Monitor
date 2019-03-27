@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @property integer             $id
  * @property string              $name
@@ -51,6 +53,21 @@ class StoreType extends Model
     public function stores(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Store::class, 'type_id');
+    }
+
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeFilter(Builder $builder): Builder
+    {
+        $builder->when(request('name'), function (Builder $builder): Builder {
+            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+        });
+
+        return parent::scopeFilter($builder);
     }
 
 }

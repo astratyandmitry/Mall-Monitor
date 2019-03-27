@@ -29,6 +29,14 @@ class RouteServiceProvider extends ServiceProvider
             return \App\Models\User::where('id', $value)->withTrashed()->first();
         });
 
+        Route::bind('anyStore', function ($value) {
+            return \App\Models\Store::where('id', $value)->withTrashed()->first();
+        });
+
+        Route::bind('anyCashbox', function ($value) {
+            return \App\Models\Cashbox::where('id', $value)->withTrashed()->first();
+        });
+
         parent::boot();
     }
 

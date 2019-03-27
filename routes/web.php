@@ -33,8 +33,17 @@ Route::group(['middleware' => 'loggined'], function (): void {
     });
 
     Route::prefix('manage')->namespace('Manage')->name('manage.')->group(function () {
+        Route::resource('/malls', 'ManageMallsController')->except(['destory']);
+        Route::resource('/stores', 'ManageStoresController')->except(['destory']);
+        Route::get('/stores/{anyStore}/toggle', 'ManageStoresController@toggle')->name('stores.toggle');
+        Route::resource('/cashboxes', 'ManageCashboxesController')->except(['destory']);
+        Route::get('/cashboxes/{anyCashbox}/toggle', 'ManageCashboxesController@toggle')->name('cashboxes.toggle');
+
         Route::resource('/users', 'ManageUsersController')->except(['destory']);
         Route::get('/users/{anyUser}/toggle', 'ManageUsersController@toggle')->name('users.toggle');
+
+        Route::resource('/cities', 'ManageCitiesController')->except(['destory']);
+        Route::resource('/store_types', 'ManageStoreTypesController')->except(['destory']);
     });
 });
 

@@ -27,7 +27,6 @@ class DashboardController extends Controller
         $this->setTitle('Обзор');
         $this->setActiveSection('dashboard');
         $this->setActivePage('dashboard');
-        $this->addBreadcrumb('Обзор', route('dashboard'));
 
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE(created_at) as date'))

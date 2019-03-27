@@ -1,4 +1,4 @@
-@php /** @var \App\Models\User[] $entities */ @endphp
+@php /** @var \App\Models\Cashbox[] $entities */ @endphp
 
 @extends('layouts.app', $globals)
 
@@ -11,8 +11,8 @@
                 </div>
 
                 <div class="heading-action">
-                    <a href="{{ route('manage.users.create') }}" class="btn heading-action-button is-outlined">
-                        Добавить пользователя
+                    <a href="{{ route('manage.cashboxes.create') }}" class="btn heading-action-button is-outlined">
+                        Добавить кассу
                     </a>
                 </div>
             </div>
@@ -26,7 +26,7 @@
             <div class="box">
                 <div class="box-title">
                     <div class="box-title-text">
-                        Список пользователей
+                        Список касс
                     </div>
                 </div>
 
@@ -39,14 +39,14 @@
                                 <i class="fa fa-sort-desc"></i>
                             </th>
                             <th nowrap>
-                                E-mail
+                                Код
                                 <i class="fa fa-sort"></i>
                             </th>
-                            <th nowrap width="240">
+                            <th nowrap width="200">
                                 ТРЦ
                                 <i class="fa fa-sort"></i>
                             </th>
-                            <th nowrap width="320">
+                            <th nowrap width="240">
                                 Арендатор
                                 <i class="fa fa-sort"></i>
                             </th>
@@ -66,16 +66,16 @@
                                 </th>
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.input', [
-                                        'attribute' => 'email',
-                                        'placeholder' => 'E-mail',
+                                        'attribute' => 'code',
+                                        'placeholder' => 'Код',
                                     ])
                                 </th>
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.dropdown', [
-                                        'attribute' => 'mall_id',
-                                        'placeholder' => 'Все',
-                                        'options' => \App\Repositories\MallRepository::getOptions(),
-                                    ])
+                                       'attribute' => 'mall_id',
+                                       'placeholder' => 'Все',
+                                       'options' => \App\Repositories\MallRepository::getOptions(),
+                                   ])
                                 </th>
                                 <th nowrap class="field">
                                     @if (request()->get('mall_id'))
@@ -116,25 +116,13 @@
                                         {{ $entity->id }}
                                     </td>
                                     <td nowrap>
-                                        {{ $entity->email }}
+                                        {{ $entity->code }}
                                     </td>
                                     <td nowrap>
-                                        @if ($entity->mall)
-                                            {{ $entity->mall->name }}
-                                        @else
-                                            <div class="badge is-inline">
-                                                Отсутствует
-                                            </div>
-                                        @endif
+                                        {{ $entity->mall->name }}
                                     </td>
                                     <td nowrap>
-                                        @if ($entity->store)
-                                            {{ $entity->store->name }}
-                                        @else
-                                            <div class="badge is-inline">
-                                                Отсутствует
-                                            </div>
-                                        @endif
+                                        {{ $entity->store->name }}
                                     </td>
                                     <td nowrap>
                                         <div class="badge is-inline {{ $entity->trashed() ? 'is-danger' : 'is-success' }}">
@@ -143,12 +131,12 @@
                                     </td>
                                     <td class="is-icons">
                                         @if (!$entity->trashed())
-                                            <a href="{{ route('manage.users.edit', $entity) }}" title="Редактировать">
+                                            <a href="{{ route('manage.cashboxes.edit', $entity) }}" title="Редактировать">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
                                         @endif
 
-                                        <a href="{{ route('manage.users.toggle', $entity) }}"
+                                        <a href="{{ route('manage.cashboxes.toggle', $entity) }}"
                                            title="{{ $entity->trashed() ? 'Восстановить' : 'Удалить' }}">
                                             <i class="fa {{ $entity->trashed() ? 'fa-undo' : 'fa-trash' }}"></i>
                                         </a>

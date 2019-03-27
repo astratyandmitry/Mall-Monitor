@@ -1,4 +1,4 @@
-@php /** @var \App\Models\User[] $entities */ @endphp
+@php /** @var \App\Models\Store[] $entities */ @endphp
 
 @extends('layouts.app', $globals)
 
@@ -11,8 +11,8 @@
                 </div>
 
                 <div class="heading-action">
-                    <a href="{{ route('manage.users.create') }}" class="btn heading-action-button is-outlined">
-                        Добавить пользователя
+                    <a href="{{ route('manage.stores.create') }}" class="btn heading-action-button is-outlined">
+                        Добавить арендатора
                     </a>
                 </div>
             </div>
@@ -26,7 +26,7 @@
             <div class="box">
                 <div class="box-title">
                     <div class="box-title-text">
-                        Список пользователей
+                        Список городов
                     </div>
                 </div>
 
@@ -39,15 +39,19 @@
                                 <i class="fa fa-sort-desc"></i>
                             </th>
                             <th nowrap>
-                                E-mail
+                                Название
                                 <i class="fa fa-sort"></i>
                             </th>
-                            <th nowrap width="240">
+                            <th nowrap width="160">
+                                БИН
+                                <i class="fa fa-sort"></i>
+                            </th>
+                            <th nowrap width="200">
                                 ТРЦ
                                 <i class="fa fa-sort"></i>
                             </th>
-                            <th nowrap width="320">
-                                Арендатор
+                            <th nowrap width="240">
+                                Категория
                                 <i class="fa fa-sort"></i>
                             </th>
                             <th nowrap width="120">
@@ -66,31 +70,29 @@
                                 </th>
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.input', [
-                                        'attribute' => 'email',
-                                        'placeholder' => 'E-mail',
+                                        'attribute' => 'name',
+                                        'placeholder' => 'Название',
+                                    ])
+                                </th>
+                                <th nowrap class="field">
+                                    @include('layouts.includes.field.input', [
+                                        'attribute' => 'bin',
+                                        'placeholder' => 'БИН',
                                     ])
                                 </th>
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.dropdown', [
-                                        'attribute' => 'mall_id',
-                                        'placeholder' => 'Все',
-                                        'options' => \App\Repositories\MallRepository::getOptions(),
-                                    ])
+                                       'attribute' => 'mall_id',
+                                       'placeholder' => 'Все',
+                                       'options' => \App\Repositories\MallRepository::getOptions(),
+                                   ])
                                 </th>
                                 <th nowrap class="field">
-                                    @if (request()->get('mall_id'))
-                                        @include('layouts.includes.field.dropdown', [
-                                           'attribute' => 'store_id',
-                                           'placeholder' => 'Все',
-                                           'options' => \App\Repositories\StoreRepository::getOptions(request()->get('mall_id')),
-                                       ])
-                                    @else
-                                        @include('layouts.includes.field.dropdown-grouped', [
-                                           'attribute' => 'store_id',
-                                           'placeholder' => 'Все',
-                                           'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
-                                       ])
-                                    @endif
+                                    @include('layouts.includes.field.dropdown', [
+                                       'attribute' => 'type_id',
+                                       'placeholder' => 'Все',
+                                       'options' => \App\Repositories\StoreTypeRepository::getOptions(),
+                                   ])
                                 </th>
                                 <th nowra class="field">
                                     @include('layouts.includes.field.dropdown', [
@@ -116,25 +118,16 @@
                                         {{ $entity->id }}
                                     </td>
                                     <td nowrap>
-                                        {{ $entity->email }}
+                                        {{ $entity->name }}
                                     </td>
                                     <td nowrap>
-                                        @if ($entity->mall)
-                                            {{ $entity->mall->name }}
-                                        @else
-                                            <div class="badge is-inline">
-                                                Отсутствует
-                                            </div>
-                                        @endif
+                                        {{ $entity->business_identification_number }}
                                     </td>
                                     <td nowrap>
-                                        @if ($entity->store)
-                                            {{ $entity->store->name }}
-                                        @else
-                                            <div class="badge is-inline">
-                                                Отсутствует
-                                            </div>
-                                        @endif
+                                        {{ $entity->mall->name }}
+                                    </td>
+                                    <td nowrap>
+                                        {{ $entity->type->name }}
                                     </td>
                                     <td nowrap>
                                         <div class="badge is-inline {{ $entity->trashed() ? 'is-danger' : 'is-success' }}">
@@ -143,12 +136,12 @@
                                     </td>
                                     <td class="is-icons">
                                         @if (!$entity->trashed())
-                                            <a href="{{ route('manage.users.edit', $entity) }}" title="Редактировать">
+                                            <a href="{{ route('manage.stores.edit', $entity) }}" title="Редактировать">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
                                         @endif
 
-                                        <a href="{{ route('manage.users.toggle', $entity) }}"
+                                        <a href="{{ route('manage.stores.toggle', $entity) }}"
                                            title="{{ $entity->trashed() ? 'Восстановить' : 'Удалить' }}">
                                             <i class="fa {{ $entity->trashed() ? 'fa-undo' : 'fa-trash' }}"></i>
                                         </a>
@@ -157,7 +150,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="is-empty">
+                                <td colspan="7" class="is-empty">
                                     Информация по указанному запросу отсутствует
                                 </td>
                             </tr>

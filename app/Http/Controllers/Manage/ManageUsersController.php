@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Requests\Manage\ManageUserRequest;
 use App\Models\User;
+use App\Http\Requests\Manage\ManageUserRequest;
 
 /**
  * @version   1.0.1
@@ -20,8 +20,12 @@ class ManageUsersController extends ManageController
     {
         $this->setActiveSection('manage');
         $this->setActivePage('manage.users');
+        $this->setLabel('Пользователи');
         $this->addBreadcrumb('Управление', route('manage.users.index'));
-        $this->addBreadcrumb('Пользователи', route('manage.users.index'));
+
+        if (request()->route()->getActionMethod() != 'index') {
+            $this->addBreadcrumb('Пользователи', route('manage.users.index'));
+        }
     }
 
 
@@ -44,7 +48,6 @@ class ManageUsersController extends ManageController
     public function create(): \Illuminate\View\View
     {
         $this->setTitle('Добавление пользователя');
-        $this->addBreadcrumb('Добавление пользователя', null);
 
         return view('manage.users.form', $this->withData([
             'action' => route('manage.users.store'),
@@ -79,8 +82,9 @@ class ManageUsersController extends ManageController
     {
         $entity = User::findOrFail($id);
 
+        abort_if($entity->trashed(), 403);
+
         $this->setTitle('Редактирование пользователя');
-        $this->addBreadcrumb('Редактирование пользователя', null);
 
         return view('manage.users.form', $this->withData([
             'action' => route('manage.users.update', $entity),
@@ -97,8 +101,10 @@ class ManageUsersController extends ManageController
      */
     public function update(int $id, ManageUserRequest $request): \Illuminate\Http\RedirectResponse
     {
-        /** @var User $user */
-        $user = User::findOrFail($id);
+        /** @var User $entity */
+        $entity = User::findOrFail($id);
+
+        abort_if($entity->trashed(), 403);
 
         $attributes = $request->all();
 
@@ -106,7 +112,7 @@ class ManageUsersController extends ManageController
             $attributes['password'] = bcrypt($attributes['new_password']);
         }
 
-        $user->update($attributes);
+        $entity->update($attributes);
 
         return redirect()->route('manage.users.index')
             ->with('status-success', 'Пользователь успешно изменен');
@@ -114,24 +120,24 @@ class ManageUsersController extends ManageController
 
 
     /**
-     * @param \App\Models\User $user
+     * @param \App\Models\User $entity
      *
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function toggle(User $user): \Illuminate\Http\RedirectResponse
+    public function toggle(User $entity): \Illuminate\Http\RedirectResponse
     {
-        if ($user->trashed()) {
-            $user->restore();
+        if ($entity->trashed()) {
+            $entity->restore();
 
             return redirect()->route('manage.users.index')
                 ->with('status-success', 'Пользователь успешно востановлен');
         }
 
-        $user->delete();
+        $entity->delete();
 
         return redirect()->route('manage.users.index')
-            ->with('status-danger', 'Пользователь успешно удален');
+            ->with('status-danger', 'Пользователь успешно деактивирован');
     }
 
 }

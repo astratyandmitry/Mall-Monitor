@@ -24,7 +24,6 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
         $this->setActiveSection('reports');
         $this->setActivePage('reports.store');
         $this->addBreadcrumb('Отчеты', route('reports.store.index'));
-        $this->addBreadcrumb('Отчет по арендаторам', null);
 
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');

@@ -20,7 +20,6 @@ class StoresController extends Controller
         $this->setTitle('Арендаторы');
         $this->setActiveSection('stores');
         $this->setActivePage('stores');
-        $this->addBreadcrumb('Арендаторы', route('stores.index'));
 
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))

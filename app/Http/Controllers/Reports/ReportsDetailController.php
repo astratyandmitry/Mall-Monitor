@@ -23,7 +23,6 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
         $this->setActiveSection('reports');
         $this->setActivePage('reports.detail');
         $this->addBreadcrumb('Отчеты', route('reports.detail.index'));
-        $this->addBreadcrumb('Детальный отчет', null);
 
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');

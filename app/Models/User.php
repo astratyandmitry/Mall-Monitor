@@ -140,6 +140,19 @@ class User extends Model implements
             return $builder->where('mall_id', request('mall_id'));
         });
 
+        $builder->when(request('filter'), function (Builder $builder): Builder {
+            switch (request('filter')) {
+                case 1:
+                    $builder->whereNull('deleted_at');
+                    break;
+                case 2:
+                    $builder->whereNotNull('deleted_at');
+                    break;
+            }
+
+            return $builder;
+        });
+
         return parent::scopeFilter($builder);
     }
 

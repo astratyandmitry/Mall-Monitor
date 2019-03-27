@@ -63,6 +63,15 @@ class Controller extends BaseController
 
 
     /**
+     * @param mixed $active
+     */
+    public function setLabel($active): void
+    {
+        $this->data['label'] = $active;
+    }
+
+
+    /**
      * @param string $name
      * @param string|null $link
      */

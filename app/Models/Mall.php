@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @property integer              $id
  * @property string               $name
@@ -44,6 +46,7 @@ class Mall extends Model
     protected $rules = [
         'name' => 'required|max:200',
         'city_id' => 'required|exists:cities,id',
+        '_unique' => 'name',
     ];
 
     /**
@@ -96,4 +99,24 @@ class Mall extends Model
         return $this->integrations()->where('system_id', $system_id)->first();
     }
 
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeFilter(Builder $builder): Builder
+    {
+        $builder->with(['city']);
+
+        $builder->when(request('name'), function (Builder $builder): Builder {
+            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+        });
+
+        $builder->when(request('city_id'), function (Builder $builder): Builder {
+            return $builder->where('city_id', request('city_id'));
+        });
+
+        return parent::scopeFilter($builder);
+    }
 }

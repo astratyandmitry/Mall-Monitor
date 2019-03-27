@@ -3429,7 +3429,7 @@ a:focus {
 .form-action {
   -webkit-box-shadow: inset 0 16px 16px 0 rgba(0, 0, 0, 0.02);
           box-shadow: inset 0 16px 16px 0 rgba(0, 0, 0, 0.02);
-  background: #dae1e7;
+  border-top: 1px solid #f1f5f8;
   padding: 2em;
   -webkit-border-bottom-right-radius: 4px;
   -webkit-border-bottom-left-radius: 4px;
@@ -3460,6 +3460,12 @@ a:focus {
 
 .field label strong {
   color: #cc1f1a;
+}
+
+.field label .is-details {
+  margin-left: 0.5em;
+  text-transform: none;
+  font-weight: 400;
 }
 
 .field .help {
@@ -3600,8 +3606,8 @@ a:focus {
 
 .btn {
   border: none;
-  background: #4dc0b5;
-  border: 1px solid #4dc0b5;
+  background: #38c172;
+  border: 1px solid #38c172;
   padding: 1em 2em;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -3625,12 +3631,12 @@ a:focus {
 }
 
 .btn:disabled {
-  background-color: #38a89d;
+  background-color: #1f9d55;
   cursor: not-allowed;
 }
 
 .btn:disabled:hover {
-  background-color: #38a89d;
+  background-color: #1f9d55;
 }
 
 .btn.is-sm {
@@ -3644,30 +3650,30 @@ a:focus {
 }
 
 .btn:focus {
-  border-color: #38a89d;
-  background: #38a89d;
+  border-color: #1f9d55;
+  background: #1f9d55;
   color: #fff !important;
 }
 
 .btn:hover {
-  color: #a0f0ed;
+  color: #a2f5bf;
   cursor: pointer;
 }
 
 .btn.is-outlined {
   background: transparent;
-  color: #38a89d;
+  color: #1f9d55;
 }
 
 .btn.is-outlined:hover {
-  border-color: #4dc0b5;
-  background: #4dc0b5;
-  color: #e8fffe;
+  border-color: #38c172;
+  background: #38c172;
+  color: #e3fcec;
 }
 
 .btn.is-outlined:focus {
-  border-color: #38a89d;
-  background: #38a89d;
+  border-color: #1f9d55;
+  background: #1f9d55;
   color: #fff !important;
 }
 
@@ -3824,7 +3830,7 @@ body {
 }
 
 body.is-promo {
-  background: #4dc0b5;
+  background: #38c172;
   margin-top: 0;
 }
 
@@ -3943,7 +3949,7 @@ body * {
 .header {
   -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
           box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
-  background: #4dc0b5;
+  background: #38c172;
   padding: 1.5em 0;
   z-index: 100 !important;
   position: fixed;
@@ -3987,11 +3993,11 @@ body * {
 
 .header .header-hamburger i {
   font-size: 1.5em;
-  color: #38a89d;
+  color: #1f9d55;
 }
 
 .header .header-hamburger i:hover {
-  color: #20504f;
+  color: #1a4731;
 }
 
 .header .header-logotype .header-logotype-link {
@@ -4003,7 +4009,7 @@ body * {
 
 @media (max-width: 480px) {
   .header .header-nav {
-    background: #38a89d;
+    background: #1f9d55;
     position: fixed;
     display: none;
     z-index: 50;
@@ -4059,7 +4065,7 @@ body * {
 }
 
 .header .header-nav .header-nav-list .header-nav-list-item .header-nav-list-item-link {
-  color: #e8fffe;
+  color: #e3fcec;
   border-bottom: none;
 }
 
@@ -4146,7 +4152,7 @@ body * {
 
 @media (max-width: 480px) {
   .header .header-nav .header-nav-list .header-nav-list-item .header-nav-list-item-dropdown .header-nav-list-item-dropdown-item .header-nav-list-item-dropdown-item-link {
-    color: #e8fffe;
+    color: #e3fcec;
   }
 
   .header .header-nav .header-nav-list .header-nav-list-item .header-nav-list-item-dropdown .header-nav-list-item-dropdown-item .header-nav-list-item-dropdown-item-link:hover {
@@ -4477,7 +4483,7 @@ body * {
   -webkit-box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
           box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
   grid-template-columns: auto minmax(400px, 1fr);
-  background: #38a89d;
+  background: #1f9d55;
   overflow: hidden;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -4493,7 +4499,7 @@ body * {
 }
 
 .promo .promo-box .promo-box-brand {
-  background: #38a89d;
+  background: #1f9d55;
   z-index: 10;
   padding: 2em 4em;
   text-align: center;
@@ -4596,8 +4602,8 @@ body * {
 .stores .stores-item:hover {
   -webkit-box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
           box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
-  border-color: #4dc0b5;
-  background: #4dc0b5;
+  border-color: #38c172;
+  background: #38c172;
 }
 
 .stores .stores-item:hover .stores-item-name-text {
@@ -4605,7 +4611,7 @@ body * {
 }
 
 .stores .stores-item:hover .stores-item-detail-text {
-  color: #a0f0ed;
+  color: #a2f5bf;
 }
 
 .status {

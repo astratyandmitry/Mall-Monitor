@@ -22,7 +22,6 @@ class ReportsMallController extends \App\Http\Controllers\Controller
         $this->setActiveSection('reports');
         $this->setActivePage('reports.mall');
         $this->addBreadcrumb('Отчеты', route('reports.mall.index'));
-        $this->addBreadcrumb('Отчет по ТРЦ', null);
 
         $dateFrom = $this->getDate('date_from');
         $dateTo = $this->getDate('date_to');

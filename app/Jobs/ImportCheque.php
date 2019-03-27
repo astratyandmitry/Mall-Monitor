@@ -72,7 +72,7 @@ abstract class ImportCheque
      */
     protected function loadCashboxCodes(): void
     {
-        $cashboxes = Cashbox::all();
+        $cashboxes = Cashbox::withTrashed()->get();
 
         foreach ($cashboxes as $cashbox) {
             $this->cashbox_codes[$cashbox->mall_id][$cashbox->store_id][$cashbox->code] = $cashbox->id;
@@ -89,7 +89,7 @@ abstract class ImportCheque
     {
         $bin = $bin ?? $this->bin;
 
-        if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->first()) {
+        if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->withTrashed()->first()) {
             $store = Store::create([
                 'mall_id' => $this->mall->id,
                 'name' => "БИН: {$bin}",

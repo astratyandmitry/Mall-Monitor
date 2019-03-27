@@ -1,4 +1,4 @@
-@php /** @var \App\Models\User|null $entity */ @endphp
+@php /** @var \App\Models\Cashbox|null $entity */ @endphp
 
 @extends('layouts.app', $globals)
 
@@ -18,7 +18,7 @@
             <div class="box">
                 <div class="box-title">
                     <div class="box-title-text">
-                        Данные пользователя
+                        Данные кассы
                     </div>
                 </div>
 
@@ -30,6 +30,14 @@
 
                         @csrf
 
+                        @includeWhen(isset($entity), 'layouts.includes.form.hidden', [
+                            'attribute' => 'store_id',
+                        ])
+
+                        @includeWhen(isset($entity), 'layouts.includes.form.hidden', [
+                            'attribute' => 'mall_id',
+                        ])
+
                         <div class="form-content">
                             <div class="form-section">
                                 <div class="form-grid is-2col">
@@ -37,36 +45,31 @@
                                           'attribute' => 'mall_id',
                                           'label' => 'ТРЦ',
                                           'options' => \App\Repositories\MallRepository::getOptions(),
-                                      ])
+                                          'disabled' => isset($entity),
+                                    ])
 
                                     @include('layouts.includes.form.dropdown', [
                                           'attribute' => 'store_id',
                                           'label' => 'Арендатор',
                                           'options' => \App\Repositories\StoreRepository::getOptions(old('store_id', optional($entity)->mall_id ?? -1)),
-                                      ])
+                                          'disabled' => isset($entity),
+                                    ])
                                 </div>
                             </div>
 
                             <div class="form-section">
                                 @include('layouts.includes.form.input', [
-                                    'attribute' => 'email',
-                                    'label' => 'E-mail',
+                                    'attribute' => 'code',
+                                    'label' => 'Код',
                                     'required' => true,
                                     'autofocus' => true,
-                                    'type' => 'email',
-                                ])
-
-                                @include('layouts.includes.form.password', [
-                                    'attribute' => 'new_password',
-                                    'label' => isset($entity) ? 'Новый пароль' : 'Пароль',
-                                    'required' => ! isset($entity),
                                 ])
                             </div>
                         </div>
 
                         <div class="form-action">
                             <button type="submit" class="btn">
-                                {{ isset($entity) ? 'Сохранить изменения' : 'Добавить пользователя' }}
+                                {{ isset($entity) ? 'Сохранить изменения' : 'Добавить кассу' }}
                             </button>
                         </div>
                     </form>

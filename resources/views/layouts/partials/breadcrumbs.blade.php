@@ -13,16 +13,20 @@
                             <span class="breadcrumbs-list-item-devider">/</span>
                         </li>
                         <li class="breadcrumbs-list-item">
-                            @if ($loop->last)
-                                <strong class="breadcrumbs-list-item-value">{{ $breadcrumb['name'] }}</strong>
-                            @else
-                                <a class="breadcrumbs-list-item-link" href="{{ $breadcrumb['link'] }}">
-                                    {{ $breadcrumb['name'] }}
-                                </a>
-                            @endif
+                            <a class="breadcrumbs-list-item-link" href="{{ $breadcrumb['link'] }}">
+                                {{ $breadcrumb['name'] }}
+                            </a>
                         </li>
                     @endforeach
                 @endif
+                <li class="breadcrumbs-list-item is-devider">
+                    <span class="breadcrumbs-list-item-devider">/</span>
+                </li>
+                <li class="breadcrumbs-list-item">
+                    <strong class="breadcrumbs-list-item-value">
+                        {{ request()->route()->getActionMethod() == 'index' ?  $label : $title }}
+                    </strong>
+                </li>
             </ul>
         </div>
     </div>

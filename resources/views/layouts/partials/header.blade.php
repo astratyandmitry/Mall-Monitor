@@ -54,31 +54,36 @@
                         </a>
 
                         <ul class="header-nav-list-item-dropdown">
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
-                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.malls', false) }}">
+                                <a href="{{ route('manage.malls.index') }}" class="header-nav-list-item-dropdown-item-link">
                                     ТРЦ
                                 </a>
                             </li>
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
-                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.stores', false) }}">
+                                <a href="{{ route('manage.stores.index') }}" class="header-nav-list-item-dropdown-item-link">
                                     Арендаторы
                                 </a>
                             </li>
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
-                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.cashboxes', false) }}">
+                                <a href="{{ route('manage.cashboxes.index') }}" class="header-nav-list-item-dropdown-item-link">
                                     Кассы
-                                </a>
-                            </li>
-                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
-                                <a href="#" class="header-nav-list-item-dropdown-item-link">
-                                    Категории
                                 </a>
                             </li>
                             <li class="header-nav-list-item-dropdown-item is-devider"></li>
                             <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.users', false) }}">
                                 <a href="{{ route('manage.users.index') }}" class="header-nav-list-item-dropdown-item-link">
                                     Пользователи
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.store_types', false) }}">
+                                <a href="{{ route('manage.store_types.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                    Категории
+                                </a>
+                            </li>
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.cities', false) }}">
+                                <a href="{{ route('manage.cities.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                    Города
                                 </a>
                             </li>
                         </ul>

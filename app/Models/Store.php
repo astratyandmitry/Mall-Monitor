@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @property integer               $id
  * @property string                $name
@@ -9,6 +11,7 @@ namespace App\Models;
  * @property integer               $mall_id
  * @property integer               $type_id
  * @property boolean               $is_errors_yesterday
+ * @property \Carbon\Carbon        $deleted_at
  * @property \App\Models\Mall      $mall
  * @property \App\Models\StoreType $type
  * @property \App\Models\Cheque[]  $cheques
@@ -19,6 +22,8 @@ namespace App\Models;
  */
 class Store extends Model
 {
+
+    use \Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
      * @var string
@@ -34,6 +39,13 @@ class Store extends Model
         'mall_id',
         'type_id',
         'is_errors_yesterday',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'deleted_at',
     ];
 
     /**
@@ -103,6 +115,37 @@ class Store extends Model
     public function link(): string
     {
         return route('stores.show', $this->id);
+    }
+
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeFilter(Builder $builder): Builder
+    {
+        $builder->with(['mall', 'type']);
+
+        $builder->withTrashed();
+
+        $builder->when(request('name'), function (Builder $builder): Builder {
+            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+        });
+
+        $builder->when(request('bin'), function (Builder $builder): Builder {
+            return $builder->where('business_identification_number', 'LIKE', '%' . request('bin') . '%');
+        });
+
+        $builder->when(request('type_id'), function (Builder $builder): Builder {
+            return $builder->where('type_id', request('type_id'));
+        });
+
+        $builder->when(request('mall_id'), function (Builder $builder): Builder {
+            return $builder->where('mall_id', request('mall_id'));
+        });
+
+        return parent::scopeFilter($builder);
     }
 
 }
