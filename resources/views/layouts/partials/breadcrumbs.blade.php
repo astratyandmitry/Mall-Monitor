@@ -8,16 +8,16 @@
                     </a>
                 </li>
                 @if (isset($globals['breadcrumbs']) && count($globals['breadcrumbs']))
-                    @foreach($globals['breadcrumbs'] as $link => $name)
+                    @foreach($globals['breadcrumbs'] as $breadcrumb)
                         <li class="breadcrumbs-list-item is-devider">
                             <span class="breadcrumbs-list-item-devider">/</span>
                         </li>
                         <li class="breadcrumbs-list-item">
                             @if ($loop->last)
-                                <strong class="breadcrumbs-list-item-value">{{ $name }}</strong>
+                                <strong class="breadcrumbs-list-item-value">{{ $breadcrumb['name'] }}</strong>
                             @else
-                                <a class="breadcrumbs-list-item-link" href="{{ $link }}">
-                                    {{ $name }}
+                                <a class="breadcrumbs-list-item-link" href="{{ $breadcrumb['link'] }}">
+                                    {{ $breadcrumb['name'] }}
                                 </a>
                             @endif
                         </li>

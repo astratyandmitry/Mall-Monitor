@@ -25,7 +25,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Route::bind('anyUser', function ($value) {
+            return \App\Models\User::where('id', $value)->withTrashed()->first();
+        });
 
         parent::boot();
     }

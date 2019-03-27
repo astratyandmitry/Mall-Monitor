@@ -62,7 +62,7 @@ class Request extends FormRequest
     protected function uniqueRules(array $rules): array
     {
         if (isset($rules['_unique'])) {
-            $requestIsPut = $this->isMethod('PATCH');
+            $requestIsPut = $this->isMethod('PUT');
             $uniqueId = ($requestIsPut) ? $this->segment(3) : null;
 
             $uniqueAttributes = explode('|', $rules['_unique']);

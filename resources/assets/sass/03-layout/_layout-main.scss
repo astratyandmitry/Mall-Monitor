@@ -10,7 +10,8 @@ body {
   -webkit-font-smoothing: antialiased;
   background: $color-grey-lightest;
   -webkit-text-size-adjust: 100%;
-  margin-top: 72px;
+  padding-top: 72px;
+  box-sizing: border-box;
 
   &.is-promo {
     background: $color-brand;

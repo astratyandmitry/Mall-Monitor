@@ -68,7 +68,10 @@ class Controller extends BaseController
      */
     public function addBreadcrumb(string $name, ?string $link = null): void
     {
-        $this->data['breadcrumbs'][$link] = $name;
+        $this->data['breadcrumbs'][] = [
+            'link' => $link,
+            'name' => $name,
+        ];
     }
 
 

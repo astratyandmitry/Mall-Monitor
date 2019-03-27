@@ -25,8 +25,19 @@
     color: $color-black;
     font-weight: 500;
 
-    @include mobile() {
+    @include tablet() {
       font-size: $font-28;
+    }
+
+    @include mobile() {
+      font-size: $font-20;
+    }
+  }
+
+  .heading-action {
+    .heading-action-button {
+      font-size: $font-12;
+      padding: $size-1 $size-1-5;
     }
   }
 

@@ -1,8 +1,59 @@
+.form-section {
+  border-bottom: 1px solid $color-grey-lighter;
+  padding: $size-2;
+
+  @include mobile() {
+    padding: $size-1-5;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .field:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-column-gap: $size-1-5;
+    grid-row-gap: $size-1-5;
+
+    .field {
+      margin-bottom: 0 !important;
+    }
+
+    &.is-2col {
+      grid-template-columns: repeat(2, 1fr);
+
+    }
+
+    &.is-3col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mobile() {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}
+
+.form-action {
+  box-shadow: inset 0 16px 16px 0 rgba(0, 0, 0, 0.02);
+  background: $color-grey-light;
+  padding: $size-2;
+  @include radius-bottom($radius);
+
+  @include mobile() {
+    padding: $size-1-5;
+  }
+}
+
 .field {
   margin: 0 0 $size-1-5 0;
 
   label {
-    color: $color-grey;
+    color: $color-grey-dark;
     display: block;
     font-size: $font-12;
     text-transform: uppercase;
@@ -29,23 +80,21 @@
     width: 100%;
 
     &:disabled {
-      background: $color-green-lightest;
+      background: $color-grey-lightest;
       border-color: transparent;
       cursor: not-allowed;
     }
   }
 
-  select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-
   input,
   textarea,
   select {
+    box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.02);
     border: 1px solid $color-grey-lighter;
     background: $color-white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     padding: .750em;
     display: block;
     outline: none;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\StoreRepository;
 use App\Repositories\CashboxRepository;
 
 /**
@@ -21,6 +22,20 @@ class AjaxController
 
         return view('ajax.options', [
             'placeholder' => 'Все',
+            'entities' => $entities,
+            'selected' => null,
+        ]);
+    }
+
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function stores(): \Illuminate\View\View
+    {
+        $entities = StoreRepository::getOptions(request()->get('mall_id') ?? -1);
+
+        return view('ajax.options', [
             'entities' => $entities,
             'selected' => null,
         ]);

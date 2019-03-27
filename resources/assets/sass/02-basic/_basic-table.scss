@@ -18,6 +18,29 @@ table {
         }
       }
     }
+
+    tr.is-filter {
+      th {
+        background: $color-grey-lighter;
+        padding: 0px 16px 8px 16px !important;
+
+        input,
+        select {
+          border-color: $color-grey-light;
+
+          &:focus,
+          &:hover {
+            border-color: $color-grey-light;
+          }
+        }
+
+        button {
+          padding: .750em;
+          display: block;
+          width: 100%;
+        }
+      }
+    }
   }
 
   tfoot {
@@ -46,6 +69,7 @@ table {
     td, th {
       border-bottom: 1px solid $color-grey-lighter;
       white-space: nowrap;
+      min-width: 48px;
       padding: 16px;
 
       @include mobile() {
@@ -64,11 +88,47 @@ table {
     td {
       font-size: $font-14;
       @include transition();
+
+      &.is-empty {
+        color: $color-grey-dark;
+        text-align: center;
+        padding: $size-4;
+
+        &:hover {
+          background: $color-white;
+        }
+      }
+
+      &.is-icons {
+        text-align: center;
+
+        a {
+          border-bottom: none;
+          display: inline-block;
+          margin: 0 .250em;
+          color: transparent;
+
+          @include mobile() {
+            color: $color-grey;
+          }
+
+          &:hover {
+            color: $color-grey-darkest !important;
+          }
+        }
+      }
     }
 
     &:hover {
       td {
         background: $color-grey-lightest;
+        opacity: 1;
+
+        &.is-icons {
+          a {
+            color: $color-grey;
+          }
+        }
       }
     }
 

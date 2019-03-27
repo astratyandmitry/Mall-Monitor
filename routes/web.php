@@ -13,6 +13,7 @@ Route::group(['middleware' => 'loggined'], function (): void {
 
     // ajax
     Route::post('/ajax/cashboxes', 'AjaxController@cashboxes')->name('ajax.cashboxes');
+    Route::post('/ajax/stores', 'AjaxController@stores')->name('ajax.stores');
 
     Route::get('/stores', 'StoresController@index')->name('stores.index');
     Route::get('/store/{store}', 'StoresController@show')->name('stores.show');
@@ -29,6 +30,11 @@ Route::group(['middleware' => 'loggined'], function (): void {
         Route::get('/detail', 'ReportsDetailController@index')->name('detail.index');
         Route::get('/detail/export/excel', 'ReportsDetailController@exportExcel')->name('detail.export.excel');
         Route::get('/detail/export/pdf', 'ReportsDetailController@exportPDF')->name('detail.export.pdf');
+    });
+
+    Route::prefix('manage')->namespace('Manage')->name('manage.')->group(function () {
+        Route::resource('/users', 'ManageUsersController')->except(['destory']);
+        Route::get('/users/{anyUser}/toggle', 'ManageUsersController@toggle')->name('users.toggle');
     });
 });
 

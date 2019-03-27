@@ -5,15 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @property integer          $id
- * @property string           $email
- * @property string           $password
- * @property integer          $role_id
- * @property integer          $mall_id
- * @property string           $remember_token
- * @property string           $api_token
- * @property \App\Models\Role $role
- * @property \App\Models\Mall $mall
+ * @property integer           $id
+ * @property string            $email
+ * @property string            $password
+ * @property integer           $role_id
+ * @property integer           $mall_id
+ * @property integer           $store_id
+ * @property string            $remember_token
+ * @property string            $api_token
+ * @property \Carbon\Carbon    $deleted_at
+ * @property \App\Models\Role  $role
+ * @property \App\Models\Mall  $mall
+ * @property \App\Models\Store $store
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -25,7 +28,8 @@ class User extends Model implements
 {
 
     use\Illuminate\Foundation\Auth\Access\Authorizable,
-        \Illuminate\Auth\Authenticatable;
+        \Illuminate\Auth\Authenticatable,
+        \Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
      * @var string
@@ -40,6 +44,7 @@ class User extends Model implements
         'password',
         'role_id',
         'mall_id',
+        'store_id',
     ];
 
     /**
@@ -57,6 +62,7 @@ class User extends Model implements
     protected $casts = [
         'role_id' => 'integer',
         'mall_id' => 'integer',
+        'store_id' => 'integer',
     ];
 
     /**
@@ -67,10 +73,18 @@ class User extends Model implements
     /**
      * @var array
      */
+    protected $dates = [
+        'deleted_at',
+    ];
+
+    /**
+     * @var array
+     */
     protected $rules = [
         'email' => 'required|max:80|email',
-        'role_id' => 'required|exists:roles,id',
-        'mall_id' => 'required|exists:malls,id',
+        'mall_id' => 'nullable',
+        'store_id' => 'nullable',
+        '_unique' => 'email',
     ];
 
     /**
@@ -79,16 +93,25 @@ class User extends Model implements
     protected $messages = [
         'role_id' => 'роль',
         'mall_id' => 'ТЦ',
+        'store_id' => 'Арендатор',
     ];
 
 
+    /**
+     * @return void
+     */
     public static function boot(): void
     {
         parent::boot();
 
         static::creating(function (User $user): void {
-            if ($user->role_id == Role::DEVELOPER) {
+            if ($user->store_id) {
+                $user->attributes['role_id'] = Role::TENANT;
                 $user->attributes['api_token'] = str_random(60);
+            } elseif ($user->mall_id) {
+                $user->attributes['role_id'] = Role::MALL;
+            } else {
+                $user->attributes['role_id'] = Role::ADMIN;
             }
         });
     }
@@ -101,14 +124,16 @@ class User extends Model implements
      */
     public static function scopeFilter(Builder $builder): Builder
     {
-        $builder->with(['role']);
+        $builder->with(['mall', 'store']);
+
+        $builder->withTrashed();
 
         $builder->when(request('email'), function (Builder $builder): Builder {
             return $builder->where('email', 'LIKE', '%' . request('email') . '%');
         });
 
-        $builder->when(request('role_id'), function (Builder $builder): Builder {
-            return $builder->where('role_id', request('role_id'));
+        $builder->when(request('store_id'), function (Builder $builder): Builder {
+            return $builder->where('store_id', request('store_id'));
         });
 
         $builder->when(request('mall_id'), function (Builder $builder): Builder {
@@ -122,18 +147,18 @@ class User extends Model implements
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Mall::class);
     }
 
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Mall::class);
+        return $this->belongsTo(Store::class);
     }
 
 }

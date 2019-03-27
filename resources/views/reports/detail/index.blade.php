@@ -205,6 +205,8 @@
             $cashboxID = $('#cashbox_id');
 
             $storeID.on('change', function () {
+                $cashboxID.html('<option>Загрузка...</option>').attr('disabled', true);
+
                 $.ajax({
                     method: 'POST',
                     url: '/ajax/cashboxes',
@@ -212,7 +214,7 @@
                         store_id: $storeID.val()
                     },
                     success: function (response) {
-                        $cashboxID.html(response);
+                        $cashboxID.html(response).attr('disabled', false);
                     }
                 });
             });

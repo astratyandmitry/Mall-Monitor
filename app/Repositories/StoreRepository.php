@@ -13,11 +13,34 @@ class StoreRepository
 {
 
     /**
+     * @param int|null $mall_id
+     *
      * @return array
      */
-    public static function getOptions(): array
+    public static function getOptions(?int $mall_id = null): array
     {
-        return Store::pluck('name', 'id')->toArray();
+        if (is_null($mall_id)) {
+            return Store::pluck('name', 'id')->toArray();
+        }
+
+        return Store::where('mall_id', $mall_id)->pluck('name', 'id')->toArray();
+    }
+
+
+    /**
+     * @return array
+     */
+    public static function getOptionsGrouped(): array
+    {
+        /** @var Store[] $stores */
+        $stores = Store::with(['mall'])->get();
+        $options = [];
+
+        foreach ($stores as $store) {
+            $options[$store->mall->name][$store->id] = $store->name;
+        }
+
+        return $options;
     }
 
 }

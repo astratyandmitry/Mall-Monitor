@@ -76,8 +76,8 @@
                                 </a>
                             </li>
                             <li class="header-nav-list-item-dropdown-item is-devider"></li>
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == '#', false) }}">
-                                <a href="#" class="header-nav-list-item-dropdown-item-link">
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.users', false) }}">
+                                <a href="{{ route('manage.users.index') }}" class="header-nav-list-item-dropdown-item-link">
                                     Пользователи
                                 </a>
                             </li>
