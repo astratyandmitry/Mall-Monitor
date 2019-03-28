@@ -3688,12 +3688,13 @@ table thead th {
   color: #8795a1;
 }
 
-table thead th i {
+table thead th a {
+  border-bottom: none;
   margin-left: 0.5em;
   opacity: .32;
 }
 
-table thead th i:hover {
+table thead th a:hover {
   opacity: 1;
   cursor: pointer;
 }

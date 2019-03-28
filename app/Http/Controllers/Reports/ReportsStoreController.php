@@ -29,7 +29,7 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
         $dateTo = $this->getDate('date_to');
 
         $statistics = Cheque::reportStore($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
+            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, store_id'))
             ->groupBy('store_id')->get()->toArray();
 
         return view('reports.store.index', $this->withData([

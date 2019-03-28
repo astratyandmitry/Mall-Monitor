@@ -74,11 +74,22 @@ class Model extends \Illuminate\Database\Eloquent\Model
      */
     public static function scopeFilter(Builder $builder): Builder
     {
-        $builder->orderBy('id', 'desc');
-
         $builder->when(request('id'), function (Builder $builder): Builder {
             return $builder->where('id', request('id'));
         });
+
+        $sort_key = request()->query('sort_key', 'id');
+        $sort_type = request()->query('sort_type', 'asc');
+
+        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
+            $sort_key = 'id';
+        }
+
+        if ( ! in_array($sort_type, ['asc', 'desc'])) {
+            $sort_type = 'asc';
+        }
+
+        $builder->orderBy($sort_key, $sort_type);
 
         return $builder;
     }

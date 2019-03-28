@@ -27,7 +27,7 @@ class ReportsMallController extends \App\Http\Controllers\Controller
         $dateTo = $this->getDate('date_to');
 
         $statistics = Cheque::reportMall($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
+            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id'))
             ->groupBy('mall_id')->get()->toArray();
 
         return view('reports.mall.index', $this->withData([

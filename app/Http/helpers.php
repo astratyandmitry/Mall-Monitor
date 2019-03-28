@@ -54,11 +54,9 @@ function appendUserId(array $attributes): array
 }
 
 /**
- * Return array of  not empty $_GET parameters
- *
  * @return array
  */
-function getNotEmptyQueryParameters(): array
+function paginateAppends(array $additional = []): array
 {
     $parameters = [];
 
@@ -70,7 +68,7 @@ function getNotEmptyQueryParameters(): array
         }
     }
 
-    return $parameters;
+    return array_merge($parameters, $additional);
 }
 
 /**
@@ -78,10 +76,18 @@ function getNotEmptyQueryParameters(): array
  */
 function isRequestEmpty(): bool
 {
-    $params = getNotEmptyQueryParameters();
+    $params = paginateAppends();
 
     if (isset($params['page'])) {
         unset($params['page']);
+    }
+
+    if (isset($params['sort_key'])) {
+        unset($params['sort_key']);
+    }
+
+    if (isset($params['sort_type'])) {
+        unset($params['sort_type']);
     }
 
     return count($params) == 0;

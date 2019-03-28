@@ -153,6 +153,8 @@ class User extends Model implements
             return $builder;
         });
 
+
+
         return parent::scopeFilter($builder);
     }
 

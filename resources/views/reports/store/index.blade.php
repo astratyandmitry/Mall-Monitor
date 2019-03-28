@@ -26,6 +26,9 @@
     <div class="filter {{ isRequestEmpty() ? 'is-hidden' : '' }}">
         <div class="container">
             <form method="GET" class="filter-form">
+                @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'store_id'])
+                @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
+
                 <div class="grid">
                     @include('layouts.includes.form.input', [
                         'attribute' => 'date_from',
@@ -75,20 +78,25 @@
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>
+                                <th width="240">
                                     ТРЦ
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'mall_id', 'default_key' => 'store_id'])
                                 </th>
-                                <th>
+                                <th nowrap>
                                     Арендатор
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'store_id', 'default_key' => 'store_id'])
                                 </th>
-                                <th class="is-center" width="100">
+                                <th nowrap class="is-center" width="100">
                                     Кол-во
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'count', 'default_key' => 'store_id'])
                                 </th>
-                                <th class="is-right" width="120">
+                                <th nowrap class="is-right" width="120">
                                     Сред. чек
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'avg', 'default_key' => 'store_id'])
                                 </th>
-                                <th class="is-right" width="160">
+                                <th nowrap class="is-right" width="160">
                                     Сумма
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'amount', 'default_key' => 'store_id'])
                                 </th>
                             </tr>
                             </thead>
@@ -100,19 +108,19 @@
                                 @php $count += $statistic['count'] @endphp
                                 @php $store = \App\Models\Store::find($statistic['store_id']) @endphp
                                 <tr>
-                                    <td>
+                                    <td nowrap>
                                         {{ $store->mall->name }}
                                     </td>
-                                    <td>
+                                    <td nowrap>
                                         {{ $store->name }}
                                     </td>
-                                    <td class="is-center">
+                                    <td nowrap class="is-center">
                                         {{ number_format($statistic['count']) }}
                                     </td>
-                                    <td class="is-right">
-                                        {{ number_format(round($statistic['amount'] / $statistic['count'])) }} ₸
+                                    <td nowrap class="is-right">
+                                        {{ number_format(round($statistic['avg'])) }} ₸
                                     </td>
-                                    <td class="is-right">
+                                    <td nowrap class="is-right">
                                         {{ number_format($statistic['amount']) }} ₸
                                     </td>
                                 </tr>
@@ -122,13 +130,13 @@
                             <tr>
                                 <th></th>
                                 <th></th>
-                                <th class="is-center">
+                                <th nowrap class="is-center">
                                     {{ number_format($count) }}
                                 </th>
-                                <th class="is-right">
+                                <th nowrap class="is-right">
                                     {{ number_format(round($amount / $count)) }} ₸
                                 </th>
-                                <th class="is-right">
+                                <th nowrap class="is-right">
                                     {{ number_format($amount) }} ₸
                                 </th>
                             </tr>

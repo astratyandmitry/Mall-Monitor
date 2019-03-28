@@ -36,16 +36,19 @@
                         <tr>
                             <th nowrap width="64">
                                 ID
-                                <i class="fa fa-sort-desc"></i>
+                                @include('layouts.includes.table.sorting', ['attribute' => 'id'])
                             </th>
                             <th nowrap>
                                 Название
-                                <i class="fa fa-sort"></i>
+                                @include('layouts.includes.table.sorting', ['attribute' => 'name'])
                             </th>
                             <th nowrap class="is-right" width="80">
                             </th>
                         </tr>
                         <form method="GET">
+                            @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'id'])
+                            @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
+
                             <tr class="is-filter">
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.input', [
@@ -94,7 +97,7 @@
                 </div>
             </div>
 
-            {{ $entities->appends(getNotEmptyQueryParameters())->links('vendor.pagination.default') }}
+            {{ $entities->appends(paginateAppends())->links('vendor.pagination.default') }}
         </div>
     </div>
 @endsection

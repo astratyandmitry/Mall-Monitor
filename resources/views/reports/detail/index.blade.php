@@ -27,6 +27,9 @@
     <div class="filter {{ isRequestEmpty() ? 'is-hidden' : '' }}">
         <div class="container">
             <form method="GET" class="filter-form">
+                @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'created_at'])
+                @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'desc'])
+
                 <div class="grid">
                     @include('layouts.includes.form.dropdown', [
                         'placeholder' => 'Все',
@@ -94,33 +97,32 @@
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>
+                                <th nowrap>
                                     Арендатор
-                                    <i class="fa fa-sort"></i>
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'store_id', 'default_key' => 'created_at'])
                                 </th>
-                                <th>
+                                <th nowrap width="160">
                                     Код касссы
-                                    <i class="fa fa-sort"></i>
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'kkm_code', 'default_key' => 'created_at'])
                                 </th>
-                                <th>
+                                <th nowrap width="120">
                                     Док. №
-                                    <i class="fa fa-sort"></i>
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'number', 'default_key' => 'created_at'])
                                 </th>
-                                <th class="is-center" width="110">
+                                <th nowrap class="is-center" width="110">
                                     Кол-во поз.
-                                    <i class="fa fa-sort"></i>
                                 </th>
-                                <th width="160">
+                                <th nowrap width="160">
                                     Операция
-                                    <i class="fa fa-sort"></i>
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'type_id', 'default_key' => 'created_at'])
                                 </th>
-                                <th class="is-right" width="80">
+                                <th nowrap class="is-right" width="80">
                                     Сумма
-                                    <i class="fa fa-sort"></i>
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'amount', 'default_key' => 'created_at'])
                                 </th>
-                                <th class="is-right" width="140 ">
+                                <th nowrap class="is-right" width="140 ">
                                     Дата и время
-                                    <i class="fa fa-sort-desc"></i>
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'created_at', 'default_key' => 'created_at', 'default_type' => 'desc'])
                                 </th>
                             </tr>
                             </thead>
@@ -129,27 +131,27 @@
                             @php $count = 0 @endphp
                             @foreach($cheques as $cheque)
                                 <tr>
-                                    <td>
+                                    <td nowrap>
                                         {{ $cheque->store->name }}
                                     </td>
-                                    <td>
+                                    <td nowrap>
                                         {{ $cheque->kkm_code }}
                                     </td>
-                                    <td>
+                                    <td nowrap>
                                         {{ $cheque->number }}
                                     </td>
-                                    <td class="is-center">
-                                        {{ isset($counts[$cheque->id]['count']) ? number_format($counts[$cheque->id]['count']) : 0 }}
+                                    <td nowrap class="is-center">
+                                        {{ isset($counts[$cheque->id]) ? number_format($counts[$cheque->id]) : 0 }}
                                     </td>
-                                    <td>
+                                    <td nowrap>
                                         <div class="badge is-inline {{ $cheque->type->getCssClass() }}">
                                             {{ $cheque->type->name }}
                                         </div>
                                     </td>
-                                    <td class="is-right">
+                                    <td nowrap class="is-right">
                                         {{ number_format($cheque->amount) }} ₸
                                     </td>
-                                    <td class="is-right">
+                                    <td nowrap class="is-right">
                                         {{ $cheque->created_at->format('d.m.Y H:i:s') }}
                                     </td>
                                 </tr>
@@ -157,10 +159,10 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th colspan="4">
+                                <th nowrap colspan="4">
                                     Общее количество: {{ number_format($statistics['count']) }}
                                 </th>
-                                <th colspan="4" class="is-right">
+                                <th nowrap colspan="4" class="is-right">
                                     Общая сумма: {{ number_format($statistics['total']) }} ₸
                                 </th>
                             </tr>
@@ -169,7 +171,7 @@
                     </div>
                 </div>
 
-                {{ $cheques->appends(getNotEmptyQueryParameters())->links('vendor.pagination.default') }}
+                {{ $cheques->appends(paginateAppends())->links('vendor.pagination.default') }}
             </div>
         </div>
     @else

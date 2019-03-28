@@ -8,7 +8,8 @@ table {
       background: $color-grey-lighter;
       color: $color-grey-dark;
 
-      i {
+      a {
+        border-bottom: none;
         margin-left: $size-0-1;
         opacity: .32;
 

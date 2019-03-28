@@ -211,7 +211,18 @@ class Cheque extends Model
             $builder->where('created_at', '<=', $dateTo);
         }
 
-        $builder->orderBy('id', 'desc');
+        $sort_key = request()->query('sort_key', 'created_at');
+        $sort_type = request()->query('sort_type', 'desc');
+
+        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
+            $sort_key = 'created_at';
+        }
+
+        if ( ! in_array($sort_type, ['asc', 'desc'])) {
+            $sort_type = 'asc';
+        }
+
+        $builder->orderBy($sort_key, $sort_type);
 
         return $builder;
     }
@@ -244,7 +255,18 @@ class Cheque extends Model
             $builder->where('created_at', '<=', $dateTo);
         }
 
-        $builder->orderBy('id', 'asc');
+        $sort_key = request()->query('sort_key', 'store_id');
+        $sort_type = request()->query('sort_type', 'asc');
+
+        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key) && ! in_array($sort_key, ['avg', 'count', 'amount'])) {
+            $sort_key = 'store_id';
+        }
+
+        if ( ! in_array($sort_type, ['asc', 'desc'])) {
+            $sort_type = 'asc';
+        }
+
+        $builder->orderBy($sort_key, $sort_type);
 
         return $builder;
     }
@@ -272,6 +294,19 @@ class Cheque extends Model
         if ($dateTo) {
             $builder->where('created_at', '<=', $dateTo);
         }
+
+        $sort_key = request()->query('sort_key', 'mall_id');
+        $sort_type = request()->query('sort_type', 'asc');
+
+        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key) && ! in_array($sort_key, ['avg', 'count', 'amount'])) {
+            $sort_key = 'mall_id';
+        }
+
+        if ( ! in_array($sort_type, ['asc', 'desc'])) {
+            $sort_type = 'asc';
+        }
+
+        $builder->orderBy($sort_key, $sort_type);
 
         return $builder;
     }

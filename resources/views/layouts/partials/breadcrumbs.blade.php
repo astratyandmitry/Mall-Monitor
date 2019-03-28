@@ -24,7 +24,11 @@
                 </li>
                 <li class="breadcrumbs-list-item">
                     <strong class="breadcrumbs-list-item-value">
-                        {{ request()->route()->getActionMethod() == 'index' ?  $label : $title }}
+                        @if (request()->route()->getActionMethod() == 'index')
+                            {{ $label ?? $title }}
+                        @else
+                            {{ $title }}
+                        @endif
                     </strong>
                 </li>
             </ul>

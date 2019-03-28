@@ -37,19 +37,11 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
             return $cheque->id;
         })->toArray();
 
-        $counts = [];
-        $chequeCounts = \DB::table('cheque_items')
-            ->select(\DB::raw('count(id) as count, sum(quantity) as quantity, cheque_id'))
+        $counts = \DB::table('cheque_items')
+            ->select(\DB::raw('count(id) as count, cheque_id'))
             ->groupBy('cheque_id')
             ->whereIn('cheque_id', $chequesId)
-            ->get();
-
-        foreach ($chequeCounts as $chequeCount) {
-            $counts[$chequeCount->cheque_id] = [
-                'count' => $chequeCount->count,
-                'quantity' => $chequeCount->quantity
-            ];
-        }
+            ->pluck('count', 'cheque_id');
 
         return view('reports.detail.index', $this->withData([
             'statistics' => $statistics,
