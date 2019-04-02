@@ -24,7 +24,7 @@
             @if (isset($required) && $required) required @endif
             @if (isset($autofocus) && $autofocus) autofocus @endif
     >
-        <option selected>{{ (isset($placeholder)) ? $placeholder : null }}</option>
+        <option selected value="">{{ (isset($placeholder)) ? $placeholder : null }}</option>
         @foreach($options as $group => $data)
             @if (is_array($data))
                 <optgroup label="{{ $group }}">

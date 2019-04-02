@@ -131,6 +131,8 @@ return [
         'new_password_confirmation' => 'повтор нового пароля',
         'user_id' => 'пользователь',
         'system_key' => 'системный ключ',
+        'mall_id' => 'ТРЦ',
+        'store_id' => 'арендатор',
     ],
 
 ];

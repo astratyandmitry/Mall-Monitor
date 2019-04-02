@@ -46,6 +46,13 @@ class StoreType extends Model
         '_unique' => 'name',
     ];
 
+    /**
+     * @var array
+     */
+    protected $messages = [
+        'color' => 'цвет',
+    ];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

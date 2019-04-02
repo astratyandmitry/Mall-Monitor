@@ -67,8 +67,8 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
      */
     protected function getExportData(): array
     {
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $dateFrom = $this->getDate('from');
+        $dateTo = $this->getDate('to');
 
         $statistics = Cheque::reportStore($dateFrom, $dateTo)
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id'))
@@ -93,10 +93,19 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
      */
     protected function getDate(string $key): ?string
     {
-        if ($date = \request()->query($key)) {
-            return date('Y-m-d H:i:s', strtotime($date));
-        }
+        if ($date = request()->query("date_{$key}")) {
+            $time = request()->query("time_{$key}");
 
+            if ( ! $time) {
+                $time = ($key == 'from') ? '00:00' : '23:59';
+            }
+
+            request()->merge([
+                "time_{$key}" => $time,
+            ]);
+
+            return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
+        }
         return null;
     }
 

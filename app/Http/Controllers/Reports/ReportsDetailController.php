@@ -22,8 +22,8 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
         $this->setActivePage('reports.detail');
         $this->addBreadcrumb('Отчеты', route('reports.detail.index'));
 
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $dateFrom = $this->getDate('from');
+        $dateTo = $this->getDate('to');
 
         $builder1 = Cheque::query()->reportDetail($dateFrom, $dateTo);
         $builder2 = clone $builder1;
@@ -84,8 +84,8 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
      */
     protected function getExportData(): array
     {
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $dateFrom = $this->getDate('from');
+        $dateTo = $this->getDate('to');
 
         $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->with(['items'])->get();
 
@@ -104,8 +104,18 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
      */
     protected function getDate(string $key): ?string
     {
-        if ($date = \request()->query($key)) {
-            return date('Y-m-d H:i', strtotime($date));
+        if ($date = request()->query("date_{$key}")) {
+            $time = request()->query("time_{$key}");
+
+            if ( ! $time) {
+                $time = ($key == 'from') ? '00:00' : '23:59';
+            }
+
+            request()->merge([
+                "time_{$key}" => $time,
+            ]);
+
+            return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
         }
 
         return null;

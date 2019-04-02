@@ -213,13 +213,6 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script>
-        $(function() {
-            $('#graph_date_type').on('change', function() {
-                location.href = window.location.pathname + '?graph_date_type=' + $(this).val();
-            });
-        });
-    </script>
-    <script>
         Chart.defaults.global.legend.display = false;
         Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
             return addCommas(tooltipItem.yLabel);

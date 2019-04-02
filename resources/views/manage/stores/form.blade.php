@@ -61,6 +61,13 @@
                                 ])
 
                                 @include('layouts.includes.form.input', [
+                                    'attribute' => 'name_legal',
+                                    'label' => 'Юр. наименование',
+                                    'required' => true,
+                                    'autofocus' => true,
+                                ])
+
+                                @include('layouts.includes.form.input', [
                                     'attribute' => 'business_identification_number',
                                     'helper' => '12 цифр',
                                     'label' => 'БИН',

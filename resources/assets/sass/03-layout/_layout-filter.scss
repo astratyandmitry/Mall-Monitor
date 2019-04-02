@@ -26,7 +26,20 @@
 
       @include mobile() {
         grid-template-columns: 1fr;
+      }
 
+      .grid-sub {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: $size-0-1;
+
+        @include mobile() {
+          grid-template-columns: 1fr;
+
+          .field {
+            margin-bottom: $size-0-1;
+          }
+        }
       }
     }
 

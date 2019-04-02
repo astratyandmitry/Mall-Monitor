@@ -197,6 +197,7 @@ select {
   text-align: center;
   font-size: $font-14;
   font-weight: 500;
+  width: auto;
   outline: none;
   @include radius($radius);
   @include transition();

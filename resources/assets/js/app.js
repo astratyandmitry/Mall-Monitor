@@ -18,6 +18,9 @@ if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elain
     isMobile = true;
 }
 
+
+
+// Menu
 let Hamburger = {
     $button: $('.header-hamburger-icon'),
     $menu: $('.header-nav')
@@ -48,4 +51,42 @@ $(document).mouseup(function (e) {
     if (!isMobile && !container.is(e.target) && container.has(e.target).length === 0) {
         $('.header-nav-list-item-dropdown:visible').slideUp(160);
     }
+});
+
+
+
+// Dates filter
+$('#time_from').attr('disabled', $('#date_from').val() == '');
+
+$('#date_from').on('change', function () {
+    $('#time_from').attr('disabled', $(this).val() == '');
+});
+
+$('#time_to').attr('disabled', $('#date_to').val() == '');
+
+$('#date_to').on('change', function () {
+    $('#time_to').attr('disabled', $(this).val() == '');
+});
+
+
+
+// Filter
+var $filter = $('.filter');
+var $filterToggle = $('.heading-filter-button');
+
+$filterToggle.on('click', function () {
+    if ($filter.is(':visible')) {
+        $filterToggle.find('span').text('Показать фильтр');
+    } else {
+        $filterToggle.find('span').text('Скрыть фильтр');
+    }
+
+    $filter.slideToggle(160);
+});
+
+
+
+// Graph date changes
+$('#graph_date_type').on('change', function() {
+    location.href = window.location.pathname + '?graph_date_type=' + $(this).val();
 });

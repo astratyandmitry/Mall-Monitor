@@ -2,7 +2,7 @@
 @php /** @var array $statistics */ @endphp
 @php /** @var array $counts */ @endphp
 
-@php $exportParams = request()->only(['date_from', 'date_to', 'store_id', 'cashbox_id']) @endphp
+@php $exportParams = request()->only(['date_from', 'date_to', 'store_id', 'mall_id']) @endphp
 
 @extends('layouts.app', $globals)
 
@@ -32,38 +32,68 @@
 
                 <div class="grid">
                     @include('layouts.includes.form.dropdown', [
+                        'attribute' => 'mall_id',
+                        'value' => request()->query('mall_id'),
+                        'label' => 'ТРЦ',
                         'placeholder' => 'Все',
-                        'attribute' => 'store_id',
-                        'value' => request()->query('store_id'),
-                        'label' => 'Арендатор',
-                        'options' => \App\Repositories\StoreRepository::getOptions(),
+                        'options' => \App\Repositories\MallRepository::getOptions(),
                     ])
 
-                    @include('layouts.includes.form.dropdown', [
-                        'placeholder' => 'Все',
-                        'attribute' => 'cashbox_id',
-                        'value' => request()->query('cashbox_id'),
-                        'label' => 'Касса',
-                        'options' => \App\Repositories\CashboxRepository::getOptionsForStore(request()->query('store_id')),
-                    ])
+                    @if (request()->get('mall_id'))
+                        @include('layouts.includes.form.dropdown', [
+                           'attribute' => 'store_id',
+                            'value' => request()->query('store_id'),
+                           'placeholder' => 'Все',
+                           'label' => 'Арендатор',
+                           'options' => \App\Repositories\StoreRepository::getOptions(request()->get('mall_id')),
+                       ])
+                    @else
+                        @include('layouts.includes.form.dropdown-grouped', [
+                           'attribute' => 'store_id',
+                           'placeholder' => 'Все',
+                           'value' => request()->query('store_id'),
+                           'label' => 'Арендатор',
+                           'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
+                       ])
+                    @endif
                 </div>
 
                 <div class="grid">
-                    @include('layouts.includes.form.input', [
-                        'attribute' => 'date_from',
-                        'value' => request()->query('date_from'),
-                        'label' => 'Дата начала',
-                        'type' => 'datetime-local',
-                        'placeholder' => 'yyyy-mm-dd HH:ii',
-                    ])
+                    <div class="grid-sub">
+                        @include('layouts.includes.form.input', [
+                            'attribute' => 'date_from',
+                            'value' => request()->query('date_from'),
+                            'label' => 'Дата начала',
+                            'type' => 'date',
+                            'placeholder' => 'mm-dd-yyyy',
+                        ])
 
-                    @include('layouts.includes.form.input', [
-                        'attribute' => 'date_to',
-                        'value' => request()->query('date_to'),
-                        'label' => 'Дата окончания',
-                        'type' => 'datetime-local',
-                        'placeholder' => 'yyyy-mm-dd HH:ii',
-                    ])
+                        @include('layouts.includes.form.input', [
+                            'attribute' => 'time_from',
+                            'value' => request()->query('time_from'),
+                            'label' => 'Время начала',
+                            'type' => 'time',
+                            'placeholder' => 'HH:ii',
+                        ])
+                    </div>
+
+                    <div class="grid-sub">
+                        @include('layouts.includes.form.input', [
+                             'attribute' => 'date_to',
+                             'value' => request()->query('date_to'),
+                             'label' => 'Дата окончания',
+                             'type' => 'date',
+                             'placeholder' => 'mm-dd-yyyy',
+                         ])
+
+                        @include('layouts.includes.form.input', [
+                            'attribute' => 'time_to',
+                            'value' => request()->query('time_to'),
+                            'label' => 'Время окончания',
+                            'type' => 'time',
+                            'placeholder' => 'HH:ii',
+                        ])
+                    </div>
                 </div>
 
                 <button type="submit" class="btn">Применить фильтр</button>
@@ -190,19 +220,6 @@
 @push('scripts')
     <script>
         $(function () {
-            var $filter = $('.filter');
-            var $filterToggle = $('.heading-filter-button');
-
-            $filterToggle.on('click', function () {
-                if ($filter.is(':visible')) {
-                    $filterToggle.find('span').text('Показать фильтр');
-                } else {
-                    $filterToggle.find('span').text('Скрыть фильтр');
-                }
-
-                $filter.slideToggle(160);
-            });
-
             $storeID = $('#store_id');
             $cashboxID = $('#cashbox_id');
 

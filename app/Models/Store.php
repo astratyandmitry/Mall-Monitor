@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * @property integer               $id
  * @property string                $name
+ * @property string                $name_legal
  * @property integer               $business_identification_number
  * @property integer               $mall_id
  * @property integer               $type_id
@@ -35,6 +36,7 @@ class Store extends Model
      */
     protected $fillable = [
         'name',
+        'name_legal',
         'business_identification_number',
         'mall_id',
         'type_id',
@@ -63,6 +65,7 @@ class Store extends Model
      */
     protected $rules = [
         'name' => 'required|max:200',
+        'name_legal' => 'required|max:200',
         'mall_id' => 'required|exists:malls,id',
         'business_identification_number' => 'required|regex:/^(\d{12})$/i',
         'type_id' => 'required|exists:store_types,id',
@@ -73,7 +76,9 @@ class Store extends Model
      */
     protected $messages = [
         'mall_id' => 'ТЦ',
-        'type_id' => 'вид',
+        'type_id' => 'категория',
+        'name_legal' => 'юр. наименование',
+        'business_identification_number' => 'БИН',
     ];
 
     /**
