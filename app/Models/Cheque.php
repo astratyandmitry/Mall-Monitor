@@ -281,13 +281,36 @@ class Cheque extends Model
         }
 
         if ($sort = request()->query('sort')) {
+            if ($limit = request()->query('limit')) {
+                $builder->limit($limit);
+            }
 
+            switch ($sort) {
+                case 'top_up_count':
+                    $builder->orderBy('count', 'desc');
+                    break;
+                case 'top_down_count':
+                    $builder->orderBy('count', 'asc');
+                    break;
+                case 'top_up_amount':
+                    $builder->orderBy('amount', 'desc');
+                    break;
+                case 'top_down_amount':
+                    $builder->orderBy('amount', 'asc');
+                    break;
+                case 'top_up_avg':
+                    $builder->orderBy('avg', 'desc');
+                    break;
+                case 'top_down_avg':
+                    $builder->orderBy('avg', 'asc');
+                    break;
+            }
         } else {
-            $sort_key = request()->query('sort_key', 'store_id');
-            $sort_type = request()->query('sort_type', 'asc');
+            $sort_key = request()->query('sort_key', 'created_at');
+            $sort_type = request()->query('sort_type', 'desc');
 
-            if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key) && ! in_array($sort_key, ['avg', 'count', 'amount'])) {
-                $sort_key = 'store_id';
+            if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
+                $sort_key = 'created_at';
             }
 
             if ( ! in_array($sort_type, ['asc', 'desc'])) {

@@ -2,7 +2,7 @@
 @php /** @var array $mall_names */ @endphp
 @php /** @var array $store_names */ @endphp
 
-@php $exportParams = request()->only(['mall_id', 'store_id', 'date_from', 'time_from', 'date_to', 'time_to', 'sort_key', 'sort_value', 'type_id']) @endphp
+@php $exportParams = request()->only(['mall_id', 'store_id', 'date_from', 'time_from', 'date_to', 'time_to', 'type_id', 'sort', 'limit', 'sort_key', 'sort_value']) @endphp
 
 @extends('layouts.app', $globals)
 
@@ -30,7 +30,7 @@
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'store_id'])
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
 
-                <div class="grid is-3">
+                <div class="grid">
                     @include('layouts.includes.form.dropdown', [
                         'attribute' => 'mall_id',
                         'value' => request()->query('mall_id'),
@@ -56,14 +56,34 @@
                            'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
                        ])
                     @endif
+                </div>
 
+                <div class="grid">
                     @include('layouts.includes.form.dropdown', [
-                       'attribute' => 'type_id',
-                       'value' => request()->query('type_id'),
-                       'label' => 'Категория',
-                       'placeholder' => 'Все',
-                       'options' => \App\Repositories\StoreTypeRepository::getOptions(),
-                   ])
+                        'attribute' => 'type_id',
+                        'value' => request()->query('type_id'),
+                        'label' => 'Категория',
+                        'placeholder' => 'Все',
+                        'options' => \App\Repositories\StoreTypeRepository::getOptions(),
+                    ])
+
+                    <div class="grid-sub is-sm-2">
+                        @include('layouts.includes.form.dropdown', [
+                           'attribute' => 'sort',
+                            'value' => request()->query('sort'),
+                           'placeholder' => 'Все',
+                           'label' => 'ТОП',
+                           'options' => $store_sort,
+                       ])
+
+                        @include('layouts.includes.form.input', [
+                           'attribute' => 'limit',
+                           'value' => request()->query('limit'),
+                           'placeholder' => 'Все',
+                           'label' => 'Ограничение',
+                           'type' => 'number',
+                       ])
+                    </div>
                 </div>
 
                 <div class="grid">
@@ -119,10 +139,10 @@
                         </div>
 
                         <div class="box-title-action">
-                            {{--<a href="{{ route('reports.store.export.pdf', $exportParams) }}" class="btn is-sm is-outlined">--}}
-                                {{--<i class="fa fa-file-pdf-o"></i>--}}
-                                {{--Скачать PDF--}}
-                            {{--</a>--}}
+                            <a href="{{ route('reports.store.export.pdf', $exportParams) }}" class="btn is-sm is-outlined">
+                                <i class="fa fa-file-pdf-o"></i>
+                                Скачать PDF
+                            </a>
 
                             <a href="{{ route('reports.store.export.excel', $exportParams) }}" class="btn is-sm is-outlined">
                                 <i class="fa fa-file-excel-o"></i>
