@@ -28,8 +28,17 @@ class DashboardController extends Controller
         $this->setActiveSection('dashboard');
         $this->setActivePage('dashboard');
 
+        $graphDateTypes = [
+            'daily' => 'DATE(created_at)',
+            'monthly' => 'CONCAT(YEAR(created_at),"-",MONTH(created_at))',
+            'yearly' => 'YEAR(created_at)',
+        ];
+
+        $graphDateType = (request('graph_date_type') && in_array(request('graph_date_type'),
+                array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
+
         $statistics = \DB::table('cheques')
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, DATE(created_at) as date'))
+            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, {$graphDateTypes[$graphDateType]} as date"))
             ->where('mall_id', auth()->user()->mall_id)
             ->groupBy('date')
             ->orderBy('date', 'desc')
@@ -91,6 +100,11 @@ class DashboardController extends Controller
     protected function formatDate(string $date): string
     {
         $dates = explode('-', $date);
+
+        if (count($dates) == 1) {
+            return $date;
+        }
+
         $months = [
             1 => 'янв.',
             2 => 'фев.',
@@ -105,6 +119,10 @@ class DashboardController extends Controller
             11 => 'ноя.',
             12 => 'дек.',
         ];
+
+        if (count($dates) == 2) {
+            return $months[(int)$dates[1]] . " {$dates[0]}";
+        }
 
         return (int)$dates[2] . " " . $months[(int)$dates[1]] . " {$dates[0]}";
     }

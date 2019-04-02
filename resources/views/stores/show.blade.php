@@ -2,6 +2,7 @@
 @php /** @var \stdClass[] $statistics */ @endphp
 @php /** @var \App\Models\Cheque[] $cheques */ @endphp
 @php /** @var \App\Models\Store $store */ @endphp
+@php /** @var array $graphDateTypes*/ @endphp
 
 @php $reportParams = ['store_id' => $store->id, 'date_from' => date('Y-m-d') . 'T00:00', 'date_to' => date('Y-m-d') . 'T23:59']; @endphp
 
@@ -13,6 +14,14 @@
             <div class="heading-content has-action">
                 <div class="heading-text">
                     {{ $globals['title'] }}
+                </div>
+
+                <div class="heading-action">
+                    @include('layouts.includes.field.dropdown', [
+                        'attribute' => 'graph_date_type',
+                        'options'  => $graph_date_types,
+                        'without_placeholder' => true,
+                    ])
                 </div>
             </div>
         </div>
@@ -212,6 +221,13 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script>
+        $(function() {
+            $('#graph_date_type').on('change', function() {
+                location.href = window.location.pathname + '?graph_date_type=' + $(this).val();
+            });
+        });
+    </script>
     <script>
         Chart.defaults.global.legend.display = false;
         Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {

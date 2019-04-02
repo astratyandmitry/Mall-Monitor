@@ -26,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
                 'times' => 'По часам',
             ]);
 
+            $view->with('graph_date_types', [
+                'daily' => 'По дням',
+                'monthly' => 'По месяцам',
+                'yearly' => 'По годам',
+            ]);
+
             $view->with('monthes', [
                 1 => 'Янваль',
                 2 => 'Февраль',
