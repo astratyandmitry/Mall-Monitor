@@ -90,10 +90,10 @@
                         </div>
 
                         <div class="box-title-action">
-                            <a href="{{ route('reports.mall.export.pdf', $exportParams) }}" class="btn is-sm is-outlined">
-                                <i class="fa fa-file-pdf-o"></i>
-                                Скачать PDF
-                            </a>
+                            {{--<a href="{{ route('reports.mall.export.pdf', $exportParams) }}" class="btn is-sm is-outlined">--}}
+                                {{--<i class="fa fa-file-pdf-o"></i>--}}
+                                {{--Скачать PDF--}}
+                            {{--</a>--}}
 
                             <a href="{{ route('reports.mall.export.excel', $exportParams) }}" class="btn is-sm is-outlined">
                                 <i class="fa fa-file-excel-o"></i>
