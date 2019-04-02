@@ -205,6 +205,23 @@ class Cheque extends Model
             return $builder->where('cashbox_id', request('cashbox_id'));
         });
 
+        $builder->when(request('store_name'), function (Builder $builder): Builder {
+            return $builder->whereHas('store', function (Builder $builder): Builder {
+                return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
+            });
+        });
+
+        $builder->when(request('store_legal'), function (Builder $builder): Builder {
+            return $builder->whereHas('store', function (Builder $builder): Builder {
+                return $builder->where('name_legal', 'LIKE', '%' . request('store_legal') . '%');
+            });
+        });
+        $builder->when(request('store_bin'), function (Builder $builder): Builder {
+            return $builder->whereHas('store', function (Builder $builder): Builder {
+                return $builder->where('business_identification_number', request('store_bin'));
+            });
+        });
+
         if ($dateFrom) {
             $builder->where('created_at', '>=', $dateFrom);
         }

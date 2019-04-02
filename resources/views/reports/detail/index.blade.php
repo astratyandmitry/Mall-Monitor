@@ -2,7 +2,7 @@
 @php /** @var array $statistics */ @endphp
 @php /** @var array $counts */ @endphp
 
-@php $exportParams = request()->only(['date_from', 'date_to', 'store_id', 'mall_id']) @endphp
+@php $exportParams = request()->only(['date_from', 'date_to', 'store_id', 'mall_id', 'store_name', 'store_official', 'store_bin']) @endphp
 
 @extends('layouts.app', $globals)
 
@@ -56,6 +56,29 @@
                            'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
                        ])
                     @endif
+                </div>
+
+                <div class="grid is-3">
+                    @include('layouts.includes.form.input', [
+                        'attribute' => 'store_name',
+                        'value' => request()->query('store_name'),
+                        'label' => 'Бренд',
+                        'placeholder' => 'Любой',
+                    ])
+
+                    @include('layouts.includes.form.input', [
+                        'attribute' => 'store_official',
+                        'value' => request()->query('store_official'),
+                        'label' => 'Юр. наименование',
+                        'placeholder' => 'Любой',
+                    ])
+
+                    @include('layouts.includes.form.input', [
+                        'attribute' => 'store_bin',
+                        'value' => request()->query('store_bin'),
+                        'label' => 'БИН',
+                        'placeholder' => 'Любой',
+                    ])
                 </div>
 
                 <div class="grid">
