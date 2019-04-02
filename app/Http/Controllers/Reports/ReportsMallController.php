@@ -23,44 +23,22 @@ class ReportsMallController extends \App\Http\Controllers\Controller
         $this->setActivePage('reports.mall');
         $this->addBreadcrumb('Отчеты', route('reports.mall.index'));
 
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $data = $this->getExportData();
 
-        $statistics = Cheque::reportMall($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id'))
-            ->groupBy('mall_id')->get()->toArray();
-
-        return view('reports.mall.index', $this->withData([
-            'statistics' => $statistics,
-        ]));
+        return view('reports.mall.index', $this->withData($data));
     }
 
 
     /**
      * @return string
      */
-    public function exportExcel()
+    public function exportExcel(): string
     {
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $filename = 'mallmonitor_reports.mall_' . date('YmdHi');
 
-        $statistics = Cheque::reportMall($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
-            ->groupBy('mall_id')->get()->toArray();
-        $export = [];
-
-        foreach ($statistics as $statistic) {
-            $mall = Mall::find($statistic['mall_id']);
-
-            $export[$mall->id]['ТРЦ'] = $mall->name;
-            $export[$mall->id]['Кол-во чеков'] = (int)$statistic['count'];
-            $export[$mall->id]['Средний чек'] = (int)round($statistic['amount'] / $statistic['count']);
-            $export[$mall->id]['Сумма чеков'] = (int)$statistic['amount'];
-        }
-
-        \Excel::create('mallmonitor_reports.mall', function ($excel) use ($export) {
-            $excel->sheet("Отчет", function ($sheet) use ($export) {
-                $sheet->fromArray($export);
+        \Excel::create($filename, function ($excel) {
+            $excel->sheet('Отчет по ТРЦ', function ($sheet) {
+                $sheet->loadView('reports.mall.export.excel', $this->getExportData());
             });
         })->export('xls');
 
@@ -68,9 +46,39 @@ class ReportsMallController extends \App\Http\Controllers\Controller
     }
 
 
+    /**
+     * @return mixed
+     */
     public function exportPDF()
     {
+        $filename = 'mallmonitor_reports.mall_' . date('YmdHi');
 
+        $pdf = \PDF::loadView('reports.mall.export.pdf', $this->getExportData())->setPaper('a4', 'landscape');
+
+        return $pdf->download("{$filename}.pdf");
+    }
+
+
+    /**
+     * @return array
+     */
+    protected function getExportData(): array
+    {
+        $dateFrom = $this->getDate('date_from');
+        $dateTo = $this->getDate('date_to');
+
+        $statistics = Cheque::reportMall($dateFrom, $dateTo)
+            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id'))
+            ->groupBy('mall_id')->get();
+
+        $data = [
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo,
+            'statistics' => $statistics->toArray(),
+            'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id'))->pluck('name', 'id'),
+        ];
+
+        return $data;
     }
 
 

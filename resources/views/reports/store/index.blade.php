@@ -1,5 +1,6 @@
 @php /** @var array $statistics */ @endphp
-@php /** @var \App\Models\Store $store */ @endphp
+@php /** @var array $mall_names */ @endphp
+@php /** @var array $store_names */ @endphp
 
 @php $exportParams = request()->only(['date_from', 'date_to']) @endphp
 
@@ -23,11 +24,18 @@
         </div>
     </div>
 
-    <div class="filter {{ isRequestEmpty() ? 'is-hidden' : '' }}">
+    <div class="filter {{ isRequestEmpty() ? 'is-hidde1n' : '' }}">
         <div class="container">
             <form method="GET" class="filter-form">
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'store_id'])
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
+
+                @include('layouts.includes.form.dropdown', [
+                    'attribute' => 'mall_id',
+                    'value' => request()->query('mall_id'),
+                    'label' => 'ТРЦ',
+                    'options' => \App\Repositories\MallRepository::getOptions(),
+                ])
 
                 <div class="grid">
                     @include('layouts.includes.form.input', [
@@ -106,13 +114,12 @@
                             @foreach($statistics as $statistic)
                                 @php $amount += $statistic['amount'] @endphp
                                 @php $count += $statistic['count'] @endphp
-                                @php $store = \App\Models\Store::find($statistic['store_id']) @endphp
                                 <tr>
                                     <td nowrap>
-                                        {{ $store->mall->name }}
+                                        {{ $mall_names[$statistic['mall_id']] }}
                                     </td>
                                     <td nowrap>
-                                        {{ $store->name }}
+                                        {{ $store_names[$statistic['store_id']] }}
                                     </td>
                                     <td nowrap class="is-center">
                                         {{ number_format($statistic['count']) }}

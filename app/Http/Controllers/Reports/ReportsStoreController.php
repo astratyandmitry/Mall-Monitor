@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Reports;
 
-use App\Models\Cheque;
+use App\Models\Mall;
 use App\Models\Store;
+use App\Models\Cheque;
 
 /**
  * @version   1.0.1
@@ -25,47 +26,22 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
         $this->setActivePage('reports.store');
         $this->addBreadcrumb('Отчеты', route('reports.store.index'));
 
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $data = $this->getExportData();
 
-        $statistics = Cheque::reportStore($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, store_id'))
-            ->groupBy('store_id')->get()->toArray();
-
-        return view('reports.store.index', $this->withData([
-            'statistics' => $statistics,
-        ]));
+        return view('reports.store.index', $this->withData($data));
     }
 
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return string
      */
-    public function exportExcel(\Illuminate\Http\Request $request)
+    public function exportExcel(): string
     {
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $filename = 'mallmonitor_reports.store_' . date('YmdHi');
 
-        $statistics = Cheque::reportStore($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
-            ->groupBy('store_id')->get()->toArray();
-
-        $export = [];
-        foreach ($statistics as $statistic) {
-            $store = Store::find($statistic['store_id']);
-
-            $export[$store->id]['ТРЦ'] = $store->mall->name;
-            $export[$store->id]['Заведение'] = $store->name;
-            $export[$store->id]['Кол-во чеков'] = (int)$statistic['count'];
-            $export[$store->id]['Средний чек'] = (int)round($statistic['amount'] / $statistic['count']);
-            $export[$store->id]['Сумма чеков'] = (int)$statistic['amount'];
-        }
-
-        \Excel::create('mallmonitor_reports.store', function ($excel) use ($export) {
-            $excel->sheet("Отчет", function ($sheet) use ($export) {
-                $sheet->fromArray($export);
+        \Excel::create($filename, function ($excel) {
+            $excel->sheet('Отчет по арендаторам', function ($sheet) {
+                $sheet->loadView('reports.store.export.excel', $this->getExportData());
             });
         })->export('xls');
 
@@ -73,10 +49,42 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
     }
 
 
+    /**
+     * @return mixed
+     */
     public function exportPDF()
     {
+        $filename = 'mallmonitor_reports.store_' . date('YmdHi');
 
+        $pdf = \PDF::loadView('reports.store.export.pdf', $this->getExportData())->setPaper('a4', 'landscape');
+
+        return $pdf->download("{$filename}.pdf");
     }
+
+
+    /**
+     * @return array
+     */
+    protected function getExportData(): array
+    {
+        $dateFrom = $this->getDate('date_from');
+        $dateTo = $this->getDate('date_to');
+
+        $statistics = Cheque::reportStore($dateFrom, $dateTo)
+            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id'))
+            ->groupBy('store_id')->get();
+
+        $data = [
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo,
+            'statistics' => $statistics->toArray(),
+            'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id'))->pluck('name', 'id'),
+            'store_names' => Store::whereIn('id', $statistics->pluck('store_id'))->pluck('name', 'id'),
+        ];
+
+        return $data;
+    }
+
 
     /**
      * @param string $key

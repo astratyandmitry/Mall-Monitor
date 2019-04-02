@@ -13,11 +13,9 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
 {
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\View\View
      */
-    public function index(\Illuminate\Http\Request $request): \Illuminate\View\View
+    public function index(): \Illuminate\View\View
     {
         $this->setTitle('Детальный отчет');
         $this->setActiveSection('reports');
@@ -52,52 +50,15 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
 
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return string
      */
-    public function exportExcel(\Illuminate\Http\Request $request)
+    public function exportExcel(): string
     {
-        $dateFrom = $this->getDate('date_from');
-        $dateTo = $this->getDate('date_to');
+        $filename = 'mallmonitor_reports.detail_' . date('YmdHi');
 
-        $filename = "mallmonitor_reports.detail";
-        $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->get();
-
-        $chequesId = $cheques->map(function (Cheque $cheque) {
-            return $cheque->id;
-        })->toArray();
-
-        $counts = [];
-        $chequeCounts = \DB::table('cheque_items')
-            ->select(\DB::raw('count(id) as count, sum(quantity) as quantity, cheque_id'))
-            ->groupBy('cheque_id')
-            ->whereIn('cheque_id', $chequesId)
-            ->get();
-
-        foreach ($chequeCounts as $chequeCount) {
-            $counts[$chequeCount->cheque_id] = [
-                'count' => $chequeCount->count,
-                'quantity' => $chequeCount->quantity
-            ];
-        }
-
-        $export = [];
-        foreach ($cheques as $cheque) {
-            $export[$cheque->id]['Заведение'] = $cheque->store->name;
-            $export[$cheque->id]['Код касссы'] = $cheque->kkm_code;
-            $export[$cheque->id]['Номер документа'] = $cheque->number;
-            $export[$cheque->id]['Тип операции'] = $cheque->type->name;
-            $export[$cheque->id]['Вид оплаты'] = $cheque->payment->name;
-            $export[$cheque->id]['Сумма'] = $cheque->amount;
-            $export[$cheque->id]['Кол-во позиций'] = isset($counts[$cheque->id]['count']) ? (int)$counts[$cheque->id]['count'] : 0;
-            $export[$cheque->id]['Сумма позиций'] = isset($counts[$cheque->id]['quantity']) ? (int)$counts[$cheque->id]['quantity'] : 0;
-            $export[$cheque->id]['Дата и время'] = $cheque->created_at->format('d.m.Y H:i:s');
-        }
-
-        \Excel::create($filename, function ($excel) use ($export) {
-            $excel->sheet("Отчет", function ($sheet) use ($export) {
-                $sheet->fromArray($export);
+        \Excel::create($filename, function ($excel) {
+            $excel->sheet('Детальный отчет', function ($sheet) {
+                $sheet->loadView('reports.detail.export.excel', $this->getExportData());
             });
         })->export('xls');
 
@@ -105,9 +66,34 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
     }
 
 
+    /**
+     * @return mixed
+     */
     public function exportPDF()
     {
+        $filename = 'mallmonitor_reports.detail_' . date('YmdHi');
 
+        $pdf = \PDF::loadView('reports.detail.export.pdf', $this->getExportData())->setPaper('a4', 'landscape');
+
+        return $pdf->download("{$filename}.pdf");
+    }
+
+
+    /**
+     * @return array
+     */
+    protected function getExportData(): array
+    {
+        $dateFrom = $this->getDate('date_from');
+        $dateTo = $this->getDate('date_to');
+
+        $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->with(['items'])->get();
+
+        return [
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo,
+            'cheques' => $cheques,
+        ];
     }
 
 
@@ -119,7 +105,7 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
     protected function getDate(string $key): ?string
     {
         if ($date = \request()->query($key)) {
-            return date('Y-m-d H:i:s', strtotime($date));
+            return date('Y-m-d H:i', strtotime($date));
         }
 
         return null;

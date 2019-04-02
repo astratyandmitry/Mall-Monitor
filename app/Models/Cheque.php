@@ -131,7 +131,7 @@ class Cheque extends Model
      */
     public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Store::class)->withTrashed();
     }
 
 
@@ -189,6 +189,8 @@ class Cheque extends Model
      */
     public static function scopeReportDetail(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
     {
+        $builder->with(['store', 'payment', 'type']);
+
         $builder->where('mall_id', auth()->user()->mall_id);
 
         $builder->when(request('mall_id'), function (Builder $builder): Builder {

@@ -1,5 +1,6 @@
 @php /** @var array $statistics */ @endphp
-@php /** @var \App\Models\Mall $mall */ @endphp
+@php /** @var array $mall_names */ @endphp
+@php /** @var array $store_names */ @endphp
 
 @php $exportParams = request()->only(['date_from', 'date_to']) @endphp
 
@@ -102,10 +103,9 @@
                             @foreach($statistics as $statistic)
                                 @php $amount += $statistic['amount'] @endphp
                                 @php $count += $statistic['count'] @endphp
-                                @php $mall = \App\Models\Mall::find($statistic['mall_id']) @endphp
                                 <tr>
                                     <td nowrap>
-                                        {{ $mall->name }}
+                                        {{ $mall_names[$statistic['mall_id']] }}
                                     </td>
                                     <td nowrap class="is-center">
                                         {{ number_format($statistic['count']) }}
