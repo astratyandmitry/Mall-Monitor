@@ -29,7 +29,7 @@
       }
 
       @include mobile() {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
       }
 
       .grid-sub {
