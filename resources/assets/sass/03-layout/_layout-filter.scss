@@ -37,6 +37,10 @@
         grid-template-columns: 1fr 1fr;
         grid-column-gap: $size-0-1;
 
+        &.is-sm-2 {
+          grid-template-columns: 3fr 1fr;
+        }
+
         @include mobile() {
           grid-template-columns: 1fr;
 

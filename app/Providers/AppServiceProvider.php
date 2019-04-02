@@ -26,6 +26,15 @@ class AppServiceProvider extends ServiceProvider
                 'times' => 'По часам',
             ]);
 
+            $view->with('store_sort', [
+                'top_up_count' => 'Лучшие по количеству чеков',
+                'top_down_count' => 'Худшие по количеству чеков',
+                'top_up_amount' => 'Лучшие суммам чека',
+                'top_down_amount' => 'Худшие по суммам чека',
+                'top_up_avg' => 'Лучшие по среднему чеку',
+                'top_down_avg' => 'Худшие по среднему чеку',
+            ]);
+
             $view->with('graph_date_types', [
                 'daily' => 'По дням',
                 'monthly' => 'По месяцам',

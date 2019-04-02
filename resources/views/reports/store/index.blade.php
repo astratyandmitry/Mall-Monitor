@@ -2,7 +2,7 @@
 @php /** @var array $mall_names */ @endphp
 @php /** @var array $store_names */ @endphp
 
-@php $exportParams = request()->only(['mall_id', 'store_id', 'date_from', 'date_to']) @endphp
+@php $exportParams = request()->only(['mall_id', 'store_id', 'date_from', 'time_from', 'date_to', 'time_to', 'sort_key', 'sort_value', 'type_id']) @endphp
 
 @extends('layouts.app', $globals)
 
@@ -24,13 +24,13 @@
         </div>
     </div>
 
-    <div class="filter {{ isRequestEmpty() ? 'is-hidde1n' : '' }}">
+    <div class="filter {{ isRequestEmpty() ? 'is-hidden' : '' }}">
         <div class="container">
             <form method="GET" class="filter-form">
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'store_id'])
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
 
-                <div class="grid">
+                <div class="grid is-3">
                     @include('layouts.includes.form.dropdown', [
                         'attribute' => 'mall_id',
                         'value' => request()->query('mall_id'),
@@ -56,6 +56,14 @@
                            'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
                        ])
                     @endif
+
+                    @include('layouts.includes.form.dropdown', [
+                       'attribute' => 'type_id',
+                       'value' => request()->query('type_id'),
+                       'label' => 'Категория',
+                       'placeholder' => 'Все',
+                       'options' => \App\Repositories\StoreTypeRepository::getOptions(),
+                   ])
                 </div>
 
                 <div class="grid">

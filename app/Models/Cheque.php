@@ -266,6 +266,12 @@ class Cheque extends Model
             return $builder->where('store_id', request()->query('store_id'));
         });
 
+        $builder->when(request('type_id'), function (Builder $builder): Builder {
+            return $builder->whereHas('store', function (Builder $builder): Builder {
+                return $builder->where('type_id', request('type_id'));
+            });
+        });
+
         if ($dateFrom) {
             $builder->where('created_at', '>=', $dateFrom);
         }
@@ -274,18 +280,22 @@ class Cheque extends Model
             $builder->where('created_at', '<=', $dateTo);
         }
 
-        $sort_key = request()->query('sort_key', 'store_id');
-        $sort_type = request()->query('sort_type', 'asc');
+        if ($sort = request()->query('sort')) {
 
-        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key) && ! in_array($sort_key, ['avg', 'count', 'amount'])) {
-            $sort_key = 'store_id';
+        } else {
+            $sort_key = request()->query('sort_key', 'store_id');
+            $sort_type = request()->query('sort_type', 'asc');
+
+            if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key) && ! in_array($sort_key, ['avg', 'count', 'amount'])) {
+                $sort_key = 'store_id';
+            }
+
+            if ( ! in_array($sort_type, ['asc', 'desc'])) {
+                $sort_type = 'asc';
+            }
+
+            $builder->orderBy($sort_key, $sort_type);
         }
-
-        if ( ! in_array($sort_type, ['asc', 'desc'])) {
-            $sort_type = 'asc';
-        }
-
-        $builder->orderBy($sort_key, $sort_type);
 
         return $builder;
     }

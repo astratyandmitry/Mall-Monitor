@@ -2,7 +2,7 @@
 @php /** @var array $mall_names */ @endphp
 @php /** @var array $store_names */ @endphp
 
-@php $exportParams = request()->only(['mall_id', 'date_from', 'date_to']) @endphp
+@php $exportParams = request()->only(['mall_id', 'date_from', 'time_from', 'date_to', 'time_to', 'sort_key', 'sort_value']) @endphp
 
 @extends('layouts.app', $globals)
 
