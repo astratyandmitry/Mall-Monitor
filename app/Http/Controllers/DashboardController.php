@@ -38,7 +38,7 @@ class DashboardController extends Controller
                 array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
 
         $statistics = \DB::table('cheques')
-            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, {$graphDateTypes[$graphDateType]} as date"))
+            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
             ->where('mall_id', auth()->user()->mall_id)
             ->groupBy('date')
             ->orderBy('date', 'desc')
@@ -56,7 +56,7 @@ class DashboardController extends Controller
             $graph['labels'][] = $this->formatDate($statistic->date);
             $graph['amount'][] = round($statistic->amount);
             $graph['count'][] = round($statistic->count);
-            $graph['avg'][] = round($statistic->amount / $statistic->count);
+            $graph['avg'][] = $statistic->avg;
         }
 
         $graph['labels'] = array_reverse($graph['labels']);

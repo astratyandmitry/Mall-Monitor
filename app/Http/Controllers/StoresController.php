@@ -59,7 +59,7 @@ class StoresController extends Controller
                 array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
 
         $statistics = \DB::table('cheques')
-            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, {$graphDateTypes[$graphDateType]} as date"))
+            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
             ->where('store_id', $store->id)
             ->groupBy(\DB::raw('DATE(created_at)'))
             ->orderBy('date', 'desk')
@@ -77,7 +77,7 @@ class StoresController extends Controller
             $graph['labels'][] = $this->formatDate($statistic->date);
             $graph['amount'][] = round($statistic->amount);
             $graph['count'][] = round($statistic->count);
-            $graph['avg'][] = round($statistic->amount / $statistic->count);
+            $graph['avg'][] = $statistic->avg;
         }
 
         $graph['labels'] = array_reverse($graph['labels']);
