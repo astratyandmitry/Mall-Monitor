@@ -61,10 +61,12 @@ class StoresController extends Controller
         $statistics = \DB::table('cheques')
             ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
             ->where('store_id', $store->id)
-            ->groupBy(\DB::raw('DATE(created_at)'))
+            ->groupBy('date')
             ->orderBy('date', 'desk')
             ->limit(10)
             ->get();
+
+        dd($statistics);
 
         $graph = [
             'labels' => [],

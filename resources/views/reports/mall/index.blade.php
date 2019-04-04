@@ -111,15 +111,15 @@
                                     @include('layouts.includes.table.sorting', ['attribute' => 'mall_id', 'default_key' => 'mall_id'])
                                 </th>
                                 <th nowrap class="is-center" width="100">
-                                    Кол-во
+                                    Кол-во чек.
                                     @include('layouts.includes.table.sorting', ['attribute' => 'count', 'default_key' => 'mall_id'])
                                 </th>
                                 <th nowrap class="is-right" width="120">
-                                    Сред. чек
+                                    Сред. чек.
                                     @include('layouts.includes.table.sorting', ['attribute' => 'avg', 'default_key' => 'mall_id'])
                                 </th>
                                 <th nowrap class="is-right" width="160">
-                                    Сумма
+                                    Сумма продаж
                                     @include('layouts.includes.table.sorting', ['attribute' => 'amount', 'default_key' => 'mall_id'])
                                 </th>
                             </tr>

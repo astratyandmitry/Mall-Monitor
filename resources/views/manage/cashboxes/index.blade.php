@@ -133,18 +133,7 @@
                                             {{ $entity->trashed() ? 'Неактивный' : 'Активный' }}
                                         </div>
                                     </td>
-                                    <td class="is-icons">
-                                        @if (!$entity->trashed())
-                                            <a href="{{ route('manage.cashboxes.edit', $entity) }}" title="Редактировать">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                        @endif
-
-                                        <a href="{{ route('manage.cashboxes.toggle', $entity) }}"
-                                           title="{{ $entity->trashed() ? 'Восстановить' : 'Удалить' }}">
-                                            <i class="fa {{ $entity->trashed() ? 'fa-undo' : 'fa-trash' }}"></i>
-                                        </a>
-                                    </td>
+                                    <td class="is-icons"></td>
                                 </tr>
                             @endforeach
                         @else

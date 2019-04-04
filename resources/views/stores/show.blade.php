@@ -81,13 +81,13 @@
                                     Дата
                                 </th>
                                 <th nowrap class="is-center" width="100">
-                                    Кол-во
+                                    Кол-во чек.
                                 </th>
                                 <th nowrap class="is-right" width="120">
-                                    Сред. чек
+                                    Сред. чек.
                                 </th>
                                 <th nowrap class="is-right" width="160">
-                                    Сумма
+                                    Сумма продаж
                                 </th>
                             </tr>
                             </thead>

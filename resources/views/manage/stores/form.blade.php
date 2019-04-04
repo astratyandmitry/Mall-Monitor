@@ -30,10 +30,6 @@
 
                         @csrf
 
-                        @includeWhen(isset($entity), 'layouts.includes.form.hidden', [
-                            'attribute' => 'mall_id',
-                        ])
-
                         <div class="form-content">
                             <div class="form-section">
                                 @include('layouts.includes.form.dropdown', [
@@ -41,7 +37,6 @@
                                       'label' => 'ТРЦ',
                                       'options' => \App\Repositories\MallRepository::getOptions(),
                                       'required' => true,
-                                      'disabled' => isset($entity),
                                   ])
 
                                 @include('layouts.includes.form.dropdown', [
