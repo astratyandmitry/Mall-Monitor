@@ -66,8 +66,6 @@ class StoresController extends Controller
             ->limit(10)
             ->get();
 
-        dd($statistics);
-
         $graph = [
             'labels' => [],
             'amount' => [],
