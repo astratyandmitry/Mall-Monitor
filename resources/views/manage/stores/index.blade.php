@@ -26,7 +26,7 @@
             <div class="box">
                 <div class="box-title">
                     <div class="box-title-text">
-                        Список городов
+                        Список арендаторов
                     </div>
                 </div>
 

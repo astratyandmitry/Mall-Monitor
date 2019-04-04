@@ -124,7 +124,19 @@ class DashboardController extends Controller
             return $months[(int)$dates[1]] . " {$dates[0]}";
         }
 
-        return (int)$dates[2] . " " . $months[(int)$dates[1]] . " {$dates[0]}";
+        $days = [
+            1 => 'Пн.',
+            2 => 'Вт.',
+            3 => 'Ср.',
+            4 => 'Чт.',
+            5 => 'Пт.',
+            6 => 'Сб.',
+            7 => 'Вс.',
+        ];
+
+        $day = $days[date('N', strtotime($date))];
+
+        return (int)$dates[2] . " " . $months[(int)$dates[1]] . " {$dates[0]} ({$day})";
     }
 
 }
