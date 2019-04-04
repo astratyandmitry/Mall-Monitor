@@ -56,7 +56,6 @@ class Store extends Model
     protected $casts = [
         'mall_id' => 'integer',
         'type_id' => 'integer',
-        'business_identification_number' => 'integer',
         'is_errors_yesterday' => 'boolean',
     ];
 
