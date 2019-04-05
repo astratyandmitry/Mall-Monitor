@@ -122,6 +122,12 @@
                                     Сумма продаж
                                     @include('layouts.includes.table.sorting', ['attribute' => 'amount', 'default_key' => 'mall_id'])
                                 </th>
+                                @if ($isGroupByDates)
+                                    <th nowrap class="is-right" width="140">
+                                        Дата
+                                        @include('layouts.includes.table.sorting', ['attribute' => 'created_at', 'default_key' => 'created_at', 'default_type' => 'desc'])
+                                    </th>
+                                @endif
                             </tr>
                             </thead>
                             <tbody>
@@ -143,12 +149,17 @@
                                     <td nowrap class="is-right">
                                         {{ number_format($statistic['amount']) }} ₸
                                     </td>
+                                    @if ($isGroupByDates)
+                                        <td nowrap class="is-right" width="140 ">
+                                            {{ date('d.m.Y', strtotime($statistic['date'])) }}
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th></th>
+                                <th style="text-align: right">Итого:</th>
                                 <th nowrap class="is-center">
                                     {{ number_format($count) }}
                                 </th>
@@ -158,6 +169,9 @@
                                 <th nowrap class="is-right">
                                     {{ number_format($amount) }} ₸
                                 </th>
+                                @if ($isGroupByDates)
+                                    <th></th>
+                                @endif
                             </tr>
                             </tfoot>
                         </table>

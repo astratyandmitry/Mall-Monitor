@@ -67,13 +67,29 @@ class ReportsMallController extends \App\Http\Controllers\Controller
         $dateFrom = $this->getDate('from');
         $dateTo = $this->getDate('to');
 
-        $statistics = Cheque::reportMall($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id'))
-            ->groupBy('mall_id')->get();
+        $statistics = Cheque::reportMall($dateFrom, $dateTo);
+        $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id';
+
+        $isGroupByDates = false;
+
+        if ($dateFrom && $dateTo) {
+            $diff = date_diff(date_create($dateFrom), date_create($dateTo));
+
+            if ($diff->format("%a") <= 90) {
+                $select .= ', DATE(created_at) as date';
+
+                $statistics = $statistics->groupBy('date');
+
+                $isGroupByDates = true;
+            }
+        }
+
+        $statistics = $statistics->select(\DB::raw($select))->groupBy('mall_id')->get();
 
         $data = [
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
+            'isGroupByDates' => $isGroupByDates,
             'statistics' => $statistics->toArray(),
             'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id'))->pluck('name', 'id'),
         ];

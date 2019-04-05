@@ -115,7 +115,7 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th></th>
+                            <th style="text-align: right">Итого:</th>
                             <th nowrap class="is-center">
                                 {{ number_format($count) }}
                             </th>

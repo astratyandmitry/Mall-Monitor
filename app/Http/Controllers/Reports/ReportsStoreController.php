@@ -70,13 +70,29 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
         $dateFrom = $this->getDate('from');
         $dateTo = $this->getDate('to');
 
-        $statistics = Cheque::reportStore($dateFrom, $dateTo)
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id'))
-            ->groupBy('store_id')->get();
+        $statistics = Cheque::reportStore($dateFrom, $dateTo);
+        $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id';
+
+        $isGroupByDates = false;
+
+        if ($dateFrom && $dateTo) {
+            $diff = date_diff(date_create($dateFrom), date_create($dateTo));
+
+            if ($diff->format("%a") <= 90) {
+                $select .= ', DATE(created_at) as date';
+
+                $statistics = $statistics->groupBy('date');
+
+                $isGroupByDates = true;
+            }
+        }
+
+        $statistics = $statistics->select(\DB::raw($select))->groupBy('store_id')->get();
 
         $data = [
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
+            'isGroupByDates' => $isGroupByDates,
             'statistics' => $statistics->toArray(),
             'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id'))->pluck('name', 'id'),
             'store_names' => Store::whereIn('id', $statistics->pluck('store_id'))->pluck('name', 'id'),
@@ -106,6 +122,7 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
 
             return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
         }
+
         return null;
     }
 
