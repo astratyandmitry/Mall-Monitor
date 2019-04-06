@@ -42,7 +42,7 @@ class DashboardController extends Controller
             ->where('mall_id', auth()->user()->mall_id)
             ->groupBy('date')
             ->orderBy('date', 'desc')
-            ->limit(10)
+            ->limit(30)
             ->get();
 
         $graph = [

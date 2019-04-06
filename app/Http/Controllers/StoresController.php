@@ -63,7 +63,7 @@ class StoresController extends Controller
             ->where('store_id', $store->id)
             ->groupBy('date')
             ->orderBy('date', 'desk')
-            ->limit(10)
+            ->limit(30)
             ->get();
 
         $graph = [
