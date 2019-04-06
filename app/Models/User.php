@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * @property integer           $id
  * @property string            $email
+ * @property string            $phone
+ * @property string            $given_name
+ * @property string            $family_name
  * @property string            $password
  * @property integer           $role_id
  * @property integer           $mall_id
@@ -41,6 +44,9 @@ class User extends Model implements
      */
     protected $fillable = [
         'email',
+        'phone',
+        'given_name',
+        'family_name',
         'password',
         'role_id',
         'mall_id',
@@ -82,6 +88,9 @@ class User extends Model implements
      */
     protected $rules = [
         'email' => 'required|max:80|email',
+        'phone' => 'nullable|regex:/^(\+7)\((\d{3})\)(\d{7})$/i',
+        'given_name' => 'required|max:40',
+        'family_name' => 'required|max:90',
         'mall_id' => 'nullable',
         'store_id' => 'nullable',
         '_unique' => 'email',
@@ -91,6 +100,9 @@ class User extends Model implements
      * @var array
      */
     protected $messages = [
+        'phone' => 'номер телефона',
+        'given_name' => 'имя',
+        'family_name' => 'фамилия',
         'role_id' => 'роль',
         'mall_id' => 'ТЦ',
         'store_id' => 'Арендатор',
@@ -132,6 +144,14 @@ class User extends Model implements
             return $builder->where('email', 'LIKE', '%' . request('email') . '%');
         });
 
+        $builder->when(request('name'), function (Builder $builder): Builder {
+            return $builder->where(\DB::raw('CONCAT(`given_name`, " ", `family_name`)'), 'LIKE', '%' . request('name') . '%');
+        });
+
+        $builder->when(request('phone'), function (Builder $builder): Builder {
+            return $builder->where('phone', 'LIKE', '%' . request('phone') . '%');
+        });
+
         $builder->when(request('store_id'), function (Builder $builder): Builder {
             return $builder->where('store_id', request('store_id'));
         });
@@ -152,8 +172,6 @@ class User extends Model implements
 
             return $builder;
         });
-
-
 
         return parent::scopeFilter($builder);
     }

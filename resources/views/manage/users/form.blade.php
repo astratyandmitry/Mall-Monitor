@@ -48,14 +48,36 @@
                             </div>
 
                             <div class="form-section">
-                                @include('layouts.includes.form.input', [
-                                    'attribute' => 'email',
-                                    'label' => 'E-mail',
-                                    'required' => true,
-                                    'autofocus' => true,
-                                    'type' => 'email',
-                                ])
+                                <div class="form-grid is-2col">
+                                    @include('layouts.includes.form.input', [
+                                        'attribute' => 'email',
+                                        'label' => 'E-mail',
+                                        'required' => true,
+                                        'autofocus' => true,
+                                        'type' => 'email',
+                                    ])
 
+                                    @include('layouts.includes.form.input', [
+                                        'attribute' => 'phone',
+                                        'label' => 'Номер телефона',
+                                        'placeholder' => '+7(---)-------'
+                                    ])
+
+                                    @include('layouts.includes.form.input', [
+                                        'attribute' => 'given_name',
+                                        'label' => 'Имя',
+                                        'required' => true,
+                                    ])
+
+                                    @include('layouts.includes.form.input', [
+                                        'attribute' => 'family_name',
+                                        'label' => 'Фамилия',
+                                        'required' => 'true',
+                                    ])
+                                </div>
+                            </div>
+
+                            <div class="form-section">
                                 @include('layouts.includes.form.password', [
                                     'attribute' => 'new_password',
                                     'label' => isset($entity) ? 'Новый пароль' : 'Пароль',

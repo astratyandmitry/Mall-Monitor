@@ -39,6 +39,9 @@
                                 @include('layouts.includes.table.sorting', ['attribute' => 'id'])
                             </th>
                             <th nowrap>
+                                Имя и фамилия
+                            </th>
+                            <th nowrap>
                                 E-mail
                                 @include('layouts.includes.table.sorting', ['attribute' => 'email'])
                             </th>
@@ -46,7 +49,7 @@
                                 ТРЦ
                                 @include('layouts.includes.table.sorting', ['attribute' => 'mall_id'])
                             </th>
-                            <th nowrap width="320">
+                            <th nowrap width="240">
                                 Арендатор
                                 @include('layouts.includes.table.sorting', ['attribute' => 'store_id'])
                             </th>
@@ -66,6 +69,12 @@
                                     @include('layouts.includes.field.input', [
                                         'attribute' => 'id',
                                         'placeholder' => 'ID',
+                                    ])
+                                </th>
+                                <th nowrap class="field">
+                                    @include('layouts.includes.field.input', [
+                                        'attribute' => 'name',
+                                        'placeholder' => 'Имя или фамилия',
                                     ])
                                 </th>
                                 <th nowrap class="field">
@@ -118,6 +127,15 @@
                                 <tr>
                                     <td nowrap>
                                         {{ $entity->id }}
+                                    </td>
+                                    <td nowrap>
+                                        @if (! $entity->family_name && ! $entity->given_name)
+                                            <div class="badge is-inline">
+                                                Отсутствует
+                                            </div>
+                                        @else
+                                            {{ $entity->family_name }} {{ $entity->given_name }}
+                                        @endif
                                     </td>
                                     <td nowrap>
                                         {{ $entity->email }}
