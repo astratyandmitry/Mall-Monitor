@@ -44,7 +44,7 @@
                                         'attribute' => 'color',
                                         'label' => 'Цвет',
                                         'required' => true,
-                                        'helper' => '#<b>53f24s</b> — без решётки'
+                                        'helper' => "#<b>53f24s</b> — без решётки (<a href='https://www.google.com/search?q=hex+color' target='blank'>ВЫБОР ЦВЕТА</a>)"
                                     ])
                                 </div>
                             </div>
