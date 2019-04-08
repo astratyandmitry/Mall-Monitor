@@ -32,7 +32,7 @@
 
                         <div class="form-content">
                             <div class="form-section">
-                                <div class="form-grid is-2col">
+                                <div class="form-grid is-2col is-marged">
                                     @include('layouts.includes.form.dropdown', [
                                           'attribute' => 'mall_id',
                                           'label' => 'ТРЦ',
@@ -45,6 +45,12 @@
                                           'options' => \App\Repositories\StoreRepository::getOptions(old('store_id', optional($entity)->mall_id ?? -1)),
                                       ])
                                 </div>
+
+                                @include('layouts.includes.form.checkbox', [
+                                    'attribute' => 'is_readonly',
+                                    'label' => 'Доступ только к чтению и отчетам',
+                                    'required' => ! isset($entity),
+                                ])
                             </div>
 
                             <div class="form-section">

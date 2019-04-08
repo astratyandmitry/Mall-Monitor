@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property integer           $store_id
  * @property string            $remember_token
  * @property string            $api_token
+ * @property boolean           $is_readonly
  * @property \Carbon\Carbon    $deleted_at
  * @property \App\Models\Role  $role
  * @property \App\Models\Mall  $mall
@@ -51,6 +52,7 @@ class User extends Model implements
         'role_id',
         'mall_id',
         'store_id',
+        'is_readonly',
     ];
 
     /**
@@ -69,6 +71,7 @@ class User extends Model implements
         'role_id' => 'integer',
         'mall_id' => 'integer',
         'store_id' => 'integer',
+        'is_readonly' => 'boolean',
     ];
 
     /**
