@@ -46,10 +46,12 @@
                                 БИН
                                 @include('layouts.includes.table.sorting', ['attribute' => 'business_identification_number'])
                             </th>
-                            <th nowrap width="200">
-                                ТРЦ
-                                @include('layouts.includes.table.sorting', ['attribute' => 'mall_id'])
-                            </th>
+                            @if ( ! $currentUser->mall_id)
+                                <th nowrap width="200">
+                                    ТРЦ
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'mall_id'])
+                                </th>
+                            @endif
                             <th nowrap width="240">
                                 Категория
                                 @include('layouts.includes.table.sorting', ['attribute' => 'type_id'])
@@ -84,13 +86,15 @@
                                         'placeholder' => 'БИН',
                                     ])
                                 </th>
-                                <th nowrap class="field">
-                                    @include('layouts.includes.field.dropdown', [
-                                       'attribute' => 'mall_id',
-                                       'placeholder' => 'Все',
-                                       'options' => \App\Repositories\MallRepository::getOptions(),
-                                   ])
-                                </th>
+                                @if ( ! $currentUser->mall_id)
+                                    <th nowrap class="field">
+                                        @include('layouts.includes.field.dropdown', [
+                                           'attribute' => 'mall_id',
+                                           'placeholder' => 'Все',
+                                           'options' => \App\Repositories\MallRepository::getOptions(),
+                                       ])
+                                    </th>
+                                @endif
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.dropdown', [
                                        'attribute' => 'type_id',
@@ -127,9 +131,11 @@
                                     <td nowrap>
                                         {{ $entity->business_identification_number }}
                                     </td>
-                                    <td nowrap>
-                                        {{ $entity->mall->name }}
-                                    </td>
+                                    @if ( ! $currentUser->mall_id)
+                                        <td nowrap>
+                                            {{ $entity->mall->name }}
+                                        </td>
+                                    @endif
                                     <td nowrap>
                                         {{ $entity->type->name }}
                                     </td>
@@ -154,7 +160,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="7" class="is-empty">
+                                <td colspan="{{ ! $currentUser->mall_id ? 7 : 6 }}" class="is-empty">
                                     Информация по указанному запросу отсутствует
                                 </td>
                             </tr>

@@ -12,6 +12,12 @@ use App\Models\Store;
 class StoresController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('not-store');
+    }
+
+
     /**
      * @return \Illuminate\View\View
      */
@@ -24,14 +30,21 @@ class StoresController extends Controller
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
             ->where('created_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
-            ->where('mall_id', auth()->user()->mall_id)
-            ->groupBy('store_id')
-            ->pluck('amount', 'store_id')
-            ->toArray();
+            ->groupBy('store_id');
+
+        $stores = Store::orderBy('name');
+
+        if (auth()->user()->mall_id) {
+            $statistics = $statistics->where('mall_id', auth()->user()->mall_id);
+            $stores = $stores->where('mall_id', auth()->user()->mall_id);
+        }
+
+        $statistics = $statistics->pluck('amount', 'store_id')->toArray();
+        $stores = $stores->get();
 
         return view('stores.index', $this->withData([
             'statistics' => $statistics,
-            'stores' => Store::where('mall_id', auth()->user()->mall_id)->orderBy('name')->get(),
+            'stores' => $stores,
         ]));
     }
 
@@ -43,11 +56,14 @@ class StoresController extends Controller
      */
     public function show(Store $store): \Illuminate\View\View
     {
+        $user = auth()->user();
+
+        abort_if($user->mall_id && $user->mall_id != $store->mall_id, 404);
+
         $this->setTitle($store->name);
         $this->setActiveSection('stores');
         $this->setActivePage('stores');
         $this->addBreadcrumb('Арендаторы', route('stores.index'));
-        $this->addBreadcrumb($store->name, $store->link());
 
         $graphDateTypes = [
             'daily' => 'DATE(created_at)',

@@ -30,61 +30,73 @@
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'store_id'])
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
 
-                <div class="grid">
-                    @include('layouts.includes.form.dropdown', [
-                        'attribute' => 'mall_id',
-                        'value' => request()->query('mall_id'),
-                        'label' => 'ТРЦ',
-                        'placeholder' => 'Все',
-                        'options' => \App\Repositories\MallRepository::getOptions(),
-                    ])
-
-                    @if (request()->get('mall_id'))
+                @if ( ! $currentUser->store_id)
+                    @if ($currentUser->mall_id)
                         @include('layouts.includes.form.dropdown', [
-                           'attribute' => 'store_id',
-                            'value' => request()->query('store_id'),
-                           'placeholder' => 'Все',
-                           'label' => 'Арендатор',
-                           'options' => \App\Repositories\StoreRepository::getOptions(request()->get('mall_id')),
-                       ])
+                            'attribute' => 'store_id',
+                             'value' => request()->query('store_id'),
+                            'placeholder' => 'Все',
+                            'label' => 'Арендатор',
+                            'options' => \App\Repositories\StoreRepository::getOptions($currentUser->mall_id),
+                        ])
                     @else
-                        @include('layouts.includes.form.dropdown-grouped', [
-                           'attribute' => 'store_id',
-                           'placeholder' => 'Все',
-                           'value' => request()->query('store_id'),
-                           'label' => 'Арендатор',
-                           'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
-                       ])
+                        <div class="grid">
+                            @include('layouts.includes.form.dropdown', [
+                                'attribute' => 'mall_id',
+                                'value' => request()->query('mall_id'),
+                                'label' => 'ТРЦ',
+                                'placeholder' => 'Все',
+                                'options' => \App\Repositories\MallRepository::getOptions(),
+                            ])
+
+                            @if (request()->get('mall_id'))
+                                @include('layouts.includes.form.dropdown', [
+                                   'attribute' => 'store_id',
+                                    'value' => request()->query('store_id'),
+                                   'placeholder' => 'Все',
+                                   'label' => 'Арендатор',
+                                   'options' => \App\Repositories\StoreRepository::getOptions(request()->get('mall_id', $currentUser->mall_id)),
+                               ])
+                            @else
+                                @include('layouts.includes.form.dropdown-grouped', [
+                                   'attribute' => 'store_id',
+                                   'placeholder' => 'Все',
+                                   'value' => request()->query('store_id'),
+                                   'label' => 'Арендатор',
+                                   'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
+                               ])
+                            @endif
+                        </div>
                     @endif
-                </div>
 
-                <div class="grid">
-                    @include('layouts.includes.form.dropdown', [
-                        'attribute' => 'type_id',
-                        'value' => request()->query('type_id'),
-                        'label' => 'Категория',
-                        'placeholder' => 'Все',
-                        'options' => \App\Repositories\StoreTypeRepository::getOptions(),
-                    ])
-
-                    <div class="grid-sub is-sm-2">
+                    <div class="grid">
                         @include('layouts.includes.form.dropdown', [
-                           'attribute' => 'sort',
-                            'value' => request()->query('sort'),
-                           'placeholder' => 'Все',
-                           'label' => 'ТОП',
-                           'options' => $store_sort,
-                       ])
+                            'attribute' => 'type_id',
+                            'value' => request()->query('type_id'),
+                            'label' => 'Категория',
+                            'placeholder' => 'Все',
+                            'options' => \App\Repositories\StoreTypeRepository::getOptions(),
+                        ])
 
-                        @include('layouts.includes.form.input', [
-                           'attribute' => 'limit',
-                           'value' => request()->query('limit'),
-                           'placeholder' => 'Все',
-                           'label' => 'Ограничение',
-                           'type' => 'number',
-                       ])
+                        <div class="grid-sub is-sm-2">
+                            @include('layouts.includes.form.dropdown', [
+                               'attribute' => 'sort',
+                                'value' => request()->query('sort'),
+                               'placeholder' => 'Все',
+                               'label' => 'ТОП',
+                               'options' => $store_sort,
+                           ])
+
+                            @include('layouts.includes.form.input', [
+                               'attribute' => 'limit',
+                               'value' => request()->query('limit'),
+                               'placeholder' => 'Все',
+                               'label' => 'Ограничение',
+                               'type' => 'number',
+                           ])
+                        </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="grid">
                     <div class="grid-sub">

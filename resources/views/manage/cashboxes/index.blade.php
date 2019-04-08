@@ -42,10 +42,12 @@
                                 Код
                                 @include('layouts.includes.table.sorting', ['attribute' => 'code'])
                             </th>
-                            <th nowrap width="200">
-                                ТРЦ
-                                @include('layouts.includes.table.sorting', ['attribute' => 'mall_id'])
-                            </th>
+                            @if ( ! $currentUser->mall_id)
+                                <th nowrap width="200">
+                                    ТРЦ
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'mall_id'])
+                                </th>
+                            @endif
                             <th nowrap width="240">
                                 Арендатор
                                 @include('layouts.includes.table.sorting', ['attribute' => 'store_id'])
@@ -74,13 +76,15 @@
                                         'placeholder' => 'Код',
                                     ])
                                 </th>
-                                <th nowrap class="field">
-                                    @include('layouts.includes.field.dropdown', [
-                                       'attribute' => 'mall_id',
-                                       'placeholder' => 'Все',
-                                       'options' => \App\Repositories\MallRepository::getOptions(),
-                                   ])
-                                </th>
+                                @if ( ! $currentUser->mall_id)
+                                    <th nowrap class="field">
+                                        @include('layouts.includes.field.dropdown', [
+                                           'attribute' => 'mall_id',
+                                           'placeholder' => 'Все',
+                                           'options' => \App\Repositories\MallRepository::getOptions(),
+                                       ])
+                                    </th>
+                                @endif
                                 <th nowrap class="field">
                                     @if (request()->get('mall_id'))
                                         @include('layouts.includes.field.dropdown', [
@@ -122,9 +126,11 @@
                                     <td nowrap>
                                         {{ $entity->code }}
                                     </td>
+                                    @if ( ! $currentUser->mall_id)
                                     <td nowrap>
                                         {{ $entity->mall->name }}
                                     </td>
+                                    @endif
                                     <td nowrap>
                                         {{ $entity->store->name }}
                                     </td>
@@ -138,7 +144,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="is-empty">
+                                <td colspan="{{ (! $currentUser->mall_id) ? 6 : 5 }}" class="is-empty">
                                     Информация по указанному запросу отсутствует
                                 </td>
                             </tr>

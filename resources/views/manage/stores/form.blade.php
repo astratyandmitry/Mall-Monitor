@@ -32,12 +32,16 @@
 
                         <div class="form-content">
                             <div class="form-section">
-                                @include('layouts.includes.form.dropdown', [
-                                      'attribute' => 'mall_id',
-                                      'label' => 'ТРЦ',
-                                      'options' => \App\Repositories\MallRepository::getOptions(),
-                                      'required' => true,
-                                  ])
+                                @if ( ! $currentUser->mall_id)
+                                    @include('layouts.includes.form.dropdown', [
+                                          'attribute' => 'mall_id',
+                                          'label' => 'ТРЦ',
+                                          'options' => \App\Repositories\MallRepository::getOptions(),
+                                          'required' => true,
+                                      ])
+                                @else
+                                    @include('layouts.includes.form.hidden', ['attribute' => 'mall_id', 'value' => $currentUser->mall_id])
+                                @endif
 
                                 @include('layouts.includes.form.dropdown', [
                                       'attribute' => 'type_id',

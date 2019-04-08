@@ -191,36 +191,44 @@ class Cheque extends Model
     {
         $builder->with(['store', 'payment', 'type']);
 
-        $builder->where('mall_id', auth()->user()->mall_id);
+        $user = auth()->user();
 
-        $builder->when(request('mall_id'), function (Builder $builder): Builder {
-            return $builder->where('mall_id', request('mall_id'));
-        });
-
-        $builder->when(request()->query('store_id'), function ($builder) {
-            return $builder->where('store_id', request()->query('store_id'));
-        });
-
-        $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
-            return $builder->where('cashbox_id', request('cashbox_id'));
-        });
-
-        $builder->when(request('store_name'), function (Builder $builder): Builder {
-            return $builder->whereHas('store', function (Builder $builder): Builder {
-                return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
+        if ($user->mall_id) {
+            $builder->where('mall_id', $user->mall_id);
+        } else {
+            $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                return $builder->where('mall_id', request('mall_id'));
             });
-        });
+        }
 
-        $builder->when(request('store_legal'), function (Builder $builder): Builder {
-            return $builder->whereHas('store', function (Builder $builder): Builder {
-                return $builder->where('name_legal', 'LIKE', '%' . request('store_legal') . '%');
+        if ($user->store_id) {
+            $builder->where('store_id', $user->store_id);
+        } else {
+            $builder->when(request()->query('store_id'), function ($builder) {
+                return $builder->where('store_id', request()->query('store_id'));
             });
-        });
-        $builder->when(request('store_bin'), function (Builder $builder): Builder {
-            return $builder->whereHas('store', function (Builder $builder): Builder {
-                return $builder->where('business_identification_number', request('store_bin'));
+
+            $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
+                return $builder->where('cashbox_id', request('cashbox_id'));
             });
-        });
+
+            $builder->when(request('store_name'), function (Builder $builder): Builder {
+                return $builder->whereHas('store', function (Builder $builder): Builder {
+                    return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
+                });
+            });
+
+            $builder->when(request('store_legal'), function (Builder $builder): Builder {
+                return $builder->whereHas('store', function (Builder $builder): Builder {
+                    return $builder->where('name_legal', 'LIKE', '%' . request('store_legal') . '%');
+                });
+            });
+            $builder->when(request('store_bin'), function (Builder $builder): Builder {
+                return $builder->whereHas('store', function (Builder $builder): Builder {
+                    return $builder->where('business_identification_number', request('store_bin'));
+                });
+            });
+        }
 
         if ($dateFrom) {
             $builder->where('created_at', '>=', $dateFrom);
@@ -256,21 +264,29 @@ class Cheque extends Model
      */
     public static function scopeReportStore(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
     {
-        $builder->where('mall_id', auth()->user()->mall_id);
+        $user = auth()->user();
 
-        $builder->when(request('mall_id'), function (Builder $builder): Builder {
-            return $builder->where('mall_id', request('mall_id'));
-        });
-
-        $builder->when(request()->query('store_id'), function ($builder) {
-            return $builder->where('store_id', request()->query('store_id'));
-        });
-
-        $builder->when(request('type_id'), function (Builder $builder): Builder {
-            return $builder->whereHas('store', function (Builder $builder): Builder {
-                return $builder->where('type_id', request('type_id'));
+        if ($user->mall_id) {
+            $builder->where('mall_id', $user->mall_id);
+        } else {
+            $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                return $builder->where('mall_id', request('mall_id'));
             });
-        });
+        }
+
+        if ($user->store_id) {
+            $builder->where('store_id', $user->store_id);
+        } else {
+            $builder->when(request()->query('store_id'), function ($builder) {
+                return $builder->where('store_id', request()->query('store_id'));
+            });
+
+            $builder->when(request('type_id'), function (Builder $builder): Builder {
+                return $builder->whereHas('store', function (Builder $builder): Builder {
+                    return $builder->where('type_id', request('type_id'));
+                });
+            });
+        }
 
         if ($dateFrom) {
             $builder->where('created_at', '>=', $dateFrom);
@@ -333,11 +349,15 @@ class Cheque extends Model
      */
     public static function scopeReportMall(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
     {
-        $builder->where('mall_id', auth()->user()->mall_id);
+        $user = auth()->user();
 
-        $builder->when(request('mall_id'), function (Builder $builder): Builder {
-            return $builder->where('mall_id', request('mall_id'));
-        });
+        if ($user->mall_id) {
+            $builder->where('mall_id', $user->mall_id);
+        } else {
+            $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                return $builder->where('mall_id', request('mall_id'));
+            });
+        }
 
         if ($dateFrom) {
             $builder->where('created_at', '>=', $dateFrom);

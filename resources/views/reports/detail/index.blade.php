@@ -30,56 +30,68 @@
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'created_at'])
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'desc'])
 
-                <div class="grid">
-                    @include('layouts.includes.form.dropdown', [
-                        'attribute' => 'mall_id',
-                        'value' => request()->query('mall_id'),
-                        'label' => 'ТРЦ',
-                        'placeholder' => 'Все',
-                        'options' => \App\Repositories\MallRepository::getOptions(),
-                    ])
-
-                    @if (request()->get('mall_id'))
+                @if ( ! $currentUser->store_id)
+                    @if ($currentUser->mall_id)
                         @include('layouts.includes.form.dropdown', [
-                           'attribute' => 'store_id',
-                            'value' => request()->query('store_id'),
-                           'placeholder' => 'Все',
-                           'label' => 'Арендатор',
-                           'options' => \App\Repositories\StoreRepository::getOptions(request()->get('mall_id')),
-                       ])
+                            'attribute' => 'store_id',
+                             'value' => request()->query('store_id'),
+                            'placeholder' => 'Все',
+                            'label' => 'Арендатор',
+                            'options' => \App\Repositories\StoreRepository::getOptions($currentUser->mall_id),
+                        ])
                     @else
-                        @include('layouts.includes.form.dropdown-grouped', [
-                           'attribute' => 'store_id',
-                           'placeholder' => 'Все',
-                           'value' => request()->query('store_id'),
-                           'label' => 'Арендатор',
-                           'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
-                       ])
+                        <div class="grid">
+                            @include('layouts.includes.form.dropdown', [
+                                'attribute' => 'mall_id',
+                                'value' => request()->query('mall_id'),
+                                'label' => 'ТРЦ',
+                                'placeholder' => 'Все',
+                                'options' => \App\Repositories\MallRepository::getOptions(),
+                            ])
+
+                            @if (request()->get('mall_id'))
+                                @include('layouts.includes.form.dropdown', [
+                                   'attribute' => 'store_id',
+                                    'value' => request()->query('store_id'),
+                                   'placeholder' => 'Все',
+                                   'label' => 'Арендатор',
+                                   'options' => \App\Repositories\StoreRepository::getOptions(request()->get('mall_id')),
+                               ])
+                            @else
+                                @include('layouts.includes.form.dropdown-grouped', [
+                                   'attribute' => 'store_id',
+                                   'placeholder' => 'Все',
+                                   'value' => request()->query('store_id'),
+                                   'label' => 'Арендатор',
+                                   'options' => \App\Repositories\StoreRepository::getOptionsGrouped(),
+                               ])
+                            @endif
+                        </div>
                     @endif
-                </div>
 
-                <div class="grid is-3">
-                    @include('layouts.includes.form.input', [
-                        'attribute' => 'store_name',
-                        'value' => request()->query('store_name'),
-                        'label' => 'Бренд',
-                        'placeholder' => 'Любой',
-                    ])
+                    <div class="grid is-3">
+                        @include('layouts.includes.form.input', [
+                            'attribute' => 'store_name',
+                            'value' => request()->query('store_name'),
+                            'label' => 'Бренд',
+                            'placeholder' => 'Любой',
+                        ])
 
-                    @include('layouts.includes.form.input', [
-                        'attribute' => 'store_official',
-                        'value' => request()->query('store_official'),
-                        'label' => 'Юр. наименование',
-                        'placeholder' => 'Любой',
-                    ])
+                        @include('layouts.includes.form.input', [
+                            'attribute' => 'store_official',
+                            'value' => request()->query('store_official'),
+                            'label' => 'Юр. наименование',
+                            'placeholder' => 'Любой',
+                        ])
 
-                    @include('layouts.includes.form.input', [
-                        'attribute' => 'store_bin',
-                        'value' => request()->query('store_bin'),
-                        'label' => 'БИН',
-                        'placeholder' => 'Любой',
-                    ])
-                </div>
+                        @include('layouts.includes.form.input', [
+                            'attribute' => 'store_bin',
+                            'value' => request()->query('store_bin'),
+                            'label' => 'БИН',
+                            'placeholder' => 'Любой',
+                        ])
+                    </div>
+                @endif
 
                 <div class="grid">
                     <div class="grid-sub">
@@ -135,8 +147,8 @@
 
                         <div class="box-title-action">
                             {{--<a href="{{ route('reports.detail.export.pdf', $exportParams) }}" class="btn is-sm is-outlined">--}}
-                                {{--<i class="fa fa-file-pdf-o"></i>--}}
-                                {{--Скачать PDF--}}
+                            {{--<i class="fa fa-file-pdf-o"></i>--}}
+                            {{--Скачать PDF--}}
                             {{--</a>--}}
 
                             <a href="{{ route('reports.detail.export.excel', $exportParams) }}" class="btn is-sm is-outlined">

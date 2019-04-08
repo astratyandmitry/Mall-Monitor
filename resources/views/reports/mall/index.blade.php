@@ -30,12 +30,14 @@
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'id'])
                 @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
 
-                @include('layouts.includes.form.dropdown', [
-                    'attribute' => 'mall_id',
-                    'value' => request()->query('mall_id'),
-                    'label' => 'ТРЦ',
-                    'options' => \App\Repositories\MallRepository::getOptions(),
-                ])
+                @if ( ! $currentUser->mall_id)
+                    @include('layouts.includes.form.dropdown', [
+                        'attribute' => 'mall_id',
+                        'value' => request()->query('mall_id'),
+                        'label' => 'ТРЦ',
+                        'options' => \App\Repositories\MallRepository::getOptions(),
+                    ])
+                @endif
 
                 <div class="grid">
                     <div class="grid-sub">
@@ -91,8 +93,8 @@
 
                         <div class="box-title-action">
                             {{--<a href="{{ route('reports.mall.export.pdf', $exportParams) }}" class="btn is-sm is-outlined">--}}
-                                {{--<i class="fa fa-file-pdf-o"></i>--}}
-                                {{--Скачать PDF--}}
+                            {{--<i class="fa fa-file-pdf-o"></i>--}}
+                            {{--Скачать PDF--}}
                             {{--</a>--}}
 
                             <a href="{{ route('reports.mall.export.excel', $exportParams) }}" class="btn is-sm is-outlined">

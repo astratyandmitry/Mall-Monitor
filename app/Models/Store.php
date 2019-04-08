@@ -145,9 +145,15 @@ class Store extends Model
             return $builder->where('type_id', request('type_id'));
         });
 
-        $builder->when(request('mall_id'), function (Builder $builder): Builder {
-            return $builder->where('mall_id', request('mall_id'));
-        });
+        $user = auth()->user();
+
+        if ($user->mall_id) {
+            $builder->where('mall_id', $user->mall_id);
+        } else {
+            $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                return $builder->where('mall_id', request('mall_id'));
+            });
+        }
 
         return parent::scopeFilter($builder);
     }

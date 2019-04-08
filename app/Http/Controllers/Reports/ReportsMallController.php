@@ -13,6 +13,12 @@ use App\Models\Cheque;
 class ReportsMallController extends \App\Http\Controllers\Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('not-store');
+    }
+
+
     /**
      * @return \Illuminate\View\View
      */

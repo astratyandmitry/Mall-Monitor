@@ -32,7 +32,7 @@ Route::group(['middleware' => 'loggined'], function (): void {
         Route::get('/detail/export/pdf', 'ReportsDetailController@exportPDF')->name('detail.export.pdf');
     });
 
-    Route::prefix('manage')->namespace('Manage')->name('manage.')->group(function () {
+    Route::prefix('manage')->namespace('Manage')->name('manage.')->middleware('manage')->group(function () {
         Route::resource('/malls', 'ManageMallsController')->except(['destory']);
         Route::resource('/stores', 'ManageStoresController')->except(['destory']);
         Route::get('/stores/{anyStore}/toggle', 'ManageStoresController@toggle')->name('stores.toggle');

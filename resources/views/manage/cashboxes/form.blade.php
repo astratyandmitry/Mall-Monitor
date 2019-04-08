@@ -40,19 +40,24 @@
 
                         <div class="form-content">
                             <div class="form-section">
-                                <div class="form-grid is-2col">
-                                    @include('layouts.includes.form.dropdown', [
-                                          'attribute' => 'mall_id',
-                                          'label' => 'ТРЦ',
-                                          'options' => \App\Repositories\MallRepository::getOptions(),
-                                          'disabled' => isset($entity),
-                                    ])
+                                <div class="form-grid {{ ! $currentUser->mall_id ?  'is-2col' : null }} ">
+                                    @if ( ! $currentUser->mall_id)
+                                        @include('layouts.includes.form.dropdown', [
+                                              'attribute' => 'mall_id',
+                                              'label' => 'ТРЦ',
+                                              'options' => \App\Repositories\MallRepository::getOptions(),
+                                              'required' => true,
+                                          ])
+                                    @else
+                                        @include('layouts.includes.form.hidden', ['attribute' => 'mall_id', 'value' => $currentUser->mall_id])
+                                    @endif
 
                                     @include('layouts.includes.form.dropdown', [
                                           'attribute' => 'store_id',
                                           'label' => 'Арендатор',
                                           'options' => \App\Repositories\StoreRepository::getOptions(old('store_id', optional($entity)->mall_id ?? -1)),
                                           'disabled' => isset($entity),
+                                          'required' => true,
                                     ])
                                 </div>
                             </div>
