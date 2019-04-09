@@ -15,6 +15,9 @@ Route::group(['middleware' => 'loggined'], function (): void {
     Route::post('/ajax/cashboxes', 'AjaxController@cashboxes')->name('ajax.cashboxes');
     Route::post('/ajax/stores', 'AjaxController@stores')->name('ajax.stores');
 
+    Route::get('/malls', 'MallsController@index')->name('malls.index');
+    Route::get('/mall/{mall}', 'MallsController@show')->name('malls.show');
+
     Route::get('/stores', 'StoresController@index')->name('stores.index');
     Route::get('/store/{store}', 'StoresController@show')->name('stores.show');
 

@@ -32,6 +32,15 @@
                     </strong>
                 </li>
             </ul>
+
+            <div class="breadcrumbs-user">
+                <div class="breadcrumbs-user-value">
+                    {{ $currentUser->family_name }} {{ $currentUser->given_name }}
+                    @if ($currentUser->mall_id || $currentUser->store_id)
+                        ({{ $currentUser->store_id ? $currentUser->store->name : $currentUser->mall->name }})
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </section>

@@ -117,7 +117,7 @@ class DashboardController extends Controller
 
         if (auth()->user()->mall_id) {
             $statistics = $statistics->where('mall_id', auth()->user()->mall_id);
-            $cheques = $$cheques->where('mall_id', auth()->user()->mall_id);;
+            $cheques = $cheques->where('mall_id', auth()->user()->mall_id);
         }
 
         $statistics = $statistics->get();

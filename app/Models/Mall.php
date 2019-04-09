@@ -119,4 +119,14 @@ class Mall extends Model
 
         return parent::scopeFilter($builder);
     }
+
+
+    /**
+     * @return string
+     */
+    public function link(): string
+    {
+        return route('malls.show', $this);
+    }
+
 }

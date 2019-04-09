@@ -18,6 +18,13 @@
                             Обзор
                         </a>
                     </li>
+                    @if ( ! $currentUser->mall_id)
+                        <li class="header-nav-list-item {{ isActive($active_section == 'malls', false) }}">
+                            <a href="{{ route('malls.index') }}" class="header-nav-list-item-link">
+                                ТРЦ
+                            </a>
+                        </li>
+                    @endif
                     @if ( ! $currentUser->store_id)
                         <li class="header-nav-list-item {{ isActive($active_section == 'stores', false) }}">
                             <a href="{{ route('stores.index') }}" class="header-nav-list-item-link">

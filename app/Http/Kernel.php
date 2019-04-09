@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'manage' => \App\Http\Middleware\RedirectIfCantManage::class,
+        'not-mall' => \App\Http\Middleware\RedirectIfHasMall::class,
         'not-store' => \App\Http\Middleware\RedirectIfHasStore::class,
         'loggined' => \App\Http\Middleware\RedirectIfUnauthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,

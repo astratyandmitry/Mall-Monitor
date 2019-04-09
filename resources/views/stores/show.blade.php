@@ -4,8 +4,6 @@
 @php /** @var \App\Models\Store $store */ @endphp
 @php /** @var array $graphDateTypes*/ @endphp
 
-@php $reportParams = ['store_id' => $store->id, 'date_from' => date('Y-m-d') . 'T00:00', 'date_to' => date('Y-m-d') . 'T23:59']; @endphp
-
 @extends('layouts.app', $globals)
 
 @section('content')
@@ -99,9 +97,7 @@
                                 @php $count += $statistic->count @endphp
                                 <tr>
                                     <td nowrap>
-                                        <a href="{{ route('reports.detail.index', ['date' => $statistic->date, 'store_id' => $store->id]) }}">
-                                            {{ date('d.m.Y', strtotime($statistic->date)) }}
-                                        </a>
+                                        {{ date('d.m.Y', strtotime($statistic->date)) }}
                                     </td>
                                     <td nowrap class="is-center">
                                         {{ number_format($statistic->count) }}
@@ -136,16 +132,9 @@
 
             @if (count($cheques))
                 <div class="box is-marged">
-                    <div class="box-title has-action">
+                    <div class="box-title">
                         <div class="box-title-text">
                             Последние транзакции
-                        </div>
-
-                        <div class="box-title-action">
-                            <a href="{{ route('reports.detail.index', $reportParams) }}" class="btn is-sm is-outlined">
-                                <i class="fa fa-file-pdf-o"></i>
-                                Детальный отчет за {{ date('d.m.Y') }}
-                            </a>
                         </div>
                     </div>
 

@@ -7,6 +7,20 @@
     //max-width: 100%;
   }
 
+  .breadcrumbs-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-column-gap: $size-2;
+
+    @include mobile() {
+      grid-template-columns: 1fr;
+
+      .breadcrumbs-user {
+        display: none !important;
+      }
+    }
+  }
+
   .breadcrumbs-list {
     list-style: none;
     white-space: nowrap;
@@ -49,6 +63,16 @@
         color: $color-grey-dark;
         font-weight: 500;
       }
+    }
+  }
+
+  .breadcrumbs-user {
+    text-align: right;
+
+    .breadcrumbs-user-value {
+      color: $color-grey-dark;
+      font-size: $font-12;
+      font-weight: 500;
     }
   }
 }
