@@ -5,21 +5,25 @@ require('jquery-mask-plugin');
 
 // $.datetimepicker.setLocale('ru');
 
+$('#date_from').mask('00.00.0000');
 $('#date_from').datetimepicker({
     timepicker: false,
     format: 'd.m.Y'
 });
 
+$('#time_from').mask('00:00');
 $('#time_from').datetimepicker({
     datepicker: false,
     format: 'H:i'
 });
 
+$('#date_to').mask('00.00.0000');
 $('#date_to').datetimepicker({
     timepicker: false,
     format: 'd.m.Y'
 });
 
+$('#time_to').mask('00:00');
 $('#time_to').datetimepicker({
     datepicker: false,
     format: 'H:i'
