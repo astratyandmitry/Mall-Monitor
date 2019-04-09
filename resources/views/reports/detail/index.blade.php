@@ -99,15 +99,13 @@
                             'attribute' => 'date_from',
                             'value' => request()->query('date_from'),
                             'label' => 'Дата начала',
-                            'type' => 'date',
-                            'placeholder' => 'mm-dd-yyyy',
+                            'placeholder' => 'dd.mm.yyyy',
                         ])
 
                         @include('layouts.includes.form.input', [
                             'attribute' => 'time_from',
                             'value' => request()->query('time_from'),
                             'label' => 'Время начала',
-                            'type' => 'time',
                             'placeholder' => 'HH:ii',
                         ])
                     </div>
@@ -117,15 +115,13 @@
                              'attribute' => 'date_to',
                              'value' => request()->query('date_to'),
                              'label' => 'Дата окончания',
-                             'type' => 'date',
-                             'placeholder' => 'mm-dd-yyyy',
+                             'placeholder' => 'dd.mm.yyyy',
                          ])
 
                         @include('layouts.includes.form.input', [
                             'attribute' => 'time_to',
                             'value' => request()->query('time_to'),
                             'label' => 'Время окончания',
-                            'type' => 'time',
                             'placeholder' => 'HH:ii',
                         ])
                     </div>
@@ -159,7 +155,7 @@
                     </div>
 
                     <div class="box-content">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th nowrap>

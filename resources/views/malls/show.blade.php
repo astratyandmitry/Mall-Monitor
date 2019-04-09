@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="box-content">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th nowrap>
@@ -139,7 +139,7 @@
                     </div>
 
                     <div class="box-content">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th nowrap>

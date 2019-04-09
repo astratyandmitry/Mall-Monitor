@@ -15,5 +15,6 @@ mix
     .sass('resources/assets/sass/app.scss', 'public/css')
     .js('resources/assets/js/app.js', 'public/js')
     .copy('node_modules/font-awesome/fonts', 'public/css/fonts')
+    .copy('node_modules/jquery-datetimepicker/build/jquery.datetimepicker.min.css', 'public/css')
     .version();
 

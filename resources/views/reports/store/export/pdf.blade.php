@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<table width="100%" border="1" cellspacing="0" cellpadding="8">
+<table class="table" width="100%" border="1" cellspacing="0" cellpadding="8">
     <tr>
         <th colspan="2" style="background: #38c172; color: #ffffff;">
             <strong>Отчет по арендаторам</strong>

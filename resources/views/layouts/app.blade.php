@@ -13,6 +13,7 @@
     <!-- Styles -->
     @stack('styles')
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/jquery.datetimepicker.min.css') }}" rel="stylesheet">
 </head>
 <body class="preload">
 
