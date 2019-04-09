@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -12,9 +13,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
  */
 class AuthController extends Controller
 {
-
-    use AuthenticatesUsers;
-
 
     /**
      * @return \Illuminate\View\View
@@ -30,14 +28,48 @@ class AuthController extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      *
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function validateLogin(Request $request): void
+    public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+        if ( ! $request->email || ! $request->password || ! $user = User::where('email', $request->email)->first()) {
+            return back()->withErrors(['Вы указали неверные данные авторизации']);
+        }
+
+        if ( ! \Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['Вы указали неверные данные авторизации']);
+        }
+
+        if ( ! $user->is_active) {
+            return back()->withErrors(['Ваш аккаунт неактивирован, проверьте почту']);
+        }
+
+        auth()->login($user);
+
+        return redirect()->to($this->redirectPath());
+    }
+
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function activate(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        if ( ! $request->email || ! $request->activation_token || ! $user = User::where($request->only([
+                'email',
+                'activation_token'
+            ]))->first()) {
+            return redirect()->route('auth.signin')->withErrors(['Вы указали неверные данные активации']);
+        }
+
+        $user->update([
+            'activation_token' => null,
+            'is_active' => true,
         ]);
+
+        return redirect()->route('auth.signin')->withErrors(['Ваш аккаунт активирован, теперь вы можете войти']);
     }
 
 
@@ -61,7 +93,7 @@ class AuthController extends Controller
      */
     public function signout(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $this->guard()->logout();
+        auth()->logout();
 
         return redirect()->route('dashboard');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\UserActivationMail;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -16,7 +17,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @property integer           $store_id
  * @property string            $remember_token
  * @property string            $api_token
+ * @property string            $activation_token
  * @property boolean           $is_readonly
+ * @property boolean           $is_active
  * @property \Carbon\Carbon    $deleted_at
  * @property \App\Models\Role  $role
  * @property \App\Models\Mall  $mall
@@ -52,7 +55,9 @@ class User extends Model implements
         'role_id',
         'mall_id',
         'store_id',
+        'activation_token',
         'is_readonly',
+        'is_active',
     ];
 
     /**
@@ -61,6 +66,7 @@ class User extends Model implements
     protected $hidden = [
         'password',
         'remember_token',
+        'activation_token',
         'api_token',
     ];
 
@@ -72,6 +78,7 @@ class User extends Model implements
         'mall_id' => 'integer',
         'store_id' => 'integer',
         'is_readonly' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -120,6 +127,8 @@ class User extends Model implements
         parent::boot();
 
         static::creating(function (User $user): void {
+            $user->attributes['activation_token'] = str_random(32);
+
             if ($user->store_id) {
                 $user->attributes['role_id'] = Role::TENANT;
                 $user->attributes['api_token'] = str_random(60);
@@ -128,6 +137,10 @@ class User extends Model implements
             } else {
                 $user->attributes['role_id'] = Role::ADMIN;
             }
+        });
+
+        static::created(function (User $user): void {
+            \Mail::to($user->email)->send(new UserActivationMail($user));
         });
     }
 

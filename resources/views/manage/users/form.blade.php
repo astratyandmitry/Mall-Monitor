@@ -89,6 +89,14 @@
                                     'label' => isset($entity) ? 'Новый пароль' : 'Пароль',
                                     'required' => ! isset($entity),
                                 ])
+
+                                @if (isset($entity) && ! $entity->is_active)
+                                    @include('layouts.includes.form.checkbox', [
+                                        'attribute' => 'is_readonly',
+                                        'label' => 'Активировать пользователя',
+                                        'required' => ! isset($entity),
+                                    ])
+                                @endif
                             </div>
                         </div>
 
