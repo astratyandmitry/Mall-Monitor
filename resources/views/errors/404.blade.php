@@ -1,22 +1,22 @@
 @extends('layouts.clean')
 
 @section('content')
-    <div class="w-full absolute pin h-full bg-indigo-darker flex items-center justify-center p-8 md:p-16">
-        <div class="w-full lg:w-3/5 xl:w-2/5">
-            <div class="font-light text-indigo-darker uppercase">
-                <div class="flex flex-wrap items-center ">
-                    <div class="text-white text-white text-3xl lg:text-5xl font-bold">
-                        Ошибка
-                    </div>
-
-                    <div class="ml-4 font-bold text-1xl lg:text-2xl bg-indigo text-indigo-lightest shadow py-3 px-6 rounded-full">
-                        404
+    <div class="promo">
+        <div class="container">
+            <div class="promo-box">
+                <div class="promo-box-brand">
+                    <div class="promo-box-brand-logotype">
+                        {{ config('app.name') }}
                     </div>
                 </div>
-            </div>
 
-            <div class="mt-8 text-2xl text-indigo-lightest font-thin">
-                Запрашиваемая вами страница не найдена.
+                <div class="promo-box-form">
+                    <div style="padding: 2em 0">
+                        <h2>Ошибка 404</h2><br>
+
+                        Запрашиваемая вами страница не найдена
+                    </div>
+                </div>
             </div>
         </div>
     </div>
