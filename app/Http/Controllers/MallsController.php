@@ -31,7 +31,7 @@ class MallsController extends Controller
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
             ->where('created_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
             ->groupBy('mall_id')
-            ->pluck('amount', 'store_id')->toArray();
+            ->pluck('amount', 'mall_id')->toArray();
 
         $stores = Mall::orderBy('name')->get();
 
