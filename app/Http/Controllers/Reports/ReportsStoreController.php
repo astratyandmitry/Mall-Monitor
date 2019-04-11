@@ -78,7 +78,7 @@ class ReportsStoreController extends \App\Http\Controllers\Controller
         if ($dateFrom && $dateTo) {
             $diff = date_diff(date_create($dateFrom), date_create($dateTo));
 
-            if ($diff->format("%a") <= 90) {
+            if ($diff->format("%a") <= 31) {
                 $select .= ', DATE(created_at) as date';
 
                 $statistics = $statistics->groupBy('date');

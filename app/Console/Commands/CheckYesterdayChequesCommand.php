@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Store;
 use Illuminate\Console\Command;
 use App\Repositories\ChequeRepository;
+use App\Mail\StoreYesterdayCheqeusErrorMail;
 
 class CheckYesterdayChequesCommand extends Command
 {
@@ -36,6 +37,8 @@ class CheckYesterdayChequesCommand extends Command
                 $store->update([
                     'is_errors_yesterday' => ! ChequeRepository::isExistsForDate($store->id, $yesterdayDate),
                 ]);
+
+                \Mail::to(config('mallmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
             }
         } else {
             $this->error('No available Stores');

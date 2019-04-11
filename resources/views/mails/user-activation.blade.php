@@ -1,9 +1,8 @@
 @component('mail::message')
-# Активация аккаунта
+# {{ $store->mall->name }}: {{ $store->name }} отсуствутют данные за {{ $date }}
 
-Ваш почтовый адрес был указан при создании аккаунта в приложении {{ config('app.name')  }}.
-
-Для того, что бы активировать аккаунт перейдите по ссылке ниже.
+Данные арендатора:
+* **
 
 @component('mail::button', ['url' => route('auth.activate', ['email' => $user->email, 'activation_token' => $user->activation_token])])
     Активировать аккаунт
