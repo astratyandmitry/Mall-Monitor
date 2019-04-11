@@ -47,7 +47,7 @@ class DashboardController extends Controller
 
         $graphDateTypes = [
             'daily' => 'DATE(created_at)',
-            'monthly' => 'CONCAT(YEAR(created_at),"-",MONTH(created_at))',
+            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
             'yearly' => 'YEAR(created_at)',
         ];
 
@@ -98,7 +98,7 @@ class DashboardController extends Controller
     {
         $graphDateTypes = [
             'daily' => 'DATE(created_at)',
-            'monthly' => 'CONCAT(YEAR(created_at),"-",MONTH(created_at))',
+            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
             'yearly' => 'YEAR(created_at)',
         ];
 
@@ -110,7 +110,7 @@ class DashboardController extends Controller
         $statistics = \DB::table('cheques')
             ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
             ->groupBy('date')
-            ->orderBy('date', 'desc')
+            ->orderBy('dat1e', 'desc')
             ->limit(30);
         $cheques = Cheque::where('created_at', 'LIKE', '%' . $today . '%');
 

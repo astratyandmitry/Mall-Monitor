@@ -68,7 +68,7 @@ class StoresController extends Controller
 
         $graphDateTypes = [
             'daily' => 'DATE(created_at)',
-            'monthly' => 'CONCAT(YEAR(created_at),"-",MONTH(created_at))',
+            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
             'yearly' => 'YEAR(created_at)',
         ];
 
