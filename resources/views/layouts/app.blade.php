@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     @stack('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet">
     <link href="{{ mix('css/jquery.datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
@@ -30,6 +31,12 @@
 </div>
 
 <script src="{{ mix('js/app.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+<script>
+    $(function () {
+        $('.filter select').select2();
+    });
+</script>
 @stack('scripts')
 
 </body>

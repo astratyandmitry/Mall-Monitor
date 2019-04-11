@@ -1,0 +1,120 @@
+.select2 {
+  width: 100%;
+}
+
+.select2-results__option {
+  @include radius($radius);
+}
+
+.select2-selection__arrow {
+  height: 44px !important;
+  right: .750em !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  padding-left: .750em !important;
+  padding-right: .750em !important;
+}
+
+.select2-container--default .select2-selection--single {
+  border-color: $color-grey-light;
+}
+
+.select2,
+.selection,
+.select2-selection {
+  width: 100% !important;
+  height: 44px !important;
+}
+
+.select2-selection__rendered {
+  line-height: 44px !important;
+  font-size: $font-14 !important;
+  color: $color-grey-darkest;
+}
+
+.select2-wrapper {
+  height: 44px;
+  .select2-container {
+    width: 100% !important;
+    height: 44px;
+
+    .select2-selection {
+      transition: border-color 160ms;
+      font-family: 'Montserrat', sans-serif;
+      color: $color-grey-darkest;
+      font-size: $font-14;
+      line-height: 1.5;
+      outline: none !important;
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      border-color: $color-grey-lighter;;
+      border-radius: $radius;
+
+      .select2-selection__rendered {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+
+      .select2-selection__arrow {
+        height: 100%;
+        top: 0px;
+      }
+    }
+
+    &.select2-container--open {
+      .select2-selection {
+        border-color: $color-brand !important;
+
+        &:hover {
+          border-color: $color-brand !important;
+        }
+      }
+    }
+  }
+
+  &.is-medium {
+    .select2-container {
+      .select2-selection {
+        //font-size: $size-5;
+      }
+    }
+  }
+
+  &.is-large {
+    .select2-container {
+      .select2-selection {
+        //font-size: $size-4;
+      }
+    }
+  }
+}
+
+.select2-container {
+  .select2-dropdown {
+    border-color: $color-brand;
+
+    .select2-search {
+      margin: 10px;
+
+      .select2-search__field {
+        border-radius: $radius !important;
+      }
+    }
+
+    .select2-results__options {
+      max-height: 210px;
+
+      .select2-results__option {
+        padding: 0.5em;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+
+        &.select2-results__option--highlighted {
+          background: $color-brand;
+        }
+      }
+    }
+  }
+}

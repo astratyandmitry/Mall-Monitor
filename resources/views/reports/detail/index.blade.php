@@ -24,7 +24,7 @@
         </div>
     </div>
 
-   @include('reports.detail.partials.filter')
+    @include('reports.detail.partials.filter')
 
     @if (count($cheques))
         <div class="content">
@@ -141,27 +141,3 @@
         </div>
     @endif
 @endsection
-
-@push('scripts')
-    <script>
-        $(function () {
-            $storeID = $('#store_id');
-            $cashboxID = $('#cashbox_id');
-
-            $storeID.on('change', function () {
-                $cashboxID.html('<option>Загрузка...</option>').attr('disabled', true);
-
-                $.ajax({
-                    method: 'POST',
-                    url: '/ajax/cashboxes',
-                    data: {
-                        store_id: $storeID.val()
-                    },
-                    success: function (response) {
-                        $cashboxID.html(response).attr('disabled', false);
-                    }
-                });
-            });
-        });
-    </script>
-@endpush
