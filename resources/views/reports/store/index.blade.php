@@ -72,12 +72,10 @@
                                     Сумма продаж
                                     @include('layouts.includes.table.sorting', ['attribute' => 'amount', 'default_key' => 'store_id'])
                                 </th>
-                                @if ($isGroupByDates)
-                                    <th nowrap class="is-right" width="140">
-                                        Дата
-                                        @include('layouts.includes.table.sorting', ['attribute' => 'created_at', 'default_key' => 'created_at', 'default_type' => 'desc'])
-                                    </th>
-                                @endif
+                                <th nowrap class="is-right" width="140">
+                                    Дата
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'created_at', 'default_key' => 'created_at', 'default_type' => 'desc'])
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -102,11 +100,9 @@
                                     <td nowrap class="is-right">
                                         {{ number_format($statistic['amount']) }} ₸
                                     </td>
-                                    @if ($isGroupByDates)
-                                        <td nowrap class="is-right" width="140 ">
-                                            {{ date('d.m.Y', strtotime($statistic['date'])) }}
-                                        </td>
-                                    @endif
+                                    <td nowrap class="is-right" width="140">
+                                        {{ \App\DateHelper::byDateGroup($statistic['date'], $dateGroup) }}
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -123,9 +119,7 @@
                                 <th nowrap class="is-right">
                                     {{ number_format($amount) }} ₸
                                 </th>
-                                @if ($isGroupByDates)
-                                    <th></th>
-                                @endif
+                                <th></th>
                             </tr>
                             </tfoot>
                         </table>

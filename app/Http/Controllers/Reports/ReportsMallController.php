@@ -78,24 +78,26 @@ class ReportsMallController extends Controller
         $statistics = Cheque::reportMall($dateFrom, $dateTo);
         $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id';
 
-        $isGroupByDates = false;
+        $diff = date_diff(date_create($dateFrom), date_create($dateTo));
 
-        if ($dateFrom && $dateTo) {
-            $diff = date_diff(date_create($dateFrom), date_create($dateTo));
+        if (( ! $dateFrom && ! $dateTo) || (int)$diff->format("%Y") > 0) {
+            $select .= ', YEAR(created_at) as date';
 
-            if ($diff->format("%a") <= 31) {
-                $select .= ', DATE(created_at) as date';
+            $statistics = $statistics->groupBy('date');
 
-                $statistics = $statistics->groupBy('date');
+            $dateGroup = 'year';
+        } elseif ((int)$diff->format("%m") > 0) {
+            $select .= ', DATE_FORMAT(created_at, "%Y-%m") as date';
 
-                $isGroupByDates = true;
-            } elseif ($diff->format("%a") <= 365) {
-                $select .= ', MONTH(created_at) as date';
+            $statistics = $statistics->groupBy('date');
 
-                $statistics = $statistics->groupBy('date');
+            $dateGroup = 'month';
+        } else {
+            $select .= ', DATE(created_at) as date';
 
-                $isGroupByDates = true;
-            }
+            $statistics = $statistics->groupBy('date');
+
+            $dateGroup = 'day';
         }
 
         if ( !is_null($limit)) {
@@ -107,7 +109,7 @@ class ReportsMallController extends Controller
         $data = [
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'isGroupByDates' => $isGroupByDates,
+            'dateGroup' => $dateGroup,
             'statistics' => $statistics->toArray(),
             'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id'))->pluck('name', 'id'),
         ];

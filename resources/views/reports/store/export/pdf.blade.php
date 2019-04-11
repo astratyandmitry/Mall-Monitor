@@ -14,7 +14,7 @@
         <th colspan="3" style="background: #38c172; color: #ffffff;">
             <strong>Отчет по арендаторам</strong>
         </th>
-        <th colspan="3" style="background: #38c172; color: #ffffff; text-align: right;">
+        <th colspan="4" style="background: #38c172; color: #ffffff; text-align: right;">
             @if ($dateFrom && $dateTo)
                 c {{ date('d.m.Y H:i', strtotime($dateFrom)) }}
                 по {{ date('d.m.Y H:i', strtotime($dateTo)) }}
@@ -28,7 +28,7 @@
         </th>
     </tr>
     <tr>
-        <th colspan="3" style="background: #f0f0f0; font-weight: 400;">
+        <th colspan="4" style="background: #f0f0f0; font-weight: 400;">
             ТРЦ: {{ (request()->has('mall_id')) ? \App\Models\Mall::find(request()->get('mall_id'))->name : 'Все' }}
         </th>
         <th colspan="3" style="background: #f0f0f0; font-weight: 400; text-align: right;">
@@ -54,6 +54,9 @@
         <th>
             Сумма чеков
         </th>
+        <th>
+            Дата
+        </th>
     </tr>
     @foreach($statistics as $statistic)
         <tr>
@@ -74,6 +77,9 @@
             </td>
             <td>
                 {{ (int)$statistic['amount'] }}
+            </td>
+            <td>
+                {{ \App\DateHelper::byDateGroup($statistic['date'], $dateGroup) }}
             </td>
         </tr>
     @endforeach

@@ -132,4 +132,34 @@ class DateHelper
         return self::$dayAbbr[$day];
     }
 
+
+    /**
+     * @param string $date
+     * @param string $group
+     *
+     * @return string
+     */
+    public static function byDateGroup(string $date, string $group): string
+    {
+        switch ($group) {
+            case 'month':
+                {
+                    $dates = explode('-', $date);
+
+                    return self::getMonthAbbr($dates[1]) . ' ' . $dates[0];
+                };
+                break;
+            case 'day':
+                {
+                    return date('d.m.Y', strtotime($date));
+                };
+                break;
+            default:
+                {
+                    return $date;
+                };
+                break;
+        }
+    }
+
 }
