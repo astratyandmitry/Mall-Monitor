@@ -10,7 +10,7 @@ use App\Models\Cheque;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
  */
-class ReportsMallController extends \App\Http\Controllers\Controller
+class ReportsMallController extends Controller
 {
 
     public function __construct()
@@ -59,19 +59,21 @@ class ReportsMallController extends \App\Http\Controllers\Controller
     {
         $filename = 'mallmonitor_reports.mall_' . date('YmdHi');
 
-        $pdf = \PDF::loadView('reports.mall.export.pdf', $this->getExportData())->setPaper('a4', 'landscape');
+        $pdf = \PDF::loadView('reports.mall.export.pdf', $this->getExportData($this->getPDFMaxItems()))->setPaper('a4', 'landscape');
 
         return $pdf->download("{$filename}.pdf");
     }
 
 
     /**
+     * @param int|null $limit
+     *
      * @return array
      */
-    protected function getExportData(): array
+    protected function getExportData(?int $limit = null): array
     {
-        $dateFrom = $this->getDate('from');
-        $dateTo = $this->getDate('to');
+        $dateFrom = $this->getDateTime('from');
+        $dateTo = $this->getDateTime('to');
 
         $statistics = Cheque::reportMall($dateFrom, $dateTo);
         $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id';
@@ -88,12 +90,16 @@ class ReportsMallController extends \App\Http\Controllers\Controller
 
                 $isGroupByDates = true;
             } elseif ($diff->format("%a") <= 365) {
-                $select .= ', MONTH(created_at) as month';
+                $select .= ', MONTH(created_at) as date';
 
-                $statistics = $statistics->groupBy('month');
+                $statistics = $statistics->groupBy('date');
 
                 $isGroupByDates = true;
             }
+        }
+
+        if ( !is_null($limit)) {
+            $statistics = $statistics->limit($limit);
         }
 
         $statistics = $statistics->select(\DB::raw($select))->groupBy('mall_id')->get();
@@ -107,31 +113,6 @@ class ReportsMallController extends \App\Http\Controllers\Controller
         ];
 
         return $data;
-    }
-
-
-    /**
-     * @param string $key
-     *
-     * @return null|string
-     */
-    protected function getDate(string $key): ?string
-    {
-        if ($date = request()->query("date_{$key}")) {
-            $time = request()->query("time_{$key}");
-
-            if ( ! $time) {
-                $time = ($key == 'from') ? '00:00' : '23:59';
-            }
-
-            request()->merge([
-                "time_{$key}" => $time,
-            ]);
-
-            return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
-        }
-
-        return null;
     }
 
 }

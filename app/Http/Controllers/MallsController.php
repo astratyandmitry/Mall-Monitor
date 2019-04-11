@@ -36,6 +36,7 @@ class MallsController extends Controller
         $stores = Mall::orderBy('name')->get();
 
         return view('malls.index', $this->withData([
+            'currentMonth' => \App\DateHelper::getMonthFull(),
             'statistics' => $statistics,
             'malls' => $stores,
         ]));
@@ -71,7 +72,7 @@ class MallsController extends Controller
             ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
             ->where('mall_id', $mall->id)
             ->groupBy('date')
-            ->orderBy('date', 'desk')
+            ->orderBy('date', 'desc')
             ->limit(30)
             ->get();
 
@@ -102,54 +103,6 @@ class MallsController extends Controller
             'statistics' => $statistics,
             'cheques' => $mall->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->limit(100)->get(),
         ]));
-    }
-
-
-    /**
-     * @param string $date
-     *
-     * @return string
-     */
-    protected function formatDate(string $date): string
-    {
-        $dates = explode('-', $date);
-
-        if (count($dates) == 1) {
-            return $date;
-        }
-
-        $months = [
-            1 => 'янв.',
-            2 => 'фев.',
-            3 => 'мар.',
-            4 => 'апр.',
-            5 => 'май.',
-            6 => 'июн.',
-            7 => 'июл.',
-            8 => 'авг.',
-            9 => 'сен.',
-            10 => 'окт.',
-            11 => 'ноя.',
-            12 => 'дек.',
-        ];
-
-        if (count($dates) == 2) {
-            return $months[(int)$dates[1]] . " {$dates[0]}";
-        }
-
-        $days = [
-            1 => 'Пн.',
-            2 => 'Вт.',
-            3 => 'Ср.',
-            4 => 'Чт.',
-            5 => 'Пт.',
-            6 => 'Сб.',
-            7 => 'Вс.',
-        ];
-
-        $day = $days[date('N', strtotime($date))];
-
-        return (int)$dates[2] . " " . $months[(int)$dates[1]] . " {$dates[0]} ({$day})";
     }
 
 }

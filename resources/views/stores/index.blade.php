@@ -29,7 +29,7 @@
                             <div class="stores-item-detail">
                             <span class="stores-item-detail-text">
                                 @if (!$store->is_errors_yesterday)
-                                    Текущая выручка: {{ $total }} ₸
+                                    За {{ mb_strtolower($currentMonth) }}: {{ $total }} ₸
                                 @else
                                     Отсутствуют вчерашние транзакции
                                 @endif

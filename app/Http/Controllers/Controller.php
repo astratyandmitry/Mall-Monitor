@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DateHelper;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -72,7 +73,7 @@ class Controller extends BaseController
 
 
     /**
-     * @param string $name
+     * @param string      $name
      * @param string|null $link
      */
     public function addBreadcrumb(string $name, ?string $link = null): void
@@ -94,6 +95,31 @@ class Controller extends BaseController
         return array_merge($data, [
             'globals' => $this->data,
         ]);
+    }
+
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     */
+    protected function formatDate(string $date): string
+    {
+        $dates = explode('-', $date);
+
+        if (count($dates) == 1) {
+            return $date;
+        }
+
+        $month = DateHelper::getMonthAbbr((int)$dates[1]);
+
+        if (count($dates) == 2) {
+            return "{$month} {$dates[0]}";
+        }
+
+        $day = DateHelper::getDayAbbr(date('N', strtotime($date)));
+
+        return (int)$dates[2] . " {$month} {$dates[0]} ({$day})";
     }
 
 }

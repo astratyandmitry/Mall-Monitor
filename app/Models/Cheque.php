@@ -220,9 +220,10 @@ class Cheque extends Model
 
             $builder->when(request('store_legal'), function (Builder $builder): Builder {
                 return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('name_legal', 'LIKE', '%' . request('store_legal') . '%');
+                    return $builder->where('id', request('store_legal'));
                 });
             });
+
             $builder->when(request('store_bin'), function (Builder $builder): Builder {
                 return $builder->whereHas('store', function (Builder $builder): Builder {
                     return $builder->where('business_identification_number', request('store_bin'));
@@ -248,6 +249,10 @@ class Cheque extends Model
         if ( ! in_array($sort_type, ['asc', 'desc'])) {
             $sort_type = 'asc';
         }
+
+        $builder->whereHas('store', function (Builder $builder): Builder {
+            return $builder->whereNull('deleted_at');
+        });
 
         $builder->orderBy($sort_key, $sort_type);
 
@@ -279,6 +284,28 @@ class Cheque extends Model
         } else {
             $builder->when(request()->query('store_id'), function ($builder) {
                 return $builder->where('store_id', request()->query('store_id'));
+            });
+
+            $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
+                return $builder->where('cashbox_id', request('cashbox_id'));
+            });
+
+            $builder->when(request('store_name'), function (Builder $builder): Builder {
+                return $builder->whereHas('store', function (Builder $builder): Builder {
+                    return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
+                });
+            });
+
+            $builder->when(request('store_legal'), function (Builder $builder): Builder {
+                return $builder->whereHas('store', function (Builder $builder): Builder {
+                    return $builder->where('id', request('store_legal'));
+                });
+            });
+
+            $builder->when(request('store_bin'), function (Builder $builder): Builder {
+                return $builder->whereHas('store', function (Builder $builder): Builder {
+                    return $builder->where('business_identification_number', request('store_bin'));
+                });
             });
 
             $builder->when(request('type_id'), function (Builder $builder): Builder {
@@ -336,6 +363,10 @@ class Cheque extends Model
             $builder->orderBy($sort_key, $sort_type);
         }
 
+        $builder->whereHas('store', function (Builder $builder): Builder {
+            return $builder->whereNull('deleted_at');
+        });
+
         return $builder;
     }
 
@@ -379,6 +410,10 @@ class Cheque extends Model
         }
 
         $builder->orderBy($sort_key, $sort_type);
+
+        $builder->whereHas('store', function (Builder $builder): Builder {
+            return $builder->whereNull('deleted_at');
+        });
 
         return $builder;
     }

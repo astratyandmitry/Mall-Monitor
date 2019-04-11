@@ -9,7 +9,7 @@ use App\Models\Cheque;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
  */
-class ReportsDetailController extends \App\Http\Controllers\Controller
+class ReportsDetailController extends Controller
 {
 
     /**
@@ -22,8 +22,8 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
         $this->setActivePage('reports.detail');
         $this->addBreadcrumb('Отчеты', route('reports.detail.index'));
 
-        $dateFrom = $this->getDate('from');
-        $dateTo = $this->getDate('to');
+        $dateFrom = $this->getDateTime('from');
+        $dateTo = $this->getDateTime('to');
 
         $builder1 = Cheque::query()->reportDetail($dateFrom, $dateTo);
         $builder2 = clone $builder1;
@@ -73,52 +73,35 @@ class ReportsDetailController extends \App\Http\Controllers\Controller
     {
         $filename = 'mallmonitor_reports.detail_' . date('YmdHi');
 
-        $pdf = \PDF::loadView('reports.detail.export.pdf', $this->getExportData())->setPaper('a4', 'landscape');
+        $pdf = \PDF::loadView('reports.detail.export.pdf', $this->getExportData($this->getPDFMaxItems()))->setPaper('a4', 'landscape');
 
         return $pdf->download("{$filename}.pdf");
     }
 
 
     /**
+     * @param int|null $limit
+     *
      * @return array
      */
-    protected function getExportData(): array
+    protected function getExportData(?int $limit = null): array
     {
-        $dateFrom = $this->getDate('from');
-        $dateTo = $this->getDate('to');
+        $dateFrom = $this->getDateTime('from');
+        $dateTo = $this->getDateTime('to');
 
-        $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->with(['items'])->get();
+        $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->with(['items']);
+
+        if ( ! is_null($limit)) {
+            $cheques = $cheques->limit($limit);
+        }
+
+        $cheques = $cheques->get();
 
         return [
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
             'cheques' => $cheques,
         ];
-    }
-
-
-    /**
-     * @param string $key
-     *
-     * @return null|string
-     */
-    protected function getDate(string $key): ?string
-    {
-        if ($date = request()->query("date_{$key}")) {
-            $time = request()->query("time_{$key}");
-
-            if ( ! $time) {
-                $time = ($key == 'from') ? '00:00' : '23:59';
-            }
-
-            request()->merge([
-                "time_{$key}" => $time,
-            ]);
-
-            return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
-        }
-
-        return null;
     }
 
 }

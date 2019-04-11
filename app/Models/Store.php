@@ -41,6 +41,7 @@ class Store extends Model
         'mall_id',
         'type_id',
         'is_errors_yesterday',
+        'deleted_at',
     ];
 
     /**

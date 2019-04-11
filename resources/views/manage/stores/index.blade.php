@@ -133,7 +133,13 @@
                                     </td>
                                     @if ( ! $currentUser->mall_id)
                                         <td nowrap>
-                                            {{ $entity->mall->name }}
+                                            @if (! $entity->mall_id)
+                                                <div class="badge is-inline">
+                                                    Отсутствует
+                                                </div>
+                                            @else
+                                                {{ $entity->mall->name }}
+                                            @endif
                                         </td>
                                     @endif
                                     <td nowrap>

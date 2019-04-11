@@ -27,7 +27,7 @@
 
                         <div class="stores-item-detail">
                             <span class="stores-item-detail-text">
-                                Текущая выручка: {{ $total }} ₸
+                                За {{ mb_strtolower($currentMonth) }}: {{ $total }} ₸
                             </span>
                         </div>
                     </a>

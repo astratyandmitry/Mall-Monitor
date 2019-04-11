@@ -1,6 +1,6 @@
 @php /** @var array $statistics */ @endphp
 @php /** @var array $mall_names */ @endphp
-@php /** @var array $store_names */ @endphp
+@php /** @var array $stores */ @endphp
 @php /** @var string|null $dateFrom */ @endphp
 @php /** @var string|null $dateTo */ @endphp
         <!doctype html>
@@ -13,7 +13,7 @@
 
 <table>
     <tr>
-        <th colspan="2" style="background: #38c172; color: #ffffff;">
+        <th colspan="3" style="background: #38c172; color: #ffffff;">
             <strong>Отчет по арендаторам</strong>
         </th>
         <th colspan="3" style="background: #38c172; color: #ffffff; text-align: right;">
@@ -30,7 +30,7 @@
         </th>
     </tr>
     <tr>
-        <th colspan="2" style="background: #f0f0f0; font-weight: 400;">
+        <th colspan="3" style="background: #f0f0f0; font-weight: 400;">
             ТРЦ: {{ (request()->has('mall_id')) ? \App\Models\Mall::find(request()->get('mall_id'))->name : 'Все' }}
         </th>
         <th colspan="3" style="background: #f0f0f0; font-weight: 400; text-align: right;">
@@ -43,6 +43,9 @@
         </th>
         <th>
             Заведение
+        </th>
+        <th>
+            БИН
         </th>
         <th>
             Кол-во чеков
@@ -60,7 +63,10 @@
                 {{ $mall_names[$statistic['mall_id']] }}
             </td>
             <td>
-                {{ $store_names[$statistic['store_id']] }}
+                {{ $stores[$statistic['store_id']]['name'] }}
+            </td>
+            <td>
+                {{ $stores[$statistic['store_id']]['business_identification_number'] }}
             </td>
             <td>
                 {{ (int)$statistic['count'] }}
