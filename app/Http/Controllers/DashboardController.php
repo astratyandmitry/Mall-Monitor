@@ -110,7 +110,7 @@ class DashboardController extends Controller
         $statistics = \DB::table('cheques')
             ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
             ->groupBy('date')
-            ->orderBy('dat1e', 'desc')
+            ->orderBy('date', 'desc')
             ->limit(30);
         $cheques = Cheque::where('created_at', 'LIKE', '%' . $today . '%');
 
