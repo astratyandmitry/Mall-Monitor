@@ -87,7 +87,6 @@ class DashboardController extends Controller
             'graph' => $graph,
             'store' => $store,
             'statistics' => $statistics,
-            'cheques' => $store->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->limit(100)->get(),
         ]));
     }
 

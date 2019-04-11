@@ -38,6 +38,8 @@
                     {{ $currentUser->family_name }} {{ $currentUser->given_name }}
                     @if ($currentUser->mall_id || $currentUser->store_id)
                         ({{ $currentUser->store_id ? $currentUser->store->name : $currentUser->mall->name }})
+                    @else
+                        (Полный доступ)
                     @endif
                 </div>
             </div>

@@ -67,7 +67,7 @@
                 <div class="box is-marged">
                     <div class="box-title">
                         <div class="box-title-text">
-                            Статистика последних дней
+                            Статистика за 30 дней
                         </div>
                     </div>
 
@@ -125,69 +125,6 @@
                                 </th>
                             </tr>
                             </tfoot>
-                        </table>
-                    </div>
-                </div>
-            @endif
-
-            @if (count($cheques))
-                <div class="box is-marged">
-                    <div class="box-title">
-                        <div class="box-title-text">
-                            Последние транзакции
-                        </div>
-                    </div>
-
-                    <div class="box-content">
-                        <table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                <th nowrap>
-                                    Код касссы
-                                </th>
-                                <th nowrap width="120">
-                                    Док. №
-                                </th>
-                                <th nowrap class="is-center" width="100">
-                                    Кол-во поз.
-                                </th>
-                                <th nowrap width="160">
-                                    Операция
-                                </th>
-                                <th nowrap class="is-right" width="80">
-                                    Сумма
-                                </th>
-                                <th nowrap class="is-right" width="140 ">
-                                    Дата и время
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($cheques as $cheque)
-                                <tr>
-                                    <td nowrap>
-                                        {{ $cheque->kkm_code }}
-                                    </td>
-                                    <td nowrap>
-                                        {{ $cheque->number }}
-                                    </td>
-                                    <td nowrap class="is-center">
-                                        {{ isset($counts[$cheque->id]['count']) ? number_format($counts[$cheque->id]['count']) : 0 }}
-                                    </td>
-                                    <td nowrap>
-                                        <div class="badge is-inline {{ $cheque->type->getCssClass() }}">
-                                            {{ $cheque->type->name }}
-                                        </div>
-                                    </td>
-                                    <td nowrap class="is-right">
-                                        {{ number_format($cheque->amount) }} ₸
-                                    </td>
-                                    <td nowrap class="is-right">
-                                        {{ $cheque->created_at->format('d.m.Y H:i:s') }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
                         </table>
                     </div>
                 </div>
