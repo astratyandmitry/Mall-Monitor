@@ -91,7 +91,7 @@ abstract class ImportCheque
 
         if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->withTrashed()->first()) {
             $store = Store::create([
-                'mall_id' => null,
+                'mall_id' => $this->mall->id,
                 'name' => "БИН: {$bin}",
                 'business_identification_number' => $bin,
                 'type_id' => StoreType::DEFAULT,
