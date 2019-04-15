@@ -140,7 +140,7 @@ class Cheque extends Model
      */
     public function cashbox(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Cashbox::class);
+        return $this->belongsTo(Cashbox::class)->withTrashed();
     }
 
 

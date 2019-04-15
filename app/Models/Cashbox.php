@@ -71,7 +71,7 @@ class Cashbox extends Model
      */
     public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Store::class)->withTrashed();
     }
 
 
