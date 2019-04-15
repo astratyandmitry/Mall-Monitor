@@ -87,7 +87,7 @@ class MallsController extends Controller
             $graph['labels'][] = $this->formatDate($statistic->date);
             $graph['amount'][] = round($statistic->amount);
             $graph['count'][] = round($statistic->count);
-            $graph['avg'][] = $statistic->avg;
+            $graph['avg'][] = round($statistic->avg);
         }
 
         $graph['labels'] = array_reverse($graph['labels']);
