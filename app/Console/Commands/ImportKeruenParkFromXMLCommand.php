@@ -31,7 +31,15 @@ class ImportKeruenParkFromXMLCommand extends Command
      */
     public function handle(): void
     {
-        $data = simplexml_load_string(file_get_contents(storage_path('/import/keruen-park.xml')));
+        $filepath = storage_path('/import/keruen-park.xml');
+
+        if ( ! \Storage::exists($filepath)) {
+            $this->error('The «keruen-park.xml» file not found');
+
+            return;
+        }
+
+        $data = simplexml_load_string(file_get_contents($filepath));
 
         foreach ($data as $item) {
             $this->info("Adding {$item->DOC_ID}");
@@ -50,6 +58,8 @@ class ImportKeruenParkFromXMLCommand extends Command
                 'created_at' => "{$item->DOC_DATE} 12:00:00",
             ]);
         }
+
+        \Storage::delete($filepath);
     }
 
 
