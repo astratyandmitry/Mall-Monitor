@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string                $name
  * @property string                $name_legal
  * @property integer               $business_identification_number
+ * @property integer               $rentable_area
  * @property integer               $mall_id
  * @property integer               $type_id
  * @property boolean               $is_errors_yesterday
@@ -38,6 +39,7 @@ class Store extends Model
         'name',
         'name_legal',
         'business_identification_number',
+        'rentable_area',
         'mall_id',
         'type_id',
         'is_errors_yesterday',
@@ -57,6 +59,7 @@ class Store extends Model
     protected $casts = [
         'mall_id' => 'integer',
         'type_id' => 'integer',
+        'rentable_area' => 'integer',
         'is_errors_yesterday' => 'boolean',
     ];
 
@@ -67,6 +70,7 @@ class Store extends Model
         'name' => 'required|max:200',
         'name_legal' => 'required|max:200',
         'mall_id' => 'required|exists:malls,id',
+        'rentable_area' => 'required|numeric',
         'business_identification_number' => 'required|regex:/^(\d{12})$/i',
         'type_id' => 'required|exists:store_types,id',
     ];
@@ -79,6 +83,7 @@ class Store extends Model
         'type_id' => 'категория',
         'name_legal' => 'юр. наименование',
         'business_identification_number' => 'БИН',
+        'rentable_area' => 'арендуемая площадь',
     ];
 
     /**

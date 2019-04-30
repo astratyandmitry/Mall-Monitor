@@ -63,13 +63,21 @@
                                     'attribute' => 'name_legal',
                                     'label' => 'Юр. наименование',
                                     'required' => true,
-                                    'autofocus' => true,
                                 ])
 
                                 @include('layouts.includes.form.input', [
                                     'attribute' => 'business_identification_number',
                                     'helper' => '12 цифр',
                                     'label' => 'БИН',
+                                    'required' => true,
+                                ])
+                            </div>
+
+                            <div class="form-section">
+                                @include('layouts.includes.form.input', [
+                                    'attribute' => 'rentable_area',
+                                    'label' => 'Арендуемая площать',
+                                    'helper' => 'кв. м.',
                                     'required' => true,
                                 ])
                             </div>
