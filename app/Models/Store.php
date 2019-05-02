@@ -93,6 +93,27 @@ class Store extends Model
 
 
     /**
+     * @return void
+     */
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::updated(function (Store $store): void {
+            if ($store->wasChanged('mall_id')) {
+                \DB::table('cheques')->where('store_id', $store->id)->update([
+                    'mall_id' => $store->mall_id,
+                ]);
+
+                \DB::table('cashboxes')->where('store_id', $store->id)->update([
+                    'mall_id' => $store->mall_id,
+                ]);
+            }
+        });
+    }
+
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo

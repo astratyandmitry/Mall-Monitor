@@ -100,6 +100,10 @@ class ManageStoresController extends ManageController
         $entity = Store::findOrFail($id);
         $entity->update($request->all());
 
+        if ($entity->wasChanged('mall_id')) {
+            $entity->cascadeUpdateMall();
+        }
+
         return redirect()->route('manage.stores.index')
             ->with('status-success', 'Арендатор успешно изменен');
     }

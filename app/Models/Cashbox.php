@@ -58,6 +58,24 @@ class Cashbox extends Model
 
 
     /**
+     * @return void
+     */
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::updated(function (Cashbox $cashbox): void {
+            if ($cashbox->wasChanged('store_id')) {
+                \DB::table('cheques')->where('cashbox_id', $cashbox->id)->update([
+                    'store_id' => $cashbox->store_id,
+                    'mall_id' => $cashbox->mall_id,
+                ]);
+            }
+        });
+    }
+
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo

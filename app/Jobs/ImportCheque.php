@@ -10,6 +10,7 @@ use App\Models\ChequeType;
 use App\Models\ChequeItem;
 use App\Models\ChequePayment;
 use App\Models\StoreType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 /**
@@ -56,70 +57,52 @@ abstract class ImportCheque
     /**
      * @param \App\Models\Mall $mall
      * @param \stdClass        $item
+     * @param null|string      $bin
      */
     public function __construct(Mall $mall, \stdClass $item, ?string $bin = null)
     {
         $this->mall = $mall;
         $this->item = $item;
         $this->bin = $bin;
-
-        $this->loadCashboxCodes();
-    }
-
-
-    /**
-     * @return void
-     */
-    protected function loadCashboxCodes(): void
-    {
-        $cashboxes = Cashbox::withTrashed()->get();
-
-        foreach ($cashboxes as $cashbox) {
-            $this->cashbox_codes[$cashbox->mall_id][$cashbox->store_id][$cashbox->code] = $cashbox->id;
-        }
     }
 
 
     /**
      * @param string $bin
+     * @param string $kkm_code
      *
-     * @return int
+     * @return \App\Models\Cashbox
      */
-    protected function loadStore(?string $bin = null): int
+    public function loadCashbox(string $bin, string $kkm_code): Cashbox
     {
-        $bin = $bin ?? $this->bin;
+        /** @var Cashbox $cashbox */
+        $cashbox = Cashbox::query()
+            ->where('code', $kkm_code)
+            ->where('mall_id', $this->mall->id)
+            ->whereHas('store', function (Builder $builder) use ($bin): Builder {
+                return $builder->where('business_identification_number', $bin);
+            })->first();
 
-        if ( ! $store = Store::where('mall_id', $this->mall->id)->where('business_identification_number', $bin)->withTrashed()->first()) {
-            $store = Store::create([
-                'mall_id' => $this->mall->id,
-                'name' => "БИН: {$bin}",
-                'business_identification_number' => $bin,
-                'type_id' => StoreType::DEFAULT,
-                'deleted_at' => now(),
+        if ( ! $cashbox) {
+            /** @var Store $store */
+            if ( ! $store = Store::where('business_identification_number', $bin)->where('mall_id', $this->mall->id)->first()) {
+                $store = Store::create([
+                    'mall_id' => $this->mall->id,
+                    'name' => "БИН: {$bin}",
+                    'business_identification_number' => $bin,
+                    'type_id' => StoreType::DEFAULT,
+                    'deleted_at' => now(),
+                ]);
+            }
+
+            $cashbox = Cashbox::create([
+                'code' => $kkm_code,
+                'store_id' => $store->id,
+                'mall_id' => $store->mall_id,
             ]);
         }
 
-        return $store->id;
-    }
-
-
-    /**
-     * @param int    $storeId
-     * @param string $code
-     *
-     * @return int
-     */
-    protected function getCashboxCodeId(int $storeId, string $code): int
-    {
-        if ( ! isset($this->cashbox_codes[$this->mall->id][$storeId][$code])) {
-            $this->cashbox_codes[$this->mall->id][$storeId][$code] = Cashbox::create([
-                'mall_id' => $this->mall->id,
-                'store_id' => $storeId,
-                'code' => $code,
-            ])->id;
-        }
-
-        return $this->cashbox_codes[$this->mall->id][$storeId][$code];
+        return $cashbox;
     }
 
 

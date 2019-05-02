@@ -61,14 +61,14 @@ class ImportChequeProsystem extends ImportCheque
      */
     protected function createCheque(\stdClass $item): Cheque
     {
-        $storeId = $this->loadStore($item->TaxPayerBIN);
+        $cashbox = $this->loadCashbox($item->TaxPayerBIN, $item->KKMCode);
         $typeId = $this->getType($item->Type);
 
         return Cheque::create([
-            'mall_id' => $this->mall->id,
-            'store_id' => $storeId,
-            'cashbox_id' => $this->getCashboxCodeId($storeId, $item->KKMCode),
-            'kkm_code' => $item->KKMCode,
+            'mall_id' => $cashbox->mall_id,
+            'store_id' => $cashbox->store_id,
+            'cashbox_id' => $cashbox->id,
+            'kkm_code' => $cashbox->code,
             'code' => $item->UniqueId,
             'number' => $item->DocumentNumber,
             'shift_number' => $item->WorkSessionNumber,

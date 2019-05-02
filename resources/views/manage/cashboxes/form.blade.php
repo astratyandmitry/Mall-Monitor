@@ -30,14 +30,6 @@
 
                         @csrf
 
-                        @includeWhen(isset($entity), 'layouts.includes.form.hidden', [
-                            'attribute' => 'store_id',
-                        ])
-
-                        @includeWhen(isset($entity), 'layouts.includes.form.hidden', [
-                            'attribute' => 'mall_id',
-                        ])
-
                         <div class="form-content">
                             <div class="form-section">
                                 <div class="form-grid {{ ! $currentUser->mall_id ?  'is-2col' : null }} ">
@@ -56,7 +48,6 @@
                                           'attribute' => 'store_id',
                                           'label' => 'Арендатор',
                                           'options' => \App\Repositories\StoreRepository::getOptions(old('store_id', optional($entity)->mall_id ?? -1)),
-                                          'disabled' => isset($entity),
                                           'required' => true,
                                     ])
                                 </div>
