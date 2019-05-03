@@ -22,18 +22,26 @@
                         @php $total = (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id])) : 0 @endphp
 
                         <a href="{{ $store->link() }}" class="stores-item {{ $store->is_errors_yesterday ? 'is-danger' : '' }}">
+                            @if ($store->rentable_area)
+                                <div class="stores-item-area">
+                                    <span class="stores-item-area-text">
+                                        {{ $store->rentable_area }} м²
+                                    </span>
+                                </div>
+                            @endif
+
                             <div class="stores-item-name">
                                 <span class="stores-item-name-text">{{ $store->name }}</span>
                             </div>
 
                             <div class="stores-item-detail">
-                            <span class="stores-item-detail-text">
-                                @if (!$store->is_errors_yesterday)
-                                    За {{ mb_strtolower($currentMonth) }}: {{ $total }} ₸
-                                @else
-                                    Отсутствуют вчерашние транзакции
-                                @endif
-                            </span>
+                                <span class="stores-item-detail-text">
+                                    @if (!$store->is_errors_yesterday)
+                                        За {{ mb_strtolower($currentMonth) }}: {{ $total }} ₸
+                                    @else
+                                        Отсутствуют вчерашние транзакции
+                                    @endif
+                                </span>
                             </div>
                         </a>
                     @endforeach

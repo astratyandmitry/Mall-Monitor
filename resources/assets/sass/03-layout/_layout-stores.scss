@@ -20,12 +20,27 @@
 
   .stores-item {
     border: 1px solid $color-grey-light;
+    position: relative;
     padding: $size-2;
     @include transition();
     @include radius($radius);
 
     @include mobile() {
       padding: $size-1-5;
+    }
+
+    .stores-item-area {
+      @include mobile() {
+        display: none;
+      }
+
+      position: absolute;
+      right: 2em;
+      top: 2em;
+
+      .stores-item-area-text {
+        font-size: $font-12;
+      }
     }
 
     .stores-item-name {
