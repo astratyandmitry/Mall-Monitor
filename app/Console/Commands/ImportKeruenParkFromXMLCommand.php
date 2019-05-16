@@ -33,7 +33,7 @@ class ImportKeruenParkFromXMLCommand extends Command
     {
         $filepath = storage_path('/import/keruen-park.xml');
 
-        if ( ! \Storage::exists($filepath)) {
+        if ( ! \File::exists($filepath)) {
             $this->error('The «keruen-park.xml» file not found');
 
             return;
@@ -59,7 +59,7 @@ class ImportKeruenParkFromXMLCommand extends Command
             ]);
         }
 
-        \Storage::delete($filepath);
+        \File::delete($filepath);
     }
 
 
