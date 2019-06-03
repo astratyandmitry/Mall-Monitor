@@ -34,9 +34,9 @@ class IntegrateWebKassaCommand extends Command
 
 
     /**
-     * IntegrateWebKassaCommand constructor.
+     * @return void
      */
-    public function __construct()
+    public function handle(): void
     {
         $this->mall = Mall::find(Mall::KERUEN_CITY);
 
@@ -44,15 +44,6 @@ class IntegrateWebKassaCommand extends Command
             $this->mall->getIntegration(IntegrationSystem::WEBKASSA)
         );
 
-        parent::__construct();
-    }
-
-
-    /**
-     * @return void
-     */
-    public function handle(): void
-    {
         if ($this->integration->authorize()) {
             if ($cashboxes = $this->integration->availableForReadHistory()) {
                 foreach ($cashboxes as $cashbox) {

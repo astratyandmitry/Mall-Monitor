@@ -32,7 +32,10 @@ class IntegrateProsystemsCommand extends Command
     protected $mall;
 
 
-    public function __construct()
+    /**
+     * @return void
+     */
+    public function handle(): void
     {
         $this->mall = Mall::find(Mall::KERUEN_CITY);
 
@@ -40,15 +43,6 @@ class IntegrateProsystemsCommand extends Command
             $this->mall->getIntegration(IntegrationSystem::PROSYSTEMS)
         );
 
-        parent::__construct();
-    }
-
-
-    /**
-     * @return void
-     */
-    public function handle(): void
-    {
         if ($this->integration->authorize()) {
             if ($this->integration->provoidData()) {
                 foreach ($this->integration->getData() as $item) {
