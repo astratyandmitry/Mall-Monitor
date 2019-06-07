@@ -33,15 +33,15 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if ( ! $request->email || ! $request->password || ! $user = User::where('email', $request->email)->first()) {
-            return back()->withErrors(['Вы указали неверные данные авторизации']);
+            return back()->withInput($request->only(['email']))->withErrors(['Вы указали неверные данные авторизации']);
         }
 
         if ( ! \Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['Вы указали неверные данные авторизации']);
+            return back()->withInput($request->only(['email']))->withErrors(['Вы указали неверные данные авторизации']);
         }
 
         if ( ! $user->is_active) {
-            return back()->withErrors(['Ваш аккаунт неактивирован, проверьте почту']);
+            return back()->withInput($request->only(['email']))->withErrors(['Ваш аккаунт неактивирован, проверьте почту']);
         }
 
         auth()->login($user);
