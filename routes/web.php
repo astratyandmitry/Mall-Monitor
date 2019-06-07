@@ -2,9 +2,6 @@
 
 Route::get('/', 'HomeController@redirect')->name('home');
 
-Route::get('/resend', function() {
-   \Mail::to('test@test.ru')->send(new \App\Mail\UserActivationMail(\App\Models\User::latest('id')->first()));
-});
 Route::group(['middleware' => 'guest'], function (): void {
     Route::get('/auth/signin', 'AuthController@signin')->name('auth.signin');
     Route::post('/auth/signin', 'AuthController@login');
