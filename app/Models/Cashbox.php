@@ -75,6 +75,11 @@ class Cashbox extends Model
     }
 
 
+    public static function generateCodeFor(Store $store): string
+    {
+    }
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -16,8 +16,18 @@ class ChequePayment extends Model
 
     const CASH = 1;
     const CARD = 2;
-    const CREDIT = 2;
-    const TARE = 2;
+    const CREDIT = 3;
+    const TARE = 4;
+
+    /**
+     * @var array
+     */
+    public static $options = [
+        self::CASH,
+        self::CARD,
+        self::CREDIT,
+        self::TARE,
+    ];
 
     /**
      * @var string

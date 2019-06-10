@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property integer              $id
@@ -65,7 +67,7 @@ class Mall extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function city(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
     }
@@ -74,7 +76,7 @@ class Mall extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function cheques(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function cheques(): HasMany
     {
         return $this->hasMany(Cheque::class);
     }
@@ -83,7 +85,7 @@ class Mall extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function integrations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function integrations(): HasMany
     {
         return $this->hasMany(MallIntegration::class);
     }

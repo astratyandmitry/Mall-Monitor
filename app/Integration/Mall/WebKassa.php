@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Integration;
+namespace App\Integration\Mall;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
@@ -27,7 +27,7 @@ class WebKassa
 
     /**
      *
-     * @var Singleton
+     * @var \App\Integration\Mall\WebKassa
      */
     private static $instance;
 
@@ -53,9 +53,9 @@ class WebKassa
 
 
     /**
-     * WebKassa constructor.
-     *
      * @param \App\Models\MallIntegration $integration
+     *
+     * @return void
      */
     public function __construct(MallIntegration $integration)
     {
@@ -70,7 +70,7 @@ class WebKassa
     /**
      * @param \App\Models\MallIntegration $integration
      *
-     * @return \App\Integration\WebKassa
+     * @return \App\Integration\Mall\WebKassa
      */
     public static function init(MallIntegration $integration): WebKassa
     {
@@ -84,6 +84,7 @@ class WebKassa
 
     /**
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function authorize(): bool
     {
@@ -114,6 +115,7 @@ class WebKassa
 
     /**
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function availableForReadHistory(): array
     {
@@ -127,7 +129,7 @@ class WebKassa
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if (isset($response->Errors) && count($response->Errors))  {
+        if (isset($response->Errors) && count($response->Errors)) {
             $this->log('availableForReadHistory', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
 
             return [];
@@ -145,6 +147,7 @@ class WebKassa
      * @param int    $take
      *
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function shiftHistory(string $cashboxNumber, int $skip = 0, int $take = 50): array
     {
@@ -179,18 +182,19 @@ class WebKassa
 
     /**
      * @param string $cashboxNumber
-     * @param string $shiftNubmer
+     * @param string $shiftNumber
      * @param int    $skip
      * @param int    $take
      *
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function history(string $cashboxNumber, string $shiftNubmer, int $skip = 0, int $take = 50): array
+    public function history(string $cashboxNumber, string $shiftNumber, int $skip = 0, int $take = 50): array
     {
         $params = [
             'Token' => $this->token,
             'CashboxUniqueNumber' => $cashboxNumber,
-            'ShiftNumber' => $shiftNubmer,
+            'ShiftNumber' => $shiftNumber,
             'Skip' => $skip,
             'Take' => $take,
         ];

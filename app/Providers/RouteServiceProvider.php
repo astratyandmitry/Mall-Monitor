@@ -26,15 +26,19 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Route::bind('anyUser', function ($value) {
-            return \App\Models\User::where('id', $value)->withTrashed()->first();
+            return \App\Models\User::withTrashed()->where('id', $value)->first();
+        });
+
+        Route::bind('anyDeveloper', function ($value) {
+            return \App\Models\Developer::withTrashed()->where('id', $value)->first();
         });
 
         Route::bind('anyStore', function ($value) {
-            return \App\Models\Store::where('id', $value)->withTrashed()->first();
+            return \App\Models\Store::withTrashed()->where('id', $value)->first();
         });
 
         Route::bind('anyCashbox', function ($value) {
-            return \App\Models\Cashbox::where('id', $value)->withTrashed()->first();
+            return \App\Models\Cashbox::withTrashed()->where('id', $value)->first();
         });
 
         parent::boot();

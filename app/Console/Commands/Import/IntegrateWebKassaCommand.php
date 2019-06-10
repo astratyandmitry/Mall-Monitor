@@ -4,7 +4,7 @@ namespace App\Console\Commands\Import;
 
 use App\Models\Cheque;
 use App\Models\Mall;
-use App\Integration\WebKassa;
+use App\Integration\Mall\WebKassa;
 use Illuminate\Console\Command;
 use App\Models\IntegrationSystem;
 use App\Jobs\ImportChequeWebKassa;
@@ -23,7 +23,7 @@ class IntegrateWebKassaCommand extends Command
     protected $description = 'Integrate with WebKassa';
 
     /**
-     * @var \App\Integration\Prosystems
+     * @var \App\Integration\Mall\Prosystems
      */
     protected $integration;
 

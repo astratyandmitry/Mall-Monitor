@@ -1,4 +1,4 @@
-@php /** @var \App\Models\User[] $entities */ @endphp
+@php /** @var \App\Models\Developer[] $entities */ @endphp
 
 @extends('layouts.app', $globals)
 
@@ -11,8 +11,8 @@
                 </div>
 
                 <div class="heading-action">
-                    <a href="{{ route('manage.users.create') }}" class="btn heading-action-button is-outlined">
-                        Добавить пользователя
+                    <a href="{{ route('manage.developers.create') }}" class="btn heading-action-button is-outlined">
+                        Добавить разработчика
                     </a>
                 </div>
             </div>
@@ -26,7 +26,7 @@
             <div class="box">
                 <div class="box-title">
                     <div class="box-title-text">
-                        Список пользователей
+                        Список разработчиков
                     </div>
                 </div>
 
@@ -39,11 +39,8 @@
                                 @include('layouts.includes.table.sorting', ['attribute' => 'id'])
                             </th>
                             <th nowrap>
-                                Имя и фамилия
-                            </th>
-                            <th nowrap>
-                                E-mail
-                                @include('layouts.includes.table.sorting', ['attribute' => 'email'])
+                                Логин
+                                @include('layouts.includes.table.sorting', ['attribute' => 'username'])
                             </th>
                             <th nowrap width="240">
                                 ТРЦ
@@ -73,14 +70,8 @@
                                 </th>
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.input', [
-                                        'attribute' => 'name',
-                                        'placeholder' => 'Имя или фамилия',
-                                    ])
-                                </th>
-                                <th nowrap class="field">
-                                    @include('layouts.includes.field.input', [
-                                        'attribute' => 'email',
-                                        'placeholder' => 'E-mail',
+                                        'attribute' => 'username',
+                                        'placeholder' => 'Логин',
                                     ])
                                 </th>
                                 <th nowrap class="field">
@@ -129,16 +120,7 @@
                                         {{ $entity->id }}
                                     </td>
                                     <td nowrap>
-                                        @if (! $entity->family_name && ! $entity->given_name)
-                                            <div class="badge is-inline">
-                                                Отсутствует
-                                            </div>
-                                        @else
-                                            {{ $entity->family_name }} {{ $entity->given_name }}
-                                        @endif
-                                    </td>
-                                    <td nowrap>
-                                        {{ $entity->email }}
+                                        {{ $entity->username }}
                                     </td>
                                     <td nowrap>
                                         @if ($entity->mall)
@@ -165,12 +147,12 @@
                                     </td>
                                     <td class="is-icons">
                                         @if (!$entity->trashed())
-                                            <a href="{{ route('manage.users.edit', $entity) }}" title="Редактировать">
+                                            <a href="{{ route('manage.developers.edit', $entity) }}" title="Редактировать">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
                                         @endif
 
-                                        <a href="{{ route('manage.users.toggle', $entity) }}"
+                                        <a href="{{ route('manage.developers.toggle', $entity) }}"
                                            title="{{ $entity->trashed() ? 'Восстановить' : 'Удалить' }}">
                                             <i class="fa {{ $entity->trashed() ? 'fa-undo' : 'fa-trash' }}"></i>
                                         </a>
@@ -179,7 +161,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="8" class="is-empty">
+                                <td colspan="6" class="is-empty">
                                     Информация по указанному запросу отсутствует
                                 </td>
                             </tr>

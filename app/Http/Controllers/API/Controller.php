@@ -3,56 +3,37 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Http\JsonResponse;
 
 /**
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
- * @copyright 2017, ArmenianBros. <i@armenianbros.com>
+ * @copyright 2019, ArmenianBros. <i@armenianbros.com>
  */
-class Controller extends \Illuminate\Routing\Controller
+class Controller extends \App\Http\Controllers\Controller
 {
 
-    use \Illuminate\Foundation\Bus\DispatchesJobs,
-        \Illuminate\Foundation\Validation\ValidatesRequests,
-        \Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+    const CODE_ERROR_PARAMETERS = 991;
+    const CODE_ERROR_VALIDATION = 992;
+    const CODE_ERROR_UNNAMED = 999;
 
     /**
-     * @var Request
+     * @var array
      */
-    protected $request;
-
+    protected $errorCode = self::CODE_ERROR_UNNAMED;
 
     /**
-     * @param Request $request
-     *
-     * @return void
+     * @var array
      */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
+    protected $errorData = [];
 
 
     /**
-     * @param array $rules
-     *
-     * @return bool
-     */
-    protected function perfomeValidation(array $rules = []): bool
-    {
-        if ( ! $rules) {
-            return $this->validate($this->request, $this->model->getRules());
-        }
-
-        return $this->validate($this->request, $rules);
-    }
-
-
-    /**
-     * @param Request $request
-     * @param array   $rules
-     * @param array   $messages
-     * @param array   $customAttributes
+     * @param \Illuminate\Http\Request $request
+     * @param array                    $rules
+     * @param array                    $messages
+     * @param array                    $customAttributes
      *
      * @return bool
      */
@@ -62,12 +43,11 @@ class Controller extends \Illuminate\Routing\Controller
         array $messages = [],
         array $customAttributes = []
     ): bool {
-        $rules = $this->uniqueRules($rules);
         $validator = $this->getValidationFactory()->make($request->all(), $rules, $messages, []);
 
         if ($validator->fails()) {
-            $this->response->setCode(self::CODE_VALIDATION_ERRORS);
-            $this->response->setData($validator->errors()->getMessages());
+            $this->errorCode = self::CODE_ERROR_VALIDATION;
+            $this->errorData = $validator->errors()->getMessages();
 
             return false;
         }
@@ -77,37 +57,70 @@ class Controller extends \Illuminate\Routing\Controller
 
 
     /**
-     * @param array $rules
+     * @param array $data
      *
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      */
-    protected function uniqueRules(array $rules): array
+    protected function response(array $data = []): JsonResponse
     {
-        if (isset($rules['_unique'])) {
-            $requestIsPut = $this->request->server()['REQUEST_METHOD'] == 'PUT';
+        return $this->responseSuccess($data);
+    }
 
-            $uniqueAttributes = explode(',', $rules['_unique']);
-            unset($rules['_unique']);
 
-            $uniqueRule = "unique:{$this->model->getTable()}";
-            $uniqueId = ($requestIsPut) ? $this->request->route()->parameters()['id'] : null;
+    /**
+     * @param array $data
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function responseSuccess(array $data = []): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
 
-            foreach ($uniqueAttributes as $attribute) {
-                $iUniqueRule = $uniqueRule;
 
-                if ($requestIsPut) {
-                    $iUniqueRule .= ",{$attribute},{$uniqueId}";
-                }
+    /**
+     * @param null|int    $code
+     * @param null|string $message
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function responseError(?int $code = null, ?string $message = null): JsonResponse
+    {
+        $error = [
+            'code' => ( ! is_null($code)) ? $code : $this->errorCode,
+        ];
 
-                if (isset($rules[$attribute])) {
-                    $rules[$attribute] .= '|' . $iUniqueRule;
-                } else {
-                    $rules[$attribute] = $iUniqueRule;
-                }
-            }
+        if (count($this->errorData)) {
+            $error['data'] = $this->errorData;
         }
 
-        return $rules;
+        if ( ! is_null($message)) {
+            $error['message'] = $message;
+        }
+
+        return response()->json([
+            'success' => false,
+            'error' => $error,
+        ]);
+    }
+
+
+    /**
+     * @param \Illuminate\Http\UploadedFile $fileInstance
+     *
+     * @return string
+     */
+    protected function getUploadedFile(UploadedFile $fileInstance): string
+    {
+        $filename = implode('_', [time(), str_random(16)]);
+        $filename = "{$filename}.{$fileInstance->getClientOriginalExtension()}";
+
+        $fileInstance->move(storage_path("app/public/files"), $filename);
+
+        return "/storage/files/{$filename}";
     }
 
 }

@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Import;
 
 use App\Models\Mall;
-use App\Integration\Prosystems;
+use App\Integration\Mall\Prosystems;
 use Illuminate\Console\Command;
 use App\Models\IntegrationSystem;
 use App\Jobs\ImportChequeProsystem;
@@ -22,7 +22,7 @@ class IntegrateProsystemsMultiCommand extends Command
     protected $description = 'Integrate with Prosystems Multi Queries';
 
     /**
-     * @var \App\Integration\Prosystems
+     * @var \App\Integration\Mall\Prosystems
      */
     protected $integration;
 

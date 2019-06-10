@@ -29,12 +29,12 @@ function getRouteReturn(string $name = 'home'): string
 }
 
 /**
- * Add 'is-active' class (as parameter) if given boolean is true.
- *
  * @param bool $boolean
- * @param bool $withClass
+ * @param bool $asParameter
+ *
+ * @return string|void
  */
-function isActive(bool $boolean, bool $asParameter = true): void
+function isActive(bool $boolean, bool $asParameter = true)
 {
     if ($boolean) {
         echo ($asParameter) ? 'class="is-active"' : ' is-active';
