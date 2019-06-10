@@ -52,6 +52,14 @@ body * {
   display: none;
 }
 
+.is-success-background {
+  background: $color-green-lightest !important;
+}
+
+.is-danger-background {
+  background: $color-red-lightest !important;
+}
+
 .is-success {
   color: $color-green-dark;
 }

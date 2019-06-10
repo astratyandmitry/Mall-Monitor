@@ -3,28 +3,15 @@ global.$ = global.jQuery = require('jquery');
 require('jquery-datetimepicker');
 require('jquery-mask-plugin');
 
-// $.datetimepicker.setLocale('ru');
 
-$('#date_from').mask('00.00.0000');
-$('#date_from').datetimepicker({
+$('.picker-date').mask('00.00.0000');
+$('.picker-date').datetimepicker({
     timepicker: false,
     format: 'd.m.Y'
 });
 
-$('#time_from').mask('00:00');
-$('#time_from').datetimepicker({
-    datepicker: false,
-    format: 'H:i'
-});
-
-$('#date_to').mask('00.00.0000');
-$('#date_to').datetimepicker({
-    timepicker: false,
-    format: 'd.m.Y'
-});
-
-$('#time_to').mask('00:00');
-$('#time_to').datetimepicker({
+$('.picker-time').mask('00:00');
+$('.picker-time').datetimepicker({
     datepicker: false,
     format: 'H:i'
 });

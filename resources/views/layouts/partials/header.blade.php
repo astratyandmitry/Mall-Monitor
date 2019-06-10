@@ -32,6 +32,11 @@
                             </a>
                         </li>
                     @endif
+                    <li class="header-nav-list-item {{ isActive($active_section == 'compare', false) }}">
+                        <a href="{{ route('compare.index') }}" class="header-nav-list-item-link">
+                            Сравнение
+                        </a>
+                    </li>
                     <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'reports', false) }}">
                         <a href="javascript:void(0)" class="header-nav-list-item-link ">
                             Отчеты

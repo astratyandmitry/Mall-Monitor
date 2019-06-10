@@ -92,3 +92,80 @@ function isRequestEmpty(): bool
 
     return count($params) == 0;
 }
+
+/**
+ * @param array $statistic
+ * @param int   $mall_id
+ * @param       $key
+ *
+ * @return int|mixed
+ */
+function compare_value(array $statistic, int $mall_id, $key)
+{
+    return isset($statistic[$mall_id][$key]) ? $statistic[$mall_id][$key] : 0;
+}
+
+/**
+ * @param int $current
+ * @param int $past
+ *
+ * @return float|int
+ */
+function compare_diff(int $current, int $past)
+{
+    return round((1 - $past / $current) * 100, 2, PHP_ROUND_HALF_EVEN);
+}
+
+/**
+ * @param float $diff
+ *
+ * @return string
+ */
+function compare_color(float $diff): string
+{
+    if ($diff == '') {
+        return '';
+    }
+
+    if ($diff >= 5 || $diff <= -5) {
+        return ($diff >= 5) ? 'is-success' : 'is-danger';
+    }
+
+    return '';
+}
+
+/**
+ * @param float $diff
+ *
+ * @return string
+ */
+function compare_background(float $diff): string
+{
+    if ($diff == '') {
+        return '';
+    }
+
+    if ($diff >= 20 || $diff <= -20) {
+        return ($diff >= 20) ? 'is-success-background' : 'is-danger-background';
+    }
+
+    return '';
+}
+
+/**
+ * @param float $diff
+ *
+ * @return string
+ */
+function compare_arrow(float $diff): string
+{
+    if ($diff == 0) {
+        return '';
+    }
+
+    if ($diff > 0) {
+        return ($diff >= 5) ? 'up' : 'right';
+    } else {
+        return ($diff <= -5) ? 'down' : 'left';
+    }
+}
