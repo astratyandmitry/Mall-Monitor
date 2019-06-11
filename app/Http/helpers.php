@@ -29,16 +29,18 @@ function getRouteReturn(string $name = 'home'): string
 }
 
 /**
- * Add 'is-active' class (as parameter) if given boolean is true.
- *
  * @param bool $boolean
- * @param bool $withClass
+ * @param bool $asParameter
+ *
+ * @return string|null
  */
-function isActive(bool $boolean, bool $asParameter = true): void
+function isActive(bool $boolean, bool $asParameter = true): ?string
 {
     if ($boolean) {
-        echo ($asParameter) ? 'class="is-active"' : ' is-active';
+        return ($asParameter) ? 'class="is-active"' : ' is-active';
     }
+
+    return null;
 }
 
 /**
@@ -113,6 +115,14 @@ function compare_value(array $statistic, int $mall_id, $key)
  */
 function compare_diff(int $current, int $past)
 {
+    if ($past == 0) {
+        return 100;
+    }
+
+    if ($current == 0) {
+        return -100;
+    }
+
     return round((1 - $past / $current) * 100, 2, PHP_ROUND_HALF_EVEN);
 }
 

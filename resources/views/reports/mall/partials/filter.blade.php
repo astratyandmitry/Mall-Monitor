@@ -10,6 +10,7 @@
                     'value' => request()->query('mall_id'),
                     'label' => 'ТРЦ',
                     'options' => \App\Repositories\MallRepository::getOptions(),
+                    'placeholder' => 'Все',
                 ])
             @endif
 

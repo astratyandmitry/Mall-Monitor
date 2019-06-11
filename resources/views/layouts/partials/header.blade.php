@@ -32,10 +32,26 @@
                             </a>
                         </li>
                     @endif
-                    <li class="header-nav-list-item {{ isActive($active_section == 'compare', false) }}">
-                        <a href="{{ route('compare.index') }}" class="header-nav-list-item-link">
+                    <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'compare', false) }}">
+                        <a href="javascript:void(0)" class="header-nav-list-item-link">
                             Сравнение
+                            <i class="fa fa-angle-down"></i>
                         </a>
+
+                        <ul class="header-nav-list-item-dropdown">
+                            @if ( ! $currentUser->store_id)
+                                <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'compare.mall', false) }}">
+                                    <a href="{{ route('compare.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                        ТРЦ
+                                    </a>
+                                </li>
+                            @endif
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'compare.store', false) }}">
+                                <a href="{{ route('compare.store.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                    Арендаторы
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'reports', false) }}">
                         <a href="javascript:void(0)" class="header-nav-list-item-link ">

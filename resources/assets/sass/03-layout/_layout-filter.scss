@@ -3,6 +3,17 @@
   background: $color-grey-lighter;
   margin-bottom: $size-2;
 
+  .divider {
+    margin-bottom: $size-1-5;
+    background: $color-grey-light;
+    height: 1px;
+  }
+
+  #manual-dates {
+    border-top: 1px solid $color-grey-light;
+    padding-top: $size-1-5;
+  }
+
   .filter-form {
     padding: $size-2 0;
 
@@ -23,6 +34,10 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-column-gap: $size-1-5;
+
+      &.is-hidden {
+        display: none;
+      }
 
       &.is-3 {
         grid-template-columns: 1fr 1fr 1fr;

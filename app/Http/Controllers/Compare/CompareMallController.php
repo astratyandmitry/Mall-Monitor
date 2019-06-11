@@ -1,30 +1,32 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Compare;
 
-use App\Models\Cheque;
 use App\Models\Mall;
+use App\Models\Cheque;
+use App\Http\Controllers\Controller;
 
 /**
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
  */
-class CompareController extends Controller
+class CompareMallController extends Controller
 {
 
     /**
      * @return \Illuminate\View\View
      */
-    public function __invoke(): \Illuminate\View\View
+    public function index(): \Illuminate\View\View
     {
-        $this->setTitle('Сравнение');
+        $this->setTitle('Сравнение ТРЦ');
         $this->setActiveSection('compare');
-        $this->setActivePage('compare');
+        $this->setActivePage('compare.mall');
+        $this->addBreadcrumb('Сравнение', route('compare.mall.index'));
 
         $data = $this->getExportData();
 
-        return view('compare.index', $this->withData($data));
+        return view('compare.mall.index', $this->withData($data));
     }
 
 

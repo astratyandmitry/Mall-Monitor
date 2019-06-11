@@ -1,6 +1,7 @@
 @php /** @var array $statistics_current */ @endphp
 @php /** @var array $statistics_past */ @endphp
 @php /** @var array $mall_names */ @endphp
+@php /** @var array $store_names */ @endphp
 
 @extends('layouts.app', $globals)
 
@@ -15,14 +16,14 @@
                 <div class="heading-filter">
                     <div class="heading-filter-button">
                         <i class="fa fa-filter"></i>
-                        <span>{{ isRequestEmpty() ? 'Показать' : 'Скрыть' }} фильтр</span>
+                        <span>Скрыть фильтр</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    @include('compare.partials.filter')
+    @include('compare.store.partials.filter')
 
     @if (count($statistics_current) && count($statistics_past))
         <div class="content">
@@ -30,7 +31,7 @@
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Сравнение ТРЦ
+                            Показатели арендаторов
                         </div>
                     </div>
 
@@ -38,6 +39,9 @@
                         <table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
+                                <th nowrap width="240">
+                                    ТРЦ
+                                </th>
                                 <th nowrap>
                                     Арендатор
                                 </th>
@@ -57,36 +61,39 @@
                             @php $count_current = 0 @endphp
                             @php $amount_past = 0 @endphp
                             @php $count_past = 0 @endphp
-                            @foreach($mall_names as $mall_id => $mall_name)
-                                @php $amount_current += compare_value($statistics_current, $mall_id, 'amount') @endphp
-                                @php $count_current += compare_value($statistics_current, $mall_id, 'count') @endphp
-                                @php $amount_past += compare_value($statistics_past, $mall_id, 'amount') @endphp
-                                @php $count_past += compare_value($statistics_past, $mall_id, 'count') @endphp
+                            @foreach($store_names as $store_id => $store)
+                                @php $amount_current += compare_value($statistics_current, $store_id, 'amount') @endphp
+                                @php $count_current += compare_value($statistics_current, $store_id, 'count') @endphp
+                                @php $amount_past += compare_value($statistics_past, $store_id, 'amount') @endphp
+                                @php $count_past += compare_value($statistics_past, $store_id, 'count') @endphp
                                 <tr style="line-height: 1.4">
                                     <td nowrap>
-                                        {{ $mall_name }}
+                                        {{ $mall_names[$store['mall_id']] }}
                                     </td>
-                                    @include('compare.partials.compare-table-td', ['key' => 'count'])
-                                    @include('compare.partials.compare-table-td', ['key' => 'avg'])
-                                    @include('compare.partials.compare-table-td', ['key' => 'amount'])
+                                    <td nowrap>
+                                        {{ $store['name'] }}
+                                    </td>
+                                    @include('compare.includes.compare-table-td', ['key' => 'count'])
+                                    @include('compare.includes.compare-table-td', ['key' => 'avg'])
+                                    @include('compare.includes.compare-table-td', ['key' => 'amount', 'currency' => true])
                                 </tr>
                             @endforeach
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th style="text-align: right">Итого:</th>
-                                <th nowrap class="is-right">
-                                    {{ number_format($count_current) }}<br />
-                                    {{ number_format($count_past) }}<br />
-                                </th>
-                                <th nowrap class="is-right">
-                                    {{ number_format(round($amount_current / $count_current)) }} ₸<br />
-                                    {{ number_format(round($amount_past / $count_past)) }} ₸<br />
-                                </th>
-                                <th nowrap class="is-right">
-                                    {{ number_format($amount_current) }} ₸<br />
-                                    {{ number_format($amount_past) }} ₸<br />
-                                </th>
+                                <th colspan="2" style="text-align: right">Итого:</th>
+                                @include('compare.includes.compare-table-th', [
+                                    '_current' => $count_current,
+                                    '_past' => $count_past,
+                                ])
+                                @include('compare.includes.compare-table-th', [
+                                    '_current' => round($amount_current / $count_current),
+                                    '_past' => round($amount_past / $count_past),
+                                ])
+                                @include('compare.includes.compare-table-th', [
+                                    '_current' => $amount_current,
+                                    '_past' => $amount_past,
+                                ])
                             </tr>
                             </tfoot>
                         </table>

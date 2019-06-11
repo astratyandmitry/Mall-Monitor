@@ -25,6 +25,7 @@
 .select2-selection {
   width: 100% !important;
   height: 44px !important;
+  outline: none;
 }
 
 .select2-selection__rendered {
@@ -35,6 +36,7 @@
 
 .select2-wrapper {
   height: 44px;
+
   .select2-container {
     width: 100% !important;
     height: 44px;
@@ -93,7 +95,8 @@
 
 .select2-container {
   .select2-dropdown {
-    border-color: $color-brand;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .12);
+    border-color: $color-grey-light;
 
     .select2-search {
       margin: 10px;

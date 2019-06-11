@@ -80,6 +80,30 @@ $('#date_to').on('change', function () {
     $('#time_to').attr('disabled', $(this).val() == '');
 });
 
+$('#current_time_from').attr('disabled', $('#current_date_from').val() == '');
+
+$('#current_date_from').on('change', function () {
+    $('#current_time_from').attr('disabled', $(this).val() == '');
+});
+
+$('#current_time_to').attr('disabled', $('#current_date_to').val() == '');
+
+$('#current_date_to').on('change', function () {
+    $('#current_time_to').attr('disabled', $(this).val() == '');
+});
+
+$('#past_time_from').attr('disabled', $('#past_date_from').val() == '');
+
+$('#past_date_from').on('change', function () {
+    $('#past_time_from').attr('disabled', $(this).val() == '');
+});
+
+$('#past_time_to').attr('disabled', $('#past_date_to').val() == '');
+
+$('#past_date_to').on('change', function () {
+    $('#past_time_to').attr('disabled', $(this).val() == '');
+});
+
 
 // Filter
 var $filter = $('.filter');

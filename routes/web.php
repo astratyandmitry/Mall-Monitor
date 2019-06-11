@@ -22,7 +22,10 @@ Route::group(['middleware' => 'loggined'], function (): void {
     Route::get('/stores', 'StoresController@index')->name('stores.index');
     Route::get('/store/{store}', 'StoresController@show')->name('stores.show');
 
-    Route::get('/compare', 'CompareController')->name('compare.index');
+    Route::prefix('compare')->namespace('Compare')->name('compare.')->group(function () {
+        Route::get('/mall', 'CompareMallController@index')->name('mall.index');
+        Route::get('/store', 'CompareStoreController@index')->name('store.index');
+    });
 
     Route::prefix('reports')->namespace('Reports')->name('reports.')->group(function () {
         Route::get('/mall', 'ReportsMallController@index')->name('mall.index');
