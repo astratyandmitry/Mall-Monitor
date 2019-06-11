@@ -24,7 +24,7 @@
 
     @include('compare.mall.partials.filter')
 
-    @if (count($statistics_current) && count($statistics_past))includes
+    @if (count($statistics_current) && count($statistics_past))
         <div class="content">
             <div class="container">
                 <div class="box">

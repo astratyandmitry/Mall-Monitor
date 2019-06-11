@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Compare;
 
 use App\Models\Mall;
 use App\Models\Cheque;
-use App\Http\Controllers\Controller;
 
 /**
  * @version   1.0.1
@@ -35,6 +34,8 @@ class CompareMallController extends Controller
      */
     protected function getExportData(): array
     {
+        $this->setupDates();
+
         $statisticsCurrent = $this->getDataForPeriod('current');
         $statisticsPast = $this->getDataForPeriod('past');
 
