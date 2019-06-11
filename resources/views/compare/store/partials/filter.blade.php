@@ -96,7 +96,7 @@
             </div>
 
 
-            <div class="{{ request()->query('current_type') ? 'is-hidden' : '' }}" id="manual-dates">
+            <div class="{{ request()->query('current_type') || isRequestEmpty() ? 'is-hidden' : '' }}" id="manual-dates">
                 <div class="grid">
                     <div class="grid-sub">
                         <div class="grid-title">Текущий период</div>
