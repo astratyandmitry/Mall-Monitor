@@ -1,4 +1,4 @@
-<div class="filter {{ isRequestEmpty() ? 'is-hidden' : '' }}">
+<div class="filter">
     <div class="container">
         <form method="GET" class="filter-form">
             @include('layouts.includes.form.hidden', ['attribute' => 'graph_date_type', 'value' => request()->query('graph_date_type')])
