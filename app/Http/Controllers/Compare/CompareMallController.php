@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Compare;
 
 use App\Models\Mall;
 use App\Models\Cheque;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @version   1.0.1
@@ -19,94 +20,77 @@ class CompareMallController extends Controller
     public function index(): \Illuminate\View\View
     {
         $this->setTitle('Сравнение ТРЦ');
-        $this->setActiveSection('compare');
-        $this->setActivePage('compare.mall');
-        $this->addBreadcrumb('Сравнение', route('compare.mall.index'));
+        $this->setActiveSection('placement');
+        $this->setActivePage('placement.mall');
+        $this->addBreadcrumb('Сравнение', route('placement.mall.index'));
 
-        $data = $this->getExportData();
-
-        return view('compare.mall.index', $this->withData($data));
-    }
-
-
-    /**
-     * @return array
-     */
-    protected function getExportData(): array
-    {
-        $this->setupDates();
-
-        $statisticsCurrent = $this->getDataForPeriod('current');
-        $statisticsPast = $this->getDataForPeriod('past');
-
-        if (is_null($statisticsCurrent) || is_null($statisticsPast)) {
-            return [
-                'statistics_current' => [],
-                'statistics_past' => [],
-                'mall_names' => [],
-            ];
-        }
-
-        $mall_ids = array_merge(
-            $statisticsCurrent->pluck('mall_id', 'mall_id')->toArray(),
-            $statisticsPast->pluck('mall_id', 'mall_id')->toArray()
-        );
-
-        $data = [
-            'statistics_current' => $statisticsCurrent->keyBy('mall_id')->toArray(),
-            'statistics_past' => $statisticsPast->keyBy('mall_id')->toArray(),
-            'mall_names' => Mall::whereIn('id', $mall_ids)->pluck('name', 'id'),
+        $graphDateTypes = [
+            'daily' => 'DATE(created_at)',
+            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
+            'yearly' => 'YEAR(created_at)',
         ];
 
-        return $data;
-    }
+        $graphDateType = (request('graph_date_type') && in_array(request('graph_date_type'),
+                array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
 
-
-    /**
-     * @param string $period
-     *
-     * @return mixed
-     */
-    protected function getDataForPeriod(string $period)
-    {
-        $dateFrom = $this->getDateTime($period, 'from');
-        $dateTo = $this->getDateTime($period, 'to');
-
-        if (is_null($dateFrom) || is_null($dateTo)) {
-            return null;
+        switch ($graphDateType) {
+            case 'daily':
+                $createdAt = date('Y-m-d H:i:s', strtotime('-30 days'));
+                break;
+            case 'monthly':
+                $createdAt = date('Y-m-d H:i:s', strtotime('-12 months'));
+                break;
+            case 'yearly':
+                $createdAt = date('Y-m-d H:i:s', strtotime('-10 years'));
+                break;
         }
 
-        $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id';
+        $statistics = Cheque::query()
+            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, {$graphDateTypes[$graphDateType]} as date"))
+            ->where('created_at', '>=', $createdAt)
+            ->groupBy('date', 'mall_id')
+            ->orderBy('date', 'asc')
+            ->where(function (Builder $builder): Builder {
+                $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                    return $builder->where('mall_id', request('mall_id'));
+                });
 
-        $statistics = Cheque::reportMall($dateFrom, $dateTo);
+                $builder->when(request('type_id'), function (Builder $builder): Builder {
+                    return $builder->whereHas('mall', function (Builder $builder): Builder {
+                        return $builder->where('type_id', request('type_id'));
+                    });
+                });
 
-        return $statistics->select(\DB::raw($select))->groupBy('mall_id')->get();
-    }
+                return $builder;
+            })->get()->groupBy('date');
 
+        $malls = [];
 
-    /**
-     * @param string $period
-     * @param string $key
-     *
-     * @return null|string
-     */
-    protected function getDateTime(string $period, string $key): ?string
-    {
-        if ($date = request()->query("{$period}_date_{$key}")) {
-            $time = request()->query("{$period}_time_{$key}");
+        $graph = [
+            'labels' => [],
+            'amount' => [],
+            'count' => [],
+            'avg' => [],
+        ];
 
-            if ( ! $time) {
-                $time = ($key == 'from') ? '00:00' : '23:59';
+        foreach ($statistics as $date => $stats) {
+            $graph['labels'][$date] = $this->formatDate($date);
+
+            foreach ($stats as $stat) {
+                $malls[$stat->mall_id] = true;
+
+                $graph['amount'][$stat->mall_id][$date] = round($stat->amount);
+                $graph['count'][$stat->mall_id][$date] = round($stat->count);
+                $graph['avg'][$stat->mall_id][$date] = round($stat->avg);
             }
-
-            request()->merge([
-                "time_{$key}" => $time,
-            ]);
-
-            return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
         }
 
-        return null;
+        return view('compare.mall.index', $this->withData([
+            'mall_names' => Mall::whereIn('id', array_keys($malls))->pluck('name', 'id')->toArray(),
+            'statistics' => $statistics,
+            'graph' => $graph,
+        ]));
     }
+
 
 }

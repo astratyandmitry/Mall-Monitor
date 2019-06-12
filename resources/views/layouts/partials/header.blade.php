@@ -32,6 +32,27 @@
                             </a>
                         </li>
                     @endif
+                    <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'placement', false) }}">
+                        <a href="javascript:void(0)" class="header-nav-list-item-link">
+                            Положение
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+
+                        <ul class="header-nav-list-item-dropdown">
+                            @if ( ! $currentUser->store_id)
+                                <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'placement.mall', false) }}">
+                                    <a href="{{ route('placement.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                        ТРЦ
+                                    </a>
+                                </li>
+                            @endif
+                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'placement.store', false) }}">
+                                <a href="{{ route('placement.store.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                    Арендаторы
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'compare', false) }}">
                         <a href="javascript:void(0)" class="header-nav-list-item-link">
                             Сравнение

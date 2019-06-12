@@ -102,7 +102,7 @@ function isRequestEmpty(): bool
  *
  * @return int|mixed
  */
-function compare_value(array $statistic, int $mall_id, $key)
+function placement_value(array $statistic, int $mall_id, $key)
 {
     return isset($statistic[$mall_id][$key]) ? $statistic[$mall_id][$key] : 0;
 }
@@ -113,7 +113,7 @@ function compare_value(array $statistic, int $mall_id, $key)
  *
  * @return float|int
  */
-function compare_diff(int $current, int $past)
+function placement_diff(int $current, int $past)
 {
     if ($past == 0) {
         return 100;
@@ -131,7 +131,7 @@ function compare_diff(int $current, int $past)
  *
  * @return string
  */
-function compare_color(float $diff): string
+function placement_color(float $diff): string
 {
     if ($diff == '') {
         return '';
@@ -149,7 +149,7 @@ function compare_color(float $diff): string
  *
  * @return string
  */
-function compare_background(float $diff): string
+function placement_background(float $diff): string
 {
     if ($diff == '') {
         return '';
@@ -167,7 +167,7 @@ function compare_background(float $diff): string
  *
  * @return string
  */
-function compare_arrow(float $diff): string
+function placement_arrow(float $diff): string
 {
     if ($diff == 0) {
         return '';
@@ -178,4 +178,25 @@ function compare_arrow(float $diff): string
     } else {
         return ($diff <= -5) ? 'down' : 'left';
     }
+}
+
+/**
+ * @param array $dates
+ * @param array $data
+ *
+ * @return array
+ */
+function compare_data(array $dates, array $data): array
+{
+    if (count($dates) == count($data)) {
+        return array_values($data);
+    }
+
+    $newData = [];
+
+    foreach ($dates as $date) {
+        $newData[] = isset($data[$date]) ? $data[$date] : 0;
+    }
+
+    return $newData;
 }
