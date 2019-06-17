@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Cheque;
-use App\Models\StoreIntegrationLog;
-use App\Models\StoreIntegrationType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Models\StoreIntegrationLog;
+use App\Models\StoreIntegrationType;
 use App\Integration\Store\XMLChequeTransformer;
 
 /**
@@ -79,7 +79,7 @@ class ChequesImportXMLController extends Controller
             }
         }
 
-        $log = StoreIntegrationLog::store(StoreIntegrationType::XML, auth('api')->user()->store, $output);
+        StoreIntegrationLog::store(StoreIntegrationType::XML, auth('api')->user()->store, $output);
 
         return $this->response($output);
     }
