@@ -3,13 +3,15 @@
 namespace App\Models;
 
 /**
- * @property integer $id
- * @property integer $mall_id
- * @property integer $system_id
- * @property string  $host
- * @property string  $username
- * @property string  $password
- * @property string  $data
+ * @property integer                            $id
+ * @property integer                            $mall_id
+ * @property integer                            $system_id
+ * @property string                             $host
+ * @property string                             $username
+ * @property string                             $password
+ * @property string                             $data
+ * @property  \App\Models\Mall                  $mall
+ * @property  \App\Models\MallIntegrationSystem $system
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -88,7 +90,7 @@ class MallIntegration extends Model
      */
     public function system(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(IntegrationSystem::class);
+        return $this->belongsTo(MallIntegrationSystem::class);
     }
 
 }

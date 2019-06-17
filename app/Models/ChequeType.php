@@ -25,7 +25,7 @@ class ChequeType extends Model
      * @var array
      */
     public static $options = [
-        self::SELLF,
+        self::SELL,
         self::SELL_RETURN,
         self::BUY,
         self::BUY_RETURN,

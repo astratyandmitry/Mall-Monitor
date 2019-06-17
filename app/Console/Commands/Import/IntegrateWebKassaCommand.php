@@ -4,10 +4,10 @@ namespace App\Console\Commands\Import;
 
 use App\Models\Cheque;
 use App\Models\Mall;
-use App\Integration\Mall\WebKassa;
 use Illuminate\Console\Command;
-use App\Models\IntegrationSystem;
+use App\Integration\Mall\WebKassa;
 use App\Jobs\ImportChequeWebKassa;
+use App\Models\MallIntegrationSystem;
 
 class IntegrateWebKassaCommand extends Command
 {
@@ -35,13 +35,14 @@ class IntegrateWebKassaCommand extends Command
 
     /**
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function handle(): void
     {
         $this->mall = Mall::find(Mall::KERUEN_CITY);
 
         $this->integration = WebKassa::init(
-            $this->mall->getIntegration(IntegrationSystem::WEBKASSA)
+            $this->mall->getIntegration(MallIntegrationSystem::WEBKASSA)
         );
 
         if ($this->integration->authorize()) {

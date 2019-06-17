@@ -75,8 +75,17 @@ class Cashbox extends Model
     }
 
 
+    /**
+     * @param \App\Models\Store $store
+     *
+     * @return string
+     */
     public static function generateCodeFor(Store $store): string
     {
+        $mallIndex = str_pad($store->mall_id, 2, '0', STR_PAD_LEFT);
+        $storeIndex = str_pad($store->id, 5, '0', STR_PAD_LEFT);
+
+        return "AACN_{$mallIndex}_{$storeIndex}";
     }
 
 

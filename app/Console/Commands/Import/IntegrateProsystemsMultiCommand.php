@@ -3,10 +3,10 @@
 namespace App\Console\Commands\Import;
 
 use App\Models\Mall;
-use App\Integration\Mall\Prosystems;
 use Illuminate\Console\Command;
-use App\Models\IntegrationSystem;
 use App\Jobs\ImportChequeProsystem;
+use App\Integration\Mall\Prosystems;
+use App\Models\MallIntegrationSystem;
 
 class IntegrateProsystemsMultiCommand extends Command
 {
@@ -34,13 +34,14 @@ class IntegrateProsystemsMultiCommand extends Command
 
     /**
      * @return void
+     * @throws \SoapFault
      */
     public function handle(): void
     {
         $this->mall = Mall::find(Mall::KERUEN_CITY);
 
         $this->integration = Prosystems::init(
-            $this->mall->getIntegration(IntegrationSystem::PROSYSTEMS)
+            $this->mall->getIntegration(MallIntegrationSystem::PROSYSTEMS)
         );
 
         do {

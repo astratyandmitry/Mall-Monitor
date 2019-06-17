@@ -4,8 +4,8 @@ namespace App\Integration\Mall;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
-use App\Models\IntegrationLog;
 use App\Models\MallIntegration;
+use App\Models\MallIntegrationLog;
 
 class WebKassa
 {
@@ -231,7 +231,7 @@ class WebKassa
      */
     protected function log(string $operation, int $code = 0, ?string $message = null, array $data = []): void
     {
-        IntegrationLog::store(
+        MallIntegrationLog::store(
             $this->integration->system_id, $this->integration->mall_id, $operation, $code, $message, $data
         );
     }

@@ -41,13 +41,13 @@ class XMLChequeTransformer
     /**
      * @return array
      */
-    public function toArray(): array
+    public function onlyRequired(): array
     {
         return [
-            'code' => $this->item->code,
-            'number' => $this->item->number,
-            'amount' => (float)$this->item->amount,
-            'created_at' => date('Y-m-d H:i:s', strtotime($this->item->created_at)),
+            'code' => (string)@$this->item->code,
+            'number' => (string)@$this->item->number,
+            'amount' => (float)@$this->item->amount,
+            'created_at' => date('Y-m-d H:i:s', strtotime(@$this->item->created_at)),
         ];
     }
 
@@ -60,15 +60,15 @@ class XMLChequeTransformer
 
         return [
             'kkm_code' => $cashbox->code,
-            'code' => $this->item->code,
-            'number' => $this->item->number,
+            'code' => (string)$this->item->code,
+            'number' => (string)$this->item->number,
             'amount' => (float)$this->item->amount,
             'mall_id' => $this->developer->mall_id,
-            'store_id' => $this->developer->store,
+            'store_id' => $this->developer->store_id,
             'cashbox_id' => $cashbox->id,
             'type_id' => $this->getTypeId(),
             'payment_id' => $this->getPaymentId(),
-            'created_at' => date('Y-m-d H:i:s', strtotime($this->item->created_at)),
+            'created_at' => date('Y-m-d H:i:s', strtotime((string)$this->item->created_at)),
         ];
     }
 
@@ -78,9 +78,10 @@ class XMLChequeTransformer
      */
     protected function getCashbox(): Cashbox
     {
-        $kkm_code = (property_exists($this->item, 'kkm_code') && $this->item->kkm_code)
-            ? $this->item->kkm_code : Cashbox::generateCodeFor($this->developer->store);
+        $kkm_code = (property_exists($this->item, 'kkm_code') && (string)$this->item->kkm_code)
+            ? (string)$this->item->kkm_code : Cashbox::generateCodeFor($this->developer->store);
 
+        /** @var \App\Models\Cashbox $cashbox */
         if ($cashbox = Cashbox::query()->where('store_id', $this->developer->store_id)->where('code', $kkm_code)->first()) {
             return $cashbox;
         }
@@ -98,8 +99,8 @@ class XMLChequeTransformer
      */
     protected function getTypeId(): int
     {
-        if (property_exists($this->item, 'type_id') && in_array($this->item->type_id, ChequeType::$options)) {
-            return $this->item->payment_id;
+        if (property_exists($this->item, 'type_id') && in_array((int)$this->item->type_id, ChequeType::$options)) {
+            return (int)$this->item->type_id;
         }
 
         return ChequeType::SELL;
@@ -111,8 +112,8 @@ class XMLChequeTransformer
      */
     protected function getPaymentId(): int
     {
-        if (property_exists($this->item, 'payment_id') && in_array($this->item->payment_id, ChequePayment::$options)) {
-            return $this->item->payment_id;
+        if (property_exists($this->item, 'payment_id') && in_array((int)$this->item->payment_id, ChequePayment::$options)) {
+            return (int)$this->item->payment_id;
         }
 
         return ChequePayment::CASH;

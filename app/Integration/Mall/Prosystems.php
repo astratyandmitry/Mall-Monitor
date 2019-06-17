@@ -2,8 +2,8 @@
 
 namespace App\Integration\Mall;
 
-use App\Models\IntegrationLog;
 use App\Models\MallIntegration;
+use App\Models\MallIntegrationLog;
 
 class Prosystems
 {
@@ -183,7 +183,7 @@ class Prosystems
      */
     protected function log(string $operation, \stdClass $response, array $data = []): void
     {
-        IntegrationLog::store(
+        MallIntegrationLog::store(
             $this->integration->system_id, $this->integration->mall_id, $operation, $response->Code ?? 0, $response->Message ?? null, $data
         );
     }

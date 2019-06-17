@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Cheque;
+use App\Models\StoreIntegrationLog;
+use App\Models\StoreIntegrationType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Integration\Store\XMLChequeTransformer;
@@ -33,52 +35,53 @@ class ChequesImportXMLController extends Controller
         if ( ! $this->validate($request, $this->rules)) {
             return $this->responseError();
         }
-        $items = simplexml_load_file($request->file('file')->getRealPath());
 
         $output = [
             'error' => [],
+            'skip' => [],
             'success' => [],
         ];
+
+        $items = simplexml_load_file($request->file('file')->getRealPath());
 
         if (count($items)) {
             foreach ($items as $item) {
                 $transformer = (new XMLChequeTransformer($item));
-
-                $array = $transformer->toArray();
+                $attributes = $transformer->onlyRequired();
 
                 /** @var \Illuminate\Validation\Validator $validator */
-                $validator = $this->getValidationFactory()->make($array, [
+                $validator = $this->getValidationFactory()->make($attributes, [
                     'code' => 'required|max:200',
                     'number' => 'required|max:200',
                     'amount' => 'required|numeric',
                     'created_at' => 'required',
                 ]);
 
-
                 if ($validator->fails()) {
                     $output['error'][] = [
-                        'data' => $array,
+                        'data' => $attributes,
                         'validation' => $validator->errors(),
                     ];
                 } else {
-                    /** @var \App\Models\Cheque $cheque */
-//                    $cheque = Cheque::query()->create($transformer->toAttributes());
+                    if (Cheque::uniqueAttrs($attributes)->first()) {
+                        $output['skip'][] = [
+                            'data' => $attributes,
+                        ];
+                    } else {
+                        /** @var \App\Models\Cheque $cheque */
+                        $cheque = Cheque::query()->create($transformer->toAttributes());
 
-                    $output['success'][] = [
-                        'data' => $array,
-                        'entity' => 'created',
-                    ];
+                        $output['success'][] = [
+                            'data' => $cheque->toArray(),
+                        ];
+                    }
                 }
             }
         }
 
-        dd($output);
+        $log = StoreIntegrationLog::store(StoreIntegrationType::XML, auth('api')->user()->store, $output);
 
-        exit;
-
-        return $this->response([
-            'class' => self::class,
-        ]);
+        return $this->response($output);
     }
 
 }
