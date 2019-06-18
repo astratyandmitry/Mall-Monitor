@@ -76,6 +76,7 @@
                         'value' => request()->query('date_from'),
                         'label' => 'Дата начала',
                         'placeholder' => 'dd.mm.yyyy',
+                         'classes' => 'picker-date',
                     ])
 
                     @include('layouts.includes.form.input', [
@@ -83,6 +84,7 @@
                         'value' => request()->query('time_from'),
                         'label' => 'Время начала',
                         'placeholder' => 'HH:ii',
+                         'classes' => 'picker-time',
                     ])
                 </div>
 
@@ -92,6 +94,7 @@
                          'value' => request()->query('date_to'),
                          'label' => 'Дата окончания',
                          'placeholder' => 'dd.mm.yyyy',
+                          'classes' => 'picker-date',
                      ])
 
                     @include('layouts.includes.form.input', [
@@ -99,6 +102,7 @@
                         'value' => request()->query('time_to'),
                         'label' => 'Время окончания',
                         'placeholder' => 'HH:ii',
+                         'classes' => 'picker-time',
                     ])
                 </div>
             </div>
