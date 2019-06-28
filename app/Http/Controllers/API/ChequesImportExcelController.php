@@ -22,7 +22,7 @@ class ChequesImportExcelController extends Controller
      * @var array
      */
     protected $rules = [
-        'file' => 'required|file|mimetypes:	application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'file' => 'required|file|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     ];
 
 
@@ -43,13 +43,14 @@ class ChequesImportExcelController extends Controller
             'success' => [],
         ];
 
-        Excel::load($request->file('file')->getRealPath(), function($reader) use (&$output) {
+        Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$output) {
             $items = $reader->get()->toArray();
 
             if (count($items)) {
+                $transformer = new ExcelChequeTransformer;
+
                 foreach ($items as $item) {
-                    $transformer = (new ExcelChequeTransformer($item));
-                    $attributes = $transformer->onlyRequired();
+                    $attributes = $transformer->setItem($item)->onlyRequired();
 
                     /** @var \Illuminate\Validation\Validator $validator */
                     $validator = $this->getValidationFactory()->make($attributes, [
@@ -79,7 +80,6 @@ class ChequesImportExcelController extends Controller
                         }
                     }
                 }
-
             }
         });
 

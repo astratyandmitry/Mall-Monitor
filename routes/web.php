@@ -47,6 +47,10 @@ Route::group(['middleware' => 'loggined'], function (): void {
         Route::get('/users/{anyUser}/toggle', 'ManageUsersController@toggle')->name('users.toggle');
         Route::resource('/developers', 'ManageDevelopersController')->except(['destory']);
         Route::get('/developers/{anyDeveloper}/toggle', 'ManageDevelopersController@toggle')->name('developers.toggle');
+        Route::resource('/store_integrations', 'ManageStoreIntegrationsController')->except(['destory']);
+        Route::get('/store_integrations/{id}/configure', 'ManageStoreIntegrationsController@configure')->name('store_integrations.configure');
+        Route::post('/store_integrations/{id}/config', 'ManageStoreIntegrationsController@config')->name('store_integrations.config');
+        Route::get('/store_integrations/{id}/destroy', 'ManageStoreIntegrationsController@destroy')->name('store_integrations.destroy');
 
         Route::resource('/cities', 'ManageCitiesController')->except(['destory']);
         Route::resource('/store_types', 'ManageStoreTypesController')->except(['destory']);

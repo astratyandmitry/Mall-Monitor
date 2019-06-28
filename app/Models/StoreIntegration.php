@@ -6,12 +6,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property integer            $id
- * @property integer            $mall_id
- * @property integer            $store_id
- * @property array              $config
- * @property  \App\Models\Mall  $mall
- * @property  \App\Models\Store $store
+ * @property integer                           $id
+ * @property integer                           $mall_id
+ * @property integer                           $store_id
+ * @property integer                           $type_id
+ * @property array                             $config
+ * @property array                             $columns
+ * @property array                             $types
+ * @property array                             $payments
+ * @property  \App\Models\Mall                 $mall
+ * @property  \App\Models\Store                $store
+ * @property  \App\Models\StoreIntegrationType $type
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -31,7 +36,11 @@ class StoreIntegration extends Model
     protected $fillable = [
         'mall_id',
         'store_id',
+        'type_id',
         'config',
+        'columns',
+        'types',
+        'payments',
     ];
 
     /**
@@ -40,7 +49,11 @@ class StoreIntegration extends Model
     protected $casts = [
         'mall_id' => 'integer',
         'store_id' => 'integer',
+        'type_id' => 'integer',
         'config' => 'array',
+        'columns' => 'array',
+        'types' => 'array',
+        'payments' => 'array',
     ];
 
     /**
@@ -49,7 +62,8 @@ class StoreIntegration extends Model
     protected $rules = [
         'mall_id' => 'required|exists:malls,id',
         'store_id' => 'required|exists:stores,id',
-        'config' => 'required',
+        'type_id' => 'required|exists:store_integration_types,id',
+        '_unique' => 'store_id',
     ];
 
     /**
@@ -64,7 +78,8 @@ class StoreIntegration extends Model
         'config' => 'конфигурация',
         'config.*' => 'конфигурация',
         'mall_id' => 'ТЦ',
-        'store_id' => 'Арендатор',
+        'store_id' => 'арендатор',
+        'type_id' => 'тип',
     ];
 
 
@@ -83,6 +98,10 @@ class StoreIntegration extends Model
 
         $builder->when(request('mall_id'), function (Builder $builder): Builder {
             return $builder->where('mall_id', request('mall_id'));
+        });
+
+        $builder->when(request('type_id'), function (Builder $builder): Builder {
+            return $builder->where('type_id', request('type_id'));
         });
 
         return parent::scopeFilter($builder);
@@ -106,4 +125,31 @@ class StoreIntegration extends Model
         return $this->belongsTo(Store::class);
     }
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(StoreIntegrationType::class);
+    }
+
+
+    /**
+     * @return array
+     */
+    public static function getFields(): array
+    {
+        return [
+            'kkm_code' => 'Код кассы',
+            'code' => 'Уникальный номер в системе',
+            'number' => 'Номер чека',
+            'amount' => 'Сумма чека',
+            'type_id' => 'Тип операции',
+            'payment_id' => 'Вид платежа',
+            'created_at' => 'Дата и время чека',
+            'created_at_date' => 'Дата чека',
+            'created_at_time' => 'Время чека',
+        ];
+    }
 }

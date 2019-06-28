@@ -20,16 +20,6 @@ class ChequePayment extends Model
     const TARE = 4;
 
     /**
-     * @var array
-     */
-    public static $options = [
-        self::CASH,
-        self::CARD,
-        self::CREDIT,
-        self::TARE,
-    ];
-
-    /**
      * @var string
      */
     protected $table = 'cheque_payments';

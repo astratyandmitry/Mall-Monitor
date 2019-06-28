@@ -45,9 +45,10 @@ class ChequesImportXMLController extends Controller
         $items = simplexml_load_file($request->file('file')->getRealPath());
 
         if (count($items)) {
+            $transformer = new XMLChequeTransformer;
+
             foreach ($items as $item) {
-                $transformer = (new XMLChequeTransformer($item));
-                $attributes = $transformer->onlyRequired();
+                $attributes = $transformer->setItem($item)->onlyRequired();
 
                 /** @var \Illuminate\Validation\Validator $validator */
                 $validator = $this->getValidationFactory()->make($attributes, [
@@ -63,7 +64,7 @@ class ChequesImportXMLController extends Controller
                         'validation' => $validator->errors(),
                     ];
                 } else {
-                    if (Cheque::uniqueAttrs($attributes)->first()) {
+                    if (Cheque::uniqueAttrs($attributes)->exists()) {
                         $output['skip'][] = [
                             'data' => $attributes,
                         ];

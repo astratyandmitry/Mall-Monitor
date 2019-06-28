@@ -12,7 +12,7 @@ use App\Models\ChequePayment;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2019, ArmenianBros. <i@armenianbros.com>
  */
-class XMLChequeTransformer
+class XMLChequeTransformer extends ChequeTransformer
 {
 
     /**
@@ -20,103 +20,55 @@ class XMLChequeTransformer
      */
     protected $item;
 
-    /**
-     * @var \App\Models\Developer
-     */
-    protected $developer;
-
 
     /**
      * @param \SimpleXMLElement $item
      *
-     * @return void
+     * @return \App\Integration\Store\XMLChequeTransformer
      */
-    public function __construct(\SimpleXMLElement $item)
+    public function setItem(\SimpleXMLElement $item): XMLChequeTransformer
     {
         $this->item = $item;
-        $this->developer = Developer::query()->findOrFail(auth('api')->id());
+
+        return $this;
     }
 
 
     /**
-     * @return array
+     * @param string $key
+     *
+     * @return mixed
      */
-    public function onlyRequired(): array
+    protected function getAttribute(string $key)
     {
-        return [
-            'code' => (string)@$this->item->code,
-            'number' => (string)@$this->item->number,
-            'amount' => (float)@$this->item->amount,
-            'created_at' => date('Y-m-d H:i:s', strtotime(@$this->item->created_at)),
-        ];
-    }
+        $key = ($this->integration) ? @$this->integration->config[$key] : $key;
 
-    /**
-     * @return array
-     */
-    public function toAttributes(): array
-    {
-        $cashbox = $this->getCashbox();
-
-        return [
-            'kkm_code' => $cashbox->code,
-            'code' => (string)$this->item->code,
-            'number' => (string)$this->item->number,
-            'amount' => (float)$this->item->amount,
-            'mall_id' => $this->developer->mall_id,
-            'store_id' => $this->developer->store_id,
-            'cashbox_id' => $cashbox->id,
-            'type_id' => $this->getTypeId(),
-            'payment_id' => $this->getPaymentId(),
-            'created_at' => date('Y-m-d H:i:s', strtotime((string)$this->item->created_at)),
-        ];
+        return @$this->item->{$key};
     }
 
 
     /**
-     * @return \App\Models\Cashbox
+     * @return string
      */
-    protected function getCashbox(): Cashbox
+    protected function getDateAttribute(): string
     {
-        $kkm_code = (property_exists($this->item, 'kkm_code') && (string)$this->item->kkm_code)
-            ? (string)$this->item->kkm_code : Cashbox::generateCodeFor($this->developer->store);
-
-        /** @var \App\Models\Cashbox $cashbox */
-        if ($cashbox = Cashbox::query()->where('store_id', $this->developer->store_id)->where('code', $kkm_code)->first()) {
-            return $cashbox;
+        if ( ! $this->integration) {
+            return date('Y-m-d H:i:s', strtotime(@$this->item->created_at));
         }
 
-        return Cashbox::create([
-            'code' => $kkm_code,
-            'mall_id' => $this->developer->mall_id,
-            'store_id' => $this->developer->store_id,
-        ]);
-    }
-
-
-    /**
-     * @return int
-     */
-    protected function getTypeId(): int
-    {
-        if (property_exists($this->item, 'type_id') && in_array((int)$this->item->type_id, ChequeType::$options)) {
-            return (int)$this->item->type_id;
+        if ($this->integration->config['created_at']) {
+            return date('Y-m-d H:i:s', strtotime(@$this->item->created_at));
         }
 
-        return ChequeType::SELL;
-    }
+        $dateKey = $this->integration->config['created_at_date'];
 
+        if ($this->integration->config['created_at_time']) {
+            $timeKey = $this->integration->config['created_at_time'];
 
-    /**
-     * @return int
-     */
-    protected function getPaymentId(): int
-    {
-        if (property_exists($this->item, 'payment_id') && in_array((int)$this->item->payment_id, ChequePayment::$options)) {
-            return (int)$this->item->payment_id;
+            return date('Y-m-d H:i:s', strtotime(@$this->item->{$dateKey} . ' ' . @$this->item->{$timeKey}));
         }
 
-        return ChequePayment::CASH;
+        return date('Y-m-d', strtotime(@$this->item->{$dateKey})) . ' 12:00:00';
     }
 
 }

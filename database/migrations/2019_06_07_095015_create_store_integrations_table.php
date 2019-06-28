@@ -18,7 +18,7 @@ class CreateStoreIntegrationsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('mall_id')->index();
             $table->unsignedInteger('store_id')->index();
-            $table->longText('config');
+            $table->longText('config')->nullable();
         });
     }
 

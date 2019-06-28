@@ -149,7 +149,7 @@ class Store extends Model
      */
     public function integration(): HasOne
     {
-        return $this->hasOne(StoreIntegration::class, 'id', 'store_id');
+        return $this->hasOne(StoreIntegration::class, 'store_id');
     }
 
 

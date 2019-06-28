@@ -93,4 +93,5 @@ class MallIntegration extends Model
         return $this->belongsTo(MallIntegrationSystem::class);
     }
 
+
 }
