@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+use App\Models\Store;
 use Illuminate\Mail\Mailable;
 
 class StoreYesterdayCheqeusErrorMail extends Mailable
@@ -20,8 +20,8 @@ class StoreYesterdayCheqeusErrorMail extends Mailable
 
 
     /**
-     * @param \App\Mail\Store $store
-     * @param string          $date
+     * @param \App\Models\Store $store
+     * @param string            $date
      *
      * @return void
      */

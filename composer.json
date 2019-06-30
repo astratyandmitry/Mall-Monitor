@@ -15,7 +15,10 @@
         "laravel-frontend-presets/tailwindcss": "^0.6.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "maatwebsite/excel": "2.1.x-dev"
+        "maatwebsite/excel": "2.1.x-dev",
+        "ext-json": "*",
+        "ext-soap": "*",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

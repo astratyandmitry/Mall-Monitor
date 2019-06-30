@@ -133,6 +133,17 @@
                                         </a>
                                     </li>
                                     <li class="header-nav-list-item-dropdown-item is-devider"></li>
+                                    <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.developers', false) }}">
+                                        <a href="{{ route('manage.developers.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                            Разработчики
+                                        </a>
+                                    </li>
+                                    <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.store_integrations', false) }}">
+                                        <a href="{{ route('manage.store_integrations.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                            Конфигурации
+                                        </a>
+                                    </li>
+                                    <li class="header-nav-list-item-dropdown-item is-devider"></li>
                                     <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.store_types', false) }}">
                                         <a href="{{ route('manage.store_types.index') }}" class="header-nav-list-item-dropdown-item-link">
                                             Категории

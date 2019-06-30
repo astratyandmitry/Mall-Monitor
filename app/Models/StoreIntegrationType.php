@@ -9,18 +9,18 @@ namespace App\Models;
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
- * @copyright 2018, ArmenianBros. <i@armenianbros.com>
+ * @copyright 2019, ArmenianBros. <i@armenianbros.com>
  */
-class IntegrationSystem extends Model
+class StoreIntegrationType extends Model
 {
 
-    const PROSYSTEMS = 1;
-    const WEBKASSA = 2;
+    const XML = 1;
+    const EXCEL = 2;
 
     /**
      * @var string
      */
-    protected $table = 'integration_systems';
+    protected $table = 'store_integration_types';
 
     /**
      * @var array

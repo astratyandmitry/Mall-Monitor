@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Integration;
+namespace App\Integration\Mall;
 
-use App\Models\IntegrationLog;
 use App\Models\MallIntegration;
+use App\Models\MallIntegrationLog;
 
 class Prosystems
 {
@@ -30,7 +30,7 @@ class Prosystems
 
     /**
      *
-     * @var Singleton
+     * @var \App\Integration\Mall\Prosystems
      */
     private static $instance;
 
@@ -41,9 +41,11 @@ class Prosystems
 
 
     /**
-     * Prosystems constructor.
-     *
      * @param \App\Models\MallIntegration $integration
+     *
+     * @throws \SoapFault
+     *
+     * @return void
      */
     public function __construct(MallIntegration $integration)
     {
@@ -65,7 +67,8 @@ class Prosystems
     /**
      * @param \App\Models\MallIntegration $integration
      *
-     * @return \App\Integration\Prosystems
+     * @return \App\Integration\Mall\Prosystems
+     * @throws \SoapFault
      */
     public static function init(MallIntegration $integration): Prosystems
     {
@@ -180,7 +183,7 @@ class Prosystems
      */
     protected function log(string $operation, \stdClass $response, array $data = []): void
     {
-        IntegrationLog::store(
+        MallIntegrationLog::store(
             $this->integration->system_id, $this->integration->mall_id, $operation, $response->Code ?? 0, $response->Message ?? null, $data
         );
     }

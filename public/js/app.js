@@ -11565,14 +11565,28 @@ module.exports = g;
 __webpack_require__("./node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js");
 __webpack_require__("./node_modules/jquery-mask-plugin/dist/jquery.mask.js");
 
-$('.picker-date').mask('00.00.0000');
-$('.picker-date').datetimepicker({
+// $.datetimepicker.setLocale('ru');
+
+$('#date_from').mask('00.00.0000');
+$('#date_from').datetimepicker({
     timepicker: false,
     format: 'd.m.Y'
 });
 
-$('.picker-time').mask('00:00');
-$('.picker-time').datetimepicker({
+$('#time_from').mask('00:00');
+$('#time_from').datetimepicker({
+    datepicker: false,
+    format: 'H:i'
+});
+
+$('#date_to').mask('00.00.0000');
+$('#date_to').datetimepicker({
+    timepicker: false,
+    format: 'd.m.Y'
+});
+
+$('#time_to').mask('00:00');
+$('#time_to').datetimepicker({
     datepicker: false,
     format: 'H:i'
 });
@@ -11635,30 +11649,6 @@ $('#time_to').attr('disabled', $('#date_to').val() == '');
 
 $('#date_to').on('change', function () {
     $('#time_to').attr('disabled', $(this).val() == '');
-});
-
-$('#current_time_from').attr('disabled', $('#current_date_from').val() == '');
-
-$('#current_date_from').on('change', function () {
-    $('#current_time_from').attr('disabled', $(this).val() == '');
-});
-
-$('#current_time_to').attr('disabled', $('#current_date_to').val() == '');
-
-$('#current_date_to').on('change', function () {
-    $('#current_time_to').attr('disabled', $(this).val() == '');
-});
-
-$('#past_time_from').attr('disabled', $('#past_date_from').val() == '');
-
-$('#past_date_from').on('change', function () {
-    $('#past_time_from').attr('disabled', $(this).val() == '');
-});
-
-$('#past_time_to').attr('disabled', $('#past_date_to').val() == '');
-
-$('#past_date_to').on('change', function () {
-    $('#past_time_to').attr('disabled', $(this).val() == '');
 });
 
 // Filter

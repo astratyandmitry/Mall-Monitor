@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property \App\Models\ChequePayment $payment
  * @property \App\Models\ChequeItem[]  $items
  *
+ * @method static Builder uniqueAttrs(array $attrs)
+ *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
@@ -179,6 +181,23 @@ class Cheque extends Model
         $this->attributes['created_at'] = date('Y-m-d H:i:s', strtotime(explode(',', $created_at)[0]));
     }
 
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param array                                 $attrs
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeUniqueAttrs(Builder $builder, array $attrs): Builder
+    {
+        foreach ($attrs as $key => $value) {
+            $builder->where($key, $value);
+        }
+
+        $builder->where('store_id', auth('api')->user()->store_id);
+
+        return $builder;
+    }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder

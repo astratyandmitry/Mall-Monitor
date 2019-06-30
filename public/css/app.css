@@ -3378,7 +3378,6 @@ h6 {
 .select2-selection {
   width: 100% !important;
   height: 44px !important;
-  outline: none;
 }
 
 .select2-selection__rendered {
@@ -3434,9 +3433,7 @@ h6 {
 }
 
 .select2-container .select2-dropdown {
-  -webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-  border-color: #dae1e7;
+  border-color: #38c172;
 }
 
 .select2-container .select2-dropdown .select2-search {
@@ -3520,6 +3517,14 @@ a:focus {
 
 .form-section .field:last-child {
   margin-bottom: 0 !important;
+}
+
+.form-section .form-section-heading {
+  margin-bottom: 1.5em;
+}
+
+.form-section .form-section-heading .form-section-heading-text {
+  font-weight: 500;
 }
 
 .form-section .form-grid {
@@ -3615,7 +3620,7 @@ select::-webkit-input-placeholder,
 select::-moz-placeholder,
 select:-moz-placeholder,
 select:-ms-input-placeholder {
-  color: #8795a1;
+  color: #dae1e7;
 }
 
 input:focus,
@@ -3997,14 +4002,6 @@ body * {
   display: none;
 }
 
-.is-success-background {
-  background: #e3fcec !important;
-}
-
-.is-danger-background {
-  background: #fcebea !important;
-}
-
 .is-success {
   color: #1f9d55;
 }
@@ -4175,7 +4172,7 @@ body * {
 
 .header .header-nav .header-nav-list .header-nav-list-item {
   display: inline-block;
-  margin-right: 1.5em;
+  margin-right: 2em;
 }
 
 @media (min-width: 481px) and (max-width: 1024px) {
@@ -4496,8 +4493,8 @@ body * {
 }
 
 .box {
-  -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.04);
-          box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.04);
+  -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.02);
+          box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.02);
   background: #fff;
   border-radius: 4px;
 }
@@ -4601,17 +4598,6 @@ body * {
   margin-bottom: 2em;
 }
 
-.filter .divider {
-  margin-bottom: 1.5em;
-  background: #dae1e7;
-  height: 1px;
-}
-
-.filter #manual-dates {
-  border-top: 1px solid #dae1e7;
-  padding-top: 1.5em;
-}
-
 .filter .filter-form {
   padding: 2em 0;
 }
@@ -4637,10 +4623,6 @@ body * {
   grid-column-gap: 1.5em;
 }
 
-.filter .filter-form .grid.is-hidden {
-  display: none;
-}
-
 .filter .filter-form .grid.is-3 {
   grid-template-columns: 1fr 1fr 1fr;
 }
@@ -4659,11 +4641,6 @@ body * {
 
 .filter .filter-form .grid .grid-sub.is-sm-2 {
   grid-template-columns: 3fr 1fr;
-}
-
-.filter .filter-form .grid .grid-sub .grid-title {
-  font-size: 1.125em;
-  margin-bottom: 1.5em;
 }
 
 @media (max-width: 480px) {

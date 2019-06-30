@@ -179,7 +179,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="is-empty">
+                                <td colspan="8" class="is-empty">
                                     Информация по указанному запросу отсутствует
                                 </td>
                             </tr>

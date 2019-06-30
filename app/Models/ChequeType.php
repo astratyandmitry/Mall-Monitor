@@ -22,6 +22,18 @@ class ChequeType extends Model
     const WITHDRAWAL = 6;
 
     /**
+     * @var array
+     */
+    public static $options = [
+        self::SELL,
+        self::SELL_RETURN,
+        self::BUY,
+        self::BUY_RETURN,
+        self::DEPOSIT,
+        self::WITHDRAWAL,
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'cheque_types';

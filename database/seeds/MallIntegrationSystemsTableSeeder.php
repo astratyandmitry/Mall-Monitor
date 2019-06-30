@@ -3,7 +3,7 @@
 use App\Models\IntegrationSystem;
 use Illuminate\Database\Seeder;
 
-class IntegrationSystemsTableSeeder extends Seeder
+class MallIntegrationSystemsTableSeeder extends Seeder
 {
 
     /**

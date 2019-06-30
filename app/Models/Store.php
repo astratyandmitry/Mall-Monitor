@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property integer               $id
@@ -25,7 +29,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Store extends Model
 {
 
-    use \Illuminate\Database\Eloquent\SoftDeletes;
+    use SoftDeletes;
 
     /**
      * @var string
@@ -116,7 +120,7 @@ class Store extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function mall(): BelongsTo
     {
         return $this->belongsTo(Mall::class);
     }
@@ -125,7 +129,7 @@ class Store extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function type(): BelongsTo
     {
         return $this->belongsTo(StoreType::class, 'type_id');
     }
@@ -134,9 +138,18 @@ class Store extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function cheques(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function cheques(): HasMany
     {
         return $this->hasMany(Cheque::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function integration(): HasOne
+    {
+        return $this->hasOne(StoreIntegration::class, 'store_id');
     }
 
 
