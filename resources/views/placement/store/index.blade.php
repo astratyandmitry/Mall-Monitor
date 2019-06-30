@@ -25,13 +25,14 @@
 
     @include('placement.store.partials.filter')
 
-    @if (count($statistics_current) && count($statistics_past))
+    @if (count($statistics_current) || count($statistics_past))
         <div class="content">
             <div class="container">
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Показатели арендаторов
+                            Сравнение {{ $dates['current']['from'] }} - {{ $dates['current']['to'] }}
+                            с {{ $dates['past']['from'] }} - {{ $dates['past']['to'] }}
                         </div>
                     </div>
 
@@ -47,6 +48,7 @@
                                 </th>
                                 <th nowrap class="is-right" width="100">
                                     Кол-во чек.
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'count', 'default_key' => 'mall_id'])
                                 </th>
                                 <th nowrap class="is-right" width="120">
                                     Сред. чек.
@@ -87,8 +89,8 @@
                                     '_past' => $count_past,
                                 ])
                                 @include('placement.includes.placement-table-th', [
-                                    '_current' => round($amount_current / $count_current),
-                                    '_past' => round($amount_past / $count_past),
+                                    '_current' => ($amount_current == 0 || $count_current == 0) ? 0 : round($amount_current / $count_current),
+                                    '_past' => ($amount_past == 0 || $count_past == 0) ? 0 : round($amount_past / $count_past),
                                 ])
                                 @include('placement.includes.placement-table-th', [
                                     '_current' => $amount_current,

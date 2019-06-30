@@ -35,51 +35,65 @@ class PlacementStoreController extends Controller
      */
     protected function getExportData(): array
     {
-       $this->setupDates();
+        $this->setupDates();
 
-        $statisticsCurrent = $this->getDataForPeriod('current');
-        $statisticsPast = $this->getDataForPeriod('past');
-
-        if (is_null($statisticsCurrent) || is_null($statisticsPast)) {
-            return [
-                'statistics_current' => [],
-                'statistics_past' => [],
-                'mall_names' => [],
-            ];
-        }
-
-        $mall_ids = array_merge(
-            $statisticsCurrent->pluck('mall_id', 'mall_id')->toArray(),
-            $statisticsPast->pluck('mall_id', 'mall_id')->toArray()
-        );
-
-        $store_ids = array_merge(
-            $statisticsCurrent->pluck('store_id', 'store_id')->toArray(),
-            $statisticsPast->pluck('store_id', 'store_id')->toArray()
-        );
+        $current = $this->getDataForPeriod('current');
+        $past = $this->getDataForPeriod('past');
 
         $data = [
-            'statistics_current' => $statisticsCurrent->keyBy('store_id')->toArray(),
-            'statistics_past' => $statisticsPast->keyBy('store_id')->toArray(),
-            'mall_names' => Mall::whereIn('id', $mall_ids)->pluck('name', 'id')->toArray(),
-            'store_names' => Store::whereIn('id', $store_ids)->select([
+            'dates' => [
+                'current' => [
+                    'from' => date('d.m.Y H:i:s', strtotime($current['date_from'])),
+                    'to' => date('d.m.Y H:i:s', strtotime($current['date_to'])),
+                ],
+                'past' => [
+                    'from' => date('d.m.Y H:i:s', strtotime($past['date_from'])),
+                    'to' => date('d.m.Y H:i:s', strtotime($past['date_to'])),
+                ],
+            ],
+            'statistics_current' => [],
+            'statistics_past' => [],
+            'mall_names' => [],
+            'store_names' => [],
+        ];
+
+        $mall_ids = [];
+        $store_ids = [];
+
+        $statistics_current = [];
+        if ( ! is_null($current['statistics'])) {
+            $mall_ids = array_merge($mall_ids, $current['statistics']->pluck('mall_id', 'mall_id')->toArray());
+            $store_ids = array_merge($store_ids, $current['statistics']->pluck('store_id', 'store_id')->toArray());
+            $statistics_current = $current['statistics']->keyBy('store_id')->toArray();
+        }
+
+        $statistics_past = [];
+        if ( ! is_null($past['statistics'])) {
+            $mall_ids = array_merge($mall_ids, $past['statistics']->pluck('mall_id', 'mall_id')->toArray());
+            $store_ids = array_merge($store_ids, $past['statistics']->pluck('store_id', 'store_id')->toArray());
+            $statistics_past = $past['statistics']->keyBy('store_id')->toArray();
+        }
+
+        return array_merge($data, [
+            'statistics_current' => $statistics_current,
+            'statistics_past' => $statistics_past,
+            'mall_names' => (count($mall_ids)) ? Mall::whereIn('id', $mall_ids)->pluck('name', 'id')->toArray() : [],
+            'store_names' => (count($store_ids)) ? Store::whereIn('id', $store_ids)->select([
                 'id',
                 'name',
                 'business_identification_number',
                 'mall_id',
-            ])->get()->keyBy('id')->toArray(),
-        ];
-
-        return $data;
+            ])->get()->keyBy('id')->toArray() : [],
+        ]);
     }
 
 
     /**
      * @param string $period
      *
-     * @return mixed
+     * @return null|array
      */
-    protected function getDataForPeriod(string $period)
+    protected function getDataForPeriod(string $period): ?array
     {
         $dateFrom = $this->getDateTime($period, 'from');
         $dateTo = $this->getDateTime($period, 'to');
@@ -92,7 +106,11 @@ class PlacementStoreController extends Controller
 
         $statistics = Cheque::reportStore($dateFrom, $dateTo);
 
-        return $statistics->select(\DB::raw($select))->groupBy('store_id')->get();
+        return [
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+            'statistics' => $statistics->select(\DB::raw($select))->groupBy('store_id')->get(),
+        ];
     }
 
 

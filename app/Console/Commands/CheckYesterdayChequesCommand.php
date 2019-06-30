@@ -27,7 +27,7 @@ class CheckYesterdayChequesCommand extends Command
     public function handle(): void
     {
         $yesterdayDate = date('Y-m-d', strtotime('-1 day'));
-        $stores = Store::get();
+        $stores = Store::query()->get();
 
         if (count($stores)) {
             /** @var Store $store */
@@ -38,7 +38,9 @@ class CheckYesterdayChequesCommand extends Command
                     'is_errors_yesterday' => ! ChequeRepository::isExistsForDate($store->id, $yesterdayDate),
                 ]);
 
-                \Mail::to(config('mallmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
+                if ( ! app()->isLocal()) {
+                    \Mail::to(config('mallmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
+                }
             }
         } else {
             $this->error('No available Stores');

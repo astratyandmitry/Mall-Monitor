@@ -2,6 +2,6 @@
 # {{ $store->mall->name }}: {{ $store->name }} отсуствутют данные за {{ $date }}
 
 Данные арендатора:
-* БИН: {{ $store->mall->name }}
-* ТРЦ: {{ $store->business_identification_number }}
+* ТРЦ: {{ $store->mall->name }}
+* БИН: {{ $store->business_identification_number }}
 @endcomponent

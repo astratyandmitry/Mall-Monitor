@@ -1,6 +1,9 @@
 <div class="filter">
     <div class="container">
         <form method="GET" class="filter-form">
+            @include('layouts.includes.field.hidden', ['attribute' => 'sort_key', 'value' => 'id'])
+            @include('layouts.includes.field.hidden', ['attribute' => 'sort_type', 'value' => 'asc'])
+
             @if ( ! $currentUser->store_id)
                 @if ( ! $currentUser->mall_id)
                     @include('layouts.includes.form.dropdown', [
@@ -55,16 +58,6 @@
                     ])
                 </div>
 
-                @if (request()->query('store_id') || request()->query('store_legal'))
-                    @include('layouts.includes.form.dropdown', [
-                       'attribute' => 'cashbox_id',
-                        'value' => request()->query('cashbox_id'),
-                       'placeholder' => 'Все',
-                       'label' => 'Номер кассы',
-                       'options' => \App\Repositories\CashboxRepository::getOptionsForStore(request()->query('store_id', request()->query('store_legal'))),
-                   ])
-                @endif
-
                 @include('layouts.includes.form.dropdown', [
                     'attribute' => 'type_id',
                     'value' => request()->query('type_id'),
@@ -83,6 +76,7 @@
                     'label' => 'Текущий период',
                     'options' => \App\Storage::$filterCurrentTypes,
                     'placeholder' => 'Указать вручную',
+                     'fakeRequired' => true,
                 ])
 
                 @include('layouts.includes.form.dropdown', [
@@ -92,11 +86,12 @@
                     'options' => \App\Storage::$filterPastTypes,
                     'disabled' => request()->query('current_type') == '',
                     'placeholder' => 'Пердыдущий текущему периоду',
+                     'fakeRequired' => true,
                 ])
             </div>
 
 
-            <div class="{{ request()->query('current_type') || isRequestEmpty() ? 'is-hidden' : '' }}" id="manual-dates">
+            <div class="{{ request()->query('current_type') == '' || isRequestEmpty() ? '' : 'is-hidden' }}" id="manual-dates">
                 <div class="grid">
                     <div class="grid-sub">
                         <div class="grid-title">Текущий период</div>
@@ -108,6 +103,7 @@
                             'label' => 'Дата начала',
                             'placeholder' => 'dd.mm.yyyy',
                             'classes' => 'picker-date',
+                             'fakeRequired' => true,
                         ])
 
                         @include('layouts.includes.form.input', [
@@ -124,6 +120,7 @@
                              'label' => 'Дата окончания',
                              'placeholder' => 'dd.mm.yyyy',
                              'classes' => 'picker-date',
+                              'fakeRequired' => true,
                          ])
 
                         @include('layouts.includes.form.input', [
@@ -145,6 +142,7 @@
                             'label' => 'Дата начала',
                             'placeholder' => 'dd.mm.yyyy',
                             'classes' => 'picker-date',
+                             'fakeRequired' => true,
                         ])
 
                         @include('layouts.includes.form.input', [
@@ -161,6 +159,7 @@
                              'label' => 'Дата окончания',
                              'placeholder' => 'dd.mm.yyyy',
                              'classes' => 'picker-date',
+                              'fakeRequired' => true,
                          ])
 
                         @include('layouts.includes.form.input', [

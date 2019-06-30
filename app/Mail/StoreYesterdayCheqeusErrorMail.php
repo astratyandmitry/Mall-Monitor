@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Store;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Mail\Mailable;
 
 class StoreYesterdayCheqeusErrorMail extends Mailable
@@ -28,7 +29,7 @@ class StoreYesterdayCheqeusErrorMail extends Mailable
     public function __construct(Store $store, string $date)
     {
         $this->store = $store;
-        $this->date = $date;
+        $this->date = date('d.m.Y', strtotime($date));
     }
 
 

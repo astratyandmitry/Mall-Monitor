@@ -32,13 +32,18 @@
                             </a>
                         </li>
                     @endif
-                    <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'placement', false) }}">
+                    <li class="header-nav-list-item has-dropdown {{ isActive(in_array($active_section, ['placement', 'compare', 'reports']), false) }}">
                         <a href="javascript:void(0)" class="header-nav-list-item-link">
-                            Положение
+                            Детализация
                             <i class="fa fa-angle-down"></i>
                         </a>
 
                         <ul class="header-nav-list-item-dropdown">
+                            <li class="header-nav-list-item-dropdown-item">
+                                <span class="header-nav-list-item-dropdown-item-heading">
+                                    Положение
+                                </span>
+                            </li>
                             @if ( ! $currentUser->store_id)
                                 <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'placement.mall', false) }}">
                                     <a href="{{ route('placement.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
@@ -51,15 +56,12 @@
                                     Арендаторы
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'compare', false) }}">
-                        <a href="javascript:void(0)" class="header-nav-list-item-link">
-                            Сравнение
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-
-                        <ul class="header-nav-list-item-dropdown">
+                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
+                            <li class="header-nav-list-item-dropdown-item">
+                                <span class="header-nav-list-item-dropdown-item-heading">
+                                    Сравнение
+                                </span>
+                            </li>
                             @if ( ! $currentUser->store_id)
                                 <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'compare.mall', false) }}">
                                     <a href="{{ route('compare.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
@@ -72,15 +74,12 @@
                                     Арендаторы
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="header-nav-list-item has-dropdown {{ isActive($active_section == 'reports', false) }}">
-                        <a href="javascript:void(0)" class="header-nav-list-item-link ">
-                            Отчеты
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-
-                        <ul class="header-nav-list-item-dropdown">
+                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
+                            <li class="header-nav-list-item-dropdown-item">
+                                <span class="header-nav-list-item-dropdown-item-heading">
+                                    Отчеты
+                                </span>
+                            </li>
                             @if ( ! $currentUser->store_id)
                                 <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'reports.mall', false) }}">
                                     <a href="{{ route('reports.mall.index') }}" class="header-nav-list-item-dropdown-item-link">

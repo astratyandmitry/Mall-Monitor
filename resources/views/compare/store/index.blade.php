@@ -85,9 +85,16 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script>
+        var datasets = [];
+
+        @foreach($graph['amount'] as $store_id => $_data)
+            datasets.push('{{ $store_names[$store_id] }}');
+        @endforeach
+
+
         Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
-            return addCommas(tooltipItem.yLabel);
-        }
+            return addCommas(tooltipItem.yLabel) + ' — ' + datasets[tooltipItem.datasetIndex];
+        };
 
         colors = [
             "#000000",
@@ -200,8 +207,14 @@
             "#9acd32"
         ];
 
-        function getColor() {
-            return colors[Math.floor(Math.random() * colors.length)];
+        var selectedColors = {};
+
+        function getColor(id) {
+            if (!selectedColors[id]) {
+                selectedColors[id] = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            return selectedColors[id];
         }
 
         function addCommas(nStr) {
@@ -221,10 +234,10 @@
             data: {
                 labels: @json(array_values($graph['labels'])),
                 datasets: [
-                        @foreach($graph['amount'] as $store_id => $_data)
+                    @foreach($graph['amount'] as $store_id => $_data)
                     {
                         label: '{{ $store_names[$store_id] }}',
-                        borderColor: getColor(),
+                        borderColor: getColor({{ $store_id }}),
                         data: @json(compare_data(array_keys($graph['labels']), $_data)),
                     },
                     @endforeach
@@ -240,7 +253,7 @@
                         @foreach($graph['count'] as $store_id => $_data)
                     {
                         label: '{{ $store_names[$store_id] }}',
-                        borderColor: getColor(),
+                        borderColor: getColor({{ $store_id }}),
                         data: @json(compare_data(array_keys($graph['labels']), $_data)),
                     },
                     @endforeach
@@ -253,10 +266,10 @@
             data: {
                 labels: @json(array_values($graph['labels'])),
                 datasets: [
-                        @foreach($graph['avg'] as $store_id => $_data)
+                    @foreach($graph['avg'] as $store_id => $_data)
                     {
                         label: '{{ $store_names[$store_id] }}',
-                        borderColor: getColor(),
+                        borderColor: getColor({{ $store_id }}),
                         data: @json(compare_data(array_keys($graph['labels']), $_data)),
                     },
                     @endforeach

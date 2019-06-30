@@ -428,6 +428,7 @@ class Cheque extends Model
             $sort_type = 'asc';
         }
 
+
         $builder->orderBy($sort_key, $sort_type);
 
         $builder->whereHas('store', function (Builder $builder): Builder {

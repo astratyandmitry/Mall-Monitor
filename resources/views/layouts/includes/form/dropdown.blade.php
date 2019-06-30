@@ -4,7 +4,7 @@
             <span>
                 {{ $label }}
 
-                @if (isset($required) && $required == true)
+                @if ((isset($required) && $required == true) || (isset($fakeRequired) && $fakeRequired == true ))
                     <strong>*</strong>
                 @endif
             </span>

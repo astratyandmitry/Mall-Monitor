@@ -36,38 +36,53 @@ class PlacementMallController extends Controller
     {
         $this->setupDates();
 
-        $statisticsCurrent = $this->getDataForPeriod('current');
-        $statisticsPast = $this->getDataForPeriod('past');
-
-        if (is_null($statisticsCurrent) || is_null($statisticsPast)) {
-            return [
-                'statistics_current' => [],
-                'statistics_past' => [],
-                'mall_names' => [],
-            ];
-        }
-
-        $mall_ids = array_merge(
-            $statisticsCurrent->pluck('mall_id', 'mall_id')->toArray(),
-            $statisticsPast->pluck('mall_id', 'mall_id')->toArray()
-        );
+        $current = $this->getDataForPeriod('current');
+        $past = $this->getDataForPeriod('past');
 
         $data = [
-            'statistics_current' => $statisticsCurrent->keyBy('mall_id')->toArray(),
-            'statistics_past' => $statisticsPast->keyBy('mall_id')->toArray(),
-            'mall_names' => Mall::whereIn('id', $mall_ids)->pluck('name', 'id'),
+            'dates' => [
+                'current' => [
+                    'from' => date('d.m.Y H:i:s', strtotime($current['date_from'])),
+                    'to' => date('d.m.Y H:i:s', strtotime($current['date_to'])),
+                ],
+                'past' => [
+                    'from' => date('d.m.Y H:i:s', strtotime($past['date_from'])),
+                    'to' => date('d.m.Y H:i:s', strtotime($past['date_to'])),
+                ],
+            ],
+            'statistics_current' => [],
+            'statistics_past' => [],
+            'mall_names' => [],
         ];
 
-        return $data;
+        $mall_ids = [];
+
+        $statistics_current = [];
+        if ( ! is_null($current['statistics'])) {
+            $mall_ids = array_merge($mall_ids, $current['statistics']->pluck('mall_id', 'mall_id')->toArray());
+            $statistics_current = $current['statistics']->keyBy('mall_id')->toArray();
+        }
+
+        $statistics_past = [];
+        if ( ! is_null($past['statistics'])) {
+            $mall_ids = array_merge($mall_ids, $past['statistics']->pluck('mall_id', 'mall_id')->toArray());
+            $statistics_past = $past['statistics']->keyBy('mall_id')->toArray();
+        }
+
+        return array_merge($data, [
+            'statistics_current' => $statistics_current,
+            'statistics_past' => $statistics_past,
+            'mall_names' => (count($mall_ids)) ? Mall::whereIn('id', $mall_ids)->pluck('name', 'id') : [],
+        ]);
     }
 
 
     /**
      * @param string $period
      *
-     * @return mixed
+     * @return null|array
      */
-    protected function getDataForPeriod(string $period)
+    protected function getDataForPeriod(string $period): ?array
     {
         $dateFrom = $this->getDateTime($period, 'from');
         $dateTo = $this->getDateTime($period, 'to');
@@ -80,7 +95,11 @@ class PlacementMallController extends Controller
 
         $statistics = Cheque::reportMall($dateFrom, $dateTo);
 
-        return $statistics->select(\DB::raw($select))->groupBy('mall_id')->get();
+        return [
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+            'statistics' => $statistics->select(\DB::raw($select))->groupBy('mall_id')->get(),
+        ];
     }
 
 

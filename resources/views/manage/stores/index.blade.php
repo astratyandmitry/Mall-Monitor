@@ -127,6 +127,12 @@
                                     </td>
                                     <td nowrap>
                                         {{ $entity->name }}
+
+                                        @if ($entity->integration()->exists())
+                                            <div class="badge is-inline is-warning">
+                                                Интегрирован
+                                            </div>
+                                        @endif
                                     </td>
                                     <td nowrap>
                                         {{ $entity->business_identification_number }}

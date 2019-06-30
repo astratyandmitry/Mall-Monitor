@@ -83,9 +83,15 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script>
+        var datasets = [];
+
+        @foreach($graph['amount'] as $mall_id => $_data)
+        datasets.push('{{ $mall_names[$mall_id] }}');
+        @endforeach
+
         Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
-            return addCommas(tooltipItem.yLabel);
-        }
+            return addCommas(tooltipItem.yLabel) + ' — ' + datasets[tooltipItem.datasetIndex];
+        };
 
         colors = [
             "#000000",
@@ -198,8 +204,14 @@
             "#9acd32"
         ];
 
-        function getColor() {
-            return colors[Math.floor(Math.random() * colors.length)];
+        var selectedColors = {};
+
+        function getColor(id) {
+            if (!selectedColors[id]) {
+                selectedColors[id] = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            return selectedColors[id];
         }
 
         function addCommas(nStr) {
@@ -222,7 +234,7 @@
                         @foreach($graph['amount'] as $mall_id => $_data)
                     {
                         label: '{{ $mall_names[$mall_id] }}',
-                        borderColor: getColor(),
+                        borderColor: getColor({{ $mall_id }}),
                         data: @json(compare_data(array_keys($graph['labels']), $_data)),
                     },
                     @endforeach
@@ -238,7 +250,7 @@
                         @foreach($graph['count'] as $mall_id => $_data)
                     {
                         label: '{{ $mall_names[$mall_id] }}',
-                        borderColor: getColor(),
+                        borderColor: getColor({{ $mall_id }}),
                         data: @json(compare_data(array_keys($graph['labels']), $_data)),
                     },
                     @endforeach
@@ -254,7 +266,7 @@
                         @foreach($graph['avg'] as $mall_id => $_data)
                     {
                         label: '{{ $mall_names[$mall_id] }}',
-                        borderColor: getColor(),
+                        borderColor: getColor({{ $mall_id }}),
                         data: @json(compare_data(array_keys($graph['labels']), $_data)),
                     },
                     @endforeach

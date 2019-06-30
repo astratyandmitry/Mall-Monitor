@@ -53,7 +53,7 @@
                             <thead>
                             <tr>
                                 <th nowrap>
-                                    Арендатор
+                                    ТРЦ
                                     @include('layouts.includes.table.sorting', ['attribute' => 'mall_id', 'default_key' => 'mall_id'])
                                 </th>
                                 <th nowrap class="is-center" width="100">

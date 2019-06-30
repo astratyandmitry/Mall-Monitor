@@ -169,6 +169,13 @@
               }
             }
 
+            .header-nav-list-item-dropdown-item-heading {
+              font-weight: 500;
+              text-transform: uppercase;
+              font-size: $font-12;
+              color: $color-grey;
+            }
+
             .header-nav-list-item-dropdown-item-link {
               border-bottom: none;
               font-size: $font-14;
