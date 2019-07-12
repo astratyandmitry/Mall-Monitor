@@ -65,7 +65,14 @@ class XMLChequeTransformer extends ChequeTransformer
         if ($this->integration->config['created_at_time']) {
             $timeKey = $this->integration->config['created_at_time'];
 
-            return date('Y-m-d H:i:s', strtotime(@$this->item->{$dateKey} . ' ' . @$this->item->{$timeKey}));
+            $date = @$this->item->{$dateKey} . ' ' . @$this->item->{$timeKey};
+            $date = str_replace('.', '-', $date);
+
+            if (strtotime($date) !== false) {
+                $date = date('Y-m-d H:i:s', strtotime($date));
+            }
+
+            return $date;
         }
 
         return date('Y-m-d', strtotime(@$this->item->{$dateKey})) . ' 12:00:00';
