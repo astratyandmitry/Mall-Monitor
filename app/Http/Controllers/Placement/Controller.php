@@ -80,10 +80,11 @@ class Controller extends \App\Http\Controllers\Controller
                     }
 
                     $month = ($month < 10) ? "0{$month}" : $month;
+                    $date = "01.{$month}.{$year}";
 
                     \request()->merge([
-                        'current_date_from' => "01.{$month}.{$year}",
-                        'current_date_to' => "31.{$month}.{$year}",
+                        'current_date_from' => $date,
+                        'current_date_to' =>  date('t.m.Y', strtotime($date)),
                     ]);
 
                     if ((int)$month == 1) {
@@ -94,10 +95,11 @@ class Controller extends \App\Http\Controllers\Controller
                     }
 
                     $month = ($month < 10) ? "0{$month}" : $month;
+                    $date = "01.{$month}.{$year}";
 
                     $prevDates = [
-                        'from' => "01.{$month}.{$year}",
-                        'to' => "31.{$month}.{$year}",
+                        'from' => $date,
+                        'to' => date('t.m.Y', strtotime($date)),
                     ];
                 };
                 break;
