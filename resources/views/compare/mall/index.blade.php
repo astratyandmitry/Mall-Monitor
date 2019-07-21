@@ -29,9 +29,16 @@
         <div class="container">
             @if (count($statistics))
                 <div class="box">
-                    <div class="box-title">
+                    <div class="box-title has-action">
                         <div class="box-title-text">
                             Сумма продаж
+                        </div>
+
+                        <div class="box-title-action">
+                            <span data-canvas="statistics-amount" class="btn is-sm is-outlined js-print-canvas">
+                                <i class="fa fa-file-pdf-o"></i>
+                                Скачать PDF
+                            </span>
                         </div>
                     </div>
 
@@ -41,9 +48,16 @@
                 </div>
 
                 <div class="box is-marged">
-                    <div class="box-title">
+                    <div class="box-title has-action">
                         <div class="box-title-text">
                             Количество продаж
+                        </div>
+
+                        <div class="box-title-action">
+                            <span data-canvas="statistics-count" class="btn is-sm is-outlined js-print-canvas">
+                                <i class="fa fa-file-pdf-o"></i>
+                                Скачать PDF
+                            </span>
                         </div>
                     </div>
 
@@ -53,9 +67,16 @@
                 </div>
 
                 <div class="box is-marged">
-                    <div class="box-title">
+                    <div class="box-title has-action">
                         <div class="box-title-text">
                             Средний чек
+                        </div>
+
+                        <div class="box-title-action">
+                            <span data-canvas="statistics-avg" class="btn is-sm is-outlined js-print-canvas">
+                                <i class="fa fa-file-pdf-o"></i>
+                                Скачать PDF
+                            </span>
                         </div>
                     </div>
 
@@ -82,7 +103,19 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>
     <script>
+        $(function () {
+            $('.js-print-canvas').on('click', function () {
+                var newCanvas = document.querySelector('#' + $(this).data('canvas'));
+                var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
+                var doc = new jsPDF("l", "mm", "a4");
+                doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);
+                doc.save('keruenmonitor-chart_' + Date.now() +  '.pdf');
+            });
+
+        });
+
         var datasets = [];
 
         @foreach($graph['amount'] as $mall_id => $_data)

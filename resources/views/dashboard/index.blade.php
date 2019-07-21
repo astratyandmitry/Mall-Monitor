@@ -27,39 +27,62 @@
     <div class="content">
         <div class="container">
             @if (count($statistics))
-                <div class="box">
-                    <div class="box-title">
-                        <div class="box-title-text">
-                            Сумма продаж
+                <div class="canvases">
+                    <div class="box">
+                        <div class="box-title has-action">
+                            <div class="box-title-text">
+                                Сумма продаж
+                            </div>
+
+                            <div class="box-title-action">
+                                <span data-canvas="statistics-amount" class="btn is-sm is-outlined js-print-canvas">
+                                    <i class="fa fa-file-pdf-o"></i>
+                                    Скачать PDF
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="box-content">
+                            <canvas id="statistics-amount" class="rounded-sm mb-16" height="80vh"></canvas>
                         </div>
                     </div>
 
-                    <div class="box-content">
-                        <canvas id="statistics-amount" class="rounded-sm mb-16" height="80vh"></canvas>
-                    </div>
-                </div>
+                    <div class="box is-marged">
+                        <div class="box-title has-action">
+                            <div class="box-title-text">
+                                Количество продаж
+                            </div>
 
-                <div class="box is-marged">
-                    <div class="box-title">
-                        <div class="box-title-text">
-                            Количество продаж
+                            <div class="box-title-action">
+                                <span data-canvas="statistics-count" class="btn is-sm is-outlined js-print-canvas">
+                                    <i class="fa fa-file-pdf-o"></i>
+                                    Скачать PDF
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="box-content">
+                            <canvas id="statistics-count" class="rounded-sm mb-16" height="80vh"></canvas>
                         </div>
                     </div>
 
-                    <div class="box-content">
-                        <canvas id="statistics-count" class="rounded-sm mb-16" height="80vh"></canvas>
-                    </div>
-                </div>
+                    <div class="box is-marged">
+                        <div class="box-title has-action">
+                            <div class="box-title-text">
+                                Средний чек
+                            </div>
 
-                <div class="box is-marged">
-                    <div class="box-title">
-                        <div class="box-title-text">
-                            Средний чек
+                            <div class="box-title-action">
+                                <span data-canvas="statistics-avg" class="btn is-sm is-outlined js-print-canvas">
+                                    <i class="fa fa-file-pdf-o"></i>
+                                    Скачать PDF
+                                </span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="box-content">
-                        <canvas id="statistics-avg" class="rounded-sm mb-16" height="80vh"></canvas>
+                        <div class="box-content">
+                            <canvas id="statistics-avg" class="rounded-sm mb-16" height="80vh"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -146,7 +169,19 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>
     <script>
+        $(function () {
+            $('.js-print-canvas').on('click', function () {
+                var newCanvas = document.querySelector('#' + $(this).data('canvas'));
+                var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
+                var doc = new jsPDF("l", "mm", "a4");
+                doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);
+                doc.save('keruenmonitor-chart_' + Date.now() +  '.pdf');
+            });
+
+        });
+
         Chart.defaults.global.legend.display = false;
         Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
             return addCommas(tooltipItem.yLabel);
