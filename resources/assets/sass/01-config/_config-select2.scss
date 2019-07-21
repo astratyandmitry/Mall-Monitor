@@ -121,3 +121,7 @@
     }
   }
 }
+
+.select2-container .select2-dropdown .select2-results__options--nested {
+  max-height: 100% !important;
+}
