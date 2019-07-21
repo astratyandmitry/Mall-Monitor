@@ -40,7 +40,7 @@ class ReportsMallController extends Controller
      */
     public function exportExcel(): string
     {
-        $filename = 'mallmonitor_reports.mall_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.mall_' . date('YmdHi');
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Отчет по ТРЦ', function ($sheet) {
@@ -57,7 +57,7 @@ class ReportsMallController extends Controller
      */
     public function exportPDF()
     {
-        $filename = 'mallmonitor_reports.mall_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.mall_' . date('YmdHi');
 
         $pdf = \PDF::loadView('reports.mall.export.pdf', $this->getExportData($this->getPDFMaxItems()))->setPaper('a4', 'landscape');
 

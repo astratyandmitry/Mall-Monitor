@@ -2,6 +2,8 @@
 @php /** @var array $statistics_past */ @endphp
 @php /** @var array $mall_names */ @endphp
 
+@php $exportParams = paginateAppends() @endphp
+
 @extends('layouts.app', $globals)
 
 @section('content')
@@ -30,8 +32,8 @@
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Сравнение {{ $dates['current']['from'] }} - {{ $dates['current']['to'] }}
-                            с {{ $dates['past']['from'] }} - {{ $dates['past']['to'] }}
+                            Сравнение <span class="badge"> {{ $dates['current']['from'] }} - {{ $dates['current']['to'] }}</span>
+                            с <span class="badge">{{ $dates['past']['from'] }} - {{ $dates['past']['to'] }}</span>
                         </div>
                     </div>
 

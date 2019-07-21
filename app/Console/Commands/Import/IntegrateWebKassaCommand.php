@@ -15,7 +15,7 @@ class IntegrateWebKassaCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:integrate-webkassa';
+    protected $signature = 'keruenmonitor:integrate-webkassa';
 
     /**
      * @var string

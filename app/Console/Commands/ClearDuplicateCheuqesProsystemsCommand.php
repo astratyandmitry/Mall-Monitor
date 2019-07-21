@@ -10,7 +10,7 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:clear-duplicate-cheques-prosystems';
+    protected $signature = 'keruenmonitor:clear-duplicate-cheques-prosystems';
 
     /**
      * @var string

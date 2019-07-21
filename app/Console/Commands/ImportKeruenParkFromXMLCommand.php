@@ -18,7 +18,7 @@ class ImportKeruenParkFromXMLCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:import-keruen-park-xml';
+    protected $signature = 'keruenmonitor:import-keruen-park-xml';
 
     /**
      * @var string

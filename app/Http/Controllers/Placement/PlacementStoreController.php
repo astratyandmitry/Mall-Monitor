@@ -29,16 +29,47 @@ class PlacementStoreController extends Controller
         return view('placement.store.index', $this->withData($data));
     }
 
+    /**
+     * @return string
+     */
+    public function exportExcel(): string
+    {
+        $filename = 'keruenmonitor_placement.store_' . date('YmdHi');
+
+        \Excel::create($filename, function ($excel) {
+            $excel->sheet('Положение арендаторов', function ($sheet) {
+                $sheet->loadView('placement.store.export.excel', $this->getExportData());
+            });
+        })->export('xls');
+
+        return '<script>window.close();</script>';
+    }
+
 
     /**
+     * @return mixed
+     */
+    public function exportPDF()
+    {
+        $filename = 'keruenmonitor_placement.store_' . date('YmdHi');
+
+        $pdf = \PDF::loadView('placement.store.export.pdf', $this->getExportData($this->getPDFMaxItems()))->setPaper('a4', 'landscape');
+
+        return $pdf->download("{$filename}.pdf");
+    }
+
+
+    /**
+     * @param int|null $limit
+     *
      * @return array
      */
-    protected function getExportData(): array
+    protected function getExportData(?int $limit = null): array
     {
         $this->setupDates();
 
-        $current = $this->getDataForPeriod('current');
-        $past = $this->getDataForPeriod('past');
+        $current = $this->getDataForPeriod('current', $limit);
+        $past = $this->getDataForPeriod('past', $limit);
 
         $data = [
             'dates' => [
@@ -89,11 +120,12 @@ class PlacementStoreController extends Controller
 
 
     /**
-     * @param string $period
+     * @param string   $period
+     * @param int|null $limit
      *
      * @return null|array
      */
-    protected function getDataForPeriod(string $period): ?array
+    protected function getDataForPeriod(string $period, ?int $limit = null): ?array
     {
         $dateFrom = $this->getDateTime($period, 'from');
         $dateTo = $this->getDateTime($period, 'to');
@@ -105,6 +137,10 @@ class PlacementStoreController extends Controller
         $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id';
 
         $statistics = Cheque::reportStore($dateFrom, $dateTo);
+
+        if (!is_null($limit)) {
+            $statistics = $statistics->limit($limit);
+        }
 
         return [
             'date_from' => $dateFrom,

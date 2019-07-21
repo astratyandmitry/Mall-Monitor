@@ -13,7 +13,7 @@ class CheckYesterdayChequesCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:cheques-check-yesterday';
+    protected $signature = 'keruenmonitor:cheques-check-yesterday';
 
     /**
      * @var string
@@ -39,7 +39,7 @@ class CheckYesterdayChequesCommand extends Command
                 ]);
 
                 if ( ! app()->isLocal()) {
-                    \Mail::to(config('mallmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
+                    \Mail::to(config('keruenmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
                 }
             }
         } else {

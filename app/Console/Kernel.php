@@ -17,9 +17,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'mallmonitor:integrate-prosystems-multi' => IntegrateProsystemsMultiCommand::class,
-        'mallmonitor:integrate-webkassa' => IntegrateWebKassaCommand::class,
-        'mallmonitor:cheques-check-yesterday' => CheckYesterdayChequesCommand::class,
+        'keruenmonitor:integrate-prosystems-multi' => IntegrateProsystemsMultiCommand::class,
+        'keruenmonitor:integrate-webkassa' => IntegrateWebKassaCommand::class,
+        'keruenmonitor:cheques-check-yesterday' => CheckYesterdayChequesCommand::class,
     ];
 
 
@@ -32,9 +32,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('mallmonitor:integrate-prosystems-multi')->hourly();
-        $schedule->command('mallmonitor:integrate-webkassa')->hourly();
-        $schedule->command('mallmonitor:cheques-check-yesterday')->dailyAt('04:00');
+        $schedule->command('keruenmonitor:integrate-prosystems-multi')->hourly();
+        $schedule->command('keruenmonitor:integrate-webkassa')->hourly();
+        $schedule->command('keruenmonitor:cheques-check-yesterday')->dailyAt('04:00');
     }
 
 

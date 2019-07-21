@@ -14,7 +14,7 @@ class IntegrateProsystemsMultiCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:integrate-prosystems-multi';
+    protected $signature = 'keruenmonitor:integrate-prosystems-multi';
 
     /**
      * @var string

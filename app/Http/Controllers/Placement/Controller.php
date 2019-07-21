@@ -84,7 +84,7 @@ class Controller extends \App\Http\Controllers\Controller
 
                     \request()->merge([
                         'current_date_from' => $date,
-                        'current_date_to' =>  date('t.m.Y', strtotime($date)),
+                        'current_date_to' => date('t.m.Y', strtotime($date)),
                     ]);
 
                     if ((int)$month == 1) {
@@ -138,6 +138,15 @@ class Controller extends \App\Http\Controllers\Controller
                     break;
             }
         }
+    }
+
+
+    /**
+     * @return int
+     */
+    protected function getPDFMaxItems(): int
+    {
+        return (app()->isLocal()) ? 50 : 250;
     }
 
 }

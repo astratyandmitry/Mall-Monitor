@@ -11,7 +11,7 @@ class ImportKKMCodesIntoCashboxesCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'mallmonitor:import-kkm-codes-cashbox';
+    protected $signature = 'keruenmonitor:import-kkm-codes-cashbox';
 
     /**
      * @var string
