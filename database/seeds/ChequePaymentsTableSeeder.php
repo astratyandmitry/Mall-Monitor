@@ -26,6 +26,10 @@ class ChequePaymentsTableSeeder extends Seeder
             'name' => 'Тара',
             'system_key' => 'tare',
         ],
+        [
+            'name' => 'Сдельный',
+            'system_key' => 'piece-rate',
+        ],
     ];
 
 
