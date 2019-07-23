@@ -16,20 +16,20 @@
     <div class="content">
         <div class="container">
             <div class="box">
-                <div class="box-title">
-                    <div class="box-title-text">
-                        Данные арендатора
+                <form action="{{ $action }}" method="POST">
+                    @if (isset($entity))
+                        @method('PUT')
+                    @endif
+
+                    @csrf
+
+                    <div class="box-title">
+                        <div class="box-title-text">
+                            Данные арендатора
+                        </div>
                     </div>
-                </div>
 
-                <div class="box-content">
-                    <form action="{{ $action }}" method="POST">
-                        @if (isset($entity))
-                            @method('PUT')
-                        @endif
-
-                        @csrf
-
+                    <div class="box-content">
                         <div class="form-content">
                             <div class="form-section">
                                 @if ( ! $currentUser->mall_id)
@@ -81,15 +81,48 @@
                                     'required' => true,
                                 ])
                             </div>
+
+                            @if (isset($entity))
+                                <div class="form-action">
+                                    <button type="submit" class="btn">
+                                        Сохранить изменения
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    @if (!isset($entity))
+                        <div class="box-title">
+                            <div class="box-title-text">
+                                Аккаунт разработчика
+                            </div>
                         </div>
 
-                        <div class="form-action">
-                            <button type="submit" class="btn">
-                                {{ isset($entity) ? 'Сохранить изменения' : 'Добавить арендатора' }}
-                            </button>
+                        <div class="box-content">
+                            <div class="form-section">
+                                <div class="form-grid is-2col">
+                                    @include('layouts.includes.form.input', [
+                                        'attribute' => 'username',
+                                        'label' => 'Логин',
+                                        'autofocus' => true,
+                                    ])
+
+                                    @include('layouts.includes.form.password', [
+                                        'attribute' => 'password',
+                                        'label' => 'Пароль',
+                                    ])
+                                </div>
+                            </div>
+
+                            <div class="form-action">
+                                <button type="submit" class="btn">
+                                    Добавить арендатора
+                                </button>
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    @endif
+                </form>
             </div>
         </div>
     </div>

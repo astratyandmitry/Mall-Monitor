@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Developer;
 use App\Models\Store;
 use App\Http\Requests\Manage\ManageStoreRequest;
 
@@ -63,7 +64,16 @@ class ManageStoresController extends ManageController
      */
     public function store(ManageStoreRequest $request): \Illuminate\Http\RedirectResponse
     {
-        Store::create($request->all());
+        $store = Store::create($request->except(['username', 'password']));
+
+        $developerAttributes = $request->only(['username', 'password']);
+
+        if (isset($developerAttributes['username']) && !empty($developerAttributes['username'])) {
+            Developer::query()->create(array_merge($developerAttributes, [
+                'mall_id' => $store->mall_id,
+                'store_id' => $store->id,
+            ]));
+        }
 
         return redirect()->route('manage.stores.index')
             ->with('status-success', 'Арендатор успешно добавлен');
