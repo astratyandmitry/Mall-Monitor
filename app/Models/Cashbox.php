@@ -67,8 +67,8 @@ class Cashbox extends Model
         static::updated(function (Cashbox $cashbox): void {
             if ($cashbox->wasChanged('store_id')) {
                 \DB::table('cheques')->where('cashbox_id', $cashbox->id)->update([
-                    'store_id' => $cashbox->store_id,
-                    'mall_id' => $cashbox->mall_id,
+                    'mall_id' => $cashbox->store->mall_id,
+                    'store_id' => $cashbox->store->id,
                 ]);
             }
         });
