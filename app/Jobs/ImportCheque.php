@@ -78,14 +78,13 @@ abstract class ImportCheque
         /** @var Cashbox $cashbox */
         $cashbox = Cashbox::query()
             ->where('code', $kkm_code)
-            ->where('mall_id', $this->mall->id)
             ->whereHas('store', function (Builder $builder) use ($bin): Builder {
                 return $builder->where('business_identification_number', $bin);
             })->first();
 
         if ( ! $cashbox) {
             /** @var Store $store */
-            if ( ! $store = Store::where('business_identification_number', $bin)->where('mall_id', $this->mall->id)->withTrashed()->first()) {
+            if ( ! $store = Store::where('business_identification_number', $bin)->withTrashed()->first()) {
                 $store = Store::create([
                     'mall_id' => $this->mall->id,
                     'name' => "БИН: {$bin}",
