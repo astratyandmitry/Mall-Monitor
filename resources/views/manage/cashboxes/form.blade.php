@@ -60,6 +60,13 @@
                                     'required' => true,
                                     'autofocus' => true,
                                 ])
+
+                                @if (isset($entity) && $entity->trashed())
+                                    @include('layouts.includes.form.checkbox', [
+                                        'attribute' => 'activate',
+                                        'label' => 'Активировать кассу',
+                                    ])
+                                @endif
                             </div>
                         </div>
 

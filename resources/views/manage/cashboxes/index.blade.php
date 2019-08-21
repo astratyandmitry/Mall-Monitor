@@ -127,9 +127,9 @@
                                         {{ $entity->code }}
                                     </td>
                                     @if ( ! $currentUser->mall_id)
-                                    <td nowrap>
-                                        {{ $entity->mall->name }}
-                                    </td>
+                                        <td nowrap>
+                                            {{ $entity->mall->name }}
+                                        </td>
                                     @endif
                                     <td nowrap>
                                         {{ $entity->store->name }}
@@ -140,11 +140,9 @@
                                         </div>
                                     </td>
                                     <td class="is-icons">
-                                        @if (!$entity->trashed())
-                                            <a href="{{ route('manage.cashboxes.edit', $entity) }}" title="Редактировать">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                        @endif
+                                        <a href="{{ route('manage.cashboxes.edit', $entity) }}" title="Редактировать">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
 
                                         <a href="{{ route('manage.cashboxes.toggle', $entity) }}"
                                            title="{{ $entity->trashed() ? 'Восстановить' : 'Удалить' }}">

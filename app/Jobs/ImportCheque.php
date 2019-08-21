@@ -80,7 +80,7 @@ abstract class ImportCheque
             ->where('code', $kkm_code)
             ->whereHas('store', function (Builder $builder) use ($bin): Builder {
                 return $builder->where('business_identification_number', $bin);
-            })->first();
+            })->withTrashed()->first();
 
         if ( ! $cashbox) {
             /** @var Store $store */
@@ -98,6 +98,7 @@ abstract class ImportCheque
                 'code' => $kkm_code,
                 'store_id' => $store->id,
                 'mall_id' => $store->mall_id,
+                'deleted_at' => now(),
             ]);
         }
 

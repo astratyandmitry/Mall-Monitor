@@ -157,11 +157,9 @@
                                         </div>
                                     </td>
                                     <td class="is-icons">
-                                        @if (!$entity->trashed())
-                                            <a href="{{ route('manage.stores.edit', $entity) }}" title="Редактировать">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                        @endif
+                                        <a href="{{ route('manage.stores.edit', $entity) }}" title="Редактировать">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
 
                                         <a href="{{ route('manage.stores.toggle', $entity) }}"
                                            title="{{ $entity->trashed() ? 'Восстановить' : 'Удалить' }}">

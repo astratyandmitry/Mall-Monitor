@@ -53,9 +53,13 @@ Route::group(['middleware' => 'loggined'], function (): void {
 
     Route::prefix('manage')->namespace('Manage')->name('manage.')->middleware('manage')->group(function () {
         Route::resource('/malls', 'ManageMallsController')->except(['destory']);
-        Route::resource('/stores', 'ManageStoresController')->except(['destory']);
+        Route::resource('/stores', 'ManageStoresController')->except(['destory', 'edit', 'update']);
+        Route::get('/stores/{anyStore}/edit', 'ManageStoresController@edit')->name('stores.edit');
+        Route::put('/stores/{anyStore}/edit', 'ManageStoresController@update')->name('stores.update');
         Route::get('/stores/{anyStore}/toggle', 'ManageStoresController@toggle')->name('stores.toggle');
-        Route::resource('/cashboxes', 'ManageCashboxesController')->except(['destory']);
+        Route::resource('/cashboxes', 'ManageCashboxesController')->except(['destory', 'edit', 'update']);
+        Route::get('/cashboxes/{anyCashbox}/edit', 'ManageCashboxesController@edit')->name('cashboxes.edit');
+        Route::put('/cashboxes/{anyCashbox}/edit', 'ManageCashboxesController@update')->name('cashboxes.update');
         Route::get('/cashboxes/{anyCashbox}/toggle', 'ManageCashboxesController@toggle')->name('cashboxes.toggle');
 
         Route::resource('/users', 'ManageUsersController')->except(['destory']);

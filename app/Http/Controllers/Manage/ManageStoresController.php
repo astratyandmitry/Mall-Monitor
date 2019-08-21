@@ -81,34 +81,34 @@ class ManageStoresController extends ManageController
 
 
     /**
-     * @param int $id
+     * @param \App\Models\Store $store
      *
      * @return \Illuminate\View\View
      */
-    public function edit(int $id): \Illuminate\View\View
+    public function edit(Store $store): \Illuminate\View\View
     {
-        $entity = Store::findOrFail($id);
-
         $this->setTitle('Редактирование арендатора');
 
         return view('manage.stores.form', $this->withData([
-            'action' => route('manage.stores.update', $entity),
-            'entity' => $entity,
+            'action' => route('manage.stores.update', $store),
+            'entity' => $store,
         ]));
     }
 
 
     /**
-     * @param int                                          $id
+     * @param \App\Models\Store $store
      * @param \App\Http\Requests\Manage\ManageStoreRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(int $id, ManageStoreRequest $request): \Illuminate\Http\RedirectResponse
+    public function update(Store $store, ManageStoreRequest $request): \Illuminate\Http\RedirectResponse
     {
-        /** @var Store $entity */
-        $entity = Store::findOrFail($id);
-        $entity->update($request->all());
+        $store->update($request->all());
+
+        if ($store->trashed() && $request->activate)  {
+            $store->restore();
+        }
 
         return redirect()->route('manage.stores.index')
             ->with('status-success', 'Арендатор успешно изменен');

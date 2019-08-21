@@ -80,6 +80,13 @@
                                     'helper' => 'кв. м.',
                                     'required' => true,
                                 ])
+
+                                @if (isset($entity) && $entity->trashed())
+                                    @include('layouts.includes.form.checkbox', [
+                                        'attribute' => 'activate',
+                                        'label' => 'Активировать арендатора',
+                                    ])
+                                @endif
                             </div>
 
                             @if (isset($entity))

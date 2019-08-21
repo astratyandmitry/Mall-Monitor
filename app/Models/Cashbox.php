@@ -136,6 +136,20 @@ class Cashbox extends Model
             return $builder->where('store_id', request('store_id'));
         });
 
+
+        $builder->when(request('filter'), function (Builder $builder): Builder {
+            switch (request('filter')) {
+                case 1:
+                    $builder->whereNull('deleted_at');
+                    break;
+                case 2:
+                    $builder->whereNotNull('deleted_at');
+                    break;
+            }
+
+            return $builder;
+        });
+
         return parent::scopeFilter($builder);
     }
 

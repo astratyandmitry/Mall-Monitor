@@ -71,34 +71,34 @@ class ManageCashboxesController extends ManageController
 
 
     /**
-     * @param int $id
+     * @param \App\Models\Cashbox $cashbox
      *
      * @return \Illuminate\View\View
      */
-    public function edit(int $id): \Illuminate\View\View
+    public function edit(Cashbox $cashbox): \Illuminate\View\View
     {
-        $entity = Cashbox::findOrFail($id);
-
         $this->setTitle('Редактирование кассы');
 
         return view('manage.cashboxes.form', $this->withData([
-            'action' => route('manage.cashboxes.update', $entity),
-            'entity' => $entity,
+            'action' => route('manage.cashboxes.update', $cashbox),
+            'entity' => $cashbox,
         ]));
     }
 
 
     /**
-     * @param int                                            $id
+     * @param \App\Models\Cashbox                            $cashbox
      * @param \App\Http\Requests\Manage\ManageCashboxRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(int $id, ManageCashboxRequest $request): \Illuminate\Http\RedirectResponse
+    public function update(Cashbox $cashbox, ManageCashboxRequest $request): \Illuminate\Http\RedirectResponse
     {
-        /** @var Cashbox $entity */
-        $entity = Cashbox::findOrFail($id);
-        $entity->update($request->all());
+        $cashbox->update($request->all());
+
+        if ($cashbox->trashed() && $request->activate) {
+            $cashbox->restore();
+        }
 
         return redirect()->route('manage.cashboxes.index')
             ->with('status-success', 'Касса успешно изменена');
