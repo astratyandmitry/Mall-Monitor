@@ -69,16 +69,18 @@ abstract class ChequeTransformer
     public function toAttributes(): array
     {
         $cashbox = $this->getCashbox();
+        $type_id = $this->getTypeId();
+        $amount = $this->getAttribute('amount');
 
         return [
             'kkm_code' => $cashbox->code,
             'code' => (string)($this->getAttribute('code')) ? $this->getAttribute('code') : $this->getAttribute('number'),
             'number' => (string)$this->getAttribute('number'),
-            'amount' => (float)$this->getAttribute('amount'),
+            'amount' => (in_array($type_id, [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])) ? $amount * -1 : $amount,
             'mall_id' => $this->developer->mall_id,
             'store_id' => $this->developer->store_id,
             'cashbox_id' => $cashbox->id,
-            'type_id' => $this->getTypeId(),
+            'type_id' => $type_id,
             'payment_id' => $this->getPaymentId(),
             'created_at' => $this->getDateAttribute(),
         ];
