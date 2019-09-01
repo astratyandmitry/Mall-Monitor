@@ -39,7 +39,7 @@ class CheckYesterdayChequesCommand extends Command
                 ]);
 
                 if ( ! app()->isLocal()) {
-                    \Mail::to(config('keruenmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
+                    \Mail::to(config('mallmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
                 }
             }
         } else {
