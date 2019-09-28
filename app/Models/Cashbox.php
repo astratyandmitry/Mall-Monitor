@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string            $code
  * @property integer           $mall_id
  * @property integer           $store_id
+ * @property \Carbon\Carbon    $created_at
+ * @property \Carbon\Carbon    $updated_at
  * @property \Carbon\Carbon    $deleted_at
  * @property \App\Models\Store $store
  *
@@ -33,19 +35,18 @@ class Cashbox extends Model
         'code',
         'mall_id',
         'store_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
      * @var array
      */
     protected $dates = [
+        'created_at',
+        'updated_at',
         'deleted_at',
     ];
-
-    /**
-     * @var bool
-     */
-    public $timestamps = false;
 
     /**
      * @var array
@@ -135,7 +136,6 @@ class Cashbox extends Model
         $builder->when(request('store_id'), function (Builder $builder): Builder {
             return $builder->where('store_id', request('store_id'));
         });
-
 
         $builder->when(request('filter'), function (Builder $builder): Builder {
             switch (request('filter')) {

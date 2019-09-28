@@ -125,6 +125,12 @@
                                     </td>
                                     <td nowrap>
                                         {{ $entity->code }}
+
+                                        @if ($entity->updated_at == $entity->created_at)
+                                            <div class="badge is-inline is-warning" style="margin-left: .5em">
+                                                Новая
+                                            </div>
+                                        @endif
                                     </td>
                                     @if ( ! $currentUser->mall_id)
                                         <td nowrap>
