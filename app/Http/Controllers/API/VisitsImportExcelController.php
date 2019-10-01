@@ -24,7 +24,7 @@ class VisitsImportExcelController extends Controller
      * @var array
      */
     protected $rules = [
-        'file' => 'required|file|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'file' => 'required|file',
     ];
 
 
