@@ -27,17 +27,25 @@ class MallsController extends Controller
         $this->setActiveSection('malls');
         $this->setActivePage('malls');
 
+        $visits = \DB::table('visits')
+            ->select(\DB::raw('COUNT(*) AS count, SUM(count) as count, mall_id'))
+            ->where('fixed_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
+            ->whereNull('store_id')
+            ->groupBy('mall_id')
+            ->pluck('count', 'mall_id')->toArray();
+        
         $statistics = \DB::table('cheques')
             ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
             ->where('created_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
             ->groupBy('mall_id')
-            ->pluck('amount', 'mall_id')->toArray();
+            ->get()->keyBy('mall_id')->toArray();
 
         $stores = Mall::orderBy('name')->get();
 
         return view('malls.index', $this->withData([
             'currentMonth' => \App\DateHelper::getMonthFull(),
             'statistics' => $statistics,
+            'visits' => $visits,
             'malls' => $stores,
         ]));
     }

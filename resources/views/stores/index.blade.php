@@ -1,4 +1,5 @@
 @php /** @var array $statistics */ @endphp
+@php /** @var array $visits */ @endphp
 @php /** @var \App\Models\Store[] $stores */ @endphp
 
 @extends('layouts.app', $globals)
@@ -19,7 +20,10 @@
             <div class="container">
                 <div class="stores">
                     @foreach($stores as $store)
-                        @php $total = (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id])) : 0 @endphp
+                        @php $money = (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id]->amount)) : 0 @endphp
+                        @php $transactions = (isset($statistics[$store->id])) ? $statistics[$store->id]->count : 0 @endphp
+                        @php $visit = (isset($visits[$store->id])) ? $visits[$store->id] : 0 @endphp
+                        @php $calc = ($transactions > 0 && $visit > 0) ? $transactions * 100 / $visit : 0 @endphp
 
                         <a href="{{ $store->link() }}" class="stores-item {{ $store->is_errors_yesterday ? 'is-danger' : '' }}">
                             @if ($store->rentable_area)
@@ -37,7 +41,11 @@
                             <div class="stores-item-detail">
                                 <span class="stores-item-detail-text">
                                     @if (!$store->is_errors_yesterday)
-                                        За {{ mb_strtolower($currentMonth) }}: {{ $total }} ₸
+                                        За {{ mb_strtolower($currentMonth) }}: {{ $money }} ₸
+
+                                        @if ($calc != 0)
+                                            (<strong>конв. {{ round($calc, 2) }}%</strong>)
+                                        @endif
                                     @else
                                         Отсутствуют вчерашние транзакции
                                     @endif

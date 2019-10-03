@@ -86,7 +86,7 @@ class VisitsImportExcelController extends Controller
                     /** @var \App\Models\VisitCountmax $countmax */
                     if ( ! $countmax = VisitCountmax::query()->where('number', $formattedItem['number'])->first()) {
                         $countmax = VisitCountmax::query()->create([
-                            'mall_id' => \request()->get('mall_id', -1),
+                            'mall_id' => \request()->get('mall_id', 1),
                             'store_id' => -1,
                             'number' => $formattedItem['number'],
                         ]);
@@ -94,6 +94,8 @@ class VisitsImportExcelController extends Controller
 
                     /** @var \App\Models\Visit $visit */
                     $visit = Visit::query()->create([
+                        'mall_id' => $countmax->mall_id,
+                        'store_id' => $countmax->store_id,
                         'fixed_at' => $this->formatDate("{$formattedItem['date']} {$formattedItem['time']}"),
                         'countmax_id' => $countmax->id,
                         'count' => $formattedItem['count'],
@@ -122,7 +124,7 @@ class VisitsImportExcelController extends Controller
         list($hours, $minutes) = explode(':', $time);
         list($day, $month, $year) = explode('.', $date);
 
-        if ($hours < 10)  {
+        if ($hours < 10) {
             $hours = "0{$hours}";
         }
 

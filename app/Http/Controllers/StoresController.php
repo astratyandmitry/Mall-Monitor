@@ -32,19 +32,28 @@ class StoresController extends Controller
             ->where('created_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
             ->groupBy('store_id');
 
+        $visits = \DB::table('visits')
+            ->select(\DB::raw('COUNT(*) AS count, SUM(count) as count, store_id'))
+            ->where('fixed_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
+            ->where('store_id', '>', 0)
+            ->groupBy('store_id');
+
         $stores = Store::orderBy('name');
 
         if (auth()->user()->mall_id) {
             $statistics = $statistics->where('mall_id', auth()->user()->mall_id);
+            $visits = $visits->where('mall_id', auth()->user()->mall_id);
             $stores = $stores->where('mall_id', auth()->user()->mall_id);
         }
 
-        $statistics = $statistics->pluck('amount', 'store_id')->toArray();
+        $visits = $visits->pluck('count', 'store_id')->toArray();;
+        $statistics = $statistics->get()->keyBy('store_id')->toArray();
         $stores = $stores->get();
 
         return view('stores.index', $this->withData([
             'currentMonth' => \App\DateHelper::getMonthFull(),
             'statistics' => $statistics,
+            'visits' => $visits,
             'stores' => $stores,
         ]));
     }
