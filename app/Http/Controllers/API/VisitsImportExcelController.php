@@ -45,28 +45,24 @@ class VisitsImportExcelController extends Controller
         ];
 
         Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$output) {
+            $reader->setHeaderRow(2);
+
             $items = $reader->get()->toArray();
 
             if ( ! isset($items[0]) || ! count($items[0])) {
                 return $this->responseError();
             }
 
-            $indexToKey = ['date', 'time', 'number', 'count'];
-
+            $indexToKey = ['date', 'empty', 'time', 'number', 'name', 'count'];
 
             foreach ($items as $item) {
-
-                if (count($item) < 4) {
-                    continue;
-                }
-
                 $formattedItem = [];
                 $iteration = 0;
 
                 foreach ($item as $value) {
                     $formattedItem[$indexToKey[$iteration]] = $value;
 
-                    if ($iteration == 3) {
+                    if ($iteration == 5) {
                         break;
                     }
 
