@@ -51,9 +51,30 @@ class VisitsImportExcelController extends Controller
                 return $this->responseError();
             }
 
+            $indexToKey = ['date', 'time', 'number', 'count'];
+
+
             foreach ($items as $item) {
+
+                if (count($item) < 4) {
+                    continue;
+                }
+
+                $formattedItem = [];
+                $iteration = 0;
+
+                foreach ($item as $value) {
+                    $formattedItem[$indexToKey[$iteration]] = $value;
+
+                    if ($iteration == 3) {
+                        break;
+                    }
+
+                    $iteration++;
+                }
+
                 /** @var \Illuminate\Validation\Validator $validator */
-                $validator = $this->getValidationFactory()->make($item, [
+                $validator = $this->getValidationFactory()->make($formattedItem, [
                     'date' => 'required|regex:/^(\d{2})\.(\d{2})\.(\d{4})$/i',
                     'time' => 'required|regex:/^(\d{1,2})\:(\d{2})$/i',
                     'number' => 'required|numeric',
@@ -62,24 +83,24 @@ class VisitsImportExcelController extends Controller
 
                 if ($validator->fails()) {
                     $output['error'][] = [
-                        'data' => $item,
+                        'data' => $formattedItem,
                         'validation' => $validator->errors(),
                     ];
                 } else {
                     /** @var \App\Models\VisitCountmax $countmax */
-                    if ( ! $countmax = VisitCountmax::query()->where('number', $item['number'])->first()) {
+                    if ( ! $countmax = VisitCountmax::query()->where('number', $formattedItem['number'])->first()) {
                         $countmax = VisitCountmax::query()->create([
-                            'mall_id' => 1,
-                            'store_id' => 1,
-                            'number' => $item['number'],
+                            'mall_id' => \request()->get('mall_id', -1),
+                            'store_id' => -1,
+                            'number' => $formattedItem['number'],
                         ]);
                     }
 
                     /** @var \App\Models\Visit $visit */
                     $visit = Visit::query()->create([
-                        'fixed_at' => $this->formatDate("{$item['date']} {$item['time']}"),
+                        'fixed_at' => $this->formatDate("{$formattedItem['date']} {$formattedItem['time']}"),
                         'countmax_id' => $countmax->id,
-                        'count' => $item['count'],
+                        'count' => $formattedItem['count'],
                     ]);
 
                     $output['success'][] = [
