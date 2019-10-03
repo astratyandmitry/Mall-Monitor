@@ -39,17 +39,17 @@
                             </div>
 
                             <div class="stores-item-detail">
-                                <span class="stores-item-detail-text">
-                                    @if (!$store->is_errors_yesterday)
-                                        За {{ mb_strtolower($currentMonth) }}: {{ $money }} ₸
-
-                                        @if ($calc != 0)
-                                            (<strong>конв. {{ round($calc, 2) }}%</strong>)
-                                        @endif
-                                    @else
+                                @if (!$store->is_errors_yesterday)
+                                    <span class="stores-item-detail-text">
+                                        Оборот за {{ mb_strtolower($currentMonth) }}: <strong>{{ $money }} ₸</strong><br/>
+                                        Посещений за {{ mb_strtolower($currentMonth) }}: <strong>{{ number_format($visit) }}</strong><br/>
+                                        Конверсия за {{ mb_strtolower($currentMonth) }}: <strong>{{ round($calc, 2) }}%</strong>
+                                    </span>
+                                @else
+                                    <span class="stores-item-detail-text">
                                         Отсутствуют вчерашние транзакции
-                                    @endif
-                                </span>
+                                    </span>
+                                @endif
                             </div>
                         </a>
                     @endforeach

@@ -31,10 +31,9 @@
 
                         <div class="stores-item-detail">
                             <span class="stores-item-detail-text">
-                                За {{ mb_strtolower($currentMonth) }}: {{ $money }} ₸
-                                @if ($calc != 0)
-                                    (<strong>конв. {{ round($calc, 2) }}%</strong>)
-                                @endif
+                                Оборот за {{ mb_strtolower($currentMonth) }}: <strong>{{ $money }} ₸</strong><br/>
+                                Посещений за {{ mb_strtolower($currentMonth) }}: <strong>{{ number_format($visit) }}</strong><br/>
+                                Конверсия за {{ mb_strtolower($currentMonth) }}: <strong>{{ round($calc, 2) }}%</strong>
                             </span>
                         </div>
                     </a>
