@@ -65,6 +65,7 @@ class CompareMallController extends Controller
             })->get()->groupBy('date');
 
         $malls = [];
+        $mall_names = Mall::query()->pluck('name', 'id')->toArray();
 
         $graph = [
             'labels' => [],
@@ -77,6 +78,10 @@ class CompareMallController extends Controller
             $graph['labels'][$date] = $this->formatDate($date);
 
             foreach ($stats as $stat) {
+                if (!isset($mall_names[$stat->mall_id])) {
+                    continue;
+                }
+
                 $malls[$stat->mall_id] = true;
 
                 $graph['amount'][$stat->mall_id][$date] = round($stat->amount);
@@ -86,7 +91,7 @@ class CompareMallController extends Controller
         }
 
         return view('compare.mall.index', $this->withData([
-            'mall_names' => Mall::whereIn('id', array_keys($malls))->pluck('name', 'id')->toArray(),
+            'mall_names' => $mall_names,
             'statistics' => $statistics,
             'graph' => $graph,
         ]));

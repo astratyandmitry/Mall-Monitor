@@ -65,6 +65,7 @@ class CompareStoreController extends Controller
             })->get()->groupBy('date');
 
         $stores = [];
+        $store_names = Store::query()->pluck('name', 'id')->toArray();
 
         $graph = [
             'labels' => [],
@@ -77,6 +78,10 @@ class CompareStoreController extends Controller
             $graph['labels'][$date] = $this->formatDate($date);
 
             foreach ($stats as $stat) {
+                if ( ! isset($store_names[$stat->store_id])) {
+                    continue;
+                }
+
                 $stores[$stat->store_id] = true;
 
                 $graph['amount'][$stat->store_id][$date] = round($stat->amount);
@@ -86,7 +91,7 @@ class CompareStoreController extends Controller
         }
 
         return view('compare.store.index', $this->withData([
-            'store_names' => Store::whereIn('id', array_keys($stores))->pluck('name', 'id')->toArray(),
+            'store_names' => $store_names,
             'statistics' => $statistics,
             'graph' => $graph,
         ]));
