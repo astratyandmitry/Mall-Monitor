@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\View\View;
 
 /**
  * @version   1.0.1
@@ -17,7 +19,7 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    public function signin(): \Illuminate\View\View
+    public function signin(): View
     {
         $this->setTitle('Вход');
 
@@ -32,16 +34,22 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        if ( ! $request->email || ! $request->password || ! $user = User::where('email', $request->email)->first()) {
-            return back()->withInput($request->only(['email']))->withErrors(['Вы указали неверные данные авторизации']);
+        if ( ! $request->get('email') || ! $request->get('password') || ! $user = User::query()->where('email', $request->get('email'))->first()) {
+            return back()
+                ->withInput($request->only(['email']))
+                ->withErrors(['Вы указали неверные данные авторизации']);
         }
 
         if ( ! \Hash::check($request->password, $user->password)) {
-            return back()->withInput($request->only(['email']))->withErrors(['Вы указали неверные данные авторизации']);
+            return back()
+                ->withInput($request->only(['email']))
+                ->withErrors(['Вы указали неверные данные авторизации']);
         }
 
         if ( ! $user->is_active) {
-            return back()->withInput($request->only(['email']))->withErrors(['Ваш аккаунт неактивирован, проверьте почту']);
+            return back()
+                ->withInput($request->only(['email']))
+                ->withErrors(['Ваш аккаунт неактивирован, проверьте почту']);
         }
 
         auth()->login($user);
@@ -55,9 +63,9 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function activate(Request $request): \Illuminate\Http\RedirectResponse
+    public function activate(Request $request): RedirectResponse
     {
-        if ( ! $request->email || ! $request->activation_token || ! $user = User::where($request->only([
+        if ( ! $request->get('email') || ! $request->get('activation_token') || ! $user = User::query()->where($request->only([
                 'email',
                 'activation_token'
             ]))->first()) {
@@ -87,11 +95,9 @@ class AuthController extends Controller
 
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function signout(Request $request): \Illuminate\Http\RedirectResponse
+    public function signout(): RedirectResponse
     {
         auth()->logout();
 

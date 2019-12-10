@@ -96,7 +96,7 @@ class VisitsImportExcelController extends Controller
                     $visit = Visit::query()->create([
                         'mall_id' => $countmax->mall_id,
                         'store_id' => $countmax->store_id,
-                        'fixed_at' => $this->formatDate("{$formattedItem['date']} {$formattedItem['time']}"),
+                        'created_at' => $this->formatDate("{$formattedItem['date']} {$formattedItem['time']}"),
                         'countmax_id' => $countmax->id,
                         'count' => $formattedItem['count'],
                     ]);

@@ -17,6 +17,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @property integer                   $cashbox_id
  * @property integer                   $type_id
  * @property integer                   $payment_id
+ * @property string                    $created_date
+ * @property string                    $created_year
+ * @property string                    $created_yearmonth
  * @property \Carbon\Carbon            $created_at
  * @property \App\Models\Mall          $mall
  * @property \App\Models\Store         $store
@@ -26,6 +29,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property \App\Models\ChequeItem[]  $items
  *
  * @method static Builder uniqueAttrs(array $attrs)
+ * @method static Builder reportMall(string $dateFrom, string $dateTo)
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -55,6 +59,9 @@ class Cheque extends Model
         'type_id',
         'payment_id',
         'created_at',
+        'created_yearmonth',
+        'created_year',
+        'created_date',
     ];
 
     /**
@@ -120,6 +127,22 @@ class Cheque extends Model
 
 
     /**
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setCreatedAtAttribute(string $value): void
+    {
+        $datetime = strtotime(explode(',', $value)[0]);
+
+        $this->attributes['created_at'] = date('Y-m-d H:i:s', $datetime);
+        $this->attributes['created_date'] = date('Y-m-d', $datetime);
+        $this->attributes['created_yearmonth'] = date('Y-m', $datetime);
+        $this->attributes['created_year'] = date('Y', $datetime);
+    }
+
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -174,15 +197,6 @@ class Cheque extends Model
 
 
     /**
-     * @param null|string $created_at
-     */
-    public function setCreatedAtAttribute(?string $created_at): void
-    {
-        $this->attributes['created_at'] = date('Y-m-d H:i:s', strtotime(explode(',', $created_at)[0]));
-    }
-
-
-    /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param array                                 $attrs
      *
@@ -198,6 +212,7 @@ class Cheque extends Model
 
         return $builder;
     }
+
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
@@ -428,12 +443,9 @@ class Cheque extends Model
             $sort_type = 'asc';
         }
 
-
         $builder->orderBy($sort_key, $sort_type);
 
-        $builder->whereHas('store', function (Builder $builder): Builder {
-            return $builder->whereNull('deleted_at');
-        });
+        $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
 
         return $builder;
     }

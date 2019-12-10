@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Store;
+use Illuminate\Support\Collection;
 
 /**
  * @version   1.0.1
@@ -75,4 +76,21 @@ class StoreRepository
         return $options;
     }
 
+
+    /**
+     * @param int|null $mall_id
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getListForMall(?int $mall_id): Collection
+    {
+        /** @var \Illuminate\Database\Query\Builder $items */
+        $items = Store::query()->orderBy('name');
+
+        if ( ! is_null($mall_id)) {
+            $items = $items->where('mall_id', $mall_id);
+        }
+
+        return $items->get();
+    }
 }

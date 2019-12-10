@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Placement;
 
+use App\Classes\PlacementDate;
 use App\Models\Mall;
 use App\Models\Cheque;
 
@@ -66,7 +67,7 @@ class PlacementMallController extends Controller
      */
     protected function getExportData(?int $limit = null): array
     {
-        $this->setupDates();
+        PlacementDate::setupRequest();
 
         $current = $this->getDataForPeriod('current', $limit);
         $past = $this->getDataForPeriod('past', $limit);

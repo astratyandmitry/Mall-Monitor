@@ -11,9 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property integer                   $store_id
  * @property integer                   $countmax_id
  * @property integer                   $count
- * @property \Carbon\Carbon            $fixed_at
+ * @property string                    $created_date
+ * @property string                    $created_year
+ * @property string                    $created_yearmonth
+ * @property \Carbon\Carbon            $created_at
  * @property \App\Models\VisitCountmax $countmax
- * @property \App\Models\Mall
+ * @property \App\Models\Mall          $mall
  * @property \App\Models\Store         $store
  *
  * @version   1.0.1
@@ -36,7 +39,10 @@ class Visit extends Model
         'store_id',
         'mall_id',
         'count',
-        'fixed_at',
+        'created_at',
+        'created_yearmonth',
+        'created_year',
+        'created_date',
     ];
 
     /**
@@ -53,13 +59,29 @@ class Visit extends Model
      * @var array
      */
     protected $dates = [
-        'fixed_at',
+        'created_at',
     ];
 
     /**
      * @var bool
      */
     public $timestamps = false;
+
+
+    /**
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setCreatedAtAttribute(string $value): void
+    {
+        $datetime = strtotime($value);
+
+        $this->attributes['created_at'] = date('Y-m-d H:i:s', $datetime);
+        $this->attributes['created_date'] = date('Y-m-d', $datetime);
+        $this->attributes['created_yearmonth'] = date('Y-m', $datetime);
+        $this->attributes['created_year'] = date('Y', $datetime);
+    }
 
 
     /**

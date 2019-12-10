@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cheque;
+use Illuminate\View\View;
+use App\Classes\GraphStorage;
+use App\Repositories\ChequeRepository;
+use App\Repositories\VisitsRepository;
 
 /**
  * @version   1.0.1
@@ -24,7 +27,7 @@ class DashboardController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    public function __invoke(): \Illuminate\View\View
+    public function __invoke(): View
     {
         $this->setTitle('Обзор');
         $this->setActiveSection('dashboard');
@@ -41,52 +44,34 @@ class DashboardController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    protected function forStore(): \Illuminate\View\View
+    protected function forStore(): View
     {
         $store = auth()->user()->store;
 
-        $graphDateTypes = [
-            'daily' => 'DATE(created_at)',
-            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
-            'yearly' => 'YEAR(created_at)',
-        ];
+        $graphVisits = new GraphStorage;
+        $visits = VisitsRepository::getAggregatedForStore($store->id);
+        $visits->map(function ($visit) use ($graphVisits) {
+            $graphVisits
+                ->addValueLabel($visit->date)
+                ->addValueCount($visit->count);
+        });
 
-        $graphDateType = (request('graph_date_type') && in_array(request('graph_date_type'),
-                array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
-
-        $statistics = \DB::table('cheques')
-            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
-            ->where('store_id', $store->id)
-            ->groupBy('date')
-            ->orderBy('date', 'desc')
-            ->limit(30)
-            ->get();
-
-        $graph = [
-            'labels' => [],
-            'amount' => [],
-            'count' => [],
-            'avg' => [],
-        ];
-
-        foreach ($statistics as $statistic) {
-            $graph['labels'][] = $this->formatDate($statistic->date);
-            $graph['amount'][] = round($statistic->amount);
-            $graph['count'][] = round($statistic->count);
-            $graph['avg'][] = round($statistic->avg);
-        }
-
-        $graph['labels'] = array_reverse($graph['labels']);
-        $graph['amount'] = array_reverse($graph['amount']);
-        $graph['count'] = array_reverse($graph['count']);
-        $graph['avg'] = array_reverse($graph['avg']);
-
-        $today = date('Y-m-d');
+        $graphStats = new GraphStorage;
+        $stats = ChequeRepository::getAggregatedForStore($store->id);
+        $stats->map(function ($stat) use ($graphStats) {
+            $graphStats
+                ->addValueLabel($stat->date)
+                ->addValueAmount($stat->amount)
+                ->addValueCount($stat->count)
+                ->addValueAvg($stat->avg);
+        });
 
         return view('stores.show', $this->withData([
-            'graph' => $graph,
+            'visits' => $visits->pluck('count', 'date')->toArray(),
+            'graphVisits' => $graphVisits->getReverseData(),
+            'graphStats' => $graphStats->getReverseData(),
+            'stats' => $stats,
             'store' => $store,
-            'statistics' => $statistics,
         ]));
     }
 
@@ -94,75 +79,34 @@ class DashboardController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    protected function forMall(): \Illuminate\View\View
+    protected function forMall(): View
     {
-        $graphDateTypes = [
-            'daily' => 'DATE(created_at)',
-            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
-            'yearly' => 'YEAR(created_at)',
-        ];
+        $mall_id = auth()->user()->mall_id;
 
-        $graphDateType = (request('graph_date_type') && in_array(request('graph_date_type'),
-                array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
+        $graphVisits = new GraphStorage;
+        $visits = VisitsRepository::getAggregatedForMall($mall_id);
 
-        $today = date('Y-m-d');
+        $visits->map(function ($visit) use ($graphVisits) {
+            $graphVisits
+                ->addValueLabel($visit->date)
+                ->addValueCount($visit->count);
+        });
 
-        $statistics = \DB::table('cheques')
-            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
-            ->groupBy('date')
-            ->orderBy('date', 'desc')
-            ->limit(30);
-        $cheques = Cheque::where('created_at', 'LIKE', '%' . $today . '%');
-
-        if (auth()->user()->mall_id) {
-            $statistics = $statistics->where('mall_id', auth()->user()->mall_id);
-            $cheques = $cheques->where('mall_id', auth()->user()->mall_id);
-        }
-
-        $statistics = $statistics->get();
-        $cheques = $cheques->latest()->limit(25)->get();
-
-        $graph = [
-            'labels' => [],
-            'amount' => [],
-            'count' => [],
-            'avg' => [],
-        ];
-
-        foreach ($statistics as $statistic) {
-            $graph['labels'][] = $this->formatDate($statistic->date);
-            $graph['amount'][] = round($statistic->amount);
-            $graph['count'][] = round($statistic->count);
-            $graph['avg'][] = round($statistic->avg);
-        }
-
-        $graph['labels'] = array_reverse($graph['labels']);
-        $graph['amount'] = array_reverse($graph['amount']);
-        $graph['count'] = array_reverse($graph['count']);
-        $graph['avg'] = array_reverse($graph['avg']);
-
-        $pies = [];
-        $data = \DB::table('store_types')
-            ->select(\DB::raw('SUM(`cheques`.`amount`) as `total`, `store_types`.`name` as `name`, `store_types`.`color` as `color`'))
-            ->leftJoin('stores', 'stores.type_id', '=', 'store_types.id')
-            ->leftJoin('cheques', 'cheques.store_id', '=', 'stores.id')
-            ->where('cheques.created_at', 'LIKE', date('Y-m-d') . '%')
-            ->groupBy('store_types.id')
-            ->get();
-
-        if (count($data)) {
-            foreach ($data as $item) {
-                $pies['totals'][] = (int)$item->total;
-                $pies['colors'][] = "#{$item->color}";
-                $pies['names'][] = $item->name;
-            }
-        }
+        $graphStats = new GraphStorage;
+        $stats = ChequeRepository::getAggregatedForMall($mall_id);
+        $stats->map(function ($stat) use ($graphStats) {
+            $graphStats
+                ->addValueLabel($stat->date)
+                ->addValueAmount($stat->amount)
+                ->addValueCount($stat->count)
+                ->addValueAvg($stat->avg);
+        });
 
         return view('dashboard.index', $this->withData([
-            'graph' => $graph,
-            'pies' => $pies,
-            'statistics' => $statistics,
-            'cheques' => $cheques,
+            'visits' => $visits->pluck('count', 'date')->toArray(),
+            'graphVisits' => $graphVisits->getReverseData(),
+            'graphStats' => $graphStats->getReverseData(),
+            'stats' => $stats,
         ]));
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Classes\ReportDate;
 use App\Models\Mall;
 use App\Models\Cheque;
 
@@ -72,35 +73,36 @@ class ReportsMallController extends Controller
      */
     protected function getExportData(?int $limit = null): array
     {
-        $dateFrom = $this->getDateTime('from');
-        $dateTo = $this->getDateTime('to');
+        $dateFrom = ReportDate::getFromRequest('from');
+        $dateTo = ReportDate::getFromRequest('to');
 
+        /** @var \Illuminate\Database\Query\Builder */
         $statistics = Cheque::reportMall($dateFrom, $dateTo);
         $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id';
 
         $diff = date_diff(date_create($dateFrom), date_create($dateTo));
 
         if (( ! $dateFrom && ! $dateTo) || (int)$diff->format("%Y") > 0) {
-            $select .= ', YEAR(created_at) as date';
+            $select .= ', created_year as date';
 
             $statistics = $statistics->groupBy('date');
 
             $dateGroup = 'year';
         } elseif ((int)$diff->format("%m") > 0) {
-            $select .= ', DATE_FORMAT(created_at, "%Y-%m") as date';
+            $select .= ', created_yearmonth as date';
 
             $statistics = $statistics->groupBy('date');
 
             $dateGroup = 'month';
         } else {
-            $select .= ', DATE(created_at) as date';
+            $select .= ', created_date as date';
 
             $statistics = $statistics->groupBy('date');
 
             $dateGroup = 'day';
         }
 
-        if ( !is_null($limit)) {
+        if ( ! is_null($limit)) {
             $statistics = $statistics->limit($limit);
         }
 
@@ -111,7 +113,7 @@ class ReportsMallController extends Controller
             'dateTo' => $dateTo,
             'dateGroup' => $dateGroup,
             'statistics' => $statistics->toArray(),
-            'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id'))->pluck('name', 'id'),
+            'mall_names' => Mall::query()->whereIn('id', $statistics->pluck('mall_id', 'mall_id'))->pluck('name', 'id'),
         ];
 
         return $data;

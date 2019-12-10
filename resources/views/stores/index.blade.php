@@ -20,6 +20,9 @@
             <div class="container">
                 <div class="stores">
                     @foreach($stores as $store)
+                        @php $storeItem = new App\Classes\Design\StoreItem(@$statistics[$store->id], @$visits[$mall->id]) @endphp
+
+
                         @php $money = (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id]->amount)) : 0 @endphp
                         @php $transactions = (isset($statistics[$store->id])) ? $statistics[$store->id]->count : 0 @endphp
                         @php $visit = (isset($visits[$store->id])) ? $visits[$store->id] : 0 @endphp
@@ -41,9 +44,9 @@
                             <div class="stores-item-detail">
                                 @if (!$store->is_errors_yesterday)
                                     <span class="stores-item-detail-text">
-                                        Оборот за {{ mb_strtolower($currentMonth) }}: <strong>{{ $money }} ₸</strong><br/>
-                                        Посещений за {{ mb_strtolower($currentMonth) }}: <strong>{{ number_format($visit) }}</strong><br/>
-                                        Конверсия за {{ mb_strtolower($currentMonth) }}: <strong>{{ round($calc, 2) }}%</strong>
+                                        Оборот за {{ $currentMonth }}: <strong>{{ number_format($storeItem->getChequesAmount()) }} ₸</strong><br/>
+                                        Посещений за {{ $currentMonth }}: <strong>{{ number_format($storeItem->getVisitsCount()) }}</strong><br/>
+                                        Конверсия за {{ $currentMonth }}: <strong>{{ $storeItem->getConversion() }}%</strong>
                                     </span>
                                 @else
                                     <span class="stores-item-detail-text">

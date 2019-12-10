@@ -1,4 +1,4 @@
-@php /** @var array $statistics */ @endphp
+@php /** @var array $stats */ @endphp
 @php /** @var array $visits */ @endphp
 @php /** @var \App\Models\Mall[] $malls */ @endphp
 
@@ -19,10 +19,7 @@
         <div class="container">
             <div class="stores">
                 @foreach($malls as $mall)
-                    @php $money = (isset($statistics[$mall->id])) ? number_format(round($statistics[$mall->id]->amount)) : 0 @endphp
-                    @php $transactions = (isset($statistics[$mall->id])) ? $statistics[$mall->id]->count : 0 @endphp
-                    @php $visit = (isset($visits[$mall->id])) ? $visits[$mall->id] : 0 @endphp
-                    @php $calc = ($transactions > 0 && $visit > 0) ? $transactions * 100 / $visit : 0 @endphp
+                    @php $mallItem = new App\Classes\Design\MallItem(@$stats[$mall->id], @$visits[$mall->id]) @endphp
 
                     <a href="{{ $mall->link() }}" class="stores-item">
                         <div class="stores-item-name">
@@ -31,9 +28,9 @@
 
                         <div class="stores-item-detail">
                             <span class="stores-item-detail-text">
-                                Оборот за {{ mb_strtolower($currentMonth) }}: <strong>{{ $money }} ₸</strong><br/>
-                                Посещений за {{ mb_strtolower($currentMonth) }}: <strong>{{ number_format($visit) }}</strong><br/>
-                                Конверсия за {{ mb_strtolower($currentMonth) }}: <strong>{{ round($calc, 2) }}%</strong>
+                                Оборот за {{ $currentMonth }}: <strong>{{ number_format($mallItem->getChequesAmount()) }} ₸</strong><br/>
+                                Посещений за {{ $currentMonth }}: <strong>{{ number_format($mallItem->getVisitsCount()) }}</strong><br/>
+                                Конверсия за {{ $currentMonth }}: <strong>{{ $mallItem->getConversion() }}%</strong>
                             </span>
                         </div>
                     </a>

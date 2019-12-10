@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DateHelper;
+use App\Models\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -38,10 +39,10 @@ class Controller extends BaseController
     /**
      * @param \App\Models\Model $model
      */
-    protected function setMeta(\App\Models\Model $model): void
+    protected function setMeta(Model $model): void
     {
-        $this->data['meta']['description'] = $model->meta_description;
-        $this->data['meta']['keywords'] = $model->meta_keywords;
+        $this->data['meta']['description'] = @$model->meta_description;
+        $this->data['meta']['keywords'] = @$model->meta_keywords;
     }
 
 

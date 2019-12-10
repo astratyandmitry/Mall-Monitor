@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Cheque;
 use App\Classes\GraphDate;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\DB;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2019, ArmenianBros. <i@armenianbros.com>
  */
-class ChequeRepository
+class VisitsRepository
 {
 
     /**
@@ -26,8 +25,8 @@ class ChequeRepository
         $dateColumn = GraphDate::instance()->getDateColumn();
 
         /** @var \Illuminate\Database\Query\Builder $items */
-        $items = DB::table('cheques')
-            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$dateColumn} as date"))
+        $items = DB::table('visits')
+            ->select(DB::raw("SUM(count) AS count, {$dateColumn} as date"))
             ->groupBy('date')
             ->orderBy('date', 'desc')
             ->limit($limit);
@@ -50,8 +49,8 @@ class ChequeRepository
     {
         $dateColumn = GraphDate::instance()->getDateColumn();
 
-        return DB::table('cheques')
-            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$dateColumn} as date"))
+        return DB::table('visits')
+            ->select(DB::raw("SUM(count) AS count, {$dateColumn} as date"))
             ->where('store_id', $store_id)
             ->groupBy('date')
             ->orderBy('date', 'desc')
@@ -67,11 +66,11 @@ class ChequeRepository
     {
         $startedDate = date('Y') . '-' . date('m') . '-01 00:00:00';
 
-        return DB::table('cheques')
-            ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
+        return DB::table('visits')
+            ->select(DB::raw('COUNT(*) AS count, SUM(count) as count, mall_id'))
             ->where('created_at', '>=', $startedDate)
             ->groupBy('mall_id')
-            ->get()->keyBy('mall_id')->toArray();
+            ->pluck('count', 'mall_id')->toArray();
     }
 
 
@@ -80,37 +79,22 @@ class ChequeRepository
      *
      * @return array
      */
-    public static function getAggregatedMonthForStore(?int $mall_id): array
+    public static function getAggregatedMonthForStore(?int $mall_id = null): array
     {
         $startedDate = date('Y') . '-' . date('m') . '-01 00:00:00';
 
         /** @var \Illuminate\Database\Query\Builder $items */
-        $items = DB::table('cheques')
-            ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
+        $items = DB::table('visits')
+            ->select(DB::raw('COUNT(*) AS count, SUM(count) as count, store_id'))
             ->where('created_at', '>=', $startedDate)
+            ->where('store_id', '>', 0)
             ->groupBy('store_id');
 
         if ( ! is_null($mall_id)) {
             $items = $items->where('mall_id', $mall_id);
         }
 
-        return $items->get()->keyBy('store_id')->toArray();
-    }
-
-
-    /**
-     * @param int    $storeId
-     * @param string $date
-     *
-     * @return bool
-     */
-    public static function isExistsForDate(int $storeId, string $date): bool
-    {
-        return Cheque::query()
-            ->where('store_id', $storeId)
-            ->where('created_at', '>=', "{$date} 00:00:00")
-            ->where('created_at', '<=', "{$date} 23:59:59")
-            ->exists();
+        return $items->pluck('count', 'store_id')->toArray();
     }
 
 }

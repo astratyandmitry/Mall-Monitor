@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\GraphStorage;
+use App\DateHelper;
 use App\Models\Mall;
+use Illuminate\View\View;
+use App\Repositories\ChequeRepository;
+use App\Repositories\VisitsRepository;
 
 /**
  * @version   1.0.1
@@ -21,32 +26,22 @@ class MallsController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
         $this->setTitle('ТРЦ');
         $this->setActiveSection('malls');
         $this->setActivePage('malls');
 
-        $visits = \DB::table('visits')
-            ->select(\DB::raw('COUNT(*) AS count, SUM(count) as count, mall_id'))
-            ->where('fixed_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
-            ->whereNull('store_id')
-            ->groupBy('mall_id')
-            ->pluck('count', 'mall_id')->toArray();
-        
-        $statistics = \DB::table('cheques')
-            ->select(\DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
-            ->where('created_at', '>=', date('Y') . '-' . date('m') . '-01' . ' 00:00:00')
-            ->groupBy('mall_id')
-            ->get()->keyBy('mall_id')->toArray();
+        $visits = VisitsRepository::getAggregatedMonthForMall();
+        $stats = ChequeRepository::getAggregatedMonthForMall();
 
-        $stores = Mall::orderBy('name')->get();
+        $malls = Mall::query()->orderBy('name')->get();
 
         return view('malls.index', $this->withData([
-            'currentMonth' => \App\DateHelper::getMonthFull(),
-            'statistics' => $statistics,
+            'currentMonth' => mb_strtolower(DateHelper::getMonthFull()),
             'visits' => $visits,
-            'malls' => $stores,
+            'stats' => $stats,
+            'malls' => $malls,
         ]));
     }
 
@@ -56,7 +51,7 @@ class MallsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show(Mall $mall): \Illuminate\View\View
+    public function show(Mall $mall): View
     {
         $user = auth()->user();
 
@@ -67,49 +62,31 @@ class MallsController extends Controller
         $this->setActivePage('malls');
         $this->addBreadcrumb('ТРЦ', route('malls.index'));
 
-        $graphDateTypes = [
-            'daily' => 'DATE(created_at)',
-            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
-            'yearly' => 'YEAR(created_at)',
-        ];
+        $graphVisits = new GraphStorage;
+        $visits = VisitsRepository::getAggregatedForMall($mall->id);
 
-        $graphDateType = (request('graph_date_type') && in_array(request('graph_date_type'),
-                array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
+        $visits->map(function ($visit) use ($graphVisits) {
+            $graphVisits
+                ->addValueLabel($visit->date)
+                ->addValueCount($visit->count);
+        });
 
-        $statistics = \DB::table('cheques')
-            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$graphDateTypes[$graphDateType]} as date"))
-            ->where('mall_id', $mall->id)
-            ->groupBy('date')
-            ->orderBy('date', 'desc')
-            ->limit(30)
-            ->get();
-
-        $graph = [
-            'labels' => [],
-            'amount' => [],
-            'count' => [],
-            'avg' => [],
-        ];
-
-        foreach ($statistics as $statistic) {
-            $graph['labels'][] = $this->formatDate($statistic->date);
-            $graph['amount'][] = round($statistic->amount);
-            $graph['count'][] = round($statistic->count);
-            $graph['avg'][] = round($statistic->avg);
-        }
-
-        $graph['labels'] = array_reverse($graph['labels']);
-        $graph['amount'] = array_reverse($graph['amount']);
-        $graph['count'] = array_reverse($graph['count']);
-        $graph['avg'] = array_reverse($graph['avg']);
-
-        $today = date('Y-m-d');
+        $graphStats = new GraphStorage;
+        $stats = ChequeRepository::getAggregatedForMall($mall->id);
+        $stats->map(function ($stat) use ($graphStats) {
+            $graphStats
+                ->addValueLabel($stat->date)
+                ->addValueAmount($stat->amount)
+                ->addValueCount($stat->count)
+                ->addValueAvg($stat->avg);
+        });
 
         return view('malls.show', $this->withData([
-            'graph' => $graph,
+            'visits' => $visits->pluck('count', 'date')->toArray(),
+            'graphVisits' => $graphVisits->getReverseData(),
+            'graphStats' => $graphStats->getReverseData(),
+            'stats' => $stats,
             'mall' => $mall,
-            'statistics' => $statistics,
-            'cheques' => $mall->cheques()->where('created_at', 'LIKE', '%' . $today . '%')->latest()->limit(100)->get(),
         ]));
     }
 

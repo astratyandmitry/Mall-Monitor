@@ -78,19 +78,19 @@ class ReportsStoreController extends Controller
         $diff = date_diff(date_create($dateFrom), date_create($dateTo));
 
         if (( ! $dateFrom && ! $dateTo) || (int)$diff->format("%Y") > 0) {
-            $select .= ', YEAR(created_at) as date';
+            $select .= ', created_year as date';
 
             $statistics = $statistics->groupBy('date');
 
             $dateGroup = 'year';
         } elseif ((int)$diff->format("%m") > 0) {
-            $select .= ', DATE_FORMAT(created_at, "%Y-%m") as date';
+            $select .= ', created_yearmonth as date';
 
             $statistics = $statistics->groupBy('date');
 
             $dateGroup = 'month';
         } else {
-            $select .= ', DATE(created_at) as date';
+            $select .= ', created_date as date';
 
             $statistics = $statistics->groupBy('date');
 
@@ -108,8 +108,8 @@ class ReportsStoreController extends Controller
             'dateTo' => $dateTo,
             'dateGroup' => $dateGroup,
             'statistics' => $statistics->toArray(),
-            'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id'))->pluck('name', 'id'),
-            'stores' => Store::whereIn('id', $statistics->pluck('store_id'))->select('name', 'business_identification_number',
+            'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id', 'mall_id'))->pluck('name', 'id'),
+            'stores' => Store::whereIn('id', $statistics->pluck('store_id', 'store_id'))->select('name', 'business_identification_number',
                 'id')->get()->keyBy('id')->toArray(),
         ];
 

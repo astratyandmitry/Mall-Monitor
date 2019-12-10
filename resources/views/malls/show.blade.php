@@ -1,8 +1,8 @@
-@php /** @var array $graph */ @endphp
-@php /** @var \stdClass[] $statistics */ @endphp
-@php /** @var \App\Models\Cheque[] $cheques */ @endphp
+@php /** @var \stdClass[] $stats */ @endphp
+@php /** @var array $visits */ @endphp
+@php /** @var array $graphStats */ @endphp
+@php /** @var array $graphVisits */ @endphp
 @php /** @var \App\Models\Mall $mall */ @endphp
-@php /** @var array $graphDateTypes*/ @endphp
 
 @extends('layouts.app', $globals)
 
@@ -27,7 +27,7 @@
 
     <div class="content">
         <div class="container">
-            @if (count($statistics))
+            @if (count($stats))
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
@@ -86,6 +86,25 @@
                 </div>
 
                 <div class="box is-marged">
+                    <div class="box-title has-action">
+                        <div class="box-title-text">
+                            Посещения
+                        </div>
+
+                        <div class="box-title-action">
+                                <span data-canvas="visits-count" class="btn is-sm is-outlined js-print-canvas">
+                                    <i class="fa fa-file-pdf-o"></i>
+                                    Скачать PDF
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="box-content">
+                        <canvas id="visits-count" class="rounded-sm mb-16" height="80vh"></canvas>
+                    </div>
+                </div>
+
+                <div class="box is-marged">
                     <div class="box-title">
                         <div class="box-title-text">
                             Статистика за 30 дней
@@ -100,6 +119,12 @@
                                     Дата
                                 </th>
                                 <th nowrap class="is-center" width="100">
+                                    Конверсия
+                                </th>
+                                <th nowrap class="is-center" width="100">
+                                    Посещений
+                                </th>
+                                <th nowrap class="is-center" width="100">
                                     Кол-во чек.
                                 </th>
                                 <th nowrap class="is-right" width="120">
@@ -111,38 +136,46 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php $amount = 0 @endphp
-                            @php $count = 0 @endphp
-                            @foreach($statistics as $statistic)
-                                @php $amount += $statistic->amount @endphp
-                                @php $count += $statistic->count @endphp
+                            @php $statsTableTotal = new App\Classes\Design\StatsTableTotal @endphp
+                            @foreach($stats as $stat)
+                                @php $statsTableItem = new App\Classes\Design\StatsTableItem($stat, @$visits[$stat->date]) @endphp
+                                @php $statsTableTotal->increase($statsTableItem) @endphp
                                 <tr>
                                     <td nowrap>
-                                        {{ date('d.m.Y', strtotime($statistic->date)) }}
+                                        {{ $statsTableItem->getDateFormatted() }}
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ number_format($statistic->count) }}
+                                        {{ $statsTableItem->getConversion() }}%
+                                    </td>
+                                    <td nowrap class="is-center">
+                                        {{ number_format($statsTableItem->getVisitsCount()) }}
+                                    </td>
+                                    <td nowrap class="is-center">
+                                        {{ number_format($statsTableItem->getChequesCount()) }}
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format(round($statistic->amount / $statistic->count)) }} ₸
+                                        {{ number_format($statsTableItem->getChequesAvgAmount()) }} ₸
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($statistic->amount) }} ₸
+                                        {{ number_format($statsTableItem->getChequesAmount()) }} ₸
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th style="text-align: right">Итого:</th>
+                                <th colspan="2" style="text-align: right">Итого:</th>
                                 <th nowrap class="is-center">
-                                    {{ number_format($count) }}
+                                    {{ number_format($statsTableTotal->getCountVisits()) }}
+                                </th>
+                                <th nowrap class="is-center">
+                                    {{ number_format($statsTableTotal->getChequesCount()) }}
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format(round($amount / $count)) }} ₸
+                                    {{ number_format($statsTableTotal->getChequesAvgAmount()) }} ₸
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format($amount) }} ₸
+                                    {{ number_format($statsTableTotal->getChequesAmount()) }} ₸
                                 </th>
                             </tr>
                             </tfoot>
@@ -153,7 +186,7 @@
         </div>
     </div>
 
-    @if (! count($statistics))
+    @if (! count($stats))
         <div class="information">
             <div class="container">
                 <div class="information-box is-lg">
@@ -180,6 +213,7 @@
             });
 
         });
+        
         Chart.defaults.global.legend.display = false;
         Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
             return addCommas(tooltipItem.yLabel);
@@ -200,11 +234,11 @@
         new Chart('statistics-amount', {
             type: 'line',
             data: {
-                labels: @json($graph['labels']),
+                labels: @json($graphStats['labels']),
                 datasets: [ {
                     label: 'Сумма продаж',
                     borderColor: '#38c172',
-                    data: @json($graph['amount']),
+                    data: @json($graphStats['amount']),
                 } ]
             }
         });
@@ -212,11 +246,11 @@
         new Chart('statistics-count', {
             type: 'line',
             data: {
-                labels: @json($graph['labels']),
+                labels: @json($graphStats['labels']),
                 datasets: [ {
                     label: 'Количество чеков',
                     borderColor: '#38c172',
-                    data: @json($graph['count']),
+                    data: @json($graphStats['count']),
                 } ]
             }
         });
@@ -224,12 +258,28 @@
         new Chart('statistics-avg', {
             type: 'line',
             data: {
-                labels: @json($graph['labels']),
+                labels: @json($graphStats['labels']),
                 datasets: [ {
                     label: 'Средний чек',
                     borderColor: '#38c172',
-                    data: @json($graph['avg']),
+                    data: @json($graphStats['avg']),
                 } ]
+            }
+        });
+
+        new Chart('visits-count', {
+            type: 'line',
+            data: {
+                labels: @json($graphVisits['labels']),
+                datasets: [ {
+                    label: 'Количество',
+                    borderColor: '#38c172',
+                    data: @json($graphVisits['count']),
+                } ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
             }
         });
     </script>

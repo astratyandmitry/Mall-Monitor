@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\StoreRepository;
 use App\Repositories\CashboxRepository;
+use Illuminate\View\View;
 
 /**
  * @version   1.0.1
@@ -16,7 +17,7 @@ class AjaxController
     /**
      * @return \Illuminate\View\View
      */
-    public function cashboxes(): \Illuminate\View\View
+    public function cashboxes(): View
     {
         $entities = CashboxRepository::getOptionsForStore(request()->get('store_id'));
 
@@ -31,7 +32,7 @@ class AjaxController
     /**
      * @return \Illuminate\View\View
      */
-    public function stores(): \Illuminate\View\View
+    public function stores(): View
     {
         $entities = StoreRepository::getOptions(request()->get('mall_id') ?? -1);
 
