@@ -67,7 +67,7 @@
                 {{ $stores[$statistic['store_id']]['name'] }}
             </td>
             <td>
-                {{ $stores[$statistic['store_id']]['business_identification_number'] }}
+                {{ (string)$stores[$statistic['store_id']]['business_identification_number'] }}
             </td>
             <td>
                 {{ (int)$statistic['count'] }}

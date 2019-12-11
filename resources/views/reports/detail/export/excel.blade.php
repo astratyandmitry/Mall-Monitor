@@ -79,7 +79,7 @@
                 {{ $cheque->store->name }}
             </td>
             <td>
-                {{ $cheque->business_identification_number }}
+                {{ (string)$cheque->store->business_identification_number }}
             </td>
             <td>
                 {{ $cheque->kkm_code }}
