@@ -27,10 +27,6 @@ class ReportsDetailController extends Controller
 
         $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->paginate(50)->onEachSide(1);
 
-        $chequesId = $cheques->map(function (Cheque $cheque) {
-            return $cheque->id;
-        })->toArray();
-
         return view('reports.detail.index', $this->withData([
             'cheques' => $cheques,
         ]));
