@@ -22,12 +22,6 @@
                     @foreach($stores as $store)
                         @php $storeItem = new App\Classes\Design\StoreItem(@$statistics[$store->id], @$visits[$mall->id]) @endphp
 
-
-                        @php $money = (isset($statistics[$store->id])) ? number_format(round($statistics[$store->id]->amount)) : 0 @endphp
-                        @php $transactions = (isset($statistics[$store->id])) ? $statistics[$store->id]->count : 0 @endphp
-                        @php $visit = (isset($visits[$store->id])) ? $visits[$store->id] : 0 @endphp
-                        @php $calc = ($transactions > 0 && $visit > 0) ? $transactions * 100 / $visit : 0 @endphp
-
                         <a href="{{ $store->link() }}" class="stores-item {{ $store->is_errors_yesterday ? 'is-danger' : '' }}">
                             @if ($store->rentable_area)
                                 <div class="stores-item-area">
