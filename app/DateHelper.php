@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Classes\ReportDate;
+use App\Classes\Date\ReportDate;
 
 /**
  * @version   1.0.1

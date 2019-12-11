@@ -6,7 +6,7 @@ use App\Models\Mall;
 use App\Models\Store;
 use App\Models\Cheque;
 use Illuminate\View\View;
-use App\Classes\ReportDate;
+use App\Classes\Date\ReportDate;
 use App\Repositories\ChequeRepository;
 
 /**

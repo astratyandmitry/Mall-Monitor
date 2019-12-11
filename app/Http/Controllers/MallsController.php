@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\GraphStorage;
+use App\Classes\Graph\GraphStorage;
 use App\DateHelper;
 use App\Models\Mall;
 use Illuminate\View\View;

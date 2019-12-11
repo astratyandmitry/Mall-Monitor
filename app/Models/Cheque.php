@@ -242,31 +242,7 @@ class Cheque extends Model
         if ($user->store_id) {
             $builder->where('store_id', $user->store_id);
         } else {
-            $builder->when(request()->query('store_id'), function ($builder): Builder {
-                return $builder->where('store_id', request()->query('store_id'));
-            });
-
-            $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
-                return $builder->where('cashbox_id', request('cashbox_id'));
-            });
-
-            $builder->when(request('store_name'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
-                });
-            });
-
-            $builder->when(request('store_legal'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('id', request('store_legal'));
-                });
-            });
-
-            $builder->when(request('store_bin'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('business_identification_number', request('store_bin'));
-                });
-            });
+            $builder->whereIn('store_id', Store::report()->pluck('id'));
         }
 
         if ($dateFrom) {
@@ -287,8 +263,6 @@ class Cheque extends Model
         if ( ! in_array($sort_type, ['asc', 'desc'])) {
             $sort_type = 'asc';
         }
-
-        $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
 
         $builder->orderBy($sort_key, $sort_type);
 
@@ -318,37 +292,7 @@ class Cheque extends Model
         if ($user->store_id) {
             $builder->where('store_id', $user->store_id);
         } else {
-            $builder->when(request()->query('store_id'), function ($builder): Builder {
-                return $builder->where('store_id', request()->query('store_id'));
-            });
-
-            $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
-                return $builder->where('cashbox_id', request('cashbox_id'));
-            });
-
-            $builder->when(request('store_name'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
-                });
-            });
-
-            $builder->when(request('store_legal'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('id', request('store_legal'));
-                });
-            });
-
-            $builder->when(request('store_bin'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('business_identification_number', request('store_bin'));
-                });
-            });
-
-            $builder->when(request('type_id'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('type_id', request('type_id'));
-                });
-            });
+            $builder->whereIn('store_id', Store::report()->pluck('id'));
         }
 
         if ($dateFrom) {
@@ -398,8 +342,6 @@ class Cheque extends Model
 
             $builder->orderBy($sort_key, $sort_type);
         }
-
-        $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
 
         return $builder;
     }

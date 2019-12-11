@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes;
+namespace App\Classes\Graph;
 
 /**
  * @version   1.0.1

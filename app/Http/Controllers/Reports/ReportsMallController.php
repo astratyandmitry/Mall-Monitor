@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Reports;
 use App\Models\Mall;
 use App\Repositories\VisitsRepository;
 use Illuminate\View\View;
-use App\Classes\ReportDate;
+use App\Classes\Date\ReportDate;
 use App\Repositories\ChequeRepository;
 
 /**
@@ -79,7 +79,7 @@ class ReportsMallController extends Controller
     {
         $stats = ChequeRepository::getReportForMall($limit);
 
-        $mall_names = Mall::query()->whereIn('id', $stats->pluck('mall_id'))->pluck('name', 'id');
+        $mall_names = Mall::query()->whereIn('id', $stats->pluck('mall_id', 'mall_id'))->pluck('name', 'id');
 
         $visits = VisitsRepository::getReportForMall();
         $visitSimplified = [];

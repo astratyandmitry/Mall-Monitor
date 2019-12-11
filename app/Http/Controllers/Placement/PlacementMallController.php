@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Placement;
 
-use App\Classes\PlacementDate;
+use App\Classes\Date\PlacementDate;
 use App\Models\Mall;
 use App\Models\Cheque;
+use Illuminate\View\View;
 
 /**
  * @version   1.0.1
@@ -17,7 +18,7 @@ class PlacementMallController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
         $this->setTitle('Положение ТРЦ');
         $this->setActiveSection('placement');

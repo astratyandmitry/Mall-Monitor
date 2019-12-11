@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DateHelper;
 use App\Models\Store;
 use Illuminate\View\View;
-use App\Classes\GraphStorage;
+use App\Classes\Graph\GraphStorage;
 use App\Repositories\StoreRepository;
 use App\Repositories\ChequeRepository;
 use App\Repositories\VisitsRepository;

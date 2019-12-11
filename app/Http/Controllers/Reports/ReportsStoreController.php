@@ -6,7 +6,7 @@ use App\Models\Mall;
 use App\Models\Store;
 use App\Repositories\VisitsRepository;
 use Illuminate\View\View;
-use App\Classes\ReportDate;
+use App\Classes\Date\ReportDate;
 use App\Repositories\ChequeRepository;
 
 /**
@@ -74,9 +74,9 @@ class ReportsStoreController extends Controller
     {
         $stats = ChequeRepository::getReportForStore($limit);
 
-        $mall_names = Mall::query()->whereIn('id', $stats->pluck('mall_id'))->pluck('name', 'id');
+        $mall_names = Mall::query()->whereIn('id', $stats->pluck('mall_id', 'mall_id'))->pluck('name', 'id');
         $stores = Store::query()
-            ->whereIn('id', $stats->pluck('store_id'))
+            ->whereIn('id', $stats->pluck('store_id', 'store_id'))
             ->select('name', 'business_identification_number', 'id')
             ->get()->keyBy('id')->toArray();
 

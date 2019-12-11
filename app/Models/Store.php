@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \App\Models\StoreType $type
  * @property \App\Models\Cheque[]  $cheques
  *
+ * @method static Builder report()
+ *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2018, ArmenianBros. <i@armenianbros.com>
@@ -118,6 +120,43 @@ class Store extends Model
 
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeReport(Builder $builder): Builder
+    {
+        $builder->when(request()->query('store_id'), function (Builder $builder): Builder {
+            return $builder->where('store_id', request()->query('store_id'));
+        });
+
+        $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
+            return $builder->where('cashbox_id', request('cashbox_id'));
+        });
+
+        $builder->when(request('store_name'), function (Builder $builder): Builder {
+            return $builder->whereHas('store', function (Builder $builder): Builder {
+                return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
+            });
+        });
+
+        $builder->when(request('store_legal'), function (Builder $builder): Builder {
+            return $builder->whereHas('store', function (Builder $builder): Builder {
+                return $builder->where('id', request('store_legal'));
+            });
+        });
+
+        $builder->when(request('store_bin'), function (Builder $builder): Builder {
+            return $builder->whereHas('store', function (Builder $builder): Builder {
+                return $builder->where('business_identification_number', request('store_bin'));
+            });
+        });
+
+        return $builder;
+    }
+
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function mall(): BelongsTo
@@ -194,7 +233,6 @@ class Store extends Model
                 return $builder->where('mall_id', request('mall_id'));
             });
         }
-
 
         $builder->when(request('filter'), function (Builder $builder): Builder {
             switch (request('filter')) {

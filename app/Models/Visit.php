@@ -124,6 +124,7 @@ class Visit extends Model
         return $this->belongsTo(VisitCountmax::class);
     }
 
+
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param string|null                           $dateFrom
@@ -155,7 +156,6 @@ class Visit extends Model
     }
 
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param string|null                           $dateFrom
@@ -178,37 +178,7 @@ class Visit extends Model
         if ($user->store_id) {
             $builder->where('store_id', $user->store_id);
         } else {
-            $builder->when(request()->query('store_id'), function (Builder $builder) {
-                return $builder->where('store_id', request()->query('store_id'));
-            });
-
-            $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
-                return $builder->where('cashbox_id', request('cashbox_id'));
-            });
-
-            $builder->when(request('store_name'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
-                });
-            });
-
-            $builder->when(request('store_legal'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('id', request('store_legal'));
-                });
-            });
-
-            $builder->when(request('store_bin'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('business_identification_number', request('store_bin'));
-                });
-            });
-
-            $builder->when(request('type_id'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('type_id', request('type_id'));
-                });
-            });
+            $builder->whereIn('store_id', Store::report()->pluck('id'));
         }
 
         if ($dateFrom) {
@@ -219,80 +189,7 @@ class Visit extends Model
             $builder->where('created_at', '<=', $dateTo);
         }
 
-        $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
-
         return $builder;
     }
-
-    public static function scopeReportDetail(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
-    {
-        $builder->with(['store', 'payment', 'type']);
-
-        $user = auth()->user();
-
-        if ($user->mall_id) {
-            $builder->where('mall_id', $user->mall_id);
-        } else {
-            $builder->when(request('mall_id'), function (Builder $builder): Builder {
-                return $builder->where('mall_id', request('mall_id'));
-            });
-        }
-
-        if ($user->store_id) {
-            $builder->where('store_id', $user->store_id);
-        } else {
-            $builder->when(request()->query('store_id'), function ($builder): Builder {
-                return $builder->where('store_id', request()->query('store_id'));
-            });
-
-            $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
-                return $builder->where('cashbox_id', request('cashbox_id'));
-            });
-
-            $builder->when(request('store_name'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
-                });
-            });
-
-            $builder->when(request('store_legal'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('id', request('store_legal'));
-                });
-            });
-
-            $builder->when(request('store_bin'), function (Builder $builder): Builder {
-                return $builder->whereHas('store', function (Builder $builder): Builder {
-                    return $builder->where('business_identification_number', request('store_bin'));
-                });
-            });
-        }
-
-        if ($dateFrom) {
-            $builder->where('created_at', '>=', $dateFrom);
-        }
-
-        if ($dateTo) {
-            $builder->where('created_at', '<=', $dateTo);
-        }
-
-        $sort_key = request()->query('sort_key', 'created_at');
-        $sort_type = request()->query('sort_type', 'desc');
-
-        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
-            $sort_key = 'created_at';
-        }
-
-        if ( ! in_array($sort_type, ['asc', 'desc'])) {
-            $sort_type = 'asc';
-        }
-
-        $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
-
-        $builder->orderBy($sort_key, $sort_type);
-
-        return $builder;
-    }
-
 
 }

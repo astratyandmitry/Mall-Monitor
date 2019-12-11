@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes;
+namespace App\Classes\Date;
 
 /**
  * @version   1.0.1
@@ -46,7 +46,7 @@ class ReportDate
 
 
     /**
-     *
+     * @return  void
      */
     protected function setup(): void
     {

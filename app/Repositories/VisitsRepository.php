@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Classes\ReportDate;
+use App\Classes\Date\ReportDate;
 use App\Models\Cheque;
 use App\Models\Visit;
-use App\Classes\GraphDate;
+use App\Classes\Graph\GraphDate;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
