@@ -1,6 +1,4 @@
 @php /** @var \App\Models\Cheque[] $cheques */ @endphp
-@php /** @var array $statistics */ @endphp
-@php /** @var array $counts */ @endphp
 
 @php $exportParams = request()->only(['date_from', 'time_from', 'date_to', 'time_to', 'store_id', 'mall_id', 'store_name', 'store_official', 'store_bin', 'sort_key', 'sort_value']) @endphp
 
@@ -64,9 +62,6 @@
                                     Док. №
                                     @include('layouts.includes.table.sorting', ['attribute' => 'number', 'default_key' => 'created_at'])
                                 </th>
-                                <th nowrap class="is-center" width="110">
-                                    Кол-во поз.
-                                </th>
                                 <th nowrap width="160">
                                     Операция
                                     @include('layouts.includes.table.sorting', ['attribute' => 'type_id', 'default_key' => 'created_at'])
@@ -95,9 +90,6 @@
                                     <td nowrap>
                                         {{ $cheque->number }}
                                     </td>
-                                    <td nowrap class="is-center">
-                                        {{ isset($counts[$cheque->id]) ? number_format($counts[$cheque->id]) : 0 }}
-                                    </td>
                                     <td nowrap>
                                         <div class="badge is-inline {{ $cheque->type->getCssClass() }}">
                                             {{ $cheque->type->name }}
@@ -112,16 +104,6 @@
                                 </tr>
                             @endforeach
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th nowrap colspan="4">
-                                    Общее количество: {{ number_format($statistics['count']) }}
-                                </th>
-                                <th nowrap colspan="4" class="is-right">
-                                    Общая сумма: {{ number_format($statistics['total']) }} ₸
-                                </th>
-                            </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

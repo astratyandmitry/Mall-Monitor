@@ -25,25 +25,13 @@ class ReportsDetailController extends Controller
         $dateFrom = $this->getDateTime('from');
         $dateTo = $this->getDateTime('to');
 
-        $builder1 = Cheque::query()->reportDetail($dateFrom, $dateTo);
-        $builder2 = clone $builder1;
-
-        $cheques = $builder1->paginate(50)->onEachSide(1);
-        $statistics = $builder2->select(\DB::raw('sum(amount) as total, count(id) as count'))->get()->toArray()[0];
+        $cheques = Cheque::query()->reportDetail($dateFrom, $dateTo)->paginate(50)->onEachSide(1);
 
         $chequesId = $cheques->map(function (Cheque $cheque) {
             return $cheque->id;
         })->toArray();
 
-        $counts = \DB::table('cheque_items')
-            ->select(\DB::raw('count(id) as count, cheque_id'))
-            ->groupBy('cheque_id')
-            ->whereIn('cheque_id', $chequesId)
-            ->pluck('count', 'cheque_id');
-
         return view('reports.detail.index', $this->withData([
-            'statistics' => $statistics,
-            'counts' => $counts,
             'cheques' => $cheques,
         ]));
     }
