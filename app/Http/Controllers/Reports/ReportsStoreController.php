@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Reports;
 
 use App\Models\Mall;
 use App\Models\Store;
-use App\Models\Cheque;
+use Illuminate\View\View;
+use App\Classes\ReportDate;
+use App\Repositories\ChequeRepository;
 
 /**
  * @version   1.0.1
@@ -15,20 +17,16 @@ class ReportsStoreController extends Controller
 {
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\View\View
      */
-    public function index(\Illuminate\Http\Request $request): \Illuminate\View\View
+    public function index(): View
     {
         $this->setTitle('Отчет по арендаторам');
         $this->setActiveSection('reports');
         $this->setActivePage('reports.store');
         $this->addBreadcrumb('Отчеты', route('reports.store.index'));
 
-        $data = $this->getExportData();
-
-        return view('reports.store.index', $this->withData($data));
+        return view('reports.store.index', $this->withData($this->getData()));
     }
 
 
@@ -41,7 +39,7 @@ class ReportsStoreController extends Controller
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Отчет по арендаторам', function ($sheet) {
-                $sheet->loadView('reports.store.export.excel', $this->getExportData());
+                $sheet->loadView('reports.store.export.excel', $this->getDataForExport());
             });
         })->export('xls');
 
@@ -56,7 +54,8 @@ class ReportsStoreController extends Controller
     {
         $filename = 'keruenmonitor_reports.store_' . date('YmdHi');
 
-        $pdf = \PDF::loadView('reports.store.export.pdf', $this->getExportData($this->getPDFMaxItems()))->setPaper('a4', 'landscape');
+        $data = $this->getDataForExport($this->getPDFMaxItems());
+        $pdf = \PDF::loadView('reports.store.export.pdf', $data)->setPaper('a4', 'landscape');
 
         return $pdf->download("{$filename}.pdf");
     }
@@ -67,51 +66,36 @@ class ReportsStoreController extends Controller
      *
      * @return array
      */
-    protected function getExportData(?int $limit = null): array
+    protected function getData(?int $limit = null): array
     {
-        $dateFrom = $this->getDateTime('from');
-        $dateTo = $this->getDateTime('to');
+        $stats = ChequeRepository::getReportForStore($limit);
 
-        $statistics = Cheque::reportStore($dateFrom, $dateTo);
-        $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id';
+        $mall_names = Mall::query()->whereIn('id', $stats->pluck('mall_id'))->pluck('name', 'id');
+        $stores = Store::query()
+            ->whereIn('id', $stats->pluck('store_id'))
+            ->select('name', 'business_identification_number', 'id')
+            ->get()->keyBy('id')->toArray();
 
-        $diff = date_diff(date_create($dateFrom), date_create($dateTo));
-
-        if (( ! $dateFrom && ! $dateTo) || (int)$diff->format("%Y") > 0) {
-            $select .= ', created_year as date';
-
-            $statistics = $statistics->groupBy('date');
-
-            $dateGroup = 'year';
-        } elseif ((int)$diff->format("%m") > 0) {
-            $select .= ', created_yearmonth as date';
-
-            $statistics = $statistics->groupBy('date');
-
-            $dateGroup = 'month';
-        } else {
-            $select .= ', created_date as date';
-
-            $statistics = $statistics->groupBy('date');
-
-            $dateGroup = 'day';
-        }
-
-        if ( ! is_null($limit)) {
-            $statistics = $statistics->limit($limit);
-        }
-
-        $statistics = $statistics->select(\DB::raw($select))->groupBy('store_id')->get();
-
-        $data = [
-            'dateFrom' => $dateFrom,
-            'dateTo' => $dateTo,
-            'dateGroup' => $dateGroup,
-            'statistics' => $statistics->toArray(),
-            'mall_names' => Mall::whereIn('id', $statistics->pluck('mall_id', 'mall_id'))->pluck('name', 'id'),
-            'stores' => Store::whereIn('id', $statistics->pluck('store_id', 'store_id'))->select('name', 'business_identification_number',
-                'id')->get()->keyBy('id')->toArray(),
+        return [
+            'stats' => $stats->toArray(),
+            'mall_names' => $mall_names,
+            'stores' => $stores,
         ];
+    }
+
+
+    /**
+     * @param int|null $limit
+     *
+     * @return array
+     */
+    protected function getDataForExport(?int $limit = null): array
+    {
+        $data = $this->getData($limit);
+
+        $data['selectedMall'] = (request()->has('mall_id')) ? $data['mall_names'][request()->get('mall_id')] : 'Все';
+        $data['selectedStore'] = (request()->has('store_id')) ? @$data['stores'][request()->get('store_id')]['name'] : 'Все';
+        $data['selectedTime'] = ReportDate::instance()->stringify();
 
         return $data;
     }

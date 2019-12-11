@@ -16,11 +16,42 @@ class GraphStorage
     const AMOUNT = 'amount';
     const COUNT = 'count';
     const AVG = 'avg';
+    const VISITS = 'visits';
 
     /**
      * @var array
      */
     protected $data = [];
+
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return \App\Classes\GraphStorage
+     */
+    public function addMultiLabel(string $key, $value): GraphStorage
+    {
+        $this->data[self::LABEL][$key] = $this->formatDate($value);
+
+        return $this;
+    }
+
+
+    /**
+     * @param string $key
+     * @param mixed  $data_key
+     * @param mixed  $data_index
+     * @param mixed  $value
+     *
+     * @return \App\Classes\GraphStorage
+     */
+    public function addMultiValue(string $key, $data_key, $data_index, $value): GraphStorage
+    {
+        $this->data[$key][$data_key][$data_index] = round($value);
+
+        return $this;
+    }
 
 
     /**
@@ -115,6 +146,15 @@ class GraphStorage
         $day = DateHelper::getDayAbbr(date('N', strtotime($date)));
 
         return (int)$dates[2] . " {$month} {$dates[0]} ({$day})";
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
     }
 
 

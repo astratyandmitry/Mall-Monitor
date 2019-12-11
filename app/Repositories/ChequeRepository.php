@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Classes\ReportDate;
 use App\Models\Cheque;
 use App\Classes\GraphDate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -95,6 +97,120 @@ class ChequeRepository
         }
 
         return $items->get()->keyBy('store_id')->toArray();
+    }
+
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getCompareForMall(): Collection
+    {
+        $dateColumn = GraphDate::instance()->getDateColumn();
+        $startedDate = GraphDate::instance()->getStartedDate();
+
+        return Cheque::query()
+            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, {$dateColumn} as date"))
+            ->where('created_at', '>=', $startedDate)
+            ->groupBy('date', 'mall_id')
+            ->orderBy('date', 'asc')
+            ->where(function (Builder $builder): Builder {
+                if (auth()->user()->mall_id) {
+                    $builder->where('mall_id', auth()->user()->mall_id);
+                } else {
+                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                        return $builder->where('mall_id', request('mall_id'));
+                    });
+                }
+
+                $builder->when(request('type_id'), function (Builder $builder): Builder {
+                    return $builder->whereHas('mall', function (Builder $builder): Builder {
+                        return $builder->where('type_id', request('type_id'));
+                    });
+                });
+
+                return $builder;
+            })->get()->groupBy('date');
+    }
+
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getCompareForStore(): Collection
+    {
+        $dateColumn = GraphDate::instance()->getDateColumn();
+        $startedDate = GraphDate::instance()->getStartedDate();
+
+        return Cheque::query()
+            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, store_id, {$dateColumn} as date"))
+            ->where('created_at', '>=', $startedDate)
+            ->groupBy('date', 'store_id')
+            ->orderBy('date', 'asc')
+            ->where(function (Builder $builder): Builder {
+                if (auth()->user()->mall_id) {
+                    $builder->where('mall_id', auth()->user()->mall_id);
+                } else {
+                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                        return $builder->where('mall_id', request('mall_id'));
+                    });
+                }
+
+                $builder->when(request('type_id'), function (Builder $builder): Builder {
+                    return $builder->whereHas('mall', function (Builder $builder): Builder {
+                        return $builder->where('type_id', request('type_id'));
+                    });
+                });
+
+                return $builder;
+            })->get()->groupBy('date');
+    }
+
+
+    /**
+     * @param int|null $limit
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getReportForMall(?int $limit = null): Collection
+    {
+        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+
+        /** @var \Illuminate\Database\Query\Builder $items */
+        $items = Cheque::reportMall($dateFrom, $dateTo);
+
+        if ( ! is_null($limit)) {
+            $items = $items->limit($limit);
+        }
+
+        return $items
+            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, created_{$dateGroup} as date"))
+            ->groupBy('date')
+            ->groupBy('mall_id')
+            ->get();
+    }
+
+
+    /**
+     * @param int|null $limit
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getReportForStore(?int $limit = null): Collection
+    {
+        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+
+        /** @var \Illuminate\Database\Query\Builder $items */
+        $items = Cheque::reportStore($dateFrom, $dateTo);
+
+        if ( ! is_null($limit)) {
+            $items = $items->limit($limit);
+        }
+
+        return $items
+            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id, created_{$dateGroup} as date"))
+            ->groupBy('date')
+            ->groupBy('store_id')
+            ->get();
     }
 
 

@@ -2,9 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Models\Visit;
 use App\Classes\GraphDate;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @version   1.0.1
@@ -95,6 +97,72 @@ class VisitsRepository
         }
 
         return $items->pluck('count', 'store_id')->toArray();
+    }
+
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getCompareForMall(): Collection
+    {
+        $dateColumn = GraphDate::instance()->getDateColumn();
+        $startedDate = GraphDate::instance()->getStartedDate();
+
+        return Visit::query()
+            ->select(DB::raw("SUM(count) AS count, mall_id, {$dateColumn} as date"))
+            ->where('created_at', '>=', $startedDate)
+            ->groupBy('date', 'mall_id')
+            ->orderBy('date', 'asc')
+            ->where(function (Builder $builder): Builder {
+                if (auth()->user()->mall_id) {
+                    $builder->where('mall_id', auth()->user()->mall_id);
+                } else {
+                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                        return $builder->where('mall_id', request('mall_id'));
+                    });
+                }
+
+                $builder->when(request('type_id'), function (Builder $builder): Builder {
+                    return $builder->whereHas('mall', function (Builder $builder): Builder {
+                        return $builder->where('type_id', request('type_id'));
+                    });
+                });
+
+                return $builder;
+            })->get()->groupBy('date');
+    }
+
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getCompareForStore(): Collection
+    {
+        $dateColumn = GraphDate::instance()->getDateColumn();
+        $startedDate = GraphDate::instance()->getStartedDate();
+
+        return Visit::query()
+            ->select(DB::raw("SUM(count) AS count, store_id, {$dateColumn} as date"))
+            ->where('created_at', '>=', $startedDate)
+            ->groupBy('date', 'store_id')
+            ->orderBy('date', 'asc')
+            ->where(function (Builder $builder): Builder {
+                if (auth()->user()->mall_id) {
+                    $builder->where('mall_id', auth()->user()->mall_id);
+                } else {
+                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                        return $builder->where('mall_id', request('mall_id'));
+                    });
+                }
+
+                $builder->when(request('type_id'), function (Builder $builder): Builder {
+                    return $builder->whereHas('mall', function (Builder $builder): Builder {
+                        return $builder->where('type_id', request('type_id'));
+                    });
+                });
+
+                return $builder;
+            })->get()->groupBy('date');
     }
 
 }

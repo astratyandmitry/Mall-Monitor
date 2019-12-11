@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Classes\ReportDate;
+
 /**
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -135,21 +137,20 @@ class DateHelper
 
     /**
      * @param string $date
-     * @param string $group
      *
      * @return string
      */
-    public static function byDateGroup(string $date, string $group): string
+    public static function byDateGroup(string $date): string
     {
-        switch ($group) {
-            case 'month':
+        switch (ReportDate::instance()->getDateGroup()) {
+            case 'yearmonth':
                 {
                     $dates = explode('-', $date);
 
                     return self::getMonthAbbr($dates[1]) . ' ' . $dates[0];
                 };
                 break;
-            case 'day':
+            case 'date':
                 {
                     return date('d.m.Y', strtotime($date));
                 };

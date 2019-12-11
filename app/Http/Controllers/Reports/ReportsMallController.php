@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Reports;
 
-use App\Classes\ReportDate;
 use App\Models\Mall;
-use App\Models\Cheque;
+use Illuminate\View\View;
+use App\Classes\ReportDate;
+use App\Repositories\ChequeRepository;
 
 /**
  * @version   1.0.1
@@ -23,16 +24,14 @@ class ReportsMallController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
         $this->setTitle('Отчет по ТРЦ');
         $this->setActiveSection('reports');
         $this->setActivePage('reports.mall');
         $this->addBreadcrumb('Отчеты', route('reports.mall.index'));
 
-        $data = $this->getExportData();
-
-        return view('reports.mall.index', $this->withData($data));
+        return view('reports.mall.index', $this->withData($this->getData()));
     }
 
 
@@ -45,7 +44,7 @@ class ReportsMallController extends Controller
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Отчет по ТРЦ', function ($sheet) {
-                $sheet->loadView('reports.mall.export.excel', $this->getExportData());
+                $sheet->loadView('reports.mall.export.excel', $this->getDataForExport());
             });
         })->export('xls');
 
@@ -60,7 +59,9 @@ class ReportsMallController extends Controller
     {
         $filename = 'keruenmonitor_reports.mall_' . date('YmdHi');
 
-        $pdf = \PDF::loadView('reports.mall.export.pdf', $this->getExportData($this->getPDFMaxItems()))->setPaper('a4', 'landscape');
+        $data = $this->getDataForExport($this->getPDFMaxItems());
+
+        $pdf = \PDF::loadView('reports.mall.export.pdf', $data)->setPaper('a4', 'landscape');
 
         return $pdf->download("{$filename}.pdf");
     }
@@ -71,50 +72,30 @@ class ReportsMallController extends Controller
      *
      * @return array
      */
-    protected function getExportData(?int $limit = null): array
+    protected function getData(?int $limit = null): array
     {
-        $dateFrom = ReportDate::getFromRequest('from');
-        $dateTo = ReportDate::getFromRequest('to');
+        $stats = ChequeRepository::getReportForMall($limit);
 
-        /** @var \Illuminate\Database\Query\Builder */
-        $statistics = Cheque::reportMall($dateFrom, $dateTo);
-        $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id';
+        $mall_names = Mall::query()->whereIn('id', $stats->pluck('mall_id'))->pluck('name', 'id');
 
-        $diff = date_diff(date_create($dateFrom), date_create($dateTo));
-
-        if (( ! $dateFrom && ! $dateTo) || (int)$diff->format("%Y") > 0) {
-            $select .= ', created_year as date';
-
-            $statistics = $statistics->groupBy('date');
-
-            $dateGroup = 'year';
-        } elseif ((int)$diff->format("%m") > 0) {
-            $select .= ', created_yearmonth as date';
-
-            $statistics = $statistics->groupBy('date');
-
-            $dateGroup = 'month';
-        } else {
-            $select .= ', created_date as date';
-
-            $statistics = $statistics->groupBy('date');
-
-            $dateGroup = 'day';
-        }
-
-        if ( ! is_null($limit)) {
-            $statistics = $statistics->limit($limit);
-        }
-
-        $statistics = $statistics->select(\DB::raw($select))->groupBy('mall_id')->get();
-
-        $data = [
-            'dateFrom' => $dateFrom,
-            'dateTo' => $dateTo,
-            'dateGroup' => $dateGroup,
-            'statistics' => $statistics->toArray(),
-            'mall_names' => Mall::query()->whereIn('id', $statistics->pluck('mall_id', 'mall_id'))->pluck('name', 'id'),
+        return [
+            'mall_names' => $mall_names,
+            'stats' => $stats->toArray(),
         ];
+    }
+
+
+    /**
+     * @param int|null $limit
+     *
+     * @return array
+     */
+    public function getDataForExport(?int $limit = null): array
+    {
+        $data = $this->getData($limit);
+
+        $data['selectedMall'] = (request()->has('mall_id')) ? @$data['mall_names'][request()->get('mall_id')] : 'Все';
+        $data['selectedTime'] = ReportDate::instance()->stringify();
 
         return $data;
     }

@@ -1,7 +1,9 @@
-@php /** @var array $statistics */ @endphp
+@php /** @var array $stats */ @endphp
 @php /** @var string|null $dateFrom */ @endphp
 @php /** @var string|null $dateTo */ @endphp
 @php /** @var array $mall_names */ @endphp
+@php /** @var string $selectedTime */ @endphp
+@php /** @var string $selectedMall */ @endphp
 <!doctype html>
 <html lang="ru">
 <head>
@@ -16,21 +18,12 @@
             <strong>Отчет по ТРЦ</strong>
         </th>
         <th colspan="2" style="background: #38c172; color: #ffffff; text-align: right;">
-            @if ($dateFrom && $dateTo)
-                c {{ date('d.m.Y H:i', strtotime($dateFrom)) }}
-                по {{ date('d.m.Y H:i', strtotime($dateTo)) }}
-            @elseif ($dateFrom)
-                c {{ date('d.m.Y H:i', strtotime($dateFrom)) }}
-            @elseif ($dateTo)
-                по {{ date('d.m.Y H:i', strtotime($dateTo)) }}
-            @else
-                За все время
-            @endif
+            {{ $selectedTime }}
         </th>
     </tr>
     <tr>
         <th colspan="5" style="background: #f0f0f0; font-weight: 400;">
-            ТРЦ: {{ (request()->has('mall_id')) ? \App\Models\Mall::find(request()->get('mall_id'))->name : 'Все' }}
+            ТРЦ: {{ $selectedMall }}
         </th>
     </tr>
     <tr>
@@ -50,22 +43,22 @@
             Дата
         </th>
     </tr>
-    @foreach($statistics as $statistic)
+    @foreach($stats as $stat)
         <tr>
             <td>
-                {{ $mall_names[$statistic['mall_id']] }}
+                {{ $mall_names[$stat['mall_id']] }}
             </td>
             <td>
-                {{ (int)$statistic['count'] }}
+                {{ (int)$stat['count'] }}
             </td>
             <td>
-                {{ (int)round($statistic['avg']) }}
+                {{ (int)round($stat['avg']) }}
             </td>
             <td>
-                {{ (int)$statistic['amount'] }}
+                {{ (int)$stat['amount'] }}
             </td>
             <td>
-                {{ \App\DateHelper::byDateGroup($statistic['date'], $dateGroup) }}
+                {{ \App\DateHelper::byDateGroup($stat['date'], $dateGroup) }}
             </td>
         </tr>
     @endforeach

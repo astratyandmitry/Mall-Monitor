@@ -1,6 +1,6 @@
-@php /** @var array $statistics */ @endphp
+@php /** @var array $stats */ @endphp
 @php /** @var array $mall_names */ @endphp
-@php /** @var array $store_names */ @endphp
+@php /** @var array $stores */ @endphp
 
 @php $exportParams = request()->only(['mall_id', 'store_id', 'date_from', 'time_from', 'date_to', 'time_to', 'type_id', 'sort', 'limit', 'sort_key', 'sort_value']) @endphp
 
@@ -26,7 +26,7 @@
 
     @include('reports.store.partials.filter')
 
-    @if (count($statistics))
+    @if (count($stats))
         <div class="content">
             <div class="container">
                 <div class="box">
@@ -81,27 +81,27 @@
                             <tbody>
                             @php $amount = 0 @endphp
                             @php $count = 0 @endphp
-                            @foreach($statistics as $statistic)
-                                @php $amount += $statistic['amount'] @endphp
-                                @php $count += $statistic['count'] @endphp
+                            @foreach($stats as $stat)
+                                @php $amount += $stat['amount'] @endphp
+                                @php $count += $stat['count'] @endphp
                                 <tr>
                                     <td nowrap>
-                                        {{ $mall_names[$statistic['mall_id']] }}
+                                        {{ $mall_names[$stat['mall_id']] }}
                                     </td>
                                     <td nowrap>
-                                        {{ $stores[$statistic['store_id']]['name'] }}
+                                        {{ $stores[$stat['store_id']]['name'] }}
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ number_format($statistic['count']) }}
+                                        {{ number_format($stat['count']) }}
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format(round($statistic['avg'])) }} ₸
+                                        {{ number_format(round($stat['avg'])) }} ₸
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($statistic['amount']) }} ₸
+                                        {{ number_format($stat['amount']) }} ₸
                                     </td>
                                     <td nowrap class="is-right" width="140">
-                                        {{ \App\DateHelper::byDateGroup($statistic['date'], $dateGroup) }}
+                                        {{ \App\DateHelper::byDateGroup($stat['date']) }}
                                     </td>
                                 </tr>
                             @endforeach

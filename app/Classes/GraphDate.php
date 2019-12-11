@@ -66,4 +66,23 @@ class GraphDate
         return $this->options[$this->selectedKey];
     }
 
+
+    /**
+     * @return string
+     */
+    public function getStartedDate(): string
+    {
+        switch ($this->selectedKey) {
+            case 'daily':
+                return date('Y-m-d H:i:s', strtotime('-30 days'));
+                break;
+            case 'monthly':
+                return date('Y-m-d H:i:s', strtotime('-12 months'));
+                break;
+            case 'yearly':
+                return date('Y-m-d H:i:s', strtotime('-10 years'));
+                break;
+        }
+    }
+
 }

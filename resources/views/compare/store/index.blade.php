@@ -1,7 +1,7 @@
-@php /** @var array $graph */ @endphp
-@php /** @var \stdClass[] $statistics */ @endphp
-@php /** @var \App\Models\Cheque[] $cheques */ @endphp
-@php /** @var \App\Models\Store $store */ @endphp
+@php /** @var array $graphStats */ @endphp
+@php /** @var array $graphVisits */ @endphp
+@php /** @var boolean $statsExists */ @endphp
+@php /** @var boolean $visitsExists */ @endphp
 @php /** @var array $graphDateTypes*/ @endphp
 
 @extends('layouts.app', $globals)
@@ -29,7 +29,7 @@
 
     <div class="content">
         <div class="container">
-            @if (count($statistics))
+            @if ($statsExists)
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
@@ -86,11 +86,30 @@
                         <canvas id="statistics-avg" class="rounded-sm mb-16" height="80vh"></canvas>
                     </div>
                 </div>
+
+                <div class="box is-marged">
+                    <div class="box-title has-action">
+                        <div class="box-title-text">
+                            Посещения
+                        </div>
+
+                        <div class="box-title-action">
+                            <span data-canvas="statistics-visits" class="btn is-sm is-outlined js-print-canvas">
+                                <i class="fa fa-file-pdf-o"></i>
+                                Скачать PDF
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="box-content">
+                        <canvas id="statistics-visits" class="rounded-sm mb-16" height="80vh"></canvas>
+                    </div>
+                </div>
             @endif
         </div>
     </div>
 
-    @if (! count($statistics))
+    @if (! $statsExists)
         <div class="information">
             <div class="container">
                 <div class="information-box is-lg">
@@ -103,210 +122,228 @@
     @endif
 @endsection
 
-@push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>
-    <script>
-        $(function () {
-            $('.js-print-canvas').on('click', function () {
-                var newCanvas = document.querySelector('#' + $(this).data('canvas'));
-                var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
-                var doc = new jsPDF("l", "mm", "a4");
-                doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);
-                doc.save('keruenmonitor-chart_' + Date.now() +  '.pdf');
+@if ($statsExists)
+    @push('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>
+        <script>
+            $(function () {
+                $('.js-print-canvas').on('click', function () {
+                    var newCanvas = document.querySelector('#' + $(this).data('canvas'));
+                    var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
+                    var doc = new jsPDF("l", "mm", "a4");
+                    doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);
+                    doc.save('keruenmonitor-chart_' + Date.now() + '.pdf');
+                });
+
+            });
+            var datasets = [];
+
+            @foreach($graph['amount'] as $store_id => $_data)
+            datasets.push('{{ $store_names[$store_id] }}');
+            @endforeach
+
+
+                Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
+                return addCommas(tooltipItem.yLabel) + ' — ' + datasets[ tooltipItem.datasetIndex ];
+            };
+
+            colors = [
+                "#000000",
+                "#ffebcd",
+                "#0000ff",
+                "#8a2be2",
+                "#a52a2a",
+                "#deb887",
+                "#5f9ea0",
+                "#7fff00",
+                "#d2691e",
+                "#ff7f50",
+                "#6495ed",
+                "#dc143c",
+                "#00ffff",
+                "#00008b",
+                "#008b8b",
+                "#b8860b",
+                "#a9a9a9",
+                "#006400",
+                "#a9a9a9",
+                "#bdb76b",
+                "#8b008b",
+                "#556b2f",
+                "#ff8c00",
+                "#9932cc",
+                "#8b0000",
+                "#e9967a",
+                "#8fbc8f",
+                "#483d8b",
+                "#00ced1",
+                "#9400d3",
+                "#ff1493",
+                "#00bfff",
+                "#1e90ff",
+                "#b22222",
+                "#228b22",
+                "#ff00ff",
+                "#daa520",
+                "#ffd700",
+                "#808080",
+                "#008000",
+                "#adff2f",
+                "#808080",
+                "#ff69b4",
+                "#cd5c5c",
+                "#4b0082",
+                "#7cfc00",
+                "#fffacd",
+                "#add8e6",
+                "#f08080",
+                "#90ee90",
+                "#d3d3d3",
+                "#ffb6c1",
+                "#ffa07a",
+                "#20b2aa",
+                "#87cefa",
+                "#778899",
+                "#32cd32",
+                "#faf0e6",
+                "#ff00ff",
+                "#800000",
+                "#66cdaa",
+                "#0000cd",
+                "#ba55d3",
+                "#9370db",
+                "#3cb371",
+                "#7b68ee",
+                "#00fa9a",
+                "#48d1cc",
+                "#c71585",
+                "#191970",
+                "#808000",
+                "#6b8e23",
+                "#ffa500",
+                "#ff4500",
+                "#da70d6",
+                "#98fb98",
+                "#afeeee",
+                "#db7093",
+                "#ffdab9",
+                "#cd853f",
+                "#ffc0cb",
+                "#b0e0e6",
+                "#800080",
+                "#663399",
+                "#ff0000",
+                "#bc8f8f",
+                "#4169e1",
+                "#8b4513",
+                "#fa8072",
+                "#f4a460",
+                "#2e8b57",
+                "#fff5ee",
+                "#a0522d",
+                "#c0c0c0",
+                "#87ceeb",
+                "#6a5acd",
+                "#708090",
+                "#fffafa",
+                "#00ff7f",
+                "#4682b4",
+                "#d2b48c",
+                "#008080",
+                "#d8bfd8",
+                "#ff6347",
+                "#40e0d0",
+                "#ee82ee",
+                "#ffff00",
+                "#9acd32"
+            ];
+
+            var selectedColors = {};
+
+            function getColor(id) {
+                if (!selectedColors[ id ]) {
+                    selectedColors[ id ] = colors[ Math.floor(Math.random() * colors.length) ];
+                }
+
+                return selectedColors[ id ];
+            }
+
+            function addCommas(nStr) {
+                nStr += '';
+                x = nStr.split('.');
+                x1 = x[ 0 ];
+                x2 = x.length > 1 ? '.' + x[ 1 ] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                return x1 + x2;
+            }
+
+            new Chart('statistics-amount', {
+                type: 'line',
+                data: {
+                    labels: @json(array_values($graph['labels'])),
+                    datasets: [
+                            @foreach($graph['amount'] as $store_id => $_data)
+                        {
+                            label: '{{ $store_names[$store_id] }}',
+                            borderColor: getColor({{ $store_id }}),
+                            data: @json(compare_data(array_keys($graph['labels']), $_data)),
+                        },
+                        @endforeach
+                    ]
+                }
             });
 
-        });
-        var datasets = [];
+            new Chart('statistics-count', {
+                type: 'line',
+                data: {
+                    labels: @json(array_values($graph['labels'])),
+                    datasets: [
+                            @foreach($graph['count'] as $store_id => $_data)
+                        {
+                            label: '{{ $store_names[$store_id] }}',
+                            borderColor: getColor({{ $store_id }}),
+                            data: @json(compare_data(array_keys($graph['labels']), $_data)),
+                        },
+                        @endforeach
+                    ]
+                }
+            });
 
-        @foreach($graph['amount'] as $store_id => $_data)
-            datasets.push('{{ $store_names[$store_id] }}');
-        @endforeach
+            new Chart('statistics-avg', {
+                type: 'line',
+                data: {
+                    labels: @json(array_values($graph['labels'])),
+                    datasets: [
+                            @foreach($graph['avg'] as $store_id => $_data)
+                        {
+                            label: '{{ $store_names[$store_id] }}',
+                            borderColor: getColor({{ $store_id }}),
+                            data: @json(compare_data(array_keys($graph['labels']), $_data)),
+                        },
+                        @endforeach
+                    ]
+                }
+            });
 
-
-        Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
-            return addCommas(tooltipItem.yLabel) + ' — ' + datasets[tooltipItem.datasetIndex];
-        };
-
-        colors = [
-            "#000000",
-            "#ffebcd",
-            "#0000ff",
-            "#8a2be2",
-            "#a52a2a",
-            "#deb887",
-            "#5f9ea0",
-            "#7fff00",
-            "#d2691e",
-            "#ff7f50",
-            "#6495ed",
-            "#dc143c",
-            "#00ffff",
-            "#00008b",
-            "#008b8b",
-            "#b8860b",
-            "#a9a9a9",
-            "#006400",
-            "#a9a9a9",
-            "#bdb76b",
-            "#8b008b",
-            "#556b2f",
-            "#ff8c00",
-            "#9932cc",
-            "#8b0000",
-            "#e9967a",
-            "#8fbc8f",
-            "#483d8b",
-            "#00ced1",
-            "#9400d3",
-            "#ff1493",
-            "#00bfff",
-            "#1e90ff",
-            "#b22222",
-            "#228b22",
-            "#ff00ff",
-            "#daa520",
-            "#ffd700",
-            "#808080",
-            "#008000",
-            "#adff2f",
-            "#808080",
-            "#ff69b4",
-            "#cd5c5c",
-            "#4b0082",
-            "#7cfc00",
-            "#fffacd",
-            "#add8e6",
-            "#f08080",
-            "#90ee90",
-            "#d3d3d3",
-            "#ffb6c1",
-            "#ffa07a",
-            "#20b2aa",
-            "#87cefa",
-            "#778899",
-            "#32cd32",
-            "#faf0e6",
-            "#ff00ff",
-            "#800000",
-            "#66cdaa",
-            "#0000cd",
-            "#ba55d3",
-            "#9370db",
-            "#3cb371",
-            "#7b68ee",
-            "#00fa9a",
-            "#48d1cc",
-            "#c71585",
-            "#191970",
-            "#808000",
-            "#6b8e23",
-            "#ffa500",
-            "#ff4500",
-            "#da70d6",
-            "#98fb98",
-            "#afeeee",
-            "#db7093",
-            "#ffdab9",
-            "#cd853f",
-            "#ffc0cb",
-            "#b0e0e6",
-            "#800080",
-            "#663399",
-            "#ff0000",
-            "#bc8f8f",
-            "#4169e1",
-            "#8b4513",
-            "#fa8072",
-            "#f4a460",
-            "#2e8b57",
-            "#fff5ee",
-            "#a0522d",
-            "#c0c0c0",
-            "#87ceeb",
-            "#6a5acd",
-            "#708090",
-            "#fffafa",
-            "#00ff7f",
-            "#4682b4",
-            "#d2b48c",
-            "#008080",
-            "#d8bfd8",
-            "#ff6347",
-            "#40e0d0",
-            "#ee82ee",
-            "#ffff00",
-            "#9acd32"
-        ];
-
-        var selectedColors = {};
-
-        function getColor(id) {
-            if (!selectedColors[id]) {
-                selectedColors[id] = colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            return selectedColors[id];
-        }
-
-        function addCommas(nStr) {
-            nStr += '';
-            x = nStr.split('.');
-            x1 = x[ 0 ];
-            x2 = x.length > 1 ? '.' + x[ 1 ] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(x1)) {
-                x1 = x1.replace(rgx, '$1' + ',' + '$2');
-            }
-            return x1 + x2;
-        }
-
-        new Chart('statistics-amount', {
-            type: 'line',
-            data: {
-                labels: @json(array_values($graph['labels'])),
-                datasets: [
-                    @foreach($graph['amount'] as $store_id => $_data)
-                    {
-                        label: '{{ $store_names[$store_id] }}',
-                        borderColor: getColor({{ $store_id }}),
-                        data: @json(compare_data(array_keys($graph['labels']), $_data)),
-                    },
-                    @endforeach
-                ]
-            }
-        });
-
-        new Chart('statistics-count', {
-            type: 'line',
-            data: {
-                labels: @json(array_values($graph['labels'])),
-                datasets: [
-                        @foreach($graph['count'] as $store_id => $_data)
-                    {
-                        label: '{{ $store_names[$store_id] }}',
-                        borderColor: getColor({{ $store_id }}),
-                        data: @json(compare_data(array_keys($graph['labels']), $_data)),
-                    },
-                    @endforeach
-                ]
-            }
-        });
-
-        new Chart('statistics-avg', {
-            type: 'line',
-            data: {
-                labels: @json(array_values($graph['labels'])),
-                datasets: [
-                    @foreach($graph['avg'] as $store_id => $_data)
-                    {
-                        label: '{{ $store_names[$store_id] }}',
-                        borderColor: getColor({{ $store_id }}),
-                        data: @json(compare_data(array_keys($graph['labels']), $_data)),
-                    },
-                    @endforeach
-                ]
-            }
-        });
-    </script>
-@endpush
+            new Chart('statistics-visits', {
+                type: 'line',
+                data: {
+                    labels: @json(array_values($graph['labels'])),
+                    datasets: [
+                            @foreach($graph['visits'] as $store_id => $_data)
+                        {
+                            label: '{{ $store_names[$store_id] }}',
+                            borderColor: getColor({{ $store_id }}),
+                            data: @json(compare_data(array_keys($graph['labels']), $_data)),
+                        },
+                        @endforeach
+                    ]
+                }
+            });
+        </script>
+    @endpush
+@endif

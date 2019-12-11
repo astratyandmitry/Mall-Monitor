@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Compare;
 
-use App\Models\Cheque;
 use App\Models\Store;
-use Illuminate\Database\Eloquent\Builder;
+use App\Repositories\VisitsRepository;
+use Illuminate\View\View;
+use App\Classes\GraphStorage;
+use App\Repositories\ChequeRepository;
 
 /**
  * @version   1.0.1
@@ -17,87 +19,51 @@ class CompareStoreController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
         $this->setTitle('Сравнение арендаторов');
         $this->setActiveSection('compare');
         $this->setActivePage('compare.store');
         $this->addBreadcrumb('Сравнение', route('compare.store.index'));
 
-        $graphDateTypes = [
-            'daily' => 'DATE(created_at)',
-            'monthly' => 'DATE_FORMAT(created_at, "%Y-%m")',
-            'yearly' => 'YEAR(created_at)',
-        ];
-
-        $graphDateType = (request('graph_date_type') && in_array(request('graph_date_type'),
-                array_keys($graphDateTypes))) ? request('graph_date_type') : 'daily';
-
-        switch ($graphDateType) {
-            case 'daily':
-                $createdAt = date('Y-m-d H:i:s', strtotime('-30 days'));
-                break;
-            case 'monthly':
-                $createdAt = date('Y-m-d H:i:s', strtotime('-12 months'));
-                break;
-            case 'yearly':
-                $createdAt = date('Y-m-d H:i:s', strtotime('-10 years'));
-                break;
-        }
-
-        $statistics = Cheque::query()
-            ->select(\DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, store_id, {$graphDateTypes[$graphDateType]} as date"))
-            ->where('created_at', '>=', $createdAt)
-            ->groupBy('date', 'store_id')
-            ->orderBy('date', 'asc')
-            ->where(function (Builder $builder): Builder {
-                if (auth()->user()->mall_id) {
-                    $builder->where('mall_id', auth()->user()->mall_id);
-                } else {
-                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
-                        return $builder->where('mall_id', request('mall_id'));
-                    });
-                }
-
-                $builder->when(request('type_id'), function (Builder $builder): Builder {
-                    return $builder->whereHas('store', function (Builder $builder): Builder {
-                        return $builder->where('type_id', request('type_id'));
-                    });
-                });
-
-                return $builder;
-            })->get()->groupBy('date');
-
-        $stores = [];
+        $graph = new GraphStorage;
         $store_names = Store::query()->pluck('name', 'id')->toArray();
 
-        $graph = [
-            'labels' => [],
-            'amount' => [],
-            'count' => [],
-            'avg' => [],
-        ];
+        $visits = VisitsRepository::getCompareForStore();
+        $visitsSimplified = [];
 
-        foreach ($statistics as $date => $stats) {
-            $graph['labels'][$date] = $this->formatDate($date);
-
-            foreach ($stats as $stat) {
-                if ( ! isset($store_names[$stat->store_id])) {
+        foreach ($visits as $date => $data) {
+            foreach ($data as $item) {
+                if ( ! isset($store_names[$item->store_id])) {
                     continue;
                 }
 
-                $stores[$stat->store_id] = true;
+                $visitsSimplified[$date][$item->store_id] = $item->count;
+            }
+        }
 
-                $graph['amount'][$stat->store_id][$date] = round($stat->amount);
-                $graph['count'][$stat->store_id][$date] = round($stat->count);
-                $graph['avg'][$stat->store_id][$date] = round($stat->avg);
+        $stats = ChequeRepository::getCompareForStore();
+
+        foreach ($stats as $date => $data) {
+            $graph->addMultiLabel($date, $date);
+
+            foreach ($data as $item) {
+                if ( ! isset($store_names[$item->store_id])) {
+                    continue;
+                }
+
+                $graph
+                    ->addMultiValue(GraphStorage::AMOUNT, $item->store_id, $date, $item->amount)
+                    ->addMultiValue(GraphStorage::COUNT, $item->store_id, $date, $item->count)
+                    ->addMultiValue(GraphStorage::AVG, $item->store_id, $date, $item->avg)
+                    ->addMultiValue(GraphStorage::VISITS, $item->store_id, $date, (int)@$visitsSimplified[$date][$item->store_id]);
             }
         }
 
         return view('compare.store.index', $this->withData([
+            'statsExists' => (bool)count($stats),
+            'graph' => $graph->getData(),
             'store_names' => $store_names,
-            'statistics' => $statistics,
-            'graph' => $graph,
         ]));
     }
 
