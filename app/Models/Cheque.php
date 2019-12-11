@@ -284,9 +284,7 @@ class Cheque extends Model
             $sort_type = 'asc';
         }
 
-        $builder->whereHas('store', function (Builder $builder): Builder {
-            return $builder->whereNull('deleted_at');
-        });
+        $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
 
         $builder->orderBy($sort_key, $sort_type);
 
@@ -397,9 +395,7 @@ class Cheque extends Model
             $builder->orderBy($sort_key, $sort_type);
         }
 
-        $builder->whereHas('store', function (Builder $builder): Builder {
-            return $builder->whereNull('deleted_at');
-        });
+        $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
 
         return $builder;
     }
