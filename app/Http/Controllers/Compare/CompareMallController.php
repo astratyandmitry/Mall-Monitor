@@ -22,8 +22,8 @@ class CompareMallController extends Controller
     public function index(): View
     {
         $this->setTitle('Сравнение ТРЦ');
-        $this->setActiveSection('placement');
-        $this->setActivePage('placement.mall');
+        $this->setActiveSection('compare');
+        $this->setActivePage('compare.mall');
         $this->addBreadcrumb('Сравнение', route('placement.mall.index'));
 
         $graph = new GraphStorage;
