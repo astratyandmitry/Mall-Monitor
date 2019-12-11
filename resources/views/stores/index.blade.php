@@ -20,7 +20,7 @@
             <div class="container">
                 <div class="stores">
                     @foreach($stores as $store)
-                        @php $storeItem = new App\Classes\Design\StoreItem(@$stats[$store->id], @$visits[$store->id]) @endphp
+                        @php $card = new App\Classes\Design\StoreCard(@$stats[$store->id], @$visits[$store->id]) @endphp
 
                         <a href="{{ $store->link() }}" class="stores-item {{ $store->is_errors_yesterday ? 'is-danger' : '' }}">
                             @if ($store->rentable_area)
@@ -38,9 +38,9 @@
                             <div class="stores-item-detail">
                                 @if (!$store->is_errors_yesterday)
                                     <span class="stores-item-detail-text">
-                                        Оборот за {{ $currentMonth }}: <strong>{{ number_format($storeItem->getChequesAmount()) }} ₸</strong><br/>
-                                        Посещений за {{ $currentMonth }}: <strong>{{ number_format($storeItem->getVisitsCount()) }}</strong><br/>
-                                        Конверсия за {{ $currentMonth }}: <strong>{{ $storeItem->getConversion() }}%</strong>
+                                        Оборот за {{ $currentMonth }}: <strong>{{ number_format($card->getChequesAmount()) }} ₸</strong><br/>
+                                        Посещений за {{ $currentMonth }}: <strong>{{ number_format($card->getVisitsCount()) }}</strong><br/>
+                                        Конверсия за {{ $currentMonth }}: <strong>{{ $card->getConversion() }}%</strong>
                                     </span>
                                 @else
                                     <span class="stores-item-detail-text">

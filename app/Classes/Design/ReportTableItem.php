@@ -2,18 +2,18 @@
 
 namespace App\Classes\Design;
 
-use stdClass;
+use App\DateHelper;
 
 /**
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2019, ArmenianBros. <i@armenianbros.com>
  */
-class StoreItem
+class ReportTableItem
 {
 
     /**
-     * @var \stdClass
+     * @var array
      */
     protected $stats;
 
@@ -22,19 +22,14 @@ class StoreItem
      */
     protected $visitsCount = 0;
 
-    /**
-     * @var int
-     */
-    protected $amount = 0;
-
 
     /**
-     * StoreItem constructor.
+     * StatsTableItem constructor.
      *
-     * @param \stdClass|null $stats
-     * @param int|null       $visitsCount
+     * @param array $stats
+     * @param int|null  $visitsCount
      */
-    public function __construct(?stdClass $stats = null, ?int $visitsCount = null)
+    public function __construct(array $stats, ?int $visitsCount = null)
     {
         $this->stats = $stats;
         $this->visitsCount = (int)$visitsCount;
@@ -42,20 +37,11 @@ class StoreItem
 
 
     /**
-     * @return int
+     * @return string
      */
-    public function getChequesAmount(): int
+    public function getDateFormatted(): string
     {
-        return ! is_null($this->stats) ? round($this->stats->amount) : 0;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getChequesCount(): int
-    {
-        return ! is_null($this->stats) ? $this->stats->count : 0;
+        return DateHelper::byDateGroup($this->stats['date']);
     }
 
 
@@ -65,6 +51,33 @@ class StoreItem
     public function getVisitsCount(): int
     {
         return $this->visitsCount;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getChequesCount(): int
+    {
+        return (int)$this->stats['count'];
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getChequesAmount(): int
+    {
+        return (int)$this->stats['amount'];
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getChequesAvgAmount(): int
+    {
+        return round($this->getChequesAmount() / $this->getChequesCount());
     }
 
 

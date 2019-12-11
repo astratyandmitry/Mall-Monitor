@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property integer                   $id
@@ -147,7 +149,7 @@ class Cheque extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function mall(): BelongsTo
     {
         return $this->belongsTo(Mall::class);
     }
@@ -156,7 +158,7 @@ class Cheque extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class)->withTrashed();
     }
@@ -165,7 +167,7 @@ class Cheque extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function cashbox(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function cashbox(): BelongsTo
     {
         return $this->belongsTo(Cashbox::class)->withTrashed();
     }
@@ -174,7 +176,7 @@ class Cheque extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function type(): BelongsTo
     {
         return $this->belongsTo(ChequeType::class);
     }
@@ -183,7 +185,7 @@ class Cheque extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function payment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function payment(): BelongsTo
     {
         return $this->belongsTo(ChequePayment::class);
     }
@@ -192,7 +194,7 @@ class Cheque extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(ChequeItem::class);
     }
@@ -240,7 +242,7 @@ class Cheque extends Model
         if ($user->store_id) {
             $builder->where('store_id', $user->store_id);
         } else {
-            $builder->when(request()->query('store_id'), function ($builder) {
+            $builder->when(request()->query('store_id'), function ($builder): Builder {
                 return $builder->where('store_id', request()->query('store_id'));
             });
 
@@ -316,7 +318,7 @@ class Cheque extends Model
         if ($user->store_id) {
             $builder->where('store_id', $user->store_id);
         } else {
-            $builder->when(request()->query('store_id'), function ($builder) {
+            $builder->when(request()->query('store_id'), function ($builder): Builder {
                 return $builder->where('store_id', request()->query('store_id'));
             });
 

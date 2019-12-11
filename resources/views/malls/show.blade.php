@@ -138,28 +138,28 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php $statsTableTotal = new App\Classes\Design\StatsTableTotal @endphp
+                            @php $tableTotal = new App\Classes\Design\StatsTableTotal @endphp
                             @foreach($stats as $stat)
-                                @php $statsTableItem = new App\Classes\Design\StatsTableItem($stat, @$visits[$stat->date]) @endphp
-                                @php $statsTableTotal->increase($statsTableItem) @endphp
+                                @php $tableItem = new App\Classes\Design\StatsTableItem($stat, @$visits[$stat->date]) @endphp
+                                @php $tableTotal->increase($tableItem) @endphp
                                 <tr>
                                     <td nowrap>
-                                        {{ $statsTableItem->getDateFormatted() }}
+                                        {{ $tableItem->getDateFormatted() }}
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ $statsTableItem->getConversion() }}%
+                                        {{ $tableItem->getConversion() }}%
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ number_format($statsTableItem->getVisitsCount()) }}
+                                        {{ number_format($tableItem->getVisitsCount()) }}
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ number_format($statsTableItem->getChequesCount()) }}
+                                        {{ number_format($tableItem->getChequesCount()) }}
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($statsTableItem->getChequesAvgAmount()) }} ₸
+                                        {{ number_format($tableItem->getChequesAvgAmount()) }} ₸
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($statsTableItem->getChequesAmount()) }} ₸
+                                        {{ number_format($tableItem->getChequesAmount()) }} ₸
                                     </td>
                                 </tr>
                             @endforeach
@@ -168,16 +168,16 @@
                             <tr>
                                 <th colspan="2" style="text-align: right">Итого:</th>
                                 <th nowrap class="is-center">
-                                    {{ number_format($statsTableTotal->getCountVisits()) }}
+                                    {{ number_format($tableTotal->getCountVisits()) }}
                                 </th>
                                 <th nowrap class="is-center">
-                                    {{ number_format($statsTableTotal->getChequesCount()) }}
+                                    {{ number_format($tableTotal->getChequesCount()) }}
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format($statsTableTotal->getChequesAvgAmount()) }} ₸
+                                    {{ number_format($tableTotal->getChequesAvgAmount()) }} ₸
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format($statsTableTotal->getChequesAmount()) }} ₸
+                                    {{ number_format($tableTotal->getChequesAmount()) }} ₸
                                 </th>
                             </tr>
                             </tfoot>
@@ -188,7 +188,7 @@
         </div>
     </div>
 
-    @if (! count($stats))
+    @if (! count($stats) && !count($visits))
         <div class="information">
             <div class="container">
                 <div class="information-box is-lg">
@@ -233,6 +233,7 @@
             return x1 + x2;
         }
 
+        @if(count($stats))
         new Chart('statistics-amount', {
             type: 'line',
             data: {
@@ -268,6 +269,7 @@
                 } ]
             }
         });
+        @endif
 
         @if (count($visits))
         new Chart('visits-count', {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Mall;
+use App\Repositories\VisitsRepository;
 use Illuminate\View\View;
 use App\Classes\ReportDate;
 use App\Repositories\ChequeRepository;
@@ -80,7 +81,15 @@ class ReportsMallController extends Controller
 
         $mall_names = Mall::query()->whereIn('id', $stats->pluck('mall_id'))->pluck('name', 'id');
 
+        $visits = VisitsRepository::getReportForMall();
+        $visitSimplified = [];
+
+        foreach ($visits as $visit) {
+            $visitSimplified[$visit->date][$visit->mall_id] = $visit->count;
+        }
+
         return [
+            'visits' => $visitSimplified,
             'mall_names' => $mall_names,
             'stats' => $stats->toArray(),
         ];

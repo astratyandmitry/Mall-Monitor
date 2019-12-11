@@ -1,4 +1,5 @@
 @php /** @var array $stats */ @endphp
+@php /** @var array $visits */ @endphp
 @php /** @var array $mall_names */ @endphp
 @php /** @var array $stores */ @endphp
 
@@ -61,6 +62,12 @@
                                     @include('layouts.includes.table.sorting', ['attribute' => 'store_id', 'default_key' => 'store_id'])
                                 </th>
                                 <th nowrap class="is-center" width="100">
+                                    Конверсия
+                                </th>
+                                <th nowrap class="is-center" width="100">
+                                    Посещений
+                                </th>
+                                <th nowrap class="is-center" width="100">
                                     Кол-во чек.
                                     @include('layouts.includes.table.sorting', ['attribute' => 'count', 'default_key' => 'store_id'])
                                 </th>
@@ -79,11 +86,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php $amount = 0 @endphp
-                            @php $count = 0 @endphp
+                            @php $tableTotal = new App\Classes\Design\ReportTableTotal @endphp
                             @foreach($stats as $stat)
-                                @php $amount += $stat['amount'] @endphp
-                                @php $count += $stat['count'] @endphp
+                                @php $tableItem = new App\Classes\Design\ReportTableItem($stat, @$visits[$stat['date']][$stat['store_id']]) @endphp
+                                @php $tableTotal->increase($tableItem) @endphp
                                 <tr>
                                     <td nowrap>
                                         {{ $mall_names[$stat['mall_id']] }}
@@ -92,16 +98,22 @@
                                         {{ $stores[$stat['store_id']]['name'] }}
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ number_format($stat['count']) }}
+                                        {{ $tableItem->getConversion() }} %
+                                    </td>
+                                    <td nowrap class="is-center">
+                                        {{ number_format($tableItem->getVisitsCount()) }}
+                                    </td>
+                                    <td nowrap class="is-center">
+                                        {{ number_format($tableItem->getChequesCount()) }}
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format(round($stat['avg'])) }} ₸
+                                        {{ number_format($tableItem->getChequesAvgAmount()) }} ₸
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($stat['amount']) }} ₸
+                                        {{ number_format($tableItem->getChequesAmount()) }} ₸
                                     </td>
-                                    <td nowrap class="is-right" width="140">
-                                        {{ \App\DateHelper::byDateGroup($stat['date']) }}
+                                    <td nowrap class="is-right" width="140 ">
+                                        {{ $tableItem->getDateFormatted() }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -109,15 +121,18 @@
                             <tfoot>
                             <tr>
                                 <th></th>
-                                <th style="text-align: right">Итого:</th>
+                                <th colspan="2" style="text-align: right">Итого:</th>
                                 <th nowrap class="is-center">
-                                    {{ number_format($count) }}
+                                    {{ number_format($tableTotal->getCountVisits()) }}
+                                </th>
+                                <th nowrap class="is-center">
+                                    {{ number_format($tableTotal->getChequesCount()) }}
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format(round($amount / $count)) }} ₸
+                                    {{ number_format($tableTotal->getChequesAvgAmount()) }} ₸
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format($amount) }} ₸
+                                    {{ number_format($tableTotal->getChequesAmount()) }} ₸
                                 </th>
                                 <th></th>
                             </tr>

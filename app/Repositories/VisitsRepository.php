@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Classes\ReportDate;
+use App\Models\Cheque;
 use App\Models\Visit;
 use App\Classes\GraphDate;
 use Illuminate\Support\Collection;
@@ -164,5 +166,34 @@ class VisitsRepository
                 return $builder;
             })->get()->groupBy('date');
     }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getReportForMall(): Collection
+    {
+        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+
+        return Visit::reportMall($dateFrom, $dateTo)
+            ->select(DB::raw("SUM(count) AS count, mall_id, created_{$dateGroup} as date"))
+            ->groupBy('date')
+            ->groupBy('mall_id')
+            ->get();
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getReportForStore(): Collection
+    {
+        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+
+        return Visit::reportMall($dateFrom, $dateTo)
+            ->select(DB::raw("SUM(count) AS count, mall_id, store_id, created_{$dateGroup} as date"))
+            ->groupBy('date')
+            ->groupBy('store_id')
+            ->get();
+    }
+
 
 }

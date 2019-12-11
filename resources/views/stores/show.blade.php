@@ -231,6 +231,7 @@
             return x1 + x2;
         }
 
+        @if (count($stats))
         new Chart('statistics-amount', {
             type: 'line',
             data: {
@@ -266,6 +267,7 @@
                 } ]
             }
         });
+        @endif
 
         @if (count($visits))
         new Chart('visits-count', {

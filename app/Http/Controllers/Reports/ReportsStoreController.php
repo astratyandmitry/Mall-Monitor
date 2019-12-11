@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reports;
 
 use App\Models\Mall;
 use App\Models\Store;
+use App\Repositories\VisitsRepository;
 use Illuminate\View\View;
 use App\Classes\ReportDate;
 use App\Repositories\ChequeRepository;
@@ -79,8 +80,16 @@ class ReportsStoreController extends Controller
             ->select('name', 'business_identification_number', 'id')
             ->get()->keyBy('id')->toArray();
 
+        $visits = VisitsRepository::getReportForStore();
+        $visitSimplified = [];
+
+        foreach ($visits as $visit) {
+            $visitSimplified[$visit->date][$visit->store_id] = $visit->count;
+        }
+
         return [
             'stats' => $stats->toArray(),
+            'visits' => $visitSimplified,
             'mall_names' => $mall_names,
             'stores' => $stores,
         ];

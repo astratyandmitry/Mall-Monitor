@@ -9,7 +9,7 @@ use stdClass;
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
  * @copyright 2019, ArmenianBros. <i@armenianbros.com>
  */
-class MallItem
+class StoreCard
 {
 
     /**
@@ -28,8 +28,8 @@ class MallItem
     protected $amount = 0;
 
 
-    /**]
-     * MallItem constructor.
+    /**
+     * StoreItem constructor.
      *
      * @param \stdClass|null $stats
      * @param int|null       $visitsCount

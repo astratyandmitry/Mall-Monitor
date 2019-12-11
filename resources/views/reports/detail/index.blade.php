@@ -77,8 +77,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php $amount = 0 @endphp
-                            @php $count = 0 @endphp
                             @foreach($cheques as $cheque)
                                 <tr>
                                     <td nowrap>
