@@ -23,7 +23,7 @@
 
                     <a href="{{ $mall->link() }}" class="stores-item">
                         <div class="stores-item-name">
-                            <span class="stores-item-name-text">{{ $card->name }}</span>
+                            <span class="stores-item-name-text">{{ $mall->name }}</span>
                         </div>
 
                         <div class="stores-item-detail">
