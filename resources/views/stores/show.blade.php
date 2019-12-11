@@ -84,24 +84,26 @@
                     </div>
                 </div>
 
-                <div class="box is-marged">
-                    <div class="box-title has-action">
-                        <div class="box-title-text">
-                            Посещения
-                        </div>
+                @if (count($visits))
+                    <div class="box is-marged">
+                        <div class="box-title has-action">
+                            <div class="box-title-text">
+                                Посещения
+                            </div>
 
-                        <div class="box-title-action">
+                            <div class="box-title-action">
                                 <span data-canvas="visits-count" class="btn is-sm is-outlined js-print-canvas">
                                     <i class="fa fa-file-pdf-o"></i>
                                     Скачать PDF
                                 </span>
+                            </div>
+                        </div>
+
+                        <div class="box-content">
+                            <canvas id="visits-count" class="rounded-sm mb-16" height="80vh"></canvas>
                         </div>
                     </div>
-
-                    <div class="box-content">
-                        <canvas id="visits-count" class="rounded-sm mb-16" height="80vh"></canvas>
-                    </div>
-                </div>
+                @endif
 
                 <div class="box is-marged">
                     <div class="box-title">
@@ -208,7 +210,7 @@
                 var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
                 var doc = new jsPDF("l", "mm", "a4");
                 doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);
-                doc.save('keruenmonitor-chart_' + Date.now() +  '.pdf');
+                doc.save('keruenmonitor-chart_' + Date.now() + '.pdf');
             });
 
         });
@@ -265,6 +267,7 @@
             }
         });
 
+        @if (count($visits))
         new Chart('visits-count', {
             type: 'line',
             data: {
@@ -280,5 +283,6 @@
                 maintainAspectRatio: true,
             }
         })
+        @endif
     </script>
 @endpush
