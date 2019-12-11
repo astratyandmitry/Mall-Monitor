@@ -44,7 +44,9 @@ class ReportsMallController extends Controller
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Отчет по ТРЦ', function ($sheet) {
-                $sheet->loadView('reports.mall.export.excel', $this->getDataForExport());
+                $data = $this->getDataForExport($this->getExcelMaxItems());
+
+                $sheet->loadView('reports.mall.export.excel', $data);
             });
         })->export('xls');
 

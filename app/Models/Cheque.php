@@ -29,7 +29,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @property \App\Models\ChequeItem[]  $items
  *
  * @method static Builder uniqueAttrs(array $attrs)
- * @method static Builder reportMall(string $dateFrom, string $dateTo)
+ * @method static Builder reportMall(?string $dateFrom, ?string $dateTo)
+ * @method static Builder reportStore(?string $dateFrom, ?string $dateTo)
+ * @method static Builder reportDetail(?string $dateFrom, ?string $dateTo)
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>

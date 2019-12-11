@@ -1,7 +1,8 @@
 @php /** @var \App\Models\Cheque[] $cheques */ @endphp
-@php /** @var string|null $dateFrom */ @endphp
-@php /** @var string|null $dateTo */ @endphp
-<!doctype html>
+@php /** @var string $selectedStore */ @endphp
+@php /** @var string $selectedMall */ @endphp
+@php /** @var string $selectedTime */ @endphp
+        <!doctype html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -15,24 +16,15 @@
             <strong>Детальный отчет</strong>
         </th>
         <th colspan="5" style="background: #38c172; color: #ffffff; text-align: right;">
-            @if ($dateFrom && $dateTo)
-                c {{ date('d.m.Y H:i', strtotime($dateFrom)) }}
-                по {{ date('d.m.Y H:i', strtotime($dateTo)) }}
-            @elseif ($dateFrom)
-                c {{ date('d.m.Y H:i', strtotime($dateFrom)) }}
-            @elseif ($dateTo)
-                по {{ date('d.m.Y H:i', strtotime($dateTo)) }}
-            @else
-                За все время
-            @endif
+            {{ $selectedTime }}
         </th>
     </tr>
     <tr>
         <th colspan="6" style="background: #f0f0f0; font-weight: 400;">
-            ТРЦ: {{ (request()->has('mall_id')) ? \App\Models\Mall::find(request()->get('mall_id'))->name : 'Все' }}
+            ТРЦ: {{ $selectedMall }}
         </th>
         <th colspan="5" style="background: #f0f0f0; font-weight: 400; text-align: right;">
-            Заведение: {{ (request()->has('store_id')) ? \App\Models\Store::find(request()->get('store_id'))->name : 'Все' }}
+            Заведение: {{ $selectedStore }}
         </th>
     </tr>
     <tr>
@@ -94,13 +86,13 @@
                 {{ $cheque->payment->name }}
             </td>
             <td>
-                {{ $cheque->amount }}
+                {{ number_format($cheque->amount) }}
             </td>
             <td>
-                {{ count($cheque->items) ? $cheque->items->count() : 0 }}
+                {{ number_format(count($cheque->items) ? $cheque->items->count() : 0) }}
             </td>
             <td>
-                {{ count($cheque->items) ? (int)$cheque->items->sum('quantity') : 0 }}
+                {{ number_format(count($cheque->items) ? (int)$cheque->items->sum('quantity') : 0) }}
             </td>
             <td>
                 {{ $cheque->created_at->format('d.m.Y H:i') }}

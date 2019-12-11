@@ -39,7 +39,9 @@ class ReportsStoreController extends Controller
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Отчет по арендаторам', function ($sheet) {
-                $sheet->loadView('reports.store.export.excel', $this->getDataForExport());
+                $data = $this->getDataForExport($this->getExcelMaxItems());
+
+                $sheet->loadView('reports.store.export.excel', $data);
             });
         })->export('xls');
 
@@ -55,6 +57,7 @@ class ReportsStoreController extends Controller
         $filename = 'keruenmonitor_reports.store_' . date('YmdHi');
 
         $data = $this->getDataForExport($this->getPDFMaxItems());
+
         $pdf = \PDF::loadView('reports.store.export.pdf', $data)->setPaper('a4', 'landscape');
 
         return $pdf->download("{$filename}.pdf");

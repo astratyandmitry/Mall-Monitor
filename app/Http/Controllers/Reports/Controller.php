@@ -11,6 +11,15 @@ class Controller extends \App\Http\Controllers\Controller
 {
 
     /**
+     * @return int|null
+     */
+    protected function getExcelMaxItems(): ?int
+    {
+        return (app()->isLocal()) ? 50 : null;
+    }
+
+
+    /**
      * @return int
      */
     protected function getPDFMaxItems(): int

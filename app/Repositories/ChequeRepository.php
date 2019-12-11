@@ -215,6 +215,26 @@ class ChequeRepository
 
 
     /**
+     * @param int|null $limit
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getReportDetail(?int $limit = null): Collection
+    {
+        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+
+        /** @var \Illuminate\Database\Query\Builder $items */
+        $items = Cheque::reportDetail($dateFrom, $dateTo)->with(['items']);
+
+        if ( ! is_null($limit)) {
+            $items = $items->limit($limit);
+        }
+
+        return $items->get();
+    }
+
+
+    /**
      * @param int    $storeId
      * @param string $date
      *
