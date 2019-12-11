@@ -51,9 +51,13 @@ class CompareStoreController extends Controller
             ->groupBy('date', 'store_id')
             ->orderBy('date', 'asc')
             ->where(function (Builder $builder): Builder {
-                $builder->when(request('mall_id'), function (Builder $builder): Builder {
-                    return $builder->where('mall_id', request('mall_id'));
-                });
+                if (auth()->user()->mall_id) {
+                    $builder->where('mall_id', auth()->user()->mall_id);
+                } else {
+                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                        return $builder->where('mall_id', request('mall_id'));
+                    });
+                }
 
                 $builder->when(request('type_id'), function (Builder $builder): Builder {
                     return $builder->whereHas('store', function (Builder $builder): Builder {
