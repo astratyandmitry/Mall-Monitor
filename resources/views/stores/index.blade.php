@@ -1,4 +1,4 @@
-@php /** @var array $statistics */ @endphp
+@php /** @var array $stats */ @endphp
 @php /** @var array $visits */ @endphp
 @php /** @var \App\Models\Store[] $stores */ @endphp
 
@@ -20,7 +20,7 @@
             <div class="container">
                 <div class="stores">
                     @foreach($stores as $store)
-                        @php $storeItem = new App\Classes\Design\StoreItem(@$statistics[$store->id], @$visits[$store->id]) @endphp
+                        @php $storeItem = new App\Classes\Design\StoreItem(@$stats[$store->id], @$visits[$store->id]) @endphp
 
                         <a href="{{ $store->link() }}" class="stores-item {{ $store->is_errors_yesterday ? 'is-danger' : '' }}">
                             @if ($store->rentable_area)
