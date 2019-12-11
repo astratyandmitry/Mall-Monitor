@@ -76,6 +76,17 @@ class DateHelper
 
 
     /**
+     * @param string $date
+     *
+     * @return string
+     */
+    public static function get(?string $date): string
+    {
+        return date('Y.m.d H:i', strtotime($date));
+    }
+
+
+    /**
      * @param int|null $month
      *
      * @return string

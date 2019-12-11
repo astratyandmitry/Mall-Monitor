@@ -1,11 +1,11 @@
 @php
-    /** @var array $statistics_current */
-   /** @var array $statistics_past */
+    /** @var array $statsCurrent */
+   /** @var array $statsPast */
    /** @var integer $mall_id */
    /** @var string $key */
 
-   $_current = placement_value($statistics_current, isset($store_id) ? $store_id : $mall_id, $key);
-   $_past = placement_value($statistics_past, isset($store_id) ? $store_id : $mall_id, $key);
+   $_current = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, $key);
+   $_past = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, $key);
    $_diff = placement_diff($_current, $_past);
    $_currency = (isset($currency) && $currency == true) ? true : false;
 @endphp

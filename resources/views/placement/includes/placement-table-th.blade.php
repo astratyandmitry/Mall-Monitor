@@ -1,6 +1,6 @@
 @php
-    /** @var array $statistics_current */
-    /** @var array $statistics_past */
+    /** @var array $statsCurrent */
+    /** @var array $statsPast */
     /** @var integer $mall_id */
     /** @var string $key */
 

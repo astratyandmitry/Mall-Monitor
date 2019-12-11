@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Placement;
 
-use App\Classes\Date\PlacementDate;
+use App\DateHelper;
 use App\Models\Mall;
-use App\Models\Cheque;
+use App\Repositories\VisitsRepository;
 use Illuminate\View\View;
+use App\Classes\Date\PlacementDate;
+use App\Http\Controllers\Controller;
+use App\Repositories\ChequeRepository;
 
 /**
  * @version   1.0.1
@@ -25,146 +28,87 @@ class PlacementMallController extends Controller
         $this->setActivePage('placement.mall');
         $this->addBreadcrumb('Положение', route('placement.mall.index'));
 
-        $data = $this->getExportData();
-
-        return view('placement.mall.index', $this->withData($data));
+        return view('placement.mall.index', $this->withData($this->getData()));
     }
 
 
     /**
-     * @return string
-     */
-    public function exportExcel(): string
-    {
-        $filename = 'keruenmonitor_placement.mall_' . date('YmdHi');
-
-        \Excel::create($filename, function ($excel) {
-            $excel->sheet('Положение ТРЦ', function ($sheet) {
-                $sheet->loadView('placement.mall.export.excel', $this->getExportData());
-            });
-        })->export('xls');
-
-        return '<script>window.close();</script>';
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function exportPDF()
-    {
-        $filename = 'keruenmonitor_placement.mall_' . date('YmdHi');
-
-        $pdf = \PDF::loadView('placement.mall.export.pdf', $this->getExportData($this->getPDFMaxItems()))->setPaper('a4', 'landscape');
-
-        return $pdf->download("{$filename}.pdf");
-    }
-
-
-    /**
-     * @param int|null $limit
-     *
      * @return array
      */
-    protected function getExportData(?int $limit = null): array
+    protected function getData(): array
     {
         PlacementDate::setupRequest();
 
-        $current = $this->getDataForPeriod('current', $limit);
-        $past = $this->getDataForPeriod('past', $limit);
+        $periodCurrent = $this->getDataForPeriod('current');
+        $periodPast = $this->getDataForPeriod('past');
 
-        $data = [
-            'dates' => [
-                'current' => [
-                    'from' => date('d.m.Y H:i:s', strtotime($current['date_from'])),
-                    'to' => date('d.m.Y H:i:s', strtotime($current['date_to'])),
-                ],
-                'past' => [
-                    'from' => date('d.m.Y H:i:s', strtotime($past['date_from'])),
-                    'to' => date('d.m.Y H:i:s', strtotime($past['date_to'])),
-                ],
-            ],
-            'statistics_current' => [],
-            'statistics_past' => [],
-            'mall_names' => [],
+        $dates = [
+            'current' => DateHelper::get($periodCurrent['date_from']) . ' - ' . DateHelper::get($periodCurrent['date_to']),
+            'past' => DateHelper::get($periodPast['date_from']) . ' - ' . DateHelper::get($periodPast['date_to']),
         ];
 
         $mall_ids = [];
 
-        $statistics_current = [];
-        if ( ! is_null($current['statistics'])) {
-            $mall_ids = array_merge($mall_ids, $current['statistics']->pluck('mall_id', 'mall_id')->toArray());
-            $statistics_current = $current['statistics']->keyBy('mall_id')->toArray();
-        }
+        $statsCurrent = $this->setDataForPeriod($periodCurrent, $mall_ids);
+        $statsPast = $this->setDataForPeriod($periodPast, $mall_ids);
 
-        $statistics_past = [];
-        if ( ! is_null($past['statistics'])) {
-            $mall_ids = array_merge($mall_ids, $past['statistics']->pluck('mall_id', 'mall_id')->toArray());
-            $statistics_past = $past['statistics']->keyBy('mall_id')->toArray();
-        }
-
-        return array_merge($data, [
-            'statistics_current' => $statistics_current,
-            'statistics_past' => $statistics_past,
-            'mall_names' => (count($mall_ids)) ? Mall::whereIn('id', $mall_ids)->pluck('name', 'id') : [],
-        ]);
-    }
-
-
-    /**
-     * @param string   $period
-     * @param int|null $limit
-     *
-     * @return null|array
-     */
-    protected function getDataForPeriod(string $period, ?int $limit = null): ?array
-    {
-        $dateFrom = $this->getDateTime($period, 'from');
-        $dateTo = $this->getDateTime($period, 'to');
-
-        if (is_null($dateFrom) || is_null($dateTo)) {
-            return null;
-        }
-
-        $select = 'COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id';
-
-        $statistics = Cheque::reportMall($dateFrom, $dateTo);
-
-        if ( ! is_null($limit)) {
-            $statistics = $statistics->limit($limit);
-        }
+        $mall_names = Mall::query()->whereIn('id', $mall_ids)->pluck('name', 'id');
 
         return [
-            'date_from' => $dateFrom,
-            'date_to' => $dateTo,
-            'statistics' => $statistics->select(\DB::raw($select))->groupBy('mall_id')->get(),
+            'statsCurrent' => $statsCurrent,
+            'statsPast' => $statsPast,
+            'mall_names' => $mall_names,
+            'dates' => $dates,
         ];
     }
 
 
     /**
      * @param string $period
-     * @param string $key
      *
-     * @return null|string
+     * @return null|array
      */
-    protected function getDateTime(string $period, string $key): ?string
+    protected function getDataForPeriod(string $period): ?array
     {
-        if ($date = request()->query("{$period}_date_{$key}")) {
-            $time = request()->query("{$period}_time_{$key}");
+        $dateFrom = PlacementDate::getFromRequest($period, 'from');
+        $dateTo = PlacementDate::getFromRequest($period, 'to');
 
-            if ( ! $time) {
-                $time = ($key == 'from') ? '00:00' : '23:59';
-            }
-
-            request()->merge([
-                "time_{$key}" => $time,
-            ]);
-
-            return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
+        if (is_null($dateFrom) || is_null($dateTo)) {
+            return null;
         }
 
-        return null;
+        return [
+            'stats' => ChequeRepository::getPlacementForMall($dateFrom, $dateTo),
+            'visits' => VisitsRepository::getPlacementForMall($dateFrom, $dateTo),
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+        ];
+    }
+
+
+    /**
+     * @param array|null $period
+     * @param array      $mall_ids
+     *
+     * @return array
+     */
+    protected function setDataForPeriod(?array $period = null, array &$mall_ids): array
+    {
+        if (is_null($period)) {
+            return [];
+        }
+
+        $mall_ids = array_merge($mall_ids, $period['stats']->pluck('mall_id', 'mall_id')->toArray());
+
+        $stats = $period['stats']->keyBy('mall_id')->toArray();
+        $visits = $period['visits']->pluck('count', 'mall_id')->toArray();
+
+
+        foreach (array_keys($stats) as $mall_id) {
+            $stats[$mall_id]['visits'] = (int)@$visits[$mall_id];
+        }
+
+        return $stats;
     }
 
 }

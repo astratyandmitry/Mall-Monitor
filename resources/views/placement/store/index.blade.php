@@ -1,5 +1,5 @@
-@php /** @var array $statistics_current */ @endphp
-@php /** @var array $statistics_past */ @endphp
+@php /** @var array $statsCurrent */ @endphp
+@php /** @var array $statsPast */ @endphp
 @php /** @var array $mall_names */ @endphp
 @php /** @var array $store_names */ @endphp
 
@@ -27,14 +27,13 @@
 
     @include('placement.store.partials.filter')
 
-    @if (count($statistics_current) || count($statistics_past))
+    @if (count($statsCurrent) || count($statsPast))
         <div class="content">
             <div class="container">
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Сравнение <span class="badge">{{ $dates['current']['from'] }} - {{ $dates['current']['to'] }}</span>
-                            с <span class="badge">{{ $dates['past']['from'] }} - {{ $dates['past']['to'] }}</span>
+                            Сравнение <span class="badge">{{ $dates['current'] }}</span> с <span class="badge">{{ $dates['past'] }}</span>
                         </div>
                     </div>
 
@@ -66,10 +65,10 @@
                             @php $amount_past = 0 @endphp
                             @php $count_past = 0 @endphp
                             @foreach($store_names as $store_id => $store)
-                                @php $amount_current += placement_value($statistics_current, $store_id, 'amount') @endphp
-                                @php $count_current += placement_value($statistics_current, $store_id, 'count') @endphp
-                                @php $amount_past += placement_value($statistics_past, $store_id, 'amount') @endphp
-                                @php $count_past += placement_value($statistics_past, $store_id, 'count') @endphp
+                                @php $amount_current += placement_value($statsCurrent, $store_id, 'amount') @endphp
+                                @php $count_current += placement_value($statsCurrent, $store_id, 'count') @endphp
+                                @php $amount_past += placement_value($statsPast, $store_id, 'amount') @endphp
+                                @php $count_past += placement_value($statsPast, $store_id, 'count') @endphp
                                 <tr style="line-height: 1.4">
                                     <td nowrap>
                                         {{ $mall_names[$store['mall_id']] }}

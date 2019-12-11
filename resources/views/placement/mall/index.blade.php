@@ -1,5 +1,6 @@
-@php /** @var array $statistics_current */ @endphp
-@php /** @var array $statistics_past */ @endphp
+@php /** @var array $statsCurrent */ @endphp
+@php /** @var array $statsPast */ @endphp
+@php /** @var array $dates */ @endphp
 @php /** @var array $mall_names */ @endphp
 
 @php $exportParams = paginateAppends() @endphp
@@ -26,14 +27,13 @@
 
     @include('placement.mall.partials.filter')
 
-    @if (count($statistics_current) || count($statistics_past))
+    @if (count($statsCurrent) || count($statsPast))
         <div class="content">
             <div class="container">
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Сравнение <span class="badge"> {{ $dates['current']['from'] }} - {{ $dates['current']['to'] }}</span>
-                            с <span class="badge">{{ $dates['past']['from'] }} - {{ $dates['past']['to'] }}</span>
+                            Сравнение <span class="badge">{{ $dates['current'] }}</span> с <span class="badge">{{ $dates['past'] }}</span>
                         </div>
                     </div>
 
@@ -43,6 +43,9 @@
                             <tr>
                                 <th nowrap>
                                     ТРЦ
+                                </th>
+                                <th nowrap class="is-right" width="100">
+                                    Посещений
                                 </th>
                                 <th nowrap class="is-right" width="100">
                                     Кол-во чек.
@@ -56,19 +59,24 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @php $visits_current = 0 @endphp
                             @php $amount_current = 0 @endphp
                             @php $count_current = 0 @endphp
+                            @php $visits_past = 0 @endphp
                             @php $amount_past = 0 @endphp
                             @php $count_past = 0 @endphp
                             @foreach($mall_names as $mall_id => $mall_name)
-                                @php $amount_current += placement_value($statistics_current, $mall_id, 'amount') @endphp
-                                @php $count_current += placement_value($statistics_current, $mall_id, 'count') @endphp
-                                @php $amount_past += placement_value($statistics_past, $mall_id, 'amount') @endphp
-                                @php $count_past += placement_value($statistics_past, $mall_id, 'count') @endphp
+                                @php $visits_current += placement_value($statsCurrent, $mall_id, 'visits') @endphp
+                                @php $amount_current += placement_value($statsCurrent, $mall_id, 'amount') @endphp
+                                @php $count_current += placement_value($statsCurrent, $mall_id, 'count') @endphp
+                                @php $visits_past += placement_value($statsPast, $mall_id, 'visits') @endphp
+                                @php $amount_past += placement_value($statsPast, $mall_id, 'amount') @endphp
+                                @php $count_past += placement_value($statsPast, $mall_id, 'count') @endphp
                                 <tr style="line-height: 1.4">
                                     <td nowrap>
                                         {{ $mall_name }}
                                     </td>
+                                    @include('placement.includes.placement-table-td', ['key' => 'visits'])
                                     @include('placement.includes.placement-table-td', ['key' => 'count'])
                                     @include('placement.includes.placement-table-td', ['key' => 'avg'])
                                     @include('placement.includes.placement-table-td', ['key' => 'amount', 'currency' => true])
@@ -78,6 +86,10 @@
                             <tfoot>
                             <tr>
                                 <th style="text-align: right">Итого:</th>
+                                @include('placement.includes.placement-table-th', [
+                                    '_current' => $visits_current,
+                                    '_past' => $visits_past,
+                                ])
                                 @include('placement.includes.placement-table-th', [
                                     '_current' => $count_current,
                                     '_past' => $count_past,

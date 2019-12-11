@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Classes\Date\PlacementDate;
 use App\Classes\Date\ReportDate;
 use App\Models\Cheque;
 use App\Classes\Graph\GraphDate;
@@ -231,6 +232,36 @@ class ChequeRepository
         }
 
         return $items->get();
+    }
+
+
+    /**
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getPlacementForMall(string $dateFrom, string $dateTo): ?Collection
+    {
+        return Cheque::reportMall($dateFrom, $dateTo)
+            ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id'))
+            ->groupBy('mall_id')
+            ->get();
+    }
+
+
+    /**
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getPlacementForStore(string $dateFrom, string $dateTo): ?Collection
+    {
+        return Cheque::reportMall($dateFrom, $dateTo)
+            ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id'))
+            ->groupBy('store_id')
+            ->get();
     }
 
 

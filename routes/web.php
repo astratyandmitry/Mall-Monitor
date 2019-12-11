@@ -24,12 +24,8 @@ Route::group(['middleware' => 'loggined'], function (): void {
 
     Route::prefix('placement')->namespace('Placement')->name('placement.')->group(function () {
         Route::get('/mall', 'PlacementMallController@index')->name('mall.index');
-        Route::get('/mall/export/excel', 'PlacementMallController@exportExcel')->name('mall.export.excel');
-        Route::get('/mall/export/pdf', 'PlacementMallController@exportPDF')->name('mall.export.pdf');
 
         Route::get('/store', 'PlacementStoreController@index')->name('store.index');
-        Route::get('/store/export/excel', 'PlacementStoreController@exportExcel')->name('store.export.excel');
-        Route::get('/store/export/pdf', 'PlacementStoreController@exportPDF')->name('store.export.pdf');
     });
 
     Route::prefix('compare')->namespace('Compare')->name('compare.')->group(function () {

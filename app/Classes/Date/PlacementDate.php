@@ -142,4 +142,30 @@ class PlacementDate
         }
     }
 
+
+    /**
+     * @param string $period
+     * @param string $key
+     *
+     * @return string|null
+     */
+    public static function getFromRequest(string $period, string $key): ?string
+    {
+        if ($date = request()->query("{$period}_date_{$key}")) {
+            $time = request()->query("{$period}_time_{$key}");
+
+            if ( ! $time) {
+                $time = ($key == 'from') ? '00:00' : '23:59';
+            }
+
+            request()->merge([
+                "time_{$key}" => $time,
+            ]);
+
+            return date('Y-m-d H:i:s', strtotime("{$date} {$time}"));
+        }
+
+        return null;
+    }
+
 }

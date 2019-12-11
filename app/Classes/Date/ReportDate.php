@@ -67,7 +67,7 @@ class ReportDate
 
 
     /**
-     * @return \App\Classes\ReportDate
+     * @return \App\Classes\Date\ReportDate
      */
     public static function instance(): ReportDate
     {

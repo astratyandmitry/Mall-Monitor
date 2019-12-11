@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Compare;
 
 use App\Models\Mall;
-use App\Repositories\VisitsRepository;
 use Illuminate\View\View;
 use App\Classes\Graph\GraphStorage;
+use App\Http\Controllers\Controller;
+use App\Repositories\VisitsRepository;
 use App\Repositories\ChequeRepository;
 
 /**

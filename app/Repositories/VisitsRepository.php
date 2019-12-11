@@ -167,6 +167,7 @@ class VisitsRepository
             })->get()->groupBy('date');
     }
 
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -180,6 +181,7 @@ class VisitsRepository
             ->groupBy('mall_id')
             ->get();
     }
+
 
     /**
      * @return \Illuminate\Support\Collection
@@ -195,5 +197,34 @@ class VisitsRepository
             ->get();
     }
 
+
+    /**
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getPlacementForMall(string $dateFrom, string $dateTo): ?Collection
+    {
+        return Visit::reportMall($dateFrom, $dateTo)
+            ->select(DB::raw('SUM(count) AS count, mall_id'))
+            ->groupBy('mall_id')
+            ->get();
+    }
+
+
+    /**
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getPlacementForStore(string $dateFrom, string $dateTo): ?Collection
+    {
+        return Visit::reportMall($dateFrom, $dateTo)
+            ->select(DB::raw('SUM(count) AS count, mall_id, store_id'))
+            ->groupBy('store_id')
+            ->get();
+    }
 
 }
