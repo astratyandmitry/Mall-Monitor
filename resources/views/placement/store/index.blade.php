@@ -48,6 +48,9 @@
                                     Арендатор
                                 </th>
                                 <th nowrap class="is-right" width="100">
+                                    Посещений
+                                </th>
+                                <th nowrap class="is-right" width="100">
                                     Кол-во чек.
                                     @include('layouts.includes.table.sorting', ['attribute' => 'count', 'default_key' => 'mall_id'])
                                 </th>
@@ -60,13 +63,17 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @php $visits_current = 0 @endphp
                             @php $amount_current = 0 @endphp
                             @php $count_current = 0 @endphp
+                            @php $visits_past = 0 @endphp
                             @php $amount_past = 0 @endphp
                             @php $count_past = 0 @endphp
                             @foreach($store_names as $store_id => $store)
+                                @php $visits_current += placement_value($statsCurrent, $store_id, 'visits') @endphp
                                 @php $amount_current += placement_value($statsCurrent, $store_id, 'amount') @endphp
                                 @php $count_current += placement_value($statsCurrent, $store_id, 'count') @endphp
+                                @php $visits_past += placement_value($statsPast, $store_id, 'visits') @endphp
                                 @php $amount_past += placement_value($statsPast, $store_id, 'amount') @endphp
                                 @php $count_past += placement_value($statsPast, $store_id, 'count') @endphp
                                 <tr style="line-height: 1.4">
@@ -76,6 +83,7 @@
                                     <td nowrap>
                                         {{ $store['name'] }}
                                     </td>
+                                    @include('placement.includes.placement-table-td', ['key' => 'visits'])
                                     @include('placement.includes.placement-table-td', ['key' => 'count'])
                                     @include('placement.includes.placement-table-td', ['key' => 'avg'])
                                     @include('placement.includes.placement-table-td', ['key' => 'amount', 'currency' => true])
@@ -85,6 +93,10 @@
                             <tfoot>
                             <tr>
                                 <th colspan="2" style="text-align: right">Итого:</th>
+                                @include('placement.includes.placement-table-th', [
+                                  '_current' => $visits_current,
+                                  '_past' => $visits_past,
+                              ])
                                 @include('placement.includes.placement-table-th', [
                                     '_current' => $count_current,
                                     '_past' => $count_past,
