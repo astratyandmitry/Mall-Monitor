@@ -127,7 +127,7 @@ class Store extends Model
     public static function scopeReport(Builder $builder): Builder
     {
         $builder->when(request()->query('store_id'), function (Builder $builder): Builder {
-            return $builder->where('store_id', request()->query('store_id'));
+            return $builder->where('id', request()->query('store_id'));
         });
 
         $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
