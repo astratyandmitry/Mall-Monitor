@@ -124,7 +124,7 @@ class ChequeRepository
                 }
 
                 $builder->when(request('type_id'), function (Builder $builder): Builder {
-                    return $builder->whereHas('mall', function (Builder $builder): Builder {
+                    return $builder->whereHas('store', function (Builder $builder): Builder {
                         return $builder->where('type_id', request('type_id'));
                     });
                 });
@@ -157,7 +157,7 @@ class ChequeRepository
                 }
 
                 $builder->when(request('type_id'), function (Builder $builder): Builder {
-                    return $builder->whereHas('mall', function (Builder $builder): Builder {
+                    return $builder->whereHas('store', function (Builder $builder): Builder {
                         return $builder->where('type_id', request('type_id'));
                     });
                 });
