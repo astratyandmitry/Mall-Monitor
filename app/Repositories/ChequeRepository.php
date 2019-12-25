@@ -258,7 +258,7 @@ class ChequeRepository
      */
     public static function getPlacementForStore(string $dateFrom, string $dateTo): ?Collection
     {
-        return Cheque::reportMall($dateFrom, $dateTo)
+        return Cheque::reportStore($dateFrom, $dateTo)
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id'))
             ->groupBy('store_id')
             ->get();
