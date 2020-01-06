@@ -130,10 +130,6 @@ class Store extends Model
             return $builder->where('id', request()->query('store_id'));
         });
 
-        $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
-            return $builder->where('cashbox_id', request('cashbox_id'));
-        });
-
         $builder->when(request('store_name'), function (Builder $builder): Builder {
             return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
         });

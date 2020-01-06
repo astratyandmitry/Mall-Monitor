@@ -264,6 +264,10 @@ class Cheque extends Model
             $sort_type = 'asc';
         }
 
+        $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
+            return $builder->where('cashbox_id', request('cashbox_id'));
+        });
+
         $builder->orderBy($sort_key, $sort_type);
 
         return $builder;
@@ -343,6 +347,10 @@ class Cheque extends Model
             $builder->orderBy($sort_key, $sort_type);
         }
 
+        $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
+            return $builder->where('cashbox_id', request('cashbox_id'));
+        });
+
         return $builder;
     }
 
@@ -388,6 +396,10 @@ class Cheque extends Model
         $builder->orderBy($sort_key, $sort_type);
 
         $builder->whereIn('store_id', Store::query()->pluck('id')->toArray());
+
+        $builder->when(request('cashbox_id'), function (Builder $builder): Builder {
+            return $builder->where('cashbox_id', request('cashbox_id'));
+        });
 
         return $builder;
     }
