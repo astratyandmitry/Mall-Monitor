@@ -24,12 +24,18 @@ class ChequesWebkassaDeleteCommand extends Command
      */
     public function handle(): void
     {
-        $i = 1;
-        while (DB::select("select count(id) as count from cheques where kkm_code like 'SWK%'")[0]->count) {
-            $this->info("step: {$i}");
-            $i++;
+        $cashboxes = DB::table('cashboxes')->where('code', 'like', "SWK%")->pluck('id', 'code')->toArray();
 
-            DB::delete("delete from cheques where kkm_code like 'SWK%'");
+        foreach ($cashboxes as $cashboxCode => $cashboxId) {
+            $this->info("Working with: {$cashboxCode}");
+
+            $i = 1;
+            while (DB::select("select count(id) as count from cheques where cashbox_id = {$cashboxId}")[0]->count) {
+                $this->info("- iteration: {$i}");
+                $i++;
+
+                DB::delete("delete from cheques where cashbox_id = {$cashboxId} limit 10000");
+            }
         }
     }
 
