@@ -34,7 +34,7 @@ class ChequesWebkassaDeleteCommand extends Command
                 $this->info("- iteration: {$i}");
                 $i++;
 
-                DB::delete("delete from cheques where cashbox_id = {$cashboxId} limit 10000");
+                DB::delete("delete from cheques where cashbox_id = {$cashboxId} limit 1000");
             }
         }
     }
