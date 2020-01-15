@@ -192,7 +192,7 @@ class ManageStoreIntegrationsController extends ManageController
             $selectedKey = $keys[0];
         }
 
-        $keys = array_keys($array[$selectedKey][0]);
+        $keys = array_keys(isset($array[$selectedKey][0]) ? $array[$selectedKey][0] : $array[$selectedKey]);
         $attrs = [];
 
         foreach ($keys as $key) {
