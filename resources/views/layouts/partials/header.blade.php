@@ -39,42 +39,40 @@
                         </a>
 
                         <ul class="header-nav-list-item-dropdown">
-                            <li class="header-nav-list-item-dropdown-item">
+                            @if ( ! $currentUser->store_id)
+                                <li class="header-nav-list-item-dropdown-item">
                                 <span class="header-nav-list-item-dropdown-item-heading">
                                     Положение
                                 </span>
-                            </li>
-                            @if ( ! $currentUser->store_id)
+                                </li>
                                 <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'placement.mall', false) }}">
                                     <a href="{{ route('placement.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
                                         ТРЦ
                                     </a>
                                 </li>
-                            @endif
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'placement.store', false) }}">
-                                <a href="{{ route('placement.store.index') }}" class="header-nav-list-item-dropdown-item-link">
-                                    Арендаторы
-                                </a>
-                            </li>
-                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
-                            <li class="header-nav-list-item-dropdown-item">
+                                <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'placement.store', false) }}">
+                                    <a href="{{ route('placement.store.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                        Арендаторы
+                                    </a>
+                                </li>
+                                <li class="header-nav-list-item-dropdown-item is-devider"></li>
+                                <li class="header-nav-list-item-dropdown-item">
                                 <span class="header-nav-list-item-dropdown-item-heading">
                                     Сравнение
                                 </span>
-                            </li>
-                            @if ( ! $currentUser->store_id)
+                                </li>
                                 <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'compare.mall', false) }}">
                                     <a href="{{ route('compare.mall.index') }}" class="header-nav-list-item-dropdown-item-link">
                                         ТРЦ
                                     </a>
                                 </li>
+                                <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'compare.store', false) }}">
+                                    <a href="{{ route('compare.store.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                        Арендаторы
+                                    </a>
+                                </li>
+                                <li class="header-nav-list-item-dropdown-item is-devider"></li>
                             @endif
-                            <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'compare.store', false) }}">
-                                <a href="{{ route('compare.store.index') }}" class="header-nav-list-item-dropdown-item-link">
-                                    Арендаторы
-                                </a>
-                            </li>
-                            <li class="header-nav-list-item-dropdown-item is-devider"></li>
                             <li class="header-nav-list-item-dropdown-item">
                                 <span class="header-nav-list-item-dropdown-item-heading">
                                     Отчеты
@@ -138,7 +136,8 @@
                                         </a>
                                     </li>
                                     <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.store_integrations', false) }}">
-                                        <a href="{{ route('manage.store_integrations.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                        <a href="{{ route('manage.store_integrations.index') }}"
+                                           class="header-nav-list-item-dropdown-item-link">
                                             Конфигурации
                                         </a>
                                     </li>
