@@ -18,6 +18,11 @@ use App\Repositories\ChequeRepository;
 class PlacementMallController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('not-store');
+    }
+
     /**
      * @return \Illuminate\View\View
      */

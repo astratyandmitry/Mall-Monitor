@@ -17,6 +17,11 @@ use App\Repositories\ChequeRepository;
 class CompareStoreController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('not-store');
+    }
+
     /**
      * @return \Illuminate\View\View
      */
