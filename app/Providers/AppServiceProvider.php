@@ -14,6 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment() !== 'local') {
+            \Debugbar::disable();
+        }
+
         \View::composer('*', function ($view): void {
             if (auth()->check()) {
                 $view->with('currentUser', auth()->user());
