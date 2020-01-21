@@ -49,6 +49,7 @@ Route::group(['middleware' => 'loggined'], function (): void {
 
     Route::prefix('manage')->namespace('Manage')->name('manage.')->middleware('manage')->group(function () {
         Route::resource('/malls', 'ManageMallsController')->except(['destory']);
+        Route::resource('/visit_countmax', 'ManageVisitCountmaxController')->except(['destory']);
         Route::resource('/stores', 'ManageStoresController')->except(['destory', 'edit', 'update']);
         Route::get('/stores/{anyStore}/edit', 'ManageStoresController@edit')->name('stores.edit');
         Route::put('/stores/{anyStore}/edit', 'ManageStoresController@update')->name('stores.update');

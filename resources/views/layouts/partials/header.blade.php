@@ -122,6 +122,11 @@
                                         Кассы
                                     </a>
                                 </li>
+                                <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.visit_countmax', false) }}">
+                                    <a href="{{ route('manage.visit_countmax.index') }}" class="header-nav-list-item-dropdown-item-link">
+                                        Счетчики
+                                    </a>
+                                </li>
                                 @if ( ! $currentUser->mall_id)
                                     <li class="header-nav-list-item-dropdown-item is-devider"></li>
                                     <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'manage.users', false) }}">

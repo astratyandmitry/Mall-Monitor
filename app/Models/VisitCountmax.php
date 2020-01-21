@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -72,6 +73,45 @@ class VisitCountmax extends Model
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class)->withTrashed();
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function scopeFilter(Builder $builder): Builder
+    {
+        $builder->with(['mall', 'store']);
+
+        $builder->withTrashed();
+
+        $builder->when(request('number'), function (Builder $builder): Builder {
+            return $builder->where('number', 'LIKE', '%' . request('number') . '%');
+        });
+
+        $builder->when(request('store_id'), function (Builder $builder): Builder {
+            return $builder->where('store_id', request('store_id'));
+        });
+
+        $builder->when(request('mall_id'), function (Builder $builder): Builder {
+            return $builder->where('mall_id', request('mall_id'));
+        });
+
+        $builder->when(request('filter'), function (Builder $builder): Builder {
+            switch (request('filter')) {
+                case 1:
+                    $builder->whereNull('deleted_at');
+                    break;
+                case 2:
+                    $builder->whereNotNull('deleted_at');
+                    break;
+            }
+
+            return $builder;
+        });
+
+        return parent::scopeFilter($builder);
     }
 
 }
