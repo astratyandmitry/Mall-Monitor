@@ -22,10 +22,10 @@ class ReportsStoreController extends Controller
      */
     public function index(): View
     {
-        $this->setTitle('Отчет по арендаторам');
+        $this->setTitle('Детальный по арендаторам');
         $this->setActiveSection('reports');
         $this->setActivePage('reports.store');
-        $this->addBreadcrumb('Отчеты', route('reports.store.index'));
+        $this->addBreadcrumb('Детальный', route('reports.store.index'));
 
         return view('reports.store.index', $this->withData($this->getData()));
     }

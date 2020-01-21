@@ -27,10 +27,10 @@ class ReportsMallController extends Controller
      */
     public function index(): View
     {
-        $this->setTitle('Отчет по ТРЦ');
+        $this->setTitle('Детальный по ТРЦ');
         $this->setActiveSection('reports');
         $this->setActivePage('reports.mall');
-        $this->addBreadcrumb('Отчеты', route('reports.mall.index'));
+        $this->addBreadcrumb('Детальный', route('reports.mall.index'));
 
         return view('reports.mall.index', $this->withData($this->getData()));
     }

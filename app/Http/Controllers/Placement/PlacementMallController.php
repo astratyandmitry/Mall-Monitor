@@ -28,10 +28,10 @@ class PlacementMallController extends Controller
      */
     public function index(): View
     {
-        $this->setTitle('Положение ТРЦ');
+        $this->setTitle('KPI ТРЦ');
         $this->setActiveSection('placement');
         $this->setActivePage('placement.mall');
-        $this->addBreadcrumb('Положение', route('placement.mall.index'));
+        $this->addBreadcrumb('KPI', route('placement.mall.index'));
 
         return view('placement.mall.index', $this->withData($this->getData()));
     }

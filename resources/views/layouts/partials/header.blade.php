@@ -42,7 +42,7 @@
                             @if ( ! $currentUser->store_id)
                                 <li class="header-nav-list-item-dropdown-item">
                                 <span class="header-nav-list-item-dropdown-item-heading">
-                                    Положение
+                                    KPI
                                 </span>
                                 </li>
                                 <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'placement.mall', false) }}">
@@ -75,7 +75,7 @@
                             @endif
                             <li class="header-nav-list-item-dropdown-item">
                                 <span class="header-nav-list-item-dropdown-item-heading">
-                                    Отчеты
+                                    Детальный
                                 </span>
                             </li>
                             @if ( ! $currentUser->store_id)
@@ -92,7 +92,7 @@
                             </li>
                             <li class="header-nav-list-item-dropdown-item {{ isActive($active_page == 'reports.detail', false) }}">
                                 <a href="{{ route('reports.detail.index') }}" class="header-nav-list-item-dropdown-item-link">
-                                    Детальный
+                                    Подробно
                                 </a>
                             </li>
                         </ul>

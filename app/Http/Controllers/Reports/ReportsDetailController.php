@@ -22,10 +22,10 @@ class ReportsDetailController extends Controller
      */
     public function index(): View
     {
-        $this->setTitle('Детальный отчет');
+        $this->setTitle('Подробный отчет');
         $this->setActiveSection('reports');
         $this->setActivePage('reports.detail');
-        $this->addBreadcrumb('Отчеты', route('reports.detail.index'));
+        $this->addBreadcrumb('Подробно', route('reports.detail.index'));
 
         $cheques = Cheque::reportDetail(
             ReportDate::instance()->getDateFrom(), ReportDate::instance()->getDateTo()

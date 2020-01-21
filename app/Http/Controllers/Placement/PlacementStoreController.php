@@ -30,10 +30,10 @@ class PlacementStoreController extends Controller
      */
     public function index(): View
     {
-        $this->setTitle('Положение арендаторов');
+        $this->setTitle('KPI арендаторов');
         $this->setActiveSection('placement');
         $this->setActivePage('placement.store');
-        $this->addBreadcrumb('Положение', route('placement.store.index'));
+        $this->addBreadcrumb('KPI', route('placement.store.index'));
 
         return view('placement.store.index', $this->withData($this->getData()));
     }
