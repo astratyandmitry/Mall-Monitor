@@ -68,7 +68,7 @@
 
                                         @include('layouts.includes.form.input', [
                                             'attribute' => 'label',
-                                            'label' => 'Название',
+                                            'label' => 'Название в файле',
                                             'disabled' => isset($entity),
                                             'required' => true,
                                         ])

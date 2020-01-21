@@ -87,13 +87,13 @@ class VisitCountmax extends Model
         $builder->with(['mall', 'store']);
 
         $builder->withTrashed();
-
-        $builder->when(request('info'), function (Builder $builder): Builder {
-            return $builder->where(function (Builder $builder): Builder {
-                return $builder
-                    ->where('number', 'LIKE', '%' . request('info') . '%')
-                    ->orWhere('label', 'LIKE', '%' . request('info') . '%');
-            });
+        
+        $builder->when(request('label'), function (Builder $builder): Builder {
+            return $builder->where('label', 'LIKE', '%' . request('label') . '%');
+        });
+        
+        $builder->when(request('number'), function (Builder $builder): Builder {
+            return $builder->where('number', 'LIKE', '%' . request('number') . '%');
         });
 
         $builder->when(request('store_id'), function (Builder $builder): Builder {

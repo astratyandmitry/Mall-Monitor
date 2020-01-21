@@ -35,8 +35,11 @@
                                 ID
                                 @include('layouts.includes.table.sorting', ['attribute' => 'id'])
                             </th>
-                            <th nowrap>
+                            <th nowrap width="160">
                                 Счетчик
+                            </th>
+                            <th nowrap>
+                                Название в файле
                             </th>
                             <th nowrap width="240">
                                 ТРЦ
@@ -62,8 +65,14 @@
                                 </th>
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.input', [
-                                        'attribute' => 'info',
-                                        'placeholder' => 'Код, название',
+                                        'attribute' => 'number',
+                                        'placeholder' => 'Код',
+                                    ])
+                                </th>
+                                <th nowrap class="field">
+                                    @include('layouts.includes.field.input', [
+                                        'attribute' => 'label',
+                                        'placeholder' => 'Название в файле',
                                     ])
                                 </th>
                                 <th nowrap class="field">
@@ -103,11 +112,9 @@
                                     </td>
                                     <td nowrap>
                                         {{ $entity->number }}
-                                        @if ($entity->label)
-                                            <div style="color: #8795a1; font-style: italic; font-size: 12px; margin-top: 8px">
-                                                {{ $entity->label }}
-                                            </div>
-                                        @endif
+                                    </td>
+                                    <td nowrap>
+                                        {{ $entity->label }}
                                     </td>
                                     <td nowrap>
                                         @if ($entity->mall)
