@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property integer           $id
  * @property integer           $mall_id
  * @property integer           $store_id
  * @property string            $number
+ * @property string            $label
  * @property \Carbon\Carbon    $deleted_at
  * @property \Carbon\Carbon    $created_at
  * @property \Carbon\Carbon    $updated_at
@@ -38,6 +39,7 @@ class VisitCountmax extends Model
         'mall_id',
         'store_id',
         'number',
+        'label',
     ];
 
     /**
@@ -86,8 +88,12 @@ class VisitCountmax extends Model
 
         $builder->withTrashed();
 
-        $builder->when(request('number'), function (Builder $builder): Builder {
-            return $builder->where('number', 'LIKE', '%' . request('number') . '%');
+        $builder->when(request('info'), function (Builder $builder): Builder {
+            return $builder->where(function (Builder $builder): Builder {
+                return $builder
+                    ->where('number', 'LIKE', '%' . request('info') . '%')
+                    ->orWhere('label', 'LIKE', '%' . request('info') . '%');
+            });
         });
 
         $builder->when(request('store_id'), function (Builder $builder): Builder {

@@ -89,7 +89,10 @@ class VisitsImportExcelController extends Controller
                             'mall_id' => \request()->get('mall_id', 1),
                             'store_id' => -1,
                             'number' => $formattedItem['number'],
+                            'label' => $formattedItem['name'],
                         ]);
+                    } elseif (empty($countmax->label)) {
+                        $countmax->update(['label' => $formattedItem['name']]);
                     }
 
                     /** @var \App\Models\Visit $visit */

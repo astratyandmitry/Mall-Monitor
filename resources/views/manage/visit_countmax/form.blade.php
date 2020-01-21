@@ -47,21 +47,33 @@
                                           'attribute' => 'store_id',
                                           'label' => 'Арендатор',
                                           'options' => \App\Repositories\StoreRepository::getOptions(old('store_id', optional($entity)->mall_id ?? -1)),
-                                          'placeholder' => isset($entity) && $entity->store_id == -1 ? 'НУЖНО УКАЗАТЬ' : null,
-                                          'required' => isset($entity) && $entity->store_id == -1,
                                       ])
                                 </div>
                             </div>
 
                             <div class="form-section">
-                                @includeWhen(isset($entity), 'layouts.includes.form.hidden', ['attribute' => 'number'])
+                                <div class="form-grid is-2col">
+                                    <div>
+                                        @includeWhen(isset($entity), 'layouts.includes.form.hidden', ['attribute' => 'number'])
 
-                                @include('layouts.includes.form.input', [
-                                    'attribute' => 'number',
-                                    'label' => 'Активировать пользователя',
-                                    'disabled' => isset($entity),
-                                    'required' => true,
-                                ])
+                                        @include('layouts.includes.form.input', [
+                                            'attribute' => 'number',
+                                            'label' => 'Код',
+                                            'disabled' => isset($entity),
+                                            'required' => true,
+                                        ])
+                                    </div>
+                                    <div>
+                                        @includeWhen(isset($entity), 'layouts.includes.form.hidden', ['attribute' => 'label'])
+
+                                        @include('layouts.includes.form.input', [
+                                            'attribute' => 'label',
+                                            'label' => 'Название',
+                                            'disabled' => isset($entity),
+                                            'required' => true,
+                                        ])
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

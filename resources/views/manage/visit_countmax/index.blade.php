@@ -36,13 +36,13 @@
                                 @include('layouts.includes.table.sorting', ['attribute' => 'id'])
                             </th>
                             <th nowrap>
-                                Код
+                                Счетчик
                             </th>
                             <th nowrap width="240">
                                 ТРЦ
                                 @include('layouts.includes.table.sorting', ['attribute' => 'mall_id'])
                             </th>
-                            <th nowrap width="320">
+                            <th nowrap width="240">
                                 Арендатор
                                 @include('layouts.includes.table.sorting', ['attribute' => 'store_id'])
                             </th>
@@ -62,8 +62,8 @@
                                 </th>
                                 <th nowrap class="field">
                                     @include('layouts.includes.field.input', [
-                                        'attribute' => 'number',
-                                        'placeholder' => 'Код',
+                                        'attribute' => 'info',
+                                        'placeholder' => 'Код, название',
                                     ])
                                 </th>
                                 <th nowrap class="field">
@@ -103,6 +103,11 @@
                                     </td>
                                     <td nowrap>
                                         {{ $entity->number }}
+                                        @if ($entity->label)
+                                            <div style="color: #8795a1; font-style: italic; font-size: 12px; margin-top: 8px">
+                                                {{ $entity->label }}
+                                            </div>
+                                        @endif
                                     </td>
                                     <td nowrap>
                                         @if ($entity->mall)
@@ -114,18 +119,12 @@
                                         @endif
                                     </td>
                                     <td nowrap>
-                                        @if ($entity->store_id == -1)
-                                            <div class="badge is-danger is-inline">
-                                                Нужно указать
-                                            </div>
+                                        @if ($entity->store)
+                                            {{ $entity->store->name }}
                                         @else
-                                            @if ($entity->store)
-                                                {{ $entity->store->name }}
-                                            @else
-                                                <div class="badge is-inline">
-                                                    Отсутствует
-                                                </div>
-                                            @endif
+                                            <div class="badge is-inline">
+                                                Отсутствует
+                                            </div>
                                         @endif
                                     </td>
                                     <td class="is-icons">
