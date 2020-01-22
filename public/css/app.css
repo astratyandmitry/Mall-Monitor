@@ -4477,6 +4477,22 @@ body * {
   }
 }
 
+.heading .heading-text.is-sm {
+  font-size: 1.75em;
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+  .heading .heading-text.is-sm {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .heading .heading-text.is-sm {
+    font-size: 1.125em;
+  }
+}
+
 .heading .heading-action .heading-action-button {
   font-size: 0.75em;
   padding: 1em 1.5em;
@@ -4724,6 +4740,10 @@ body * {
   grid-column-gap: 2em;
 }
 
+.summary .summary-grid.is-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
 @media (max-width: 480px) {
   .summary .summary-grid {
     grid-template-columns: 1fr;
@@ -4891,13 +4911,24 @@ body * {
   margin-top: 0.5em;
 }
 
-.stores .stores-item .stores-item-detail .stores-item-detail-text {
-  font-size: 0.75em;
+.stores .stores-item .stores-item-detail .stores-item-detail-label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 0.875em;
   color: #8795a1;
 }
 
-.stores .stores-item.is-danger .stores-item-detail-text {
+.stores .stores-item .stores-item-detail .stores-item-detail-text {
+  font-size: 0.75em;
+  line-height: 1.2;
+  color: #8795a1;
+}
+
+.stores .stores-item .stores-item-detail .stores-item-detail-error {
+  font-weight: 500;
+  font-size: 0.75em;
   color: #ef5753;
+  margin-top: 8px;
 }
 
 .stores .stores-item:hover {
@@ -4911,8 +4942,16 @@ body * {
   color: #fff;
 }
 
+.stores .stores-item:hover .stores-item-detail-label {
+  color: #e3fcec;
+}
+
 .stores .stores-item:hover .stores-item-detail-text {
   color: #a2f5bf;
+}
+
+.stores .stores-item:hover .stores-item-detail-error {
+  color: #fff;
 }
 
 .status {

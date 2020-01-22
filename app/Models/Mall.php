@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property integer              $city_id
  * @property \App\Models\City     $city
  * @property \App\Models\Cheque[] $cheques
+ * @property \App\Models\Store[]  $stores
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -88,6 +89,15 @@ class Mall extends Model
     public function integrations(): HasMany
     {
         return $this->hasMany(MallIntegration::class);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores(): HasMany
+    {
+        return $this->hasMany(Store::class);
     }
 
 

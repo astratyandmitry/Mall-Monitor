@@ -27,11 +27,14 @@
                         </div>
 
                         <div class="stores-item-detail">
-                            <span class="stores-item-detail-text">
-                                Оборот за {{ $currentMonth }}: <strong>{{ number($card->getChequesAmount()) }} ₸</strong><br/>
-                                Посещений за {{ $currentMonth }}: <strong>{{ number($card->getVisitsCount()) }}</strong><br/>
-                                Конверсия за {{ $currentMonth }}: <strong>{{ $card->getConversion() }}%</strong>
-                            </span>
+                            <div class="stores-item-detail-label">
+                                Арендаторов: <span>{{ number(count($mall->stores)) }}</span>
+                            </div>
+                            <div class="stores-item-detail-text">
+                                Оборот за {{ $currentMonth }}: <span>{{ number($card->getChequesAmount()) }} ₸</span><br/>
+                                Посещений за {{ $currentMonth }}: <span>{{ number($card->getVisitsCount()) }}</span><br/>
+                                Конверсия за {{ $currentMonth }}: <span>{{ $card->getConversion() }}%</span>
+                            </div>
                         </div>
                     </a>
                 @endforeach

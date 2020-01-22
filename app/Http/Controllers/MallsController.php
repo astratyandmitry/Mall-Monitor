@@ -35,7 +35,7 @@ class MallsController extends Controller
         $visits = VisitsRepository::getAggregatedMonthForMall();
         $stats = ChequeRepository::getAggregatedMonthForMall();
 
-        $malls = Mall::query()->orderBy('name')->get();
+        $malls = Mall::query()->with(['stores'])->orderBy('name')->get();
 
         return view('malls.index', $this->withData([
             'currentMonth' => mb_strtolower(DateHelper::getMonthFull()),

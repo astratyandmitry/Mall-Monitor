@@ -53,15 +53,24 @@
     .stores-item-detail {
       margin-top: $size-0-1;
 
-      .stores-item-detail-text {
-        font-size: $font-12;
+      .stores-item-detail-label {
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: $font-14;
         color: $color-grey-dark;
       }
-    }
 
-    &.is-danger {
       .stores-item-detail-text {
+        font-size: $font-12;
+        line-height: 1.2;
+        color: $color-grey-dark;
+      }
+
+      .stores-item-detail-error {
+        font-weight: 500;
+        font-size: $font-12;
         color: $color-red-light;
+        margin-top: 8px;
       }
     }
 
@@ -74,8 +83,15 @@
         color: $color-white;
       }
 
+      .stores-item-detail-label {
+        color: $color-brand-lightest;
+      }
       .stores-item-detail-text {
         color: $color-brand-lighter;
+      }
+
+      .stores-item-detail-error {
+        color: $color-white;
       }
     }
   }

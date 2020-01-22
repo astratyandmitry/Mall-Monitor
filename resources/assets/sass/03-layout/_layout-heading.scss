@@ -32,6 +32,19 @@
     @include mobile() {
       font-size: $font-20;
     }
+
+
+    &.is-sm {
+      font-size: $font-28;
+
+      @include tablet() {
+        font-size: $font-24;
+      }
+
+      @include mobile() {
+        font-size: $font-18;
+      }
+    }
   }
 
   .heading-action {

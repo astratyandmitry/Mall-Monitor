@@ -13,6 +13,10 @@
     grid-template-columns: repeat(4, 1fr);
     grid-column-gap: $size-2;
 
+    &.is-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
     @include mobile() {
       grid-template-columns: 1fr;
       grid-row-gap: $size-1;
