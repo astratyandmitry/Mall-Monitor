@@ -281,8 +281,16 @@
                 return x1 + x2;
             }
 
+            var options = {
+                responsive: true,
+                legend: {
+                    position: 'left',
+                }
+            };
+
             new Chart('statistics-amount', {
                 type: 'line',
+                options: options,
                 data: {
                     labels: @json(array_values($graph['labels'])),
                     datasets: [
@@ -299,6 +307,7 @@
 
             new Chart('statistics-count', {
                 type: 'line',
+                options: options,
                 data: {
                     labels: @json(array_values($graph['labels'])),
                     datasets: [
@@ -315,6 +324,7 @@
 
             new Chart('statistics-avg', {
                 type: 'line',
+                options: options,
                 data: {
                     labels: @json(array_values($graph['labels'])),
                     datasets: [
@@ -331,6 +341,7 @@
 
             new Chart('statistics-visits', {
                 type: 'line',
+                options: options,
                 data: {
                     labels: @json(array_values($graph['labels'])),
                     datasets: [

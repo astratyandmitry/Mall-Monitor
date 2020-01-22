@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string                $name
  * @property string                $name_legal
  * @property integer               $business_identification_number
- * @property integer               $rentable_area
+ * @property double                $rentable_area
  * @property integer               $mall_id
  * @property integer               $type_id
  * @property boolean               $is_errors_yesterday
@@ -65,7 +65,7 @@ class Store extends Model
     protected $casts = [
         'mall_id' => 'integer',
         'type_id' => 'integer',
-        'rentable_area' => 'integer',
+        'rentable_area' => 'double',
         'is_errors_yesterday' => 'boolean',
     ];
 
@@ -76,7 +76,7 @@ class Store extends Model
         'name' => 'required|max:200',
         'name_legal' => 'required|max:200',
         'mall_id' => 'required|exists:malls,id',
-        'rentable_area' => 'required|numeric',
+        'rentable_area' => 'required',
         'business_identification_number' => 'required|regex:/^(\d{12})$/i',
         'type_id' => 'required|exists:store_types,id',
     ];
@@ -116,6 +116,17 @@ class Store extends Model
                 ]);
             }
         });
+    }
+
+
+    /**
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setRentableAreaAttribute(string $value): void
+    {
+        $this->attributes['rentable_area'] = str_replace(',', '.', str_replace(' ', '', trim($value)));
     }
 
 
