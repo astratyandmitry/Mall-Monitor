@@ -1,0 +1,42 @@
+.summary {
+  box-shadow: inset 0 16px 32px 0 rgba(0, 0, 0, 0.02);
+  background: $color-grey-lighter;
+  margin-bottom: $size-2;
+  padding: $size-4 0;
+
+  @include mobile() {
+    padding: $size-2;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: $size-2;
+
+    @include mobile() {
+      grid-template-columns: 1fr;
+      grid-row-gap: $size-1;
+    }
+  }
+
+  .summary-item {
+    text-align: center;
+
+    .summary-item-value {
+      .summary-item-value-text {
+        font-size: $font-24;
+        color: $color-grey-darker;
+        font-weight: 700;
+      }
+    }
+
+    .summary-item-label {
+      margin-top: $size-0-1;
+
+      .summary-item-label-text {
+        font-size: $font-14;
+        color: $color-grey-dark;
+      }
+    }
+  }
+}

@@ -4,6 +4,13 @@
 @php /** @var array $graphVisits */ @endphp
 @php /** @var \App\Models\Mall $mall */ @endphp
 
+@php $summary = [
+    'count' => isset($graphStats['count']) ? array_sum($graphStats['count']) : 0,
+    'amount' => isset($graphStats['amount']) ? array_sum($graphStats['amount']) : 0,
+    'avg' => isset($graphStats['avg']) ? round(array_sum($graphStats['avg']) / count($graphStats['avg'])) : 0,
+    'visits' => (isset($graphVisits['count'])) ? array_sum($graphVisits['count']) : 0,
+] @endphp
+
 @extends('layouts.app', $globals)
 
 @section('content')
@@ -25,13 +32,76 @@
         </div>
     </div>
 
+    <div class="summary">
+        <div class="container">
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-item-value">
+                        <div class="summary-item-value-text">
+                            {{ number($summary['amount']) }} ₸
+                        </div>
+                    </div>
+
+                    <div class="summary-item-label">
+                        <div class="summary-item-label-text">
+                            Сумма продаж
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-item-value">
+                        <div class="summary-item-value-text">
+                            {{ number($summary['count']) }}
+                        </div>
+                    </div>
+
+                    <div class="summary-item-label">
+                        <div class="summary-item-label-text">
+                            Количество продаж
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-item-value">
+                        <div class="summary-item-value-text">
+                            {{ number($summary['avg']) }} ₸
+                        </div>
+                    </div>
+
+                    <div class="summary-item-label">
+                        <div class="summary-item-label-text">
+                            Средний чек
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-item-value">
+                        <div class="summary-item-value-text">
+                            {{ number($summary['visits']) }}
+                        </div>
+                    </div>
+
+                    <div class="summary-item-label">
+                        <div class="summary-item-label-text">
+                            Посетителей
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="content">
         <div class="container">
             @if (count($stats))
                 <div class="box">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Сумма продаж
+                            Сумма продаж:
+                            <span>{{ number($summary['amount']) }} ₸</span>
                         </div>
 
                         <div class="box-title-action">
@@ -50,7 +120,8 @@
                 <div class="box is-marged">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Количество продаж
+                            Количество продаж:
+                            <span>{{ number($summary['count']) }}</span>
                         </div>
 
                         <div class="box-title-action">
@@ -69,7 +140,8 @@
                 <div class="box is-marged">
                     <div class="box-title has-action">
                         <div class="box-title-text">
-                            Средний чек
+                            Средний чек:
+                            <span>{{ number($summary['avg']) }} ₸</span>
                         </div>
 
                         <div class="box-title-action">
@@ -89,7 +161,8 @@
                     <div class="box is-marged">
                         <div class="box-title has-action">
                             <div class="box-title-text">
-                                Посещения
+                                Посещения:
+                                <span>{{ number($summary['visits']) }}</span>
                             </div>
 
                             <div class="box-title-action">
@@ -243,6 +316,10 @@
                     borderColor: '#38c172',
                     data: @json($graphStats['amount']),
                 } ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
             }
         });
 
@@ -255,6 +332,10 @@
                     borderColor: '#38c172',
                     data: @json($graphStats['count']),
                 } ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
             }
         });
 
@@ -267,6 +348,10 @@
                     borderColor: '#38c172',
                     data: @json($graphStats['avg']),
                 } ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
             }
         });
         @endif
