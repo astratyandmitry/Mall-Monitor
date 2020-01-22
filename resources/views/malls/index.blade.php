@@ -28,8 +28,8 @@
 
                         <div class="stores-item-detail">
                             <span class="stores-item-detail-text">
-                                Оборот за {{ $currentMonth }}: <strong>{{ number_format($card->getChequesAmount()) }} ₸</strong><br/>
-                                Посещений за {{ $currentMonth }}: <strong>{{ number_format($card->getVisitsCount()) }}</strong><br/>
+                                Оборот за {{ $currentMonth }}: <strong>{{ number($card->getChequesAmount()) }} ₸</strong><br/>
+                                Посещений за {{ $currentMonth }}: <strong>{{ number($card->getVisitsCount()) }}</strong><br/>
                                 Конверсия за {{ $currentMonth }}: <strong>{{ $card->getConversion() }}%</strong>
                             </span>
                         </div>

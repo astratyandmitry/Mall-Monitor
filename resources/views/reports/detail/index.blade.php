@@ -51,6 +51,10 @@
                             <thead>
                             <tr>
                                 <th nowrap>
+                                    ТРЦ
+                                    @include('layouts.includes.table.sorting', ['attribute' => 'mall_id', 'default_key' => 'created_at'])
+                                </th>
+                                <th nowrap>
                                     Арендатор
                                     @include('layouts.includes.table.sorting', ['attribute' => 'store_id', 'default_key' => 'created_at'])
                                 </th>
@@ -80,6 +84,9 @@
                             @foreach($cheques as $cheque)
                                 <tr>
                                     <td nowrap>
+                                        {{ $cheque->mall->name }}
+                                    </td>
+                                    <td nowrap>
                                         {{ $cheque->store->name }}
                                     </td>
                                     <td nowrap>
@@ -94,7 +101,7 @@
                                         </div>
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($cheque->amount) }} ₸
+                                        {{ number($cheque->amount) }} ₸
                                     </td>
                                     <td nowrap class="is-right">
                                         {{ $cheque->created_at->format('d.m.Y H:i:s') }}

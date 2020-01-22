@@ -79,7 +79,7 @@ class PlacementMallController extends Controller
         $dateTo = PlacementDate::getFromRequest($period, 'to');
 
         if (is_null($dateFrom) || is_null($dateTo)) {
-            return null;
+            return ['date_from' => null, 'date_to' => null];
         }
 
         return [
@@ -99,7 +99,7 @@ class PlacementMallController extends Controller
      */
     protected function setDataForPeriod(?array $period = null, array &$mall_ids): array
     {
-        if (is_null($period)) {
+        if (is_null($period) || !isseT($period['stats'])) {
             return [];
         }
 

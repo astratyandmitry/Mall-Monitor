@@ -26,7 +26,7 @@
             ТРЦ: {{ $selectedMall }}
         </th>
         <th colspan="3" style="background: #f0f0f0; font-weight: 400; text-align: right;">
-            Заведение: {{ $selectedStore }}
+            Арендатор: {{ $selectedStore }}
         </th>
     </tr>
     <tr>
@@ -34,7 +34,7 @@
             ТРЦ
         </th>
         <th>
-            Заведение
+            Арендатор
         </th>
         <th>
             БИН
@@ -61,16 +61,16 @@
                 {{ $stores[$stat['store_id']]['name'] }}
             </td>
             <td>
-                {{ (string)$stores[$stat['store_id']]['business_identification_number'] }}
+                {{ spaces($stores[$stat['store_id']]['business_identification_number']) }}
             </td>
             <td>
-                {{ (int)$stat['count'] }}
+                {{ number((int)$stat['count']) }}
             </td>
             <td>
-                {{ (int)round($stat['avg']) }}
+                {{ number((int)round($stat['avg'])) }}
             </td>
             <td>
-                {{ (int)$stat['amount'] }}
+                {{ number((int)$stat['amount']) }}
             </td>
             <td>
                 {{ \App\DateHelper::byDateGroup($stat['date']) }}

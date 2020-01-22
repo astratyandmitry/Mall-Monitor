@@ -3,5 +3,5 @@
 
 Данные арендатора:
 * ТРЦ: {{ $store->mall->name }}
-* БИН: {{ $store->business_identification_number }}
+* БИН: {{ spaces($store->business_identification_number) }}
 @endcomponent

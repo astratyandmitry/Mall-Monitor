@@ -139,7 +139,7 @@ class Store extends Model
         });
 
         $builder->when(request('store_bin'), function (Builder $builder): Builder {
-            return $builder->where('business_identification_number', 'LIKE', '%' . request('store_bin') . '%');
+            return $builder->where('business_identification_number', 'LIKE', '%' . str_replace(' ', '', request('store_bin')) . '%');
         });
 
         return $builder;
@@ -207,7 +207,7 @@ class Store extends Model
         });
 
         $builder->when(request('bin'), function (Builder $builder): Builder {
-            return $builder->where('business_identification_number', 'LIKE', '%' . request('bin') . '%');
+            return $builder->where('business_identification_number', 'LIKE', '%' . str_replace(' ', '', request('bin')) . '%');
         });
 
         $builder->when(request('type_id'), function (Builder $builder): Builder {

@@ -24,15 +24,15 @@
             ТРЦ: {{ $selectedMall }}
         </th>
         <th colspan="5" style="background: #f0f0f0; font-weight: 400; text-align: right;">
-            Заведение: {{ $selectedStore }}
+            Арендатор: {{ $selectedStore }}
         </th>
     </tr>
     <tr>
         <th>
-            ID
+            ТРЦ
         </th>
         <th>
-            Заведение
+            Арендатор
         </th>
         <th>
             БИН
@@ -65,13 +65,13 @@
     @foreach($cheques as $cheque)
         <tr>
             <td>
-                {{ $cheque->id }}
+                {{ $cheque->mall->name }}
             </td>
             <td>
                 {{ $cheque->store->name }}
             </td>
             <td>
-                {{ (string)$cheque->store->business_identification_number }}
+                {{ spaces($cheque->store->business_identification_number) }}
             </td>
             <td>
                 {{ $cheque->kkm_code }}
@@ -86,13 +86,13 @@
                 {{ $cheque->payment->name }}
             </td>
             <td>
-                {{ number_format($cheque->amount) }}
+                {{ number($cheque->amount) }}
             </td>
             <td>
-                {{ number_format(count($cheque->items) ? $cheque->items->count() : 0) }}
+                {{ number(count($cheque->items) ? $cheque->items->count() : 0) }}
             </td>
             <td>
-                {{ number_format(count($cheque->items) ? (int)$cheque->items->sum('quantity') : 0) }}
+                {{ number(count($cheque->items) ? (int)$cheque->items->sum('quantity') : 0) }}
             </td>
             <td>
                 {{ $cheque->created_at->format('d.m.Y H:i') }}

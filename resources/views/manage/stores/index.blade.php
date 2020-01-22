@@ -135,7 +135,7 @@
                                         @endif
                                     </td>
                                     <td nowrap>
-                                        {{ $entity->business_identification_number }}
+                                        {{ spaces($entity->business_identification_number) }}
                                     </td>
                                     @if ( ! $currentUser->mall_id)
                                         <td nowrap>

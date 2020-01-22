@@ -34,7 +34,7 @@
                     @endif
                     <li class="header-nav-list-item has-dropdown {{ isActive(in_array($active_section, ['placement', 'compare', 'reports']), false) }}">
                         <a href="javascript:void(0)" class="header-nav-list-item-link">
-                            Детализация
+                            Отчеты
                             <i class="fa fa-angle-down"></i>
                         </a>
 

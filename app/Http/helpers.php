@@ -200,3 +200,23 @@ function compare_data(array $dates, array $data): array
 
     return $newData;
 }
+
+/**
+ * @param $value
+ *
+ * @return string
+ */
+function number($value): string
+{
+    return number_format($value, 0, '.', ' ');
+}
+
+/**
+ * @param $value
+ *
+ * @return string
+ */
+function spaces($value): string
+{
+    return implode(' ', str_split((string)$value, 3));
+}

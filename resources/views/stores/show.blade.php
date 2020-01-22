@@ -149,16 +149,16 @@
                                         {{ $statsTableItem->getConversion() }}%
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ number_format($statsTableItem->getVisitsCount()) }}
+                                        {{ number($statsTableItem->getVisitsCount()) }}
                                     </td>
                                     <td nowrap class="is-center">
-                                        {{ number_format($statsTableItem->getChequesCount()) }}
+                                        {{ number($statsTableItem->getChequesCount()) }}
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($statsTableItem->getChequesAvgAmount()) }} ₸
+                                        {{ number($statsTableItem->getChequesAvgAmount()) }} ₸
                                     </td>
                                     <td nowrap class="is-right">
-                                        {{ number_format($statsTableItem->getChequesAmount()) }} ₸
+                                        {{ number($statsTableItem->getChequesAmount()) }} ₸
                                     </td>
                                 </tr>
                             @endforeach
@@ -167,16 +167,16 @@
                             <tr>
                                 <th colspan="2" style="text-align: right">Итого:</th>
                                 <th nowrap class="is-center">
-                                    {{ number_format($statsTableTotal->getCountVisits()) }}
+                                    {{ number($statsTableTotal->getCountVisits()) }}
                                 </th>
                                 <th nowrap class="is-center">
-                                    {{ number_format($statsTableTotal->getChequesCount()) }}
+                                    {{ number($statsTableTotal->getChequesCount()) }}
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format($statsTableTotal->getChequesAvgAmount()) }} ₸
+                                    {{ number($statsTableTotal->getChequesAvgAmount()) }} ₸
                                 </th>
                                 <th nowrap class="is-right">
-                                    {{ number_format($statsTableTotal->getChequesAmount()) }} ₸
+                                    {{ number($statsTableTotal->getChequesAmount()) }} ₸
                                 </th>
                             </tr>
                             </tfoot>
