@@ -48,6 +48,9 @@
                                     Арендатор
                                 </th>
                                 <th nowrap class="is-right" width="100">
+                                    Конверсия
+                                </th>
+                                <th nowrap class="is-right" width="100">
                                     Посещений
                                 </th>
                                 <th nowrap class="is-right" width="100">
@@ -83,6 +86,29 @@
                                     <td nowrap>
                                         {{ $store['name'] }}
                                     </td>
+                                    @php
+                                        $_currentVisits = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'visits');
+                                        $_pastVisits = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'visits');
+                                        $_currentAmount = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'amount');
+                                        $_pastAmount = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'amount');
+
+                                         $_current = $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0;
+                                         $_past = $_pastVisits ? number(round($_pastAmount / $_pastVisits)) : 0;
+                                         $_diff = placement_diff($_current, $_past);
+                                    @endphp
+                                    <td nowrap
+                                        class="is-right {{ ($_current != $_past && ! ($_current == 0 && $_past == 0)) ? placement_background($_diff) : '' }}">
+                                        <span class="period">тек.:</span> {{ $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0 }}
+                                        <br/>
+                                        <span class="period">пред.:</span> {{ $_pastVisits ? number(round($_pastAmount / $_pastVisits)) : 0 }}
+                                        <br/>
+
+                                        @if ($_current != $_past && ! ($_current == 0 && $_past == 0))
+                                            <strong class="{{ placement_color($_diff) }}">
+                                                {{ $_diff }}% <i class="fa fa-arrow-{{ placement_arrow($_diff) }}"></i>
+                                            </strong>
+                                        @endif
+                                    </td>
                                     @include('placement.includes.placement-table-td', ['key' => 'visits'])
                                     @include('placement.includes.placement-table-td', ['key' => 'count'])
                                     @include('placement.includes.placement-table-td', ['key' => 'avg'])
@@ -92,7 +118,7 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th colspan="2" style="text-align: right">Итого:</th>
+                                <th colspan="3" style="text-align: right">Итого:</th>
                                 @include('placement.includes.placement-table-th', [
                                   '_current' => $visits_current,
                                   '_past' => $visits_past,

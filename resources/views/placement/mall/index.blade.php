@@ -99,7 +99,6 @@
                                             </strong>
                                         @endif
                                     </td>
-
                                     @include('placement.includes.placement-table-td', ['key' => 'visits'])
                                     @include('placement.includes.placement-table-td', ['key' => 'count'])
                                     @include('placement.includes.placement-table-td', ['key' => 'avg'])
