@@ -87,7 +87,7 @@
 
                                         $_current = $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0;
                                         $_past = $_pastVisits ? number(round($_pastAmount / $_pastVisits)) : 0;
-                                        $_diff = placement_diff($_current, $_past);
+                                        $_diff = round(placement_diff($_current, $_past), 2);
                                     @endphp
                                     <td nowrap class="is-right {{ ($_current != $_past && ! ($_current == 0 && $_past == 0)) ? placement_background($_diff) : '' }}">
                                         <span class="period">тек.:</span> {{ $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0 }}<br/>
