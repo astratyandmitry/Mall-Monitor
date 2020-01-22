@@ -85,13 +85,13 @@
                                        $_currentAmount = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'amount');
                                        $_pastAmount = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'amount');
 
-                                        $_current = $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0;
-                                        $_past = $_pastVisits ? number(round($_pastAmount / $_pastVisits)) : 0;
+                                        $_current = $_currentVisits ? round($_currentAmount / $_currentVisits) : 0;
+                                        $_past = $_pastVisits ? round($_pastAmount / $_pastVisits) : 0;
                                         $_diff = round(placement_diff($_current, $_past), 2);
                                     @endphp
                                     <td nowrap class="is-right {{ ($_current != $_past && ! ($_current == 0 && $_past == 0)) ? placement_background($_diff) : '' }}">
-                                        <span class="period">тек.:</span> {{ $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0 }}<br/>
-                                        <span class="period">пред.:</span> {{ $_pastVisits ? number(round($_pastAmount / $_pastVisits)) : 0 }}<br/>
+                                        <span class="period">тек.:</span> {{ $_currentVisits ? number($_current) : 0 }}<br/>
+                                        <span class="period">пред.:</span> {{ $_pastVisits ? number($_past) : 0 }}<br/>
 
                                         @if ($_current != $_past && ! ($_current == 0 && $_past == 0))
                                             <strong class="{{ placement_color($_diff) }}">
