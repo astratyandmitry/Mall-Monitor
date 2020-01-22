@@ -33,7 +33,8 @@ class VisitsRepository
             ->select(DB::raw("SUM(count) AS count, {$dateColumn} as date"))
             ->groupBy('date')
             ->orderBy('date', 'desc')
-            ->limit($limit);
+            ->limit($limit)
+            ->whereNull('store_id');
 
         if ( ! is_null($mall_id)) {
             $items = $items->where('mall_id', $mall_id);
@@ -73,6 +74,7 @@ class VisitsRepository
         return DB::table('visits')
             ->select(DB::raw('COUNT(*) AS count, SUM(count) as count, mall_id'))
             ->where('created_at', '>=', $startedDate)
+            ->whereNull('store_id')
             ->groupBy('mall_id')
             ->pluck('count', 'mall_id')->toArray();
     }
@@ -113,6 +115,7 @@ class VisitsRepository
         return Visit::query()
             ->select(DB::raw("SUM(count) AS count, mall_id, {$dateColumn} as date"))
             ->where('created_at', '>=', $startedDate)
+            ->whereNull('store_id')
             ->groupBy('date', 'mall_id')
             ->orderBy('date', 'asc')
             ->where(function (Builder $builder): Builder {
@@ -177,6 +180,7 @@ class VisitsRepository
 
         return Visit::reportMall($dateFrom, $dateTo)
             ->select(DB::raw("SUM(count) AS count, mall_id, created_{$dateGroup} as date"))
+            ->whereNull('store_ID')
             ->groupBy('date')
             ->groupBy('mall_id')
             ->get();
@@ -208,6 +212,7 @@ class VisitsRepository
     {
         return Visit::reportMall($dateFrom, $dateTo)
             ->select(DB::raw('SUM(count) AS count, mall_id'))
+            ->whereNull('store_id')
             ->groupBy('mall_id')
             ->get();
     }
