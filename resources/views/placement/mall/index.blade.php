@@ -82,20 +82,22 @@
                                     @php
                                        $_currentVisits = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'visits');
                                        $_pastVisits = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'visits');
-                                       $_diffVisits = placement_diff($_currentVisits, $_pastVisits);
                                        $_currentAmount = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'amount');
                                        $_pastAmount = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'amount');
-                                       $_diffAmount = placement_diff($_currentAmount, $_pastAmount);
+
+                                        $_current = $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0;
+                                        $_past = $_pastVisits ? number(round($_pastAmount / $_pastVisits)) : 0;
+                                        $_diff = placement_diff($_current, $_past);
                                     @endphp
-                                    <td nowrap class="is-right">
+                                    <td nowrap class="is-right {{ ($_current != $_past && ! ($_current == 0 && $_past == 0)) ? placement_background($_diff) : '' }}">
                                         <span class="period">тек.:</span> {{ $_currentVisits ? number(round($_currentAmount / $_currentVisits)) : 0 }}<br/>
                                         <span class="period">пред.:</span> {{ $_pastVisits ? number(round($_pastAmount / $_pastVisits)) : 0 }}<br/>
 
-{{--                                        @if ($_current != $_past && ! ($_current == 0 && $_past == 0))--}}
-{{--                                            <strong class="{{ placement_color($_diff) }}">--}}
-{{--                                                {{ $_diff }}% <i class="fa fa-arrow-{{ placement_arrow($_diff) }}"></i>--}}
-{{--                                            </strong>--}}
-{{--                                        @endif--}}
+                                        @if ($_current != $_past && ! ($_current == 0 && $_past == 0))
+                                            <strong class="{{ placement_color($_diff) }}">
+                                                {{ $_diff }}% <i class="fa fa-arrow-{{ placement_arrow($_diff) }}"></i>
+                                            </strong>
+                                        @endif
                                     </td>
 
                                     @include('placement.includes.placement-table-td', ['key' => 'visits'])
