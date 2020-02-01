@@ -95,7 +95,6 @@
 
     <div class="content">
         <div class="container">
-            <button id="pdf">download</button>
             @if (count($stats))
                 <div class="canvases">
                     <div class="box">
@@ -159,12 +158,12 @@
                     </div>
 
                     @if (count($visits))
-                        <div class="box is-marged">
-                            <div class="box-title has-action">
-                                <div class="box-title-text">
-                                    Посещения:
-                                    <span>{{ number($summary['visits']) }}</span>
-                                </div>
+{{--                        <div class="box is-marged">--}}
+{{--                            <div class="box-title has-action">--}}
+{{--                                <div class="box-title-text">--}}
+{{--                                    Посещения:--}}
+{{--                                    <span>{{ number($summary['visits']) }}</span>--}}
+{{--                                </div>--}}
 
 {{--                                <div class="box-title-action">--}}
 {{--                                <span data-canvas="visits-count" class="btn is-sm is-outlined js-print-canvas">--}}
@@ -172,12 +171,12 @@
 {{--                                    Скачать PDF--}}
 {{--                                </span>--}}
 {{--                                </div>--}}
-                            </div>
+{{--                            </div>--}}
 
-                            <div class="box-content">
-                                <div id="statistics-visits"></div>
-                            </div>
-                        </div>
+{{--                            <div class="box-content">--}}
+{{--                                <div id="statistics-visits"></div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     @endif
                 </div>
 
@@ -366,36 +365,29 @@
             }],
         });
 
-        Highcharts.chart('statistics-visits', {
-            exporting: exportingOptions,
+        {{--Highcharts.chart('statistics-visits', {--}}
+        {{--    exporting: exportingOptions,--}}
 
-            yAxis: {
-                title: false,
-            },
-            title: false,
-            legend: false,
+        {{--    yAxis: {--}}
+        {{--        title: false,--}}
+        {{--    },--}}
+        {{--    title: false,--}}
+        {{--    legend: false,--}}
 
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                }
-            },
+        {{--    plotOptions: {--}}
+        {{--        line: {--}}
+        {{--            dataLabels: {--}}
+        {{--                enabled: true--}}
+        {{--            },--}}
+        {{--        }--}}
+        {{--    },--}}
 
-            series: [{
-                color: '#38c172',
-                name: 'Количество посещений',
-                data: @json($series['visits'])
-            }],
-        });
-
-        document.getElementById('pdf').addEventListener('click', function () {
-            console.log(Highcharts.chart);
-            // Highcharts.charts[0].exportChart({
-            //     type: 'application/pdf'
-            // });
-        });
+        {{--    series: [{--}}
+        {{--        color: '#38c172',--}}
+        {{--        name: 'Количество посещений',--}}
+        {{--        data: @json($series['visits'])--}}
+        {{--    }],--}}
+        {{--});--}}
     </script>
 @endpush
 

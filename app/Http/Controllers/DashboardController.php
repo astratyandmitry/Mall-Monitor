@@ -122,10 +122,10 @@ class DashboardController extends Controller
                 'y' => isset($data1['avg'][$i]) ? $data1['avg'][$i] : 0,
             ];
 
-            $series['visits'][$i] = [
-                'name' => $data2['labels'][$i],
-                'y' => isset($data2['count'][$i]) ? $data2['count'][$i] : 0,
-            ];
+//            $series['visits'][$i] = [
+//                'name' => $data2['labels'][$i],
+//                'y' => isset($data2['count'][$i]) ? $data2['count'][$i] : 0,
+//            ];
         }
 
         return view('dashboard.index', $this->withData([
