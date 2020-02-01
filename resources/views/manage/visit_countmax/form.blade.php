@@ -92,6 +92,8 @@
 @push('scripts')
     <script>
         $(function () {
+            $('select').select2();
+
             $mallID = $('#mall_id');
             $storeID = $('#store_id');
 

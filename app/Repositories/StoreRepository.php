@@ -20,11 +20,21 @@ class StoreRepository
      */
     public static function getOptions(?int $mall_id = null): array
     {
-        if (is_null($mall_id)) {
-            return Store::pluck('name', 'id')->toArray();
+        $query = Store::query();
+
+        if ( ! is_null($mall_id)) {
+            $query = $query->where('mall_id', $mall_id);
         }
 
-        return Store::where('mall_id', $mall_id)->pluck('name', 'id')->toArray();
+        /** @var \App\Models\Store[] $stores */
+        $stores = $query->orderBy('business_identification_number')->get();
+        $options = [];
+
+        foreach ($stores as $store) {
+            $options[$store->id] = "{$store->business_identification_number}: {$store->name}";
+        }
+
+        return $options;
     }
 
 
