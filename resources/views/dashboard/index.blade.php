@@ -95,6 +95,7 @@
 
     <div class="content">
         <div class="container">
+            <button id="pdf">download</button>
             @if (count($stats))
                 <div class="canvases">
                     <div class="box">
@@ -104,16 +105,16 @@
                                 <span>{{ number($summary['amount']) }} ₸</span>
                             </div>
 
-                            <div class="box-title-action">
-                                <span data-canvas="statistics-amount" class="btn is-sm is-outlined js-print-canvas">
-                                    <i class="fa fa-file-pdf-o"></i>
-                                    Скачать PDF
-                                </span>
-                            </div>
+{{--                            <div class="box-title-action">--}}
+{{--                                <span data-canvas="statistics-amount" class="btn is-sm is-outlined js-print-canvas">--}}
+{{--                                    <i class="fa fa-file-pdf-o"></i>--}}
+{{--                                    Скачать PDF--}}
+{{--                                </span>--}}
+{{--                            </div>--}}
                         </div>
 
                         <div class="box-content">
-                            <canvas id="statistics-amount" class="rounded-sm mb-16" height="80vh"></canvas>
+                            <div id="statistics-amount" class="rounded-sm mb-16"></div>
                         </div>
                     </div>
 
@@ -124,16 +125,16 @@
                                 <span>{{ number($summary['count']) }}</span>
                             </div>
 
-                            <div class="box-title-action">
-                                <span data-canvas="statistics-count" class="btn is-sm is-outlined js-print-canvas">
-                                    <i class="fa fa-file-pdf-o"></i>
-                                    Скачать PDF
-                                </span>
-                            </div>
+{{--                            <div class="box-title-action">--}}
+{{--                                <span data-canvas="statistics-count" class="btn is-sm is-outlined js-print-canvas">--}}
+{{--                                    <i class="fa fa-file-pdf-o"></i>--}}
+{{--                                    Скачать PDF--}}
+{{--                                </span>--}}
+{{--                            </div>--}}
                         </div>
 
                         <div class="box-content">
-                            <canvas id="statistics-count" class="rounded-sm mb-16" height="80vh"></canvas>
+                            <div id="statistics-count"></div>
                         </div>
                     </div>
 
@@ -144,16 +145,16 @@
                                 <span>{{ number($summary['avg']) }} ₸</span>
                             </div>
 
-                            <div class="box-title-action">
-                                <span data-canvas="statistics-avg" class="btn is-sm is-outlined js-print-canvas">
-                                    <i class="fa fa-file-pdf-o"></i>
-                                    Скачать PDF
-                                </span>
-                            </div>
+{{--                            <div class="box-title-action">--}}
+{{--                                <span data-canvas="statistics-avg" class="btn is-sm is-outlined js-print-canvas">--}}
+{{--                                    <i class="fa fa-file-pdf-o"></i>--}}
+{{--                                    Скачать PDF--}}
+{{--                                </span>--}}
+{{--                            </div>--}}
                         </div>
 
                         <div class="box-content">
-                            <canvas id="statistics-avg" class="rounded-sm mb-16" height="80vh"></canvas>
+                            <div id="statistics-avg"></div>
                         </div>
                     </div>
 
@@ -165,16 +166,16 @@
                                     <span>{{ number($summary['visits']) }}</span>
                                 </div>
 
-                                <div class="box-title-action">
-                                <span data-canvas="visits-count" class="btn is-sm is-outlined js-print-canvas">
-                                    <i class="fa fa-file-pdf-o"></i>
-                                    Скачать PDF
-                                </span>
-                                </div>
+{{--                                <div class="box-title-action">--}}
+{{--                                <span data-canvas="visits-count" class="btn is-sm is-outlined js-print-canvas">--}}
+{{--                                    <i class="fa fa-file-pdf-o"></i>--}}
+{{--                                    Скачать PDF--}}
+{{--                                </span>--}}
+{{--                                </div>--}}
                             </div>
 
                             <div class="box-content">
-                                <canvas id="visits-count" class="rounded-sm mb-16" height="80vh"></canvas>
+                                <div id="statistics-visits"></div>
                             </div>
                         </div>
                     @endif
@@ -276,101 +277,224 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
     <script>
-        $(function () {
-            $('.js-print-canvas').on('click', function () {
-                var newCanvas = document.querySelector('#' + $(this).data('canvas'));
-                var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
-                var doc = new jsPDF("l", "mm", "a4");
-                doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);
-                doc.save('keruenmonitor-chart_' + Date.now() + '.pdf');
-            });
-
-        });
-
-        Chart.defaults.global.legend.display = false;
-        Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
-            return addCommas(tooltipItem.yLabel);
-        }
-
-        function addCommas(nStr) {
-            nStr += '';
-            x = nStr.split('.');
-            x1 = x[ 0 ];
-            x2 = x.length > 1 ? '.' + x[ 1 ] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(x1)) {
-                x1 = x1.replace(rgx, '$1' + ',' + '$2');
-            }
-            return x1 + x2;
-        }
-
-        new Chart('statistics-amount', {
-            type: 'line',
-            data: {
-                labels: @json($graphStats['labels']),
-                datasets: [ {
-                    label: 'Сумма продаж',
-                    borderColor: '#38c172',
-                    data: @json($graphStats['amount']),
-                } ]
+        var exportingOptions = {
+            chartOptions: {
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
+            fallbackToExportServer: false,
+        };
+
+        Highcharts.chart('statistics-amount', {
+            exporting: exportingOptions,
+
+            yAxis: {
+                title: false,
+            },
+            title: false,
+            legend: false,
+
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                }
+            },
+
+            series: [{
+                color: '#38c172',
+                name: 'Сумма продаж',
+                data: @json($series['amount'])
+            }],
         });
 
-        new Chart('statistics-count', {
-            type: 'line',
-            data: {
-                labels: @json($graphStats['labels']),
-                datasets: [ {
-                    label: 'Количество чеков',
-                    borderColor: '#38c172',
-                    data: @json($graphStats['count']),
-                } ]
+        Highcharts.chart('statistics-avg', {
+            exporting: exportingOptions,
+
+            yAxis: {
+                title: false,
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
+            title: false,
+            legend: false,
+
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                }
+            },
+
+            series: [{
+                color: '#38c172',
+                name: 'Средний чек',
+                data: @json($series['avg'])
+            }],
         });
 
-        new Chart('statistics-avg', {
-            type: 'line',
-            data: {
-                labels: @json($graphStats['labels']),
-                datasets: [ {
-                    label: 'Средний чек',
-                    borderColor: '#38c172',
-                    data: @json($graphStats['avg']),
-                } ]
+        Highcharts.chart('statistics-count', {
+            exporting: exportingOptions,
+
+            yAxis: {
+                title: false,
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
+            title: false,
+            legend: false,
+
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                }
+            },
+
+            series: [{
+                color: '#38c172',
+                name: 'Количество продаж',
+                data: @json($series['count'])
+            }],
         });
 
-        @if (count($visits))
-        new Chart('visits-count', {
-            type: 'line',
-            data: {
-                labels: @json($graphVisits['labels']),
-                datasets: [ {
-                    label: 'Количество',
-                    borderColor: '#38c172',
-                    data: @json($graphVisits['count']),
-                } ]
+        Highcharts.chart('statistics-visits', {
+            exporting: exportingOptions,
+
+            yAxis: {
+                title: false,
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
+            title: false,
+            legend: false,
+
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                }
+            },
+
+            series: [{
+                color: '#38c172',
+                name: 'Количество посещений',
+                data: @json($series['visits'])
+            }],
         });
-        @endif
+
+        document.getElementById('pdf').addEventListener('click', function () {
+            console.log(Highcharts.chart);
+            // Highcharts.charts[0].exportChart({
+            //     type: 'application/pdf'
+            // });
+        });
     </script>
 @endpush
+
+{{--@push('scripts')--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>--}}
+{{--    <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>--}}
+{{--    <script>--}}
+{{--        $(function () {--}}
+{{--            $('.js-print-canvas').on('click', function () {--}}
+{{--                var newCanvas = document.querySelector('#' + $(this).data('canvas'));--}}
+{{--                var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);--}}
+{{--                var doc = new jsPDF("l", "mm", "a4");--}}
+{{--                doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);--}}
+{{--                doc.save('keruenmonitor-chart_' + Date.now() + '.pdf');--}}
+{{--            });--}}
+
+{{--        });--}}
+
+{{--        Chart.defaults.global.legend.display = false;--}}
+{{--        Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {--}}
+{{--            return addCommas(tooltipItem.yLabel);--}}
+{{--        }--}}
+
+{{--        function addCommas(nStr) {--}}
+{{--            nStr += '';--}}
+{{--            x = nStr.split('.');--}}
+{{--            x1 = x[ 0 ];--}}
+{{--            x2 = x.length > 1 ? '.' + x[ 1 ] : '';--}}
+{{--            var rgx = /(\d+)(\d{3})/;--}}
+{{--            while (rgx.test(x1)) {--}}
+{{--                x1 = x1.replace(rgx, '$1' + ',' + '$2');--}}
+{{--            }--}}
+{{--            return x1 + x2;--}}
+{{--        }--}}
+
+{{--        new Chart('statistics-amount', {--}}
+{{--            type: 'line',--}}
+{{--            data: {--}}
+{{--                labels: @json($graphStats['labels']),--}}
+{{--                datasets: [ {--}}
+{{--                    label: 'Сумма продаж',--}}
+{{--                    borderColor: '#38c172',--}}
+{{--                    data: @json($graphStats['amount']),--}}
+{{--                } ]--}}
+{{--            },--}}
+{{--            options: {--}}
+{{--                responsive: true,--}}
+{{--                maintainAspectRatio: true,--}}
+{{--            }--}}
+{{--        });--}}
+
+{{--        new Chart('statistics-count', {--}}
+{{--            type: 'line',--}}
+{{--            data: {--}}
+{{--                labels: @json($graphStats['labels']),--}}
+{{--                datasets: [ {--}}
+{{--                    label: 'Количество чеков',--}}
+{{--                    borderColor: '#38c172',--}}
+{{--                    data: @json($graphStats['count']),--}}
+{{--                } ]--}}
+{{--            },--}}
+{{--            options: {--}}
+{{--                responsive: true,--}}
+{{--                maintainAspectRatio: true,--}}
+{{--            }--}}
+{{--        });--}}
+
+{{--        new Chart('statistics-avg', {--}}
+{{--            type: 'line',--}}
+{{--            data: {--}}
+{{--                labels: @json($graphStats['labels']),--}}
+{{--                datasets: [ {--}}
+{{--                    label: 'Средний чек',--}}
+{{--                    borderColor: '#38c172',--}}
+{{--                    data: @json($graphStats['avg']),--}}
+{{--                } ]--}}
+{{--            },--}}
+{{--            options: {--}}
+{{--                responsive: true,--}}
+{{--                maintainAspectRatio: true,--}}
+{{--            }--}}
+{{--        });--}}
+
+{{--        @if (count($visits))--}}
+{{--        new Chart('visits-count', {--}}
+{{--            type: 'line',--}}
+{{--            data: {--}}
+{{--                labels: @json($graphVisits['labels']),--}}
+{{--                datasets: [ {--}}
+{{--                    label: 'Количество',--}}
+{{--                    borderColor: '#38c172',--}}
+{{--                    data: @json($graphVisits['count']),--}}
+{{--                } ]--}}
+{{--            },--}}
+{{--            options: {--}}
+{{--                responsive: true,--}}
+{{--                maintainAspectRatio: true,--}}
+{{--            }--}}
+{{--        });--}}
+{{--        @endif--}}
+{{--    </script>--}}
+{{--@endpush--}}
