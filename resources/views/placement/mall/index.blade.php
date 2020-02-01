@@ -82,8 +82,8 @@
                                     @php
                                        $_currentVisits = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'visits');
                                        $_pastVisits = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'visits');
-                                       $_currentAmount = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'amount');
-                                       $_pastAmount = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'amount');
+                                       $_currentAmount = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'count');
+                                       $_pastAmount = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'count');
 
                                         $_current = $_currentVisits ? round($_currentAmount / $_currentVisits) : 0;
                                         $_past = $_pastVisits ? round($_pastAmount / $_pastVisits) : 0;
