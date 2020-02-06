@@ -319,7 +319,7 @@
             name: 'Сумма продаж',
             data: @json($series['amount'])
         } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
-            title: '',
+            title: 'Сумма продаж',
         }));
 
         Highcharts.chart('statistics-avg', chartOptions([ {
@@ -327,7 +327,7 @@
             name: 'Средний чек',
             data: @json($series['avg'])
         } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
-            title: '',
+            title: 'Средний чек',
         }));
 
         Highcharts.chart('statistics-count', chartOptions([ {
@@ -335,7 +335,7 @@
             name: 'Количество продаж',
             data: @json($series['count'])
         } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
-            title: '',
+            title: 'Количество продаж',
         }));
 
         Highcharts.chart('statistics-visits', chartOptions([ {

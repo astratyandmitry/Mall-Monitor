@@ -68,7 +68,7 @@ class CompareMallController extends Controller
 
         return view('compare.mall.index', $this->withData([
             'statsExists' => (bool)count($stats),
-            'mall_names' => $mall_names,
+            'series' => $graph->getSeriesMultiData($mall_names),
             'graph' => $graph->getData(),
         ]));
     }

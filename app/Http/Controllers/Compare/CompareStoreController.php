@@ -69,7 +69,7 @@ class CompareStoreController extends Controller
         return view('compare.store.index', $this->withData([
             'statsExists' => (bool)count($stats),
             'graph' => $graph->getData(),
-            'store_names' => $store_names,
+            'series' => $graph->getSeriesMultiData($store_names),
         ]));
     }
 
