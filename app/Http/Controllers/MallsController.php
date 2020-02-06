@@ -81,10 +81,39 @@ class MallsController extends Controller
                 ->addValueAvg($stat->avg);
         });
 
+        $data1 = $graphStats->getData();
+        $data2 = $graphVisits->getData();
+        $series = [];
+
+        for ($i = 0; $i < count($data1['labels']); $i++) {
+            $series['amount'][$i] = [
+                'name' => $data1['labels'][$i],
+                'y' => isset($data1['amount'][$i]) ? $data1['amount'][$i] : 0,
+            ];
+
+            $series['count'][$i] = [
+                'name' => $data1['labels'][$i],
+                'y' => isset($data1['count'][$i]) ? $data1['count'][$i] : 0,
+            ];
+
+            $series['avg'][$i] = [
+                'name' => $data1['labels'][$i],
+                'y' => isset($data1['avg'][$i]) ? $data1['avg'][$i] : 0,
+            ];
+        }
+
+        for ($i = 0; $i < count($data2['labels']); $i++) {
+            $series['visits'][$i] = [
+                'name' => $data2['labels'][$i],
+                'y' => isset($data2['count'][$i]) ? $data2['count'][$i] : 0,
+            ];
+        }
+
         return view('malls.show', $this->withData([
             'visits' => $visits->pluck('count', 'date')->toArray(),
             'graphVisits' => $graphVisits->getReverseData(),
             'graphStats' => $graphStats->getReverseData(),
+            'series' => $series,
             'stats' => $stats,
             'mall' => $mall,
         ]));

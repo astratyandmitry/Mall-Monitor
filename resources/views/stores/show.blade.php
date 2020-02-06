@@ -97,83 +97,56 @@
         <div class="container">
             @if (count($stats))
                 <div class="box">
-                    <div class="box-title has-action">
+                    <div class="box-title">
                         <div class="box-title-text">
                             Сумма продаж:
                             <span>{{ number($summary['amount']) }} ₸</span>
                         </div>
-
-                        <div class="box-title-action">
-                            <span data-canvas="statistics-amount" class="btn is-sm is-outlined js-print-canvas">
-                                <i class="fa fa-file-pdf-o"></i>
-                                Скачать PDF
-                            </span>
-                        </div>
                     </div>
 
                     <div class="box-content">
-                        <canvas id="statistics-amount" class="rounded-sm mb-16" height="80vh"></canvas>
+                        <div id="statistics-amount"></div>
                     </div>
                 </div>
 
                 <div class="box is-marged">
-                    <div class="box-title has-action">
+                    <div class="box-title">
                         <div class="box-title-text">
                             Количество продаж:
                             <span>{{ number($summary['count']) }}</span>
                         </div>
-
-                        <div class="box-title-action">
-                            <span data-canvas="statistics-count" class="btn is-sm is-outlined js-print-canvas">
-                                <i class="fa fa-file-pdf-o"></i>
-                                Скачать PDF
-                            </span>
-                        </div>
                     </div>
 
                     <div class="box-content">
-                        <canvas id="statistics-count" class="rounded-sm mb-16" height="80vh"></canvas>
+                        <div id="statistics-count"></div>
                     </div>
                 </div>
 
                 <div class="box is-marged">
-                    <div class="box-title has-action">
+                    <div class="box-title">
                         <div class="box-title-text">
                             Средний чек:
                             <span>{{ number($summary['avg']) }} ₸</span>
                         </div>
-
-                        <div class="box-title-action">
-                            <span data-canvas="statistics-avg" class="btn is-sm is-outlined js-print-canvas">
-                                <i class="fa fa-file-pdf-o"></i>
-                                Скачать PDF
-                            </span>
-                        </div>
                     </div>
 
                     <div class="box-content">
-                        <canvas id="statistics-avg" class="rounded-sm mb-16" height="80vh"></canvas>
+                        <div id="statistics-avg"></div>
                     </div>
                 </div>
 
                 @if (count($visits))
                     <div class="box is-marged">
-                        <div class="box-title has-action">
+                        <div class="box-title">
                             <div class="box-title-text">
                                 Посещения:
                                 <span>{{ number($summary['visits']) }}</span>
                             </div>
 
-                            <div class="box-title-action">
-                                <span data-canvas="visits-count" class="btn is-sm is-outlined js-print-canvas">
-                                    <i class="fa fa-file-pdf-o"></i>
-                                    Скачать PDF
-                                </span>
-                            </div>
                         </div>
 
                         <div class="box-content">
-                            <canvas id="visits-count" class="rounded-sm mb-16" height="80vh"></canvas>
+                            <div id="statistics-visits"></div>
                         </div>
                     </div>
                 @endif
@@ -274,102 +247,102 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf@1.5.3/dist/jspdf.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script>
-        $(function () {
-            $('.js-print-canvas').on('click', function () {
-                var newCanvas = document.querySelector('#' + $(this).data('canvas'));
-                var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
-                var doc = new jsPDF("l", "mm", "a4");
-                doc.addImage(newCanvasImg, 'PNG', 5, 5, doc.internal.pageSize.getWidth() - 10, 0);
-                doc.save('keruenmonitor-chart_' + Date.now() + '.pdf');
-            });
+        function chartOptions(series, categories, data) {
+            return {
+                exporting: {
+                    chartOptions: {
+                        title: {
+                            text: data.title,
+                            margin: 10,
+                            style: {
+                                color: 'black',
+                            }
+                        },
 
-        });
-        Chart.defaults.global.legend.display = false;
-        Chart.defaults.global.tooltips.callbacks.label = function (tooltipItem) {
-            return addCommas(tooltipItem.yLabel);
+                        subtitle: {
+                            text: 'Тестовое описание',
+                        },
+
+                        plotOptions: {
+                            series: {
+                                dataLabels: {
+                                    enabled: false
+                                }
+                            }
+                        }
+                    },
+                    filename: 'keruenmonitor-chart',
+                    printMaxWidth: 780*3,
+                    scale: 2,
+                    fallbackToExportServer: true,
+                },
+
+                tooltip: {
+                    backgroundColor: '#fff',
+                    borderColor: '#38c172',
+                    borderRadius: 4,
+                    borderWidth: 1.5,
+                },
+
+                title: false,
+                subtitle: false,
+                legend: false,
+                series: series,
+
+                xAxis: {
+                    gridLineWidth: 1,
+                    categories: categories
+                },
+
+                yAxis: {
+                    gridLineWidth: 1,
+                    title: false,
+                },
+
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                    }
+                },
+            }
         }
 
-        function addCommas(nStr) {
-            nStr += '';
-            x = nStr.split('.');
-            x1 = x[ 0 ];
-            x2 = x.length > 1 ? '.' + x[ 1 ] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(x1)) {
-                x1 = x1.replace(rgx, '$1' + ',' + '$2');
-            }
-            return x1 + x2;
-        }
+        Highcharts.chart('statistics-amount', chartOptions([ {
+            color: '#38c172',
+            name: 'Сумма продаж',
+            data: @json($series['amount'])
+        } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
+            title: '',
+        }));
 
-        @if (count($stats))
-        new Chart('statistics-amount', {
-            type: 'line',
-            data: {
-                labels: @json($graphStats['labels']),
-                datasets: [ {
-                    label: 'Сумма продаж',
-                    borderColor: '#38c172',
-                    data: @json($graphStats['amount']),
-                } ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
-        });
+        Highcharts.chart('statistics-avg', chartOptions([ {
+            color: '#38c172',
+            name: 'Средний чек',
+            data: @json($series['avg'])
+        } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
+            title: '',
+        }));
 
-        new Chart('statistics-count', {
-            type: 'line',
-            data: {
-                labels: @json($graphStats['labels']),
-                datasets: [ {
-                    label: 'Количество чеков',
-                    borderColor: '#38c172',
-                    data: @json($graphStats['count']),
-                } ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
-        });
+        Highcharts.chart('statistics-count', chartOptions([ {
+            color: '#38c172',
+            name: 'Количество продаж',
+            data: @json($series['count'])
+        } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
+            title: '',
+        }));
 
-        new Chart('statistics-avg', {
-            type: 'line',
-            data: {
-                labels: @json($graphStats['labels']),
-                datasets: [ {
-                    label: 'Средний чек',
-                    borderColor: '#38c172',
-                    data: @json($graphStats['avg']),
-                } ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
-        });
-        @endif
-
-        @if (count($visits))
-        new Chart('visits-count', {
-            type: 'line',
-            data: {
-                labels: @json($graphVisits['labels']),
-                datasets: [ {
-                    label: 'Количество',
-                    borderColor: '#38c172',
-                    data: @json($graphVisits['count']),
-                } ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-            }
-        })
-        @endif
+        Highcharts.chart('statistics-visits', chartOptions([ {
+            color: '#38c172',
+            name: 'Посетителей',
+            data: @json($series['count'])
+        } ], @json(array_map(function($item) { return $item['name']; }, $series['visits'])), {
+            title: 'Количество посетителей',
+        }));
     </script>
 @endpush
