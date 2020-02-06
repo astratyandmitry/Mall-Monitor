@@ -277,7 +277,7 @@
                         }
                     },
                     filename: 'keruenmonitor-chart',
-                    printMaxWidth: 780*3,
+                    printMaxWidth: 780 * 3,
                     scale: 2,
                     fallbackToExportServer: true,
                 },
@@ -338,6 +338,7 @@
             title: 'Количество продаж',
         }));
 
+        @if (isset($series['visits']) && count($series['visits']))
         Highcharts.chart('statistics-visits', chartOptions([ {
             color: '#38c172',
             name: 'Посетителей',
@@ -345,5 +346,6 @@
         } ], @json(array_map(function($item) { return $item['name']; }, $series['visits'])), {
             title: 'Количество посетителей',
         }));
+        @endif
     </script>
 @endpush

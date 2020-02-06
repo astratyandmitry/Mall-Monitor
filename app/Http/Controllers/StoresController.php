@@ -103,11 +103,13 @@ class StoresController extends Controller
             ];
         }
 
-        for ($i = 0; $i < count($data2['labels']); $i++) {
-            $series['visits'][$i] = [
-                'name' => $data2['labels'][$i],
-                'y' => isset($data2['count'][$i]) ? $data2['count'][$i] : 0,
-            ];
+        if (isset($data2['labels']) && count($data2['labels'])) {
+            for ($i = 0; $i < count($data2['labels']); $i++) {
+                $series['visits'][$i] = [
+                    'name' => $data2['labels'][$i],
+                    'y' => isset($data2['count'][$i]) ? $data2['count'][$i] : 0,
+                ];
+            }
         }
 
         return view('stores.show', $this->withData([
