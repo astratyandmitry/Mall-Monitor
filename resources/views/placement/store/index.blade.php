@@ -89,11 +89,11 @@
                                     @php
                                         $_currentVisits = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'visits');
                                         $_pastVisits = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'visits');
-                                        $_currentAmount = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'count');
-                                        $_pastAmount = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'count');
+                                        $_currentCount = placement_value($statsCurrent, isset($store_id) ? $store_id : $mall_id, 'count');
+                                        $_pastCount = placement_value($statsPast, isset($store_id) ? $store_id : $mall_id, 'count');
 
-                                         $_current = $_currentVisits ? round($_currentAmount / $_currentVisits) : 0;
-                                         $_past = $_pastVisits ? round($_pastAmount / $_pastVisits) : 0;
+                                         $_current = $_currentVisits ? round(($_currentCount * 100) / $_currentVisits) : 0;
+                                         $_past = $_pastVisits ? round(($_pastCount * 100) / $_pastVisits) : 0;
                                          $_diff = placement_diff($_current, $_past);
                                     @endphp
                                     <td nowrap
