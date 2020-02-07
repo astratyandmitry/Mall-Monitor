@@ -215,7 +215,7 @@ class ChequeRepository
                     'count' => $counts[$date][$key]['value'],
                     'avg' => round($amounts[$date][$key]['value'] / $counts[$date][$key]['value']),
                     'date' => $item['date'],
-                    'store_id' => $item['store_id'],
+                    'mall_id' => $item['mall_id'],
                 ];
             }
         }
