@@ -246,105 +246,107 @@
     @endif
 @endsection
 
-@push('scripts')
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script>
-        function chartOptions(series, categories, data) {
-            return {
-                exporting: {
-                    chartOptions: {
-                        title: {
-                            text: data.title,
-                            margin: 10,
-                            style: {
-                                color: 'black',
-                            }
-                        },
+@if (count($stats))
+    @push('scripts')
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script>
+            function chartOptions(series, categories, data) {
+                return {
+                    exporting: {
+                        chartOptions: {
+                            title: {
+                                text: data.title,
+                                margin: 10,
+                                style: {
+                                    color: 'black',
+                                }
+                            },
 
-                        subtitle: {
-                            text: 'Тестовое описание',
-                        },
+                            subtitle: {
+                                text: 'Тестовое описание',
+                            },
 
-                        plotOptions: {
-                            series: {
-                                dataLabels: {
-                                    enabled: false
+                            plotOptions: {
+                                series: {
+                                    dataLabels: {
+                                        enabled: false
+                                    }
                                 }
                             }
+                        },
+                        filename: 'keruenmonitor-chart',
+                        printMaxWidth: 780 * 3,
+                        scale: 2,
+                        fallbackToExportServer: true,
+                    },
+
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        borderColor: '#38c172',
+                        borderRadius: 4,
+                        borderWidth: 1.5,
+                    },
+
+                    title: false,
+                    subtitle: false,
+                    legend: false,
+                    series: series,
+
+                    xAxis: {
+                        gridLineWidth: 1,
+                        categories: categories
+                    },
+
+                    yAxis: {
+                        gridLineWidth: 1,
+                        title: false,
+                    },
+
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
                         }
                     },
-                    filename: 'keruenmonitor-chart',
-                    printMaxWidth: 780*3,
-                    scale: 2,
-                    fallbackToExportServer: true,
-                },
-
-                tooltip: {
-                    backgroundColor: '#fff',
-                    borderColor: '#38c172',
-                    borderRadius: 4,
-                    borderWidth: 1.5,
-                },
-
-                title: false,
-                subtitle: false,
-                legend: false,
-                series: series,
-
-                xAxis: {
-                    gridLineWidth: 1,
-                    categories: categories
-                },
-
-                yAxis: {
-                    gridLineWidth: 1,
-                    title: false,
-                },
-
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true
-                        },
-                    }
-                },
+                }
             }
-        }
 
-        Highcharts.chart('statistics-amount', chartOptions([ {
-            color: '#38c172',
-            name: 'Сумма продаж',
-            data: @json($series['amount'])
-        } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
-            title: 'Сумма продаж',
-        }));
+            Highcharts.chart('statistics-amount', chartOptions([ {
+                color: '#38c172',
+                name: 'Сумма продаж',
+                data: @json($series['amount'])
+            } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
+                title: 'Сумма продаж',
+            }));
 
-        Highcharts.chart('statistics-avg', chartOptions([ {
-            color: '#38c172',
-            name: 'Средний чек',
-            data: @json($series['avg'])
-        } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
-            title: 'Средний чек',
-        }));
+            Highcharts.chart('statistics-avg', chartOptions([ {
+                color: '#38c172',
+                name: 'Средний чек',
+                data: @json($series['avg'])
+            } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
+                title: 'Средний чек',
+            }));
 
-        Highcharts.chart('statistics-count', chartOptions([ {
-            color: '#38c172',
-            name: 'Количество продаж',
-            data: @json($series['count'])
-        } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
-            title: 'Количество продаж',
-        }));
+            Highcharts.chart('statistics-count', chartOptions([ {
+                color: '#38c172',
+                name: 'Количество продаж',
+                data: @json($series['count'])
+            } ], @json(array_map(function($item) { return $item['name']; }, $series['amount'])), {
+                title: 'Количество продаж',
+            }));
 
-        @if (isset($series['visits']) && count($series['visits']))
-        Highcharts.chart('statistics-visits', chartOptions([ {
-            color: '#38c172',
-            name: 'Посетителей',
-            data: @json($series['count'])
-        } ], @json(array_map(function($item) { return $item['name']; }, $series['visits'])), {
-            title: 'Количество посетителей',
-        }));
-        @endif
-    </script>
-@endpush
+            @if (isset($series['visits']) && count($series['visits']))
+            Highcharts.chart('statistics-visits', chartOptions([ {
+                color: '#38c172',
+                name: 'Посетителей',
+                data: @json($series['count'])
+            } ], @json(array_map(function($item) { return $item['name']; }, $series['visits'])), {
+                title: 'Количество посетителей',
+            }));
+            @endif
+        </script>
+    @endpush
+@endif
