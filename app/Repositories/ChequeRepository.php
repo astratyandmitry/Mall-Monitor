@@ -305,6 +305,10 @@ class ChequeRepository
             $_counts = collect($counts[$date])->keyBy('store_id')->toArray();
 
             foreach ($_ids as $_id) {
+                if (!isset($_amounts[$_id]['value'])) {
+                    continue;
+                }
+
                 $_amount = isset($_amounts[$_id]['value']) ? $_amounts[$_id]['value'] : 0;
                 $_count = isset($_counts[$_id]['value']) ? $_counts[$_id]['value'] : 0;
 
