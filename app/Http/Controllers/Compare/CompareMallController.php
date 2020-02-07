@@ -22,6 +22,7 @@ class CompareMallController extends Controller
         $this->middleware('not-store');
     }
 
+
     /**
      * @return \Illuminate\View\View
      */
@@ -54,15 +55,15 @@ class CompareMallController extends Controller
             $graph->addMultiLabel($date, $date);
 
             foreach ($data as $item) {
-                if ( ! isset($mall_names[$item->mall_id])) {
+                if ( ! isset($mall_names[$item['mall_id']])) {
                     continue;
                 }
 
                 $graph
-                    ->addMultiValue(GraphStorage::AMOUNT, $item->mall_id, $date, $item->amount)
-                    ->addMultiValue(GraphStorage::COUNT, $item->mall_id, $date, $item->count)
-                    ->addMultiValue(GraphStorage::AVG, $item->mall_id, $date, $item->avg)
-                    ->addMultiValue(GraphStorage::VISITS, $item->mall_id, $date, (int)@$visitsSimplified[$date][$item->mall_id]);
+                    ->addMultiValue(GraphStorage::AMOUNT, $item['mall_id'], $date, $item['amount'])
+                    ->addMultiValue(GraphStorage::COUNT, $item['mall_id'], $date, $item['count'])
+                    ->addMultiValue(GraphStorage::AVG, $item['mall_id'], $date, $item['avg'])
+                    ->addMultiValue(GraphStorage::VISITS, $item['mall_id'], $date, (int)@$visitsSimplified[$date][$item['mall_id']]);
             }
         }
 

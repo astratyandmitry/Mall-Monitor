@@ -76,10 +76,10 @@ class StoresController extends Controller
         $stats = ChequeRepository::getAggregatedForStore($store->id);
         $stats->map(function ($stat) use ($graphStats) {
             $graphStats
-                ->addValueLabel($stat->date)
-                ->addValueAmount($stat->amount)
-                ->addValueCount($stat->count)
-                ->addValueAvg($stat->avg);
+                ->addValueLabel($stat['date'])
+                ->addValueAmount($stat['amount'])
+                ->addValueCount($stat['count'])
+                ->addValueAvg($stat['avg']);
         });
 
         $data1 = $graphStats->getReverseData();

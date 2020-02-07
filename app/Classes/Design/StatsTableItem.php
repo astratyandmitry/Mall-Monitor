@@ -2,7 +2,6 @@
 
 namespace App\Classes\Design;
 
-use stdClass;
 
 /**
  * @version   1.0.1
@@ -13,7 +12,7 @@ class StatsTableItem
 {
 
     /**
-     * @var \stdClass
+     * @var array
      */
     protected $stats;
 
@@ -26,10 +25,10 @@ class StatsTableItem
     /**
      * StatsTableItem constructor.
      *
-     * @param \stdClass $stats
+     * @param array $stats
      * @param int|null  $visitsCount
      */
-    public function __construct(stdClass $stats, ?int $visitsCount = null)
+    public function __construct(array $stats, ?int $visitsCount = null)
     {
         $this->stats = $stats;
         $this->visitsCount = (int)$visitsCount;
@@ -41,7 +40,7 @@ class StatsTableItem
      */
     public function getDateFormatted(): string
     {
-        return date('d.m.Y', strtotime($this->stats->date));
+        return date('d.m.Y', strtotime($this->stats['date']));
     }
 
 
@@ -59,7 +58,7 @@ class StatsTableItem
      */
     public function getChequesCount(): int
     {
-        return (int)$this->stats->count;
+        return (int)$this->stats['count'];
     }
 
 
@@ -68,7 +67,7 @@ class StatsTableItem
      */
     public function getChequesAmount(): int
     {
-        return (int)$this->stats->amount;
+        return (int)$this->stats['amount'];
     }
 
 

@@ -29,19 +29,41 @@ class ChequeRepository
     {
         $dateColumn = GraphDate::instance()->getDateColumn();
 
-        /** @var \Illuminate\Database\Query\Builder $items */
-        $items = DB::table('cheques')
-            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$dateColumn} as date"))
+        /** @var \Illuminate\Database\Query\Builder $amounts */
+        $amounts = DB::table('cheques')
+            ->select(DB::raw("SUM(amount) as value, {$dateColumn} as date"))
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->limit($limit);
+
+        /** @var \Illuminate\Database\Query\Builder $counts */
+        $counts = DB::table('cheques')
+            ->select(DB::raw("COUNT(*) AS value, {$dateColumn} as date"))
             ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->groupBy('date')
             ->orderBy('date', 'desc')
             ->limit($limit);
 
         if ( ! is_null($mall_id)) {
-            $items = $items->where('mall_id', $mall_id);
+            $amounts = $amounts->where('mall_id', $mall_id);
+            $counts = $counts->where('mall_id', $mall_id);
         }
 
-        return $items->get();
+        $amounts = $amounts->get()->keyBy('date');
+        $counts = $counts->get()->keyBy('date');
+
+        $data = [];
+
+        foreach ($amounts as $date => $_data) {
+            $data[] = [
+                'amount' => $amounts[$date]->value,
+                'count' => $counts[$date]->value,
+                'avg' => round($amounts[$date]->value / $counts[$date]->value),
+                'date' => $date,
+            ];
+        }
+
+        return collect($data);
     }
 
 
@@ -55,14 +77,37 @@ class ChequeRepository
     {
         $dateColumn = GraphDate::instance()->getDateColumn();
 
-        return DB::table('cheques')
-            ->select(DB::raw("COUNT(*) AS count, SUM
-             ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])(amount) as amount, AVG(amount) as avg, {$dateColumn} as date"))
+        /** @var \Illuminate\Database\Query\Builder $amounts */
+        $amounts = DB::table('cheques')
+            ->select(DB::raw("SUM(amount) AS value, {$dateColumn} as date"))
             ->where('store_id', $store_id)
             ->groupBy('date')
             ->orderBy('date', 'desc')
             ->limit($limit)
-            ->get();
+            ->get()->keyBy('date');
+
+        /** @var \Illuminate\Database\Query\Builder $counts */
+        $counts = DB::table('cheques')
+            ->select(DB::raw("COUNT(*) AS value, {$dateColumn} as date"))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
+            ->where('store_id', $store_id)
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->limit($limit)
+            ->get()->keyBy('date');
+
+        $data = [];
+
+        foreach ($amounts as $date => $_data) {
+            $data[] = [
+                'amount' => $amounts[$date]->value,
+                'count' => $counts[$date]->value,
+                'avg' => round($amounts[$date]->value / $counts[$date]->value),
+                'date' => $date,
+            ];
+        }
+
+        return collect($data);
     }
 
 
@@ -114,8 +159,31 @@ class ChequeRepository
         $dateColumn = GraphDate::instance()->getDateColumn();
         $startedDate = GraphDate::instance()->getStartedDate();
 
-        return Cheque::query()
-            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, {$dateColumn} as date"))
+        $amounts = Cheque::query()
+            ->select(DB::raw("SUM(amount) as value, mall_id, {$dateColumn} as date"))
+            ->where('created_at', '>=', $startedDate)
+            ->groupBy('date', 'mall_id')
+            ->orderBy('date', 'asc')
+            ->where(function (Builder $builder): Builder {
+                if (auth()->user()->mall_id) {
+                    $builder->where('mall_id', auth()->user()->mall_id);
+                } else {
+                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                        return $builder->where('mall_id', request('mall_id'));
+                    });
+                }
+
+                $builder->when(request('type_id'), function (Builder $builder): Builder {
+                    return $builder->whereHas('store', function (Builder $builder): Builder {
+                        return $builder->where('type_id', request('type_id'));
+                    });
+                });
+
+                return $builder;
+            })->get()->groupBy('date')->toArray();
+
+        $counts = Cheque::query()
+            ->select(DB::raw("COUNT(*) as value, mall_id, {$dateColumn} as date"))
             ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('date', 'mall_id')
@@ -136,7 +204,23 @@ class ChequeRepository
                 });
 
                 return $builder;
-            })->get()->groupBy('date');
+            })->get()->groupBy('date')->toArray();
+
+        $data = [];
+
+        foreach ($amounts as $date => $items) {
+            foreach ($items as $key => $item) {
+                $data[$date][$key] = [
+                    'amount' => $amounts[$date][$key]['value'],
+                    'count' => $counts[$date][$key]['value'],
+                    'avg' => round($amounts[$date][$key]['value'] / $counts[$date][$key]['value']),
+                    'date' => $item['date'],
+                    'store_id' => $item['store_id'],
+                ];
+            }
+        }
+
+        return collect($data);
     }
 
 
@@ -148,8 +232,8 @@ class ChequeRepository
         $dateColumn = GraphDate::instance()->getDateColumn();
         $startedDate = GraphDate::instance()->getStartedDate();
 
-        return Cheque::query()
-            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, store_id, {$dateColumn} as date"))
+        $amounts = Cheque::query()
+            ->select(DB::raw("SUM(amount) as value, store_id, {$dateColumn} as date"))
             ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('date', 'store_id')
@@ -170,7 +254,47 @@ class ChequeRepository
                 });
 
                 return $builder;
-            })->get()->groupBy('date');
+            })->get()->groupBy('date')->toArray();
+
+        $counts = Cheque::query()
+            ->select(DB::raw("COUNT(*) AS value, store_id, {$dateColumn} as date"))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
+            ->where('created_at', '>=', $startedDate)
+            ->groupBy('date', 'store_id')
+            ->orderBy('date', 'asc')
+            ->where(function (Builder $builder): Builder {
+                if (auth()->user()->mall_id) {
+                    $builder->where('mall_id', auth()->user()->mall_id);
+                } else {
+                    $builder->when(request('mall_id'), function (Builder $builder): Builder {
+                        return $builder->where('mall_id', request('mall_id'));
+                    });
+                }
+
+                $builder->when(request('type_id'), function (Builder $builder): Builder {
+                    return $builder->whereHas('store', function (Builder $builder): Builder {
+                        return $builder->where('type_id', request('type_id'));
+                    });
+                });
+
+                return $builder;
+            })->get()->groupBy('date')->toArray();
+
+        $data = [];
+
+        foreach ($amounts as $date => $items) {
+            foreach ($items as $key => $item) {
+                $data[$date][$key] = [
+                    'amount' => $amounts[$date][$key]['value'],
+                    'count' => $counts[$date][$key]['value'],
+                    'avg' => round($amounts[$date][$key]['value'] / $counts[$date][$key]['value']),
+                    'date' => $item['date'],
+                    'store_id' => $item['store_id'],
+                ];
+            }
+        }
+
+        return collect($data);
     }
 
 

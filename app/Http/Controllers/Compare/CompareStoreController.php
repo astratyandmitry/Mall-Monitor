@@ -54,15 +54,15 @@ class CompareStoreController extends Controller
             $graph->addMultiLabel($date, $date);
 
             foreach ($data as $item) {
-                if ( ! isset($store_names[$item->store_id])) {
+                if ( ! isset($store_names[$item['store_id']])) {
                     continue;
                 }
 
                 $graph
-                    ->addMultiValue(GraphStorage::AMOUNT, $item->store_id, $date, $item->amount)
-                    ->addMultiValue(GraphStorage::COUNT, $item->store_id, $date, $item->count)
-                    ->addMultiValue(GraphStorage::AVG, $item->store_id, $date, $item->avg)
-                    ->addMultiValue(GraphStorage::VISITS, $item->store_id, $date, (int)@$visitsSimplified[$date][$item->store_id]);
+                    ->addMultiValue(GraphStorage::AMOUNT, $item['store_id'], $date, $item['amount'])
+                    ->addMultiValue(GraphStorage::COUNT, $item['store_id'], $date, $item['count'])
+                    ->addMultiValue(GraphStorage::AVG, $item['store_id'], $date, $item['avg'])
+                    ->addMultiValue(GraphStorage::VISITS, $item['store_id'], $date, (int)@$visitsSimplified[$date][$item['store_id']]);
             }
         }
 
