@@ -209,13 +209,22 @@ class ChequeRepository
         $data = [];
 
         foreach ($amounts as $date => $items) {
-            foreach ($items as $key => $item) {
-                $data[$date][$key] = [
-                    'amount' => $amounts[$date][$key]['value'],
-                    'count' => $counts[$date][$key]['value'],
-                    'avg' => round($amounts[$date][$key]['value'] / $counts[$date][$key]['value']),
-                    'date' => $item['date'],
-                    'mall_id' => $item['mall_id'],
+            $_amounts = collect($amounts[$date])->keyBy('mall_id')->toArray();
+            $_counts = collect($counts[$date])->keyBy('mall_id')->toArray();
+
+            $_ids = array_unique(array_merge(array_keys($_amounts), array_keys($_counts)));
+            asort($_ids);
+
+            foreach ($_ids as $_id) {
+                $_amount = isset($_amounts[$_id]['value']) ? $_amounts[$_id]['value'] : 0;
+                $_count = isset($_counts[$_id]['value']) ? $_counts[$_id]['value'] : 0;
+
+                $data[$date][$_id] = [
+                    'amount' => $_amount,
+                    'count' => $_count,
+                    'avg' => $_amount == 0 || $_count == 0 ? 0 : round($_amount / $_count),
+                    'date' => $date,
+                    'mall_id' => $_id,
                 ];
             }
         }
@@ -283,13 +292,22 @@ class ChequeRepository
         $data = [];
 
         foreach ($amounts as $date => $items) {
-            foreach ($items as $key => $item) {
-                $data[$date][$key] = [
-                    'amount' => $amounts[$date][$key]['value'],
-                    'count' => $counts[$date][$key]['value'],
-                    'avg' => round($amounts[$date][$key]['value'] / $counts[$date][$key]['value']),
-                    'date' => $item['date'],
-                    'store_id' => $item['store_id'],
+            $_amounts = collect($amounts[$date])->keyBy('store_id')->toArray();
+            $_counts = collect($counts[$date])->keyBy('store_id')->toArray();
+
+            $_ids = array_unique(array_merge(array_keys($_amounts), array_keys($_counts)));
+            asort($_ids);
+
+            foreach ($_ids as $_id) {
+                $_amount = isset($_amounts[$_id]['value']) ? $_amounts[$_id]['value'] : 0;
+                $_count = isset($_counts[$_id]['value']) ? $_counts[$_id]['value'] : 0;
+
+                $data[$date][$_id] = [
+                    'amount' => $_amount,
+                    'count' => $_count,
+                    'avg' => $_amount == 0 || $_count == 0 ? 0 : round($_amount / $_count),
+                    'date' => $date,
+                    'store_id' => $_id,
                 ];
             }
         }
