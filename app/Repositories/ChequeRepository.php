@@ -243,7 +243,6 @@ class ChequeRepository
 
         $amounts = Cheque::query()
             ->select(DB::raw("SUM(amount) as value, store_id, {$dateColumn} as date"))
-            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('date', 'store_id')
             ->orderBy('date', 'asc')
