@@ -290,12 +290,19 @@ class ChequeRepository
 
         $data = [];
 
+        $_ids = [];
+
+        foreach ($amounts as $_parent) {
+            foreach ($_parent as $_child) {
+                $_ids[$_child['store_id']] = true;
+            }
+        }
+
+        $_ids = array_keys($_ids);
+
         foreach ($amounts as $date => $items) {
             $_amounts = collect($amounts[$date])->keyBy('store_id')->toArray();
             $_counts = collect($counts[$date])->keyBy('store_id')->toArray();
-
-            $_ids = array_unique(array_merge(array_keys($_amounts), array_keys($_counts)));
-            asort($_ids);
 
             foreach ($_ids as $_id) {
                 $_amount = isset($_amounts[$_id]['value']) ? $_amounts[$_id]['value'] : 0;
@@ -305,7 +312,7 @@ class ChequeRepository
                     'amount' => $_amount,
                     'count' => $_count,
                     'avg' => $_amount == 0 || $_count == 0 ? 0 : round($_amount / $_count),
-                    'date' => $_amounts[$_id]['date'],
+                    'date' => $date,
                     'store_id' => $_id,
                 ];
             }
