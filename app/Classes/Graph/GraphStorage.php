@@ -289,8 +289,6 @@ class GraphStorage
             'visits' => [],
         ];
 
-        dd($data);
-
         if (isset($data['count']) && count($data['count'])) {
             foreach ($data['count'] as $storeId => $item) {
                 $series['count'][] = [
