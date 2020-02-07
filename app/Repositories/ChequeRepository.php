@@ -305,7 +305,7 @@ class ChequeRepository
                     'amount' => $_amount,
                     'count' => $_count,
                     'avg' => $_amount == 0 || $_count == 0 ? 0 : round($_amount / $_count),
-                    'date' => $date,
+                    'date' => $_amounts[$_id]['date'],
                     'store_id' => $_id,
                 ];
             }
