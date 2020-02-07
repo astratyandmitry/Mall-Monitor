@@ -172,7 +172,7 @@
                 }
             }
 
-            Highcharts.chart('statistics-amount', chartOptions(@json($series['avg']), @json(array_values($graph['labels'])), {
+            Highcharts.chart('statistics-amount', chartOptions(@json($series['amount']), @json(array_values($graph['labels'])), {
                 title: 'Сумма продаж',
             }));
 

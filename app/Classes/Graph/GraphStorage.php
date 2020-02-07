@@ -280,6 +280,8 @@ class GraphStorage
      */
     public function getSeriesMultiData(array $names): array
     {
+        $data = $this->data;
+
         $series = [
             'count' => [],
             'amount' => [],
@@ -287,38 +289,40 @@ class GraphStorage
             'visits' => [],
         ];
 
-        if (isset($this->data['count']) && count($this->data['count'])) {
-            foreach ($this->data['count'] as $storeId => $data) {
+        dd($data);
+
+        if (isset($data['count']) && count($data['count'])) {
+            foreach ($data['count'] as $storeId => $item) {
                 $series['count'][] = [
                     'name' => $names[$storeId],
-                    'data' => array_values($data),
+                    'data' => array_values($item),
                 ];
             }
         }
 
-        if (isset($this->data['amount']) && count($this->data['amount'])) {
-            foreach ($this->data['amount'] as $storeId => $data) {
+        if (isset($data['amount']) && count($data['amount'])) {
+            foreach ($data['amount'] as $storeId => $item) {
                 $series['amount'][] = [
                     'name' => $names[$storeId],
-                    'data' => array_values($data),
+                    'data' => array_values($item),
                 ];
             }
         }
 
-        if (isset($this->data['avg']) && count($this->data['avg'])) {
-            foreach ($this->data['avg'] as $storeId => $data) {
+        if (isset($data['avg']) && count($data['avg'])) {
+            foreach ($data['avg'] as $storeId => $item) {
                 $series['avg'][] = [
                     'name' => $names[$storeId],
-                    'data' => array_values($data),
+                    'data' => array_values($item),
                 ];
             }
         }
 
-        if (isset($this->data['visits']) && count($this->data['visits'])) {
-            foreach ($this->data['visits'] as $storeId => $data) {
+        if (isset($data['visits']) && count($data['visits'])) {
+            foreach ($data['visits'] as $storeId => $item) {
                 $series['visits'][] = [
                     'name' => $names[$storeId],
-                    'data' => array_values($data),
+                    'data' => array_values($item),
                 ];
             }
         }

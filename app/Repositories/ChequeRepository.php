@@ -6,6 +6,7 @@ use App\Classes\Date\PlacementDate;
 use App\Classes\Date\ReportDate;
 use App\Models\Cheque;
 use App\Classes\Graph\GraphDate;
+use App\Models\ChequeType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,7 @@ class ChequeRepository
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = DB::table('cheques')
             ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$dateColumn} as date"))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->groupBy('date')
             ->orderBy('date', 'desc')
             ->limit($limit);
@@ -54,7 +56,8 @@ class ChequeRepository
         $dateColumn = GraphDate::instance()->getDateColumn();
 
         return DB::table('cheques')
-            ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, {$dateColumn} as date"))
+            ->select(DB::raw("COUNT(*) AS count, SUM
+             ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])(amount) as amount, AVG(amount) as avg, {$dateColumn} as date"))
             ->where('store_id', $store_id)
             ->groupBy('date')
             ->orderBy('date', 'desc')
@@ -72,6 +75,7 @@ class ChequeRepository
 
         return DB::table('cheques')
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('mall_id')
             ->get()->keyBy('mall_id')->toArray();
@@ -90,6 +94,7 @@ class ChequeRepository
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = DB::table('cheques')
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('store_id');
 
@@ -111,6 +116,7 @@ class ChequeRepository
 
         return Cheque::query()
             ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, {$dateColumn} as date"))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('date', 'mall_id')
             ->orderBy('date', 'asc')
@@ -144,6 +150,7 @@ class ChequeRepository
 
         return Cheque::query()
             ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, store_id, {$dateColumn} as date"))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('date', 'store_id')
             ->orderBy('date', 'asc')
@@ -185,6 +192,7 @@ class ChequeRepository
 
         return $items
             ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, created_{$dateGroup} as date"))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->groupBy('date')
             ->groupBy('mall_id')
             ->get();
@@ -209,6 +217,7 @@ class ChequeRepository
 
         return $items
             ->select(DB::raw("COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id, created_{$dateGroup} as date"))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->groupBy('date')
             ->groupBy('store_id')
             ->get();
@@ -245,6 +254,7 @@ class ChequeRepository
     {
         return Cheque::reportMall($dateFrom, $dateTo)
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id'))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->groupBy('mall_id')
             ->get();
     }
@@ -260,6 +270,7 @@ class ChequeRepository
     {
         return Cheque::reportStore($dateFrom, $dateTo)
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, AVG(amount) as avg, mall_id, store_id'))
+            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->groupBy('store_id')
             ->get();
     }

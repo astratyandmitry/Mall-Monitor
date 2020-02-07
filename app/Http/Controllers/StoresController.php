@@ -82,8 +82,8 @@ class StoresController extends Controller
                 ->addValueAvg($stat->avg);
         });
 
-        $data1 = $graphStats->getData();
-        $data2 = $graphVisits->getData();
+        $data1 = $graphStats->getReverseData();
+        $data2 = $graphVisits->getReverseData();
         $series = [];
 
         for ($i = 0; $i < count($data1['labels']); $i++) {
