@@ -71,7 +71,7 @@ class ReportTableTotal
      */
     public function getChequesAvgAmount(): int
     {
-        return round($this->chequesAmount / $this->chequesCount);
+        return $this->chequesAmount && $this->chequesCount ? round($this->chequesAmount / $this->chequesCount) : 0;
     }
 
 }

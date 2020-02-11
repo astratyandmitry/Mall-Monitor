@@ -76,7 +76,10 @@ class StatsTableItem
      */
     public function getChequesAvgAmount(): int
     {
-        return round($this->getChequesAmount() / $this->getChequesCount());
+        $amount = $this->getChequesAmount();
+        $count = $this->getChequesCount();
+
+        return $amount && $count ? round($amount / $count) : 0;
     }
 
 
