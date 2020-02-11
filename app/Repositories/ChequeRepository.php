@@ -99,10 +99,13 @@ class ChequeRepository
         $data = [];
 
         foreach ($amounts as $date => $_data) {
+            $amount = isset($amounts[$date]) ? $amounts[$date]->value : 0;
+            $count = isset($counts[$date]) ? $counts[$date]->value : 0;
+
             $data[] = [
-                'amount' => $amounts[$date]->value,
-                'count' => $counts[$date]->value,
-                'avg' => round($amounts[$date]->value / $counts[$date]->value),
+                'amount' => $amount,
+                'count' => $count,
+                'avg' => ($amount && $count) ? round($amounts[$date]->value / $counts[$date]->value) : 0,
                 'date' => $date,
             ];
         }
