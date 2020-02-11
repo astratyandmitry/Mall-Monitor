@@ -139,28 +139,32 @@ class DashboardController extends Controller
         $data2 = $graphVisits->getReverseData();
         $series = [];
 
-        for ($i = 0; $i < count($data1['labels']); $i++) {
-            $series['amount'][$i] = [
-                'name' => $data1['labels'][$i],
-                'y' => isset($data1['amount'][$i]) ? $data1['amount'][$i] : 0,
-            ];
+        if (isset($data1['labels']) && count($data1['labels'])) {
+            for ($i = 0; $i < count($data1['labels']); $i++) {
+                $series['amount'][$i] = [
+                    'name' => $data1['labels'][$i],
+                    'y' => isset($data1['amount'][$i]) ? $data1['amount'][$i] : 0,
+                ];
 
-            $series['count'][$i] = [
-                'name' => $data1['labels'][$i],
-                'y' => isset($data1['count'][$i]) ? $data1['count'][$i] : 0,
-            ];
+                $series['count'][$i] = [
+                    'name' => $data1['labels'][$i],
+                    'y' => isset($data1['count'][$i]) ? $data1['count'][$i] : 0,
+                ];
 
-            $series['avg'][$i] = [
-                'name' => $data1['labels'][$i],
-                'y' => isset($data1['avg'][$i]) ? $data1['avg'][$i] : 0,
-            ];
+                $series['avg'][$i] = [
+                    'name' => $data1['labels'][$i],
+                    'y' => isset($data1['avg'][$i]) ? $data1['avg'][$i] : 0,
+                ];
+            }
         }
 
-        for ($i = 0; $i < count($data2['labels']); $i++) {
-            $series['visits'][$i] = [
-                'name' => $data2['labels'][$i],
-                'y' => isset($data2['count'][$i]) ? $data2['count'][$i] : 0,
-            ];
+        if (isset($data2['labels']) && count($data2['labels'])) {
+            for ($i = 0; $i < count($data2['labels']); $i++) {
+                $series['visits'][$i] = [
+                    'name' => $data2['labels'][$i],
+                    'y' => isset($data2['count'][$i]) ? $data2['count'][$i] : 0,
+                ];
+            }
         }
 
         return view('dashboard.index', $this->withData([

@@ -86,7 +86,7 @@ class StoresController extends Controller
         $data2 = $graphVisits->getReverseData();
         $series = [];
 
-        if (isset($data1['labels'])) {
+        if (isset($data1['labels']) && count($data1['labels'])) {
             for ($i = 0; $i < count($data1['labels']); $i++) {
                 $series['amount'][$i] = [
                     'name' => $data1['labels'][$i],
