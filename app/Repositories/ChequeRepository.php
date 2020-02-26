@@ -123,7 +123,6 @@ class ChequeRepository
 
         return DB::table('cheques')
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
-            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('mall_id')
             ->get()->keyBy('mall_id')->toArray();
@@ -142,7 +141,6 @@ class ChequeRepository
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = DB::table('cheques')
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
-            ->whereNotIn('type_id', [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])
             ->where('created_at', '>=', $startedDate)
             ->groupBy('store_id');
 
