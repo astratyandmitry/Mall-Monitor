@@ -136,12 +136,12 @@ class ChequeRepository
      */
     public static function getAggregatedMonthForStore(?int $mall_id): array
     {
-        $startedDate = date('Y') . '-' . date('m') . '-01 00:00:00';
+        $startedDate = date('Y') . '-' . date('m') . '-01';
 
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = DB::table('cheques')
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, store_id'))
-            ->where('created_at', '>=', $startedDate)
+            ->where('created_date', '>=', $startedDate)
             ->groupBy('store_id');
 
         if ( ! is_null($mall_id)) {
