@@ -41,21 +41,15 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
             foreach ($items as $item) {
                 $this->info("Working with {$item->code}");
 
-                $cheque = \App\Models\Cheque::query()
-                    ->where('code', $item->code)
-                    ->where('amount', $item->amount)
-                    ->where('created_at', $item->created_at)
-                    ->oldest('id')
-                    ->first();
-
                 $ids = \DB::table('cheques')
                     ->select('id')
                     ->where('code', $item->code)
                     ->where('amount', $item->amount)
                     ->where('created_at', $item->created_at)
+                    ->orderBy('id', 'asc')
                     ->pluck('id', 'id')->toArray();
 
-                unset($ids[$cheque->id]);
+                array_shift($ids);
 
                 \DB::table('cheques')->whereIn('id', $ids)->delete();
                 \DB::table('cheque_items')->whereIn('cheque_id', $ids)->delete();
