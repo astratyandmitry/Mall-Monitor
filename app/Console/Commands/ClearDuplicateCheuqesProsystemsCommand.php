@@ -38,13 +38,13 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
 
         if (count($items)) {
             foreach ($items as $item) {
-                $this->info("Working with {$item['code']}");
+                $this->info("Working with {$item->code}");
 
-                $cheque = \App\Models\Cheque::where('code', $item['code'])->oldest('id')->first();
+                $cheque = \App\Models\Cheque::where('code', $item->code)->oldest('id')->first();
                 $ids = \DB::table('cheques')
                     ->select('id')
-                    ->where('code', $item['code'])
-                    ->where('created_at', $item['created_at'])
+                    ->where('code', $item->code)
+                    ->where('created_at', $item->created_at)
                     ->pluck('id', 'id')->toArray();
 
                 unset($ids[$cheque->id]);
