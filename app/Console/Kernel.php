@@ -35,6 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('keruenmonitor:integrate-prosystems-multi')->hourly();
         $schedule->command('keruenmonitor:integrate-webkassa')->hourly();
         $schedule->command('keruenmonitor:cheques-check-yesterday')->dailyAt('04:00');
+        $schedule->command('keruenmonitor:clear-duplicate-cheques-prosystems --limit=5000')->hourly();
     }
 
 
