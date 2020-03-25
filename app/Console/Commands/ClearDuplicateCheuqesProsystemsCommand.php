@@ -27,7 +27,9 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
             ->select(\DB::raw('count(id) as `count`, `code`'))
             ->groupBy('code')
             ->having('count', '>', 1)
-            ->pluck('code')->toArray();
+            ->limit(1000)
+            ->pluck('code')
+            ->toArray();
 
         if (count($codes)) {
             foreach ($codes as $code) {
