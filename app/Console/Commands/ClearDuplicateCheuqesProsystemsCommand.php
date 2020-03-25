@@ -26,24 +26,25 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
     {
         $this->info("Started: " . date('Y-m-d H:i:s'));
 
-        $codes = \DB::table('cheques')
-            ->select(\DB::raw('count(id) as `count`, `code`'))
+        $items = \DB::table('cheques')
+            ->select(\DB::raw('count(id) as `count`, `code`, `created_at`'))
             ->groupBy('code')
+            ->groupBy('created_at')
             ->having('count', '>', 1)
-            ->limit((int) $this->option('limit'))
-            ->pluck('code')
-            ->toArray();
+            ->limit((int)$this->option('limit'))
+            ->get()->toArray();
 
         $this->info("Loaded: " . date('Y-m-d H:i:s'));
 
-        if (count($codes)) {
-            foreach ($codes as $code) {
-                $this->info("Working with {$code}");
+        if (count($items)) {
+            foreach ($items as $item) {
+                $this->info("Working with {$item['code']}");
 
-                $cheque = \App\Models\Cheque::where('code', $code)->oldest('id')->first();
+                $cheque = \App\Models\Cheque::where('code', $item['code'])->oldest('id')->first();
                 $ids = \DB::table('cheques')
                     ->select('id')
-                    ->where('code', $code)
+                    ->where('code', $item['code'])
+                    ->where('created_at', $item['created_at'])
                     ->pluck('id', 'id')->toArray();
 
                 unset($ids[$cheque->id]);
