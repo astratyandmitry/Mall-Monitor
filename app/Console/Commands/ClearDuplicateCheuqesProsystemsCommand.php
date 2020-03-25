@@ -27,8 +27,9 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
         $this->info("Started: " . date('Y-m-d H:i:s'));
 
         $items = \DB::table('cheques')
-            ->select(\DB::raw('count(id) as `count`, `code`, `created_at`'))
+            ->select(\DB::raw('count(id) as `count`, `code`, `amount`, `created_at`'))
             ->groupBy('code')
+            ->groupBy('amount')
             ->groupBy('created_at')
             ->having('count', '>', 1)
             ->limit((int)$this->option('limit'))
@@ -40,10 +41,17 @@ class ClearDuplicateCheuqesProsystemsCommand extends Command
             foreach ($items as $item) {
                 $this->info("Working with {$item->code}");
 
-                $cheque = \App\Models\Cheque::where('code', $item->code)->oldest('id')->first();
+                $cheque = \App\Models\Cheque::query()
+                    ->where('code', $item->code)
+                    ->where('amount', $item->amount)
+                    ->where('created_at', $item->created_at)
+                    ->oldest('id')
+                    ->first();
+
                 $ids = \DB::table('cheques')
                     ->select('id')
                     ->where('code', $item->code)
+                    ->where('amount', $item->amount)
                     ->where('created_at', $item->created_at)
                     ->pluck('id', 'id')->toArray();
 
