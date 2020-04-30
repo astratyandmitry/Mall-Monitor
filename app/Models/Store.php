@@ -146,7 +146,7 @@ class Store extends Model
         });
 
         $builder->when(request('store_legal'), function (Builder $builder): Builder {
-            return $builder->where('name_legal', 'LIKE', '%' . request('store_legal') . '%');
+            return $builder->where('id', request('store_legal'));
         });
 
         $builder->when(request('store_bin'), function (Builder $builder): Builder {
