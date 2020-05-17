@@ -1,6 +1,6 @@
 @php /** @var \App\Models\Cheque[] $cheques */ @endphp
 
-@php $exportParams = request()->only(['date_from', 'time_from', 'date_to', 'time_to', 'store_id', 'mall_id', 'store_name', 'store_official', 'store_bin', 'sort_key', 'sort_value']) @endphp
+@php $exportParams = request()->only(['date_from', 'time_from', 'date_to', 'time_to', 'store_id', 'mall_id', 'store_name', 'store_official', 'store_bin', 'cashbox_id', 'sort_key', 'sort_value']) @endphp
 
 @extends('layouts.app', $globals)
 
