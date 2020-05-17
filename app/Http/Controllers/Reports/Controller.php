@@ -15,7 +15,7 @@ class Controller extends \App\Http\Controllers\Controller
      */
     protected function getExcelMaxItems(): ?int
     {
-        return (app()->isLocal()) ? 50 : 5000;
+        return (app()->isLocal()) ? 50 : 10000;
     }
 
 
