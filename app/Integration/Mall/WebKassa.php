@@ -158,7 +158,7 @@ class WebKassa
             'Take' => $take,
         ];
 
-        $request = new Request('POST', '/api/Cashbox/ShiftHistory', [
+        $request = new Request('POST', '/api/Shift/ExternalHistory', [
             'Content-Type' => 'application/json',
         ], json_encode($params));
 
@@ -199,7 +199,7 @@ class WebKassa
             'Take' => $take,
         ];
 
-        $request = new Request('POST', '/api/Check/History', [
+        $request = new Request('POST', '/api/Ticket/ExternalHistory', [
             'Content-Type' => 'application/json',
         ], json_encode($params));
 
