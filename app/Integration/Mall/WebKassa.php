@@ -205,8 +205,6 @@ class WebKassa
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        dd($response);
-
         if (isset($response->Errors) && count($response->Errors)) {
             $this->log('History', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
 
