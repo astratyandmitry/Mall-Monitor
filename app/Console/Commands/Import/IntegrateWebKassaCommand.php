@@ -56,6 +56,8 @@ class IntegrateWebKassaCommand extends Command
                         $cashboxNumber)->select(\DB::raw('count(distinct(shift_number)) as count'))->pluck('count')[0];
                     $skipShifts = ($skipShifts == 0) ? $skipShifts : $skipShifts - 1;
 
+                    $this->error("Skip: {$skipShifts}");
+
                     while ($shifts = $this->integration->shiftHistory($cashboxNumber, $skipShifts)) {
                         foreach ($shifts as $shift) {
                             $this->info("Woring with Shift {$shift->ShiftNumber}");
