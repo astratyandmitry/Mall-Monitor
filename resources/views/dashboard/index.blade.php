@@ -339,8 +339,7 @@
                 title: 'Количество продаж',
             }));
 
-            console.log(@json($series));
-
+            @if (isset($series['visits']) && count($series['visits']))
             Highcharts.chart('statistics-visits', chartOptions([ {
                 color: '#38c172',
                 name: 'Посетителей',
