@@ -68,7 +68,7 @@ class IntegrateWebKassaCommand extends Command
                                 foreach ($cheques as $cheque) {
                                     $this->info("Working with Cheque {$cheque->Number}");
 
-                                    ImportChequeWebKassa::dispatch($this->mall, $cheque, $cashbox->Xin);
+                                    ImportChequeWebKassa::dispatch($this->mall, $cheque, $cashbox);
                                 }
 
                                 $skipCheques += count($cheques);

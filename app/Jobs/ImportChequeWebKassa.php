@@ -59,7 +59,7 @@ class ImportChequeWebKassa extends ImportCheque
      */
     protected function createCheque(\stdClass $item): Cheque
     {
-        $cashbox = $this->loadCashbox($this->bin, $item->CashboxUniqueNumber);
+        $cashbox = $this->loadCashbox($this->cashbox->Xin, $this->cashbox->CashboxUniqueNumber);
         $typeId = $this->getType($item->OperationType);
 
         return Cheque::create([

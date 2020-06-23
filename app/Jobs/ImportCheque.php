@@ -51,19 +51,21 @@ abstract class ImportCheque
     /**
      * @var string|null
      */
-    protected $bin;
+    protected $cashbox;
 
 
     /**
+     * ImportCheque constructor.
+     *
      * @param \App\Models\Mall $mall
      * @param \stdClass        $item
-     * @param null|string      $bin
+     * @param \stdClass|null   $cashbox
      */
-    public function __construct(Mall $mall, \stdClass $item, ?string $bin = null)
+    public function __construct(Mall $mall, \stdClass $item, ?\stdClass $cashbox = null)
     {
         $this->mall = $mall;
         $this->item = $item;
-        $this->bin = $bin;
+        $this->cashbox = $cashbox;
     }
 
 
