@@ -81,7 +81,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         });
 
         $sort_key = request()->query('sort_key', 'id');
-        $sort_type = request()->query('sort_type', 'asc');
+        $sort_type = request()->query('sort_type', 'desc');
 
         if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
             $sort_key = 'id';
