@@ -74,10 +74,7 @@ class ImportChequeWebKassa extends ImportCheque
             'type_id' => $typeId,
             'payment_id' => $this->getPaymentId($item),
             'created_at' => date('Y-m-d H:i:s', strtotime($item->RegistratedOn)),
-            'data' => [
-                'CashboxRegistrationNumber' => $item->CashboxRegistrationNumber,
-                'CashboxIdentityNumber' => $item->CashboxIdentityNumber,
-            ],
+            'data' => [],
         ]);
     }
 
