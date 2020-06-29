@@ -81,7 +81,7 @@ class MallIntegration extends Model
      */
     public function mall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Mall::class)->withTrashed();
+        return $this->belongsTo(Mall::class);
     }
 
 
@@ -92,6 +92,5 @@ class MallIntegration extends Model
     {
         return $this->belongsTo(MallIntegrationSystem::class);
     }
-
 
 }
