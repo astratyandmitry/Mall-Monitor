@@ -11,7 +11,6 @@ use App\Models\MallIntegrationSystem;
 
 class IntegrateWebKassaCommand extends Command
 {
-
     /**
      * @var string
      */
@@ -32,7 +31,6 @@ class IntegrateWebKassaCommand extends Command
      */
     protected $mall;
 
-
     /**
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -52,11 +50,13 @@ class IntegrateWebKassaCommand extends Command
 
                     $this->info("Woring with Cashbox {$cashboxNumber}");
 
-                    $skipShifts = Cheque::where('kkm_code',
-                        $cashboxNumber)->select(\DB::raw('count(distinct(shift_number)) as count'))->pluck('count')[0];
-                    $skipShifts = ($skipShifts == 0) ? $skipShifts : $skipShifts - 1;
+                    /** @var \App\Models\Cheque $latestCheque */
+                    $latestCheque = Cheque::query()->where('kkm_code', $cashboxNumber)->latest('created_at')->first();
 
-                    while ($shifts = $this->integration->shiftHistory($cashboxNumber, $skipShifts)) {
+                    $dateFrom = ($latestCheque) ? $latestCheque->created_at : '01.01.2000 00:00:00';
+                    $skipShifts = 0;
+
+                    while ($shifts = $this->integration->shiftHistory($cashboxNumber, $dateFrom, $skipShifts)) {
                         foreach ($shifts as $shift) {
                             $this->info("Woring with Shift {$shift->ShiftNumber}");
 
@@ -85,5 +85,4 @@ class IntegrateWebKassaCommand extends Command
             $this->error('Unauthorized');
         }
     }
-
 }

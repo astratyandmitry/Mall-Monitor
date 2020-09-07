@@ -9,7 +9,6 @@ use App\Models\MallIntegrationLog;
 
 class WebKassa
 {
-
     /**
      * @var \GuzzleHttp\Client
      */
@@ -51,7 +50,6 @@ class WebKassa
      */
     protected $cheques = [];
 
-
     /**
      * @param \App\Models\MallIntegration $integration
      *
@@ -66,7 +64,6 @@ class WebKassa
         ]);
     }
 
-
     /**
      * @param \App\Models\MallIntegration $integration
      *
@@ -80,7 +77,6 @@ class WebKassa
 
         return self::$instance;
     }
-
 
     /**
      * @return bool
@@ -112,10 +108,8 @@ class WebKassa
         return true;
     }
 
-
     /**
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function availableForReadHistory(): array
     {
@@ -140,20 +134,21 @@ class WebKassa
         return $response->Data;
     }
 
-
     /**
      * @param string $cashboxNumber
-     * @param int    $skip
-     * @param int    $take
+     * @param string $dateFrom
+     * @param int $skip
+     * @param int $take
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function shiftHistory(string $cashboxNumber, int $skip = 0, int $take = 50): array
+    public function shiftHistory(string $cashboxNumber, string $dateFrom, int $skip = 0, int $take = 50): array
     {
         $params = [
             'Token' => $this->token,
             'CashboxUniqueNumber' => $cashboxNumber,
+            'FromDate' => date('d.m.Y H:i:s', strtotime($dateFrom)),
+            'ToDate' => date('d.m.Y H:i:s'),
             'Skip' => $skip,
             'Take' => $take,
         ];
@@ -172,19 +167,18 @@ class WebKassa
 
         $this->log('ShiftHistory', 0, null, $params);
 
-        if ( ! count($response->Data->Shifts)) {
+        if (! count($response->Data->Shifts)) {
             return [];
         }
 
         return $response->Data->Shifts;
     }
 
-
     /**
      * @param string $cashboxNumber
      * @param string $shiftNumber
-     * @param int    $skip
-     * @param int    $take
+     * @param int $skip
+     * @param int $take
      *
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -213,19 +207,18 @@ class WebKassa
 
         $this->log('History', 0, null, $params);
 
-        if ( ! count($response->Data->Items)) {
+        if (! count($response->Data->Items)) {
             return [];
         }
 
         return $response->Data->Items;
     }
 
-
     /**
      * @param string $operation
-     * @param int    $code
+     * @param int $code
      * @param string $message
-     * @param array  $data
+     * @param array $data
      *
      * @return void
      */
@@ -235,5 +228,4 @@ class WebKassa
             $this->integration->system_id, $this->integration->mall_id, $operation, $code, $message, $data
         );
     }
-
 }
