@@ -63,6 +63,7 @@ class IntegrateWebKassaCommand extends Command
                             $this->info("Getting Cheques for Cashbox {$cashboxNumber} Shift {$shift->ShiftNumber}");
 
                             $skipCheques = Cheque::where('kkm_code', $cashboxNumber)->where('shift_number', $shift->ShiftNumber)->count();
+                            $skipCheques = $skipShifts > 0 ? $skipCheques - 1 : 0;
 
                             while ($cheques = $this->integration->history($cashboxNumber, $shift->ShiftNumber, $skipCheques)) {
                                 foreach ($cheques as $cheque) {
