@@ -19,6 +19,7 @@ class CreateVisitsTable extends Migration
             $table->unsignedInteger('countmax_id');
             $table->unsignedInteger('count');
             $table->dateTime('fixed_at');
+            $table->timestamps();
         });
     }
 
