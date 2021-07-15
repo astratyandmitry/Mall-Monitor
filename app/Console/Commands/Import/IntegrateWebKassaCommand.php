@@ -48,13 +48,17 @@ class IntegrateWebKassaCommand extends Command
                 foreach ($cashboxes as $cashbox) {
                     $cashboxNumber = $cashbox->CashboxUniqueNumber;
 
-                    $this->info("Woring with Cashbox {$cashboxNumber}");
+                    $this->info("Working with Cashbox {$cashboxNumber}");
+
+                    $this->info('— START CALCULATING LAST CHEQUE...');
 
                     /** @var \App\Models\Cheque $latestCheque */
                     $latestCheque = Cheque::query()->where('kkm_code', $cashboxNumber)->latest('created_at')->first();
 
                     $dateFrom = ($latestCheque) ? $latestCheque->created_at : '01.01.2000 00:00:00';
                     $skipShifts = 0;
+
+                    $this->info('— END CALCULATING LAST CHEQUE...');
 
                     while ($shifts = $this->integration->shiftHistory($cashboxNumber, $dateFrom, $skipShifts)) {
                         foreach ($shifts as $shift) {
