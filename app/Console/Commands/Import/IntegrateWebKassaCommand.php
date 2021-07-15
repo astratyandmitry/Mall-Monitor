@@ -58,7 +58,7 @@ class IntegrateWebKassaCommand extends Command
                     $dateFrom = ($latestCheque) ? $latestCheque->created_at : '01.01.2000 00:00:00';
                     $skipShifts = 0;
 
-                    $this->info('— END CALCULATING LAST CHEQUE...');
+                    $this->info("— END CALCULATING LAST CHEQUE ($dateFrom)");
 
                     while ($shifts = $this->integration->shiftHistory($cashboxNumber, $dateFrom, $skipShifts)) {
                         foreach ($shifts as $shift) {
@@ -66,8 +66,12 @@ class IntegrateWebKassaCommand extends Command
 
                             $this->info("Getting Cheques for Cashbox {$cashboxNumber} Shift {$shift->ShiftNumber}");
 
+                            $this->info('— START CALCULATING LAST SHIFT...');
+
                             $skipCheques = Cheque::where('kkm_code', $cashboxNumber)->where('shift_number', $shift->ShiftNumber)->count();
                             $skipCheques = $skipShifts > 0 ? $skipCheques - 1 : 0;
+
+                            $this->info("— END CALCULATING LAST SHIFT ($skipCheques)");
 
                             while ($cheques = $this->integration->history($cashboxNumber, $shift->ShiftNumber, $skipCheques)) {
                                 foreach ($cheques as $cheque) {
