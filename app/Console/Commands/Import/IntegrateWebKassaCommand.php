@@ -14,7 +14,7 @@ class IntegrateWebKassaCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'keruenmonitor:integrate-webkassa';
+    protected $signature = 'keruenmonitor:integrate-webkassa {--cashbox=}';
 
     /**
      * @var string
@@ -37,6 +37,8 @@ class IntegrateWebKassaCommand extends Command
      */
     public function handle(): void
     {
+        $_optionCashbox = $this->option('cashbox');
+
         $this->mall = Mall::find(Mall::KERUEN_CITY);
 
         $this->integration = WebKassa::init(
@@ -46,6 +48,10 @@ class IntegrateWebKassaCommand extends Command
         if ($this->integration->authorize()) {
             if ($cashboxes = $this->integration->availableForReadHistory()) {
                 foreach ($cashboxes as $cashbox) {
+                    if ($_optionCashbox && $cashbox->CashboxUniqueNumber != $_optionCashbox) {
+                        continue;
+                    }
+
                     $cashboxNumber = $cashbox->CashboxUniqueNumber;
 
                     $this->info("Working with Cashbox {$cashboxNumber}");
