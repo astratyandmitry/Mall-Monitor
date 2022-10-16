@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateStoreTypesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -20,7 +19,6 @@ class CreateStoreTypesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -30,5 +28,4 @@ class CreateStoreTypesTable extends Migration
     {
         Schema::dropIfExists('store_types');
     }
-
 }

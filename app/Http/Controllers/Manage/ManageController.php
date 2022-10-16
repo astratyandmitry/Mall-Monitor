@@ -9,10 +9,8 @@ namespace App\Http\Controllers\Manage;
  */
 class ManageController extends \App\Http\Controllers\Controller
 {
-
     /**
      * @var int
      */
     protected $itemsPerPage = 50;
-
 }

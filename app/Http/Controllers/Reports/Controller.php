@@ -9,7 +9,6 @@ namespace App\Http\Controllers\Reports;
  */
 class Controller extends \App\Http\Controllers\Controller
 {
-
     /**
      * @return int|null
      */
@@ -18,7 +17,6 @@ class Controller extends \App\Http\Controllers\Controller
         return (app()->isLocal()) ? 50 : 10000;
     }
 
-
     /**
      * @return int
      */
@@ -26,5 +24,4 @@ class Controller extends \App\Http\Controllers\Controller
     {
         return (app()->isLocal()) ? 50 : 250;
     }
-
 }

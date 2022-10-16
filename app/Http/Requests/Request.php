@@ -12,12 +12,10 @@ use Illuminate\Foundation\Http\FormRequest;
  */
 class Request extends FormRequest
 {
-
     /**
      * @var \App\Models\Model
      */
     protected $entity;
-
 
     /**
      * @return bool
@@ -26,7 +24,6 @@ class Request extends FormRequest
     {
         return true;
     }
-
 
     /**
      * @return array
@@ -40,7 +37,6 @@ class Request extends FormRequest
         return $this->uniqueRules($this->entity->getRules());
     }
 
-
     /**
      * @return array
      */
@@ -52,7 +48,6 @@ class Request extends FormRequest
 
         return $this->entity->getMessages();
     }
-
 
     /**
      * @param array $rules
@@ -76,7 +71,7 @@ class Request extends FormRequest
                 }
 
                 if (isset($rules[$attribute])) {
-                    $rules[$attribute] .= '|' . $uniqueRule;
+                    $rules[$attribute] .= '|'.$uniqueRule;
                 } else {
                     $rules[$attribute] = $uniqueRule;
                 }
@@ -85,5 +80,4 @@ class Request extends FormRequest
 
         return $rules;
     }
-
 }

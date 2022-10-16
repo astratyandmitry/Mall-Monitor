@@ -11,7 +11,6 @@ use App\Models\Country;
  */
 class CountryRepository
 {
-
     /**
      * @return array
      */
@@ -19,5 +18,4 @@ class CountryRepository
     {
         return Country::pluck('name', 'id')->toArray();
     }
-
 }

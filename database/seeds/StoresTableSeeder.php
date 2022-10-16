@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 
 class StoresTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -17,7 +16,6 @@ class StoresTableSeeder extends Seeder
             'mall_id' => Mall::KERUEN_CITY,
         ],
     ];
-
 
     /**
      * @return void
@@ -30,5 +28,4 @@ class StoresTableSeeder extends Seeder
             Store::create($data);
         }
     }
-
 }

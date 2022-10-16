@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddBusinessIdentificationNumberColumnToStoresTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddBusinessIdentificationNumberColumnToStoresTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddBusinessIdentificationNumberColumnToStoresTable extends Migration
             $table->dropColumn('business_identification_number');
         });
     }
-
 }

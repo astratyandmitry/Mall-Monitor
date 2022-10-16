@@ -11,7 +11,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
-
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
@@ -26,7 +25,6 @@ class Controller extends BaseController
         'active' => '',
     ];
 
-
     /**
      * @param string $title
      */
@@ -34,7 +32,6 @@ class Controller extends BaseController
     {
         $this->data['title'] = $title;
     }
-
 
     /**
      * @param \App\Models\Model $model
@@ -45,7 +42,6 @@ class Controller extends BaseController
         $this->data['meta']['keywords'] = @$model->meta_keywords;
     }
 
-
     /**
      * @param mixed $active
      */
@@ -53,7 +49,6 @@ class Controller extends BaseController
     {
         $this->data['active_section'] = $active;
     }
-
 
     /**
      * @param mixed $active
@@ -63,7 +58,6 @@ class Controller extends BaseController
         $this->data['active_page'] = $active;
     }
 
-
     /**
      * @param mixed $active
      */
@@ -72,9 +66,8 @@ class Controller extends BaseController
         $this->data['label'] = $active;
     }
 
-
     /**
-     * @param string      $name
+     * @param string $name
      * @param string|null $link
      */
     public function addBreadcrumb(string $name, ?string $link = null): void
@@ -84,7 +77,6 @@ class Controller extends BaseController
             'name' => $name,
         ];
     }
-
 
     /**
      * @param array $data
@@ -97,7 +89,6 @@ class Controller extends BaseController
             'globals' => $this->data,
         ]);
     }
-
 
     /**
      * @param string $date
@@ -112,7 +103,7 @@ class Controller extends BaseController
             return $date;
         }
 
-        $month = DateHelper::getMonthAbbr((int)$dates[1]);
+        $month = DateHelper::getMonthAbbr((int) $dates[1]);
 
         if (count($dates) == 2) {
             return "{$month} {$dates[0]}";
@@ -120,7 +111,6 @@ class Controller extends BaseController
 
         $day = DateHelper::getDayAbbr(date('N', strtotime($date)));
 
-        return (int)$dates[2] . " {$month} {$dates[0]} ({$day})";
+        return (int) $dates[2]." {$month} {$dates[0]} ({$day})";
     }
-
 }

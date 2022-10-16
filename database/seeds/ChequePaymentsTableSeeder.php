@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 
 class ChequePaymentsTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -32,7 +31,6 @@ class ChequePaymentsTableSeeder extends Seeder
         ],
     ];
 
-
     /**
      * @return void
      */
@@ -44,5 +42,4 @@ class ChequePaymentsTableSeeder extends Seeder
             ChequePayment::create($data);
         }
     }
-
 }

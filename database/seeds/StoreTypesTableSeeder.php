@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 
 class StoreTypesTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -24,7 +23,6 @@ class StoreTypesTableSeeder extends Seeder
         ],
     ];
 
-
     /**
      * @return void
      */
@@ -36,5 +34,4 @@ class StoreTypesTableSeeder extends Seeder
             StoreType::create($data);
         }
     }
-
 }

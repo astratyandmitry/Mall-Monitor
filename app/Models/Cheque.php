@@ -7,28 +7,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property integer                   $id
- * @property string                    $kkm_code
- * @property string                    $code
- * @property string                    $number
- * @property string                    $shift_number
- * @property float                     $amount
- * @property string                    $data
- * @property integer                   $mall_id
- * @property integer                   $store_id
- * @property integer                   $cashbox_id
- * @property integer                   $type_id
- * @property integer                   $payment_id
- * @property string                    $created_date
- * @property string                    $created_year
- * @property string                    $created_yearmonth
- * @property \Carbon\Carbon            $created_at
- * @property \App\Models\Mall          $mall
- * @property \App\Models\Store         $store
- * @property \App\Models\Cashbox       $cashbox
- * @property \App\Models\ChequeType    $type
+ * @property integer $id
+ * @property string $kkm_code
+ * @property string $code
+ * @property string $number
+ * @property string $shift_number
+ * @property float $amount
+ * @property string $data
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property integer $cashbox_id
+ * @property integer $type_id
+ * @property integer $payment_id
+ * @property string $created_date
+ * @property string $created_year
+ * @property string $created_yearmonth
+ * @property \Carbon\Carbon $created_at
+ * @property \App\Models\Mall $mall
+ * @property \App\Models\Store $store
+ * @property \App\Models\Cashbox $cashbox
+ * @property \App\Models\ChequeType $type
  * @property \App\Models\ChequePayment $payment
- * @property \App\Models\ChequeItem[]  $items
+ * @property \App\Models\ChequeItem[] $items
  *
  * @method static Builder uniqueAttrs(array $attrs)
  * @method static Builder reportMall(?string $dateFrom, ?string $dateTo)
@@ -41,7 +41,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Cheque extends Model
 {
-
     /**
      * @var string
      */
@@ -129,7 +128,6 @@ class Cheque extends Model
         'created_at' => 'время',
     ];
 
-
     /**
      * @param string $value
      *
@@ -145,7 +143,6 @@ class Cheque extends Model
         $this->attributes['created_year'] = date('Y', $datetime);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -153,7 +150,6 @@ class Cheque extends Model
     {
         return $this->belongsTo(Mall::class);
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -163,7 +159,6 @@ class Cheque extends Model
         return $this->belongsTo(Store::class)->withTrashed();
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -171,7 +166,6 @@ class Cheque extends Model
     {
         return $this->belongsTo(Cashbox::class)->withTrashed();
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -181,7 +175,6 @@ class Cheque extends Model
         return $this->belongsTo(ChequeType::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -189,7 +182,6 @@ class Cheque extends Model
     {
         return $this->belongsTo(ChequePayment::class);
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -199,10 +191,9 @@ class Cheque extends Model
         return $this->hasMany(ChequeItem::class);
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param array                                 $attrs
+     * @param array $attrs
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -217,16 +208,18 @@ class Cheque extends Model
         return $builder;
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string|null                           $dateFrom
-     * @param string|null                           $dateTo
+     * @param string|null $dateFrom
+     * @param string|null $dateTo
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function scopeReportDetail(Builder $builder, ?string $dateFrom = null, ?string $dateTo = null): Builder
-    {
+    public static function scopeReportDetail(
+        Builder $builder,
+        ?string $dateFrom = null,
+        ?string $dateTo = null
+    ): Builder {
         $builder->with(['store', 'payment', 'type']);
 
         $user = auth()->user();
@@ -256,11 +249,11 @@ class Cheque extends Model
         $sort_key = request()->query('sort_key', 'created_at');
         $sort_type = request()->query('sort_type', 'desc');
 
-        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
+        if (! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
             $sort_key = 'created_at';
         }
 
-        if ( ! in_array($sort_type, ['asc', 'desc'])) {
+        if (! in_array($sort_type, ['asc', 'desc'])) {
             $sort_type = 'asc';
         }
 
@@ -273,11 +266,10 @@ class Cheque extends Model
         return $builder;
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string|null                           $dateFrom
-     * @param string|null                           $dateTo
+     * @param string|null $dateFrom
+     * @param string|null $dateTo
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -336,11 +328,11 @@ class Cheque extends Model
             $sort_key = request()->query('sort_key', 'created_at');
             $sort_type = request()->query('sort_type', 'desc');
 
-            if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
+            if (! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
                 $sort_key = 'created_at';
             }
 
-            if ( ! in_array($sort_type, ['asc', 'desc'])) {
+            if (! in_array($sort_type, ['asc', 'desc'])) {
                 $sort_type = 'asc';
             }
 
@@ -354,11 +346,10 @@ class Cheque extends Model
         return $builder;
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string|null                           $dateFrom
-     * @param string|null                           $dateTo
+     * @param string|null $dateFrom
+     * @param string|null $dateTo
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -385,11 +376,15 @@ class Cheque extends Model
         $sort_key = request()->query('sort_key', 'mall_id');
         $sort_type = request()->query('sort_type', 'asc');
 
-        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key) && ! in_array($sort_key, ['avg', 'count', 'amount'])) {
+        if (! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key) && ! in_array($sort_key, [
+                'avg',
+                'count',
+                'amount',
+            ])) {
             $sort_key = 'mall_id';
         }
 
-        if ( ! in_array($sort_type, ['asc', 'desc'])) {
+        if (! in_array($sort_type, ['asc', 'desc'])) {
             $sort_type = 'asc';
         }
 
@@ -403,5 +398,4 @@ class Cheque extends Model
 
         return $builder;
     }
-
 }

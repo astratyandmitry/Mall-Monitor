@@ -14,7 +14,6 @@ use App\Repositories\VisitsRepository;
  */
 class DashboardController extends Controller
 {
-
     /**
      * DashboardController constructor.
      */
@@ -22,7 +21,6 @@ class DashboardController extends Controller
     {
         $this->middleware('loggined');
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -39,7 +37,6 @@ class DashboardController extends Controller
 
         return $this->forMall();
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -108,7 +105,6 @@ class DashboardController extends Controller
         ]));
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -175,5 +171,4 @@ class DashboardController extends Controller
             'stats' => $stats,
         ]));
     }
-
 }

@@ -9,18 +9,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property integer               $id
- * @property string                $name
- * @property string                $name_legal
- * @property integer               $business_identification_number
- * @property double                $rentable_area
- * @property integer               $mall_id
- * @property integer               $type_id
- * @property boolean               $is_errors_yesterday
- * @property \Carbon\Carbon        $deleted_at
- * @property \App\Models\Mall      $mall
+ * @property integer $id
+ * @property string $name
+ * @property string $name_legal
+ * @property integer $business_identification_number
+ * @property double $rentable_area
+ * @property integer $mall_id
+ * @property integer $type_id
+ * @property boolean $is_errors_yesterday
+ * @property \Carbon\Carbon $deleted_at
+ * @property \App\Models\Mall $mall
  * @property \App\Models\StoreType $type
- * @property \App\Models\Cheque[]  $cheques
+ * @property \App\Models\Cheque[] $cheques
  *
  * @method static Builder report()
  *
@@ -30,7 +30,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Store extends Model
 {
-
     use SoftDeletes;
 
     /**
@@ -97,7 +96,6 @@ class Store extends Model
      */
     public $timestamps = false;
 
-
     /**
      * @return void
      */
@@ -118,7 +116,6 @@ class Store extends Model
         });
     }
 
-
     /**
      * @param string $value
      *
@@ -128,7 +125,6 @@ class Store extends Model
     {
         $this->attributes['rentable_area'] = str_replace(',', '.', str_replace(' ', '', trim($value)));
     }
-
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
@@ -142,7 +138,7 @@ class Store extends Model
         });
 
         $builder->when(request('store_name'), function (Builder $builder): Builder {
-            return $builder->where('name', 'LIKE', '%' . request('store_name') . '%');
+            return $builder->where('name', 'LIKE', '%'.request('store_name').'%');
         });
 
         $builder->when(request('store_legal'), function (Builder $builder): Builder {
@@ -150,12 +146,11 @@ class Store extends Model
         });
 
         $builder->when(request('store_bin'), function (Builder $builder): Builder {
-            return $builder->where('business_identification_number', 'LIKE', '%' . str_replace(' ', '', request('store_bin')) . '%');
+            return $builder->where('business_identification_number', 'LIKE', '%'.str_replace(' ', '', request('store_bin')).'%');
         });
 
         return $builder;
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -165,7 +160,6 @@ class Store extends Model
         return $this->belongsTo(Mall::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -173,7 +167,6 @@ class Store extends Model
     {
         return $this->belongsTo(StoreType::class, 'type_id');
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -183,7 +176,6 @@ class Store extends Model
         return $this->hasMany(Cheque::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -192,7 +184,6 @@ class Store extends Model
         return $this->hasOne(StoreIntegration::class, 'store_id');
     }
 
-
     /**
      * @return string
      */
@@ -200,7 +191,6 @@ class Store extends Model
     {
         return route('stores.show', $this->id);
     }
-
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
@@ -214,11 +204,11 @@ class Store extends Model
         $builder->withTrashed();
 
         $builder->when(request('name'), function (Builder $builder): Builder {
-            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+            return $builder->where('name', 'LIKE', '%'.request('name').'%');
         });
 
         $builder->when(request('bin'), function (Builder $builder): Builder {
-            return $builder->where('business_identification_number', 'LIKE', '%' . str_replace(' ', '', request('bin')) . '%');
+            return $builder->where('business_identification_number', 'LIKE', '%'.str_replace(' ', '', request('bin')).'%');
         });
 
         $builder->when(request('type_id'), function (Builder $builder): Builder {
@@ -250,5 +240,4 @@ class Store extends Model
 
         return parent::scopeFilter($builder);
     }
-
 }

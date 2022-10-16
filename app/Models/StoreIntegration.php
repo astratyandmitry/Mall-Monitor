@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property integer                           $id
- * @property integer                           $mall_id
- * @property integer                           $store_id
- * @property integer                           $type_id
- * @property array                             $config
- * @property array                             $columns
- * @property array                             $types
- * @property array                             $payments
- * @property  \App\Models\Mall                 $mall
- * @property  \App\Models\Store                $store
+ * @property integer $id
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property integer $type_id
+ * @property array $config
+ * @property array $columns
+ * @property array $types
+ * @property array $payments
+ * @property  \App\Models\Mall $mall
+ * @property  \App\Models\Store $store
  * @property  \App\Models\StoreIntegrationType $type
  *
  * @version   1.0.1
@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class StoreIntegration extends Model
 {
-
     /**
      * @var string
      */
@@ -82,7 +81,6 @@ class StoreIntegration extends Model
         'type_id' => 'тип',
     ];
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      *
@@ -107,7 +105,6 @@ class StoreIntegration extends Model
         return parent::scopeFilter($builder);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -115,7 +112,6 @@ class StoreIntegration extends Model
     {
         return $this->belongsTo(Mall::class);
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -125,7 +121,6 @@ class StoreIntegration extends Model
         return $this->belongsTo(Store::class)->withTrashed();
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -133,7 +128,6 @@ class StoreIntegration extends Model
     {
         return $this->belongsTo(StoreIntegrationType::class);
     }
-
 
     /**
      * @return array

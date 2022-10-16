@@ -11,7 +11,6 @@ use Illuminate\Database\Migrations\Migration;
  */
 class CreateCitiesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -26,7 +25,6 @@ class CreateCitiesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -36,5 +34,4 @@ class CreateCitiesTable extends Migration
     {
         Schema::dropIfExists('cities');
     }
-
 }

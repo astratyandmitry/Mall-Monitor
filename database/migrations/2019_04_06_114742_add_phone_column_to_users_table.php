@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddPhoneColumnToUsersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddPhoneColumnToUsersTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddPhoneColumnToUsersTable extends Migration
             $table->dropColumn('phone');
         });
     }
-
 }

@@ -13,7 +13,6 @@ use App\Http\Requests\Manage\ManageStoreRequest;
  */
 class ManageStoresController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -29,7 +28,6 @@ class ManageStoresController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -41,7 +39,6 @@ class ManageStoresController extends ManageController
             'entities' => Store::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -56,7 +53,6 @@ class ManageStoresController extends ManageController
         ]));
     }
 
-
     /**
      * @param \App\Http\Requests\Manage\ManageStoreRequest $request
      *
@@ -68,7 +64,7 @@ class ManageStoresController extends ManageController
 
         $developerAttributes = $request->only(['username', 'password']);
 
-        if (isset($developerAttributes['username']) && !empty($developerAttributes['username'])) {
+        if (isset($developerAttributes['username']) && ! empty($developerAttributes['username'])) {
             Developer::query()->create(array_merge($developerAttributes, [
                 'mall_id' => $store->mall_id,
                 'store_id' => $store->id,
@@ -78,7 +74,6 @@ class ManageStoresController extends ManageController
         return redirect()->route('manage.stores.index')
             ->with('status-success', 'Арендатор успешно добавлен');
     }
-
 
     /**
      * @param \App\Models\Store $store
@@ -95,7 +90,6 @@ class ManageStoresController extends ManageController
         ]));
     }
 
-
     /**
      * @param \App\Models\Store $store
      * @param \App\Http\Requests\Manage\ManageStoreRequest $request
@@ -106,14 +100,13 @@ class ManageStoresController extends ManageController
     {
         $store->update($request->all());
 
-        if ($store->trashed() && $request->activate)  {
+        if ($store->trashed() && $request->activate) {
             $store->restore();
         }
 
         return redirect()->route('manage.stores.index')
             ->with('status-success', 'Арендатор успешно изменен');
     }
-
 
     /**
      * @param \App\Models\Store $entity
@@ -135,5 +128,4 @@ class ManageStoresController extends ManageController
         return redirect()->route('manage.stores.index')
             ->with('status-danger', 'Арендатор успешно деактивирован');
     }
-
 }

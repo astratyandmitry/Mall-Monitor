@@ -15,12 +15,10 @@ use App\Repositories\ChequeRepository;
  */
 class ReportsMallController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('not-store');
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -35,13 +33,12 @@ class ReportsMallController extends Controller
         return view('reports.mall.index', $this->withData($this->getData()));
     }
 
-
     /**
      * @return string
      */
     public function exportExcel(): string
     {
-        $filename = 'keruenmonitor_reports.mall_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.mall_'.date('YmdHi');
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Отчет по ТРЦ', function ($sheet) {
@@ -54,13 +51,12 @@ class ReportsMallController extends Controller
         return '<script>window.close();</script>';
     }
 
-
     /**
      * @return mixed
      */
     public function exportPDF()
     {
-        $filename = 'keruenmonitor_reports.mall_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.mall_'.date('YmdHi');
 
         $data = $this->getDataForExport($this->getPDFMaxItems());
 
@@ -68,7 +64,6 @@ class ReportsMallController extends Controller
 
         return $pdf->download("{$filename}.pdf");
     }
-
 
     /**
      * @param int|null $limit
@@ -95,7 +90,6 @@ class ReportsMallController extends Controller
         ];
     }
 
-
     /**
      * @param int|null $limit
      *
@@ -110,5 +104,4 @@ class ReportsMallController extends Controller
 
         return $data;
     }
-
 }

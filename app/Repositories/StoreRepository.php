@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
  */
 class StoreRepository
 {
-
     /**
      * @param int|null $mall_id
      *
@@ -22,7 +21,7 @@ class StoreRepository
     {
         $query = Store::query();
 
-        if ( ! is_null($mall_id)) {
+        if (! is_null($mall_id)) {
             $query = $query->where('mall_id', $mall_id);
         }
 
@@ -37,7 +36,6 @@ class StoreRepository
         return $options;
     }
 
-
     /**
      * @param int|null $mall_id
      *
@@ -51,7 +49,6 @@ class StoreRepository
 
         return Store::where('mall_id', $mall_id)->pluck('name_legal', 'id')->toArray();
     }
-
 
     /**
      * @return array
@@ -69,7 +66,6 @@ class StoreRepository
         return $options;
     }
 
-
     /**
      * @return array
      */
@@ -86,7 +82,6 @@ class StoreRepository
         return $options;
     }
 
-
     /**
      * @param int|null $mall_id
      *
@@ -97,7 +92,7 @@ class StoreRepository
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = Store::query()->orderBy('name');
 
-        if ( ! is_null($mall_id)) {
+        if (! is_null($mall_id)) {
             $items = $items->where('mall_id', $mall_id);
         }
 

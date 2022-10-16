@@ -11,7 +11,6 @@ use App\Models\Mall;
  */
 class MallRepository
 {
-
     /**
      * @return array
      */
@@ -19,5 +18,4 @@ class MallRepository
     {
         return Mall::pluck('name', 'id')->toArray();
     }
-
 }

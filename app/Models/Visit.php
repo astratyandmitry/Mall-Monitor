@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property integer                   $id
- * @property integer                   $mall_id
- * @property integer                   $store_id
- * @property integer                   $countmax_id
- * @property integer                   $count
- * @property string                    $created_date
- * @property string                    $created_year
- * @property string                    $created_yearmonth
- * @property \Carbon\Carbon            $created_at
+ * @property integer $id
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property integer $countmax_id
+ * @property integer $count
+ * @property string $created_date
+ * @property string $created_year
+ * @property string $created_yearmonth
+ * @property \Carbon\Carbon $created_at
  * @property \App\Models\VisitCountmax $countmax
- * @property \App\Models\Mall          $mall
- * @property \App\Models\Store         $store
+ * @property \App\Models\Mall $mall
+ * @property \App\Models\Store $store
  *
  * @method static Builder reportMall(?string $dateFrom, ?string $dateTo)
  * @method static Builder reportStore(?string $dateFrom, ?string $dateTo)
@@ -30,7 +30,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Visit extends Model
 {
-
     /**
      * @var string
      */
@@ -72,7 +71,6 @@ class Visit extends Model
      */
     public $timestamps = false;
 
-
     /**
      * @param string $value
      *
@@ -88,7 +86,6 @@ class Visit extends Model
         $this->attributes['created_year'] = date('Y', $datetime);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -96,7 +93,6 @@ class Visit extends Model
     {
         return $this->hasMany(Visit::class);
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -106,7 +102,6 @@ class Visit extends Model
         return $this->belongsTo(Visit::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -114,7 +109,6 @@ class Visit extends Model
     {
         return $this->belongsTo(Store::class)->withTrashed();
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -124,11 +118,10 @@ class Visit extends Model
         return $this->belongsTo(VisitCountmax::class);
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string|null                           $dateFrom
-     * @param string|null                           $dateTo
+     * @param string|null $dateFrom
+     * @param string|null $dateTo
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -155,11 +148,10 @@ class Visit extends Model
         return $builder;
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string|null                           $dateFrom
-     * @param string|null                           $dateTo
+     * @param string|null $dateFrom
+     * @param string|null $dateTo
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -191,5 +183,4 @@ class Visit extends Model
 
         return $builder;
     }
-
 }

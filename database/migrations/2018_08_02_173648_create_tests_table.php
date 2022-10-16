@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateTestsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -21,7 +20,6 @@ class CreateTestsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class CreateTestsTable extends Migration
     {
         Schema::dropIfExists('tests');
     }
-
 }

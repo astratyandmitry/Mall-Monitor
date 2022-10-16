@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddGivenNameColumnToUsersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddGivenNameColumnToUsersTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddGivenNameColumnToUsersTable extends Migration
             $table->dropColumn('given_name');
         });
     }
-
 }

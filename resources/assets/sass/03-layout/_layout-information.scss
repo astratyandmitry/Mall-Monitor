@@ -1,21 +1,21 @@
 .information {
-  .information-box {
-    background: rgba(0, 0, 0, .04);
-    @include radius($radius);
-    padding: $size-2;
+    .information-box {
+        background: rgba(0, 0, 0, .04);
+        @include radius($radius);
+        padding: $size-2;
 
-    .information-box-text {
-      text-align: center;
-      opacity: .40;
+        .information-box-text {
+            text-align: center;
+            opacity: .40;
+        }
+
+        &.is-lg {
+            padding: $size-4 $size-2;
+
+            .information-box-text {
+                font-size: $font-24;
+                font-weight: 300;
+            }
+        }
     }
-
-    &.is-lg {
-      padding: $size-4 $size-2;
-
-      .information-box-text {
-        font-size: $font-24;
-        font-weight: 300;
-      }
-    }
-  }
 }

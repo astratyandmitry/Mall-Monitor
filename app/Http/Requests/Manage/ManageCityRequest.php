@@ -11,7 +11,6 @@ use App\Models\City;
  */
 class ManageCityRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\City $entity
      *
@@ -21,5 +20,4 @@ class ManageCityRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 }

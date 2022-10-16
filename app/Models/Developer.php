@@ -9,13 +9,13 @@ use Illuminate\Contracts\Auth\Access\Authorizable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property integer           $id
- * @property string            $username
- * @property string            $password
- * @property integer           $mall_id
- * @property integer           $store_id
- * @property \Carbon\Carbon    $deleted_at
- * @property \App\Models\Mall  $mall
+ * @property integer $id
+ * @property string $username
+ * @property string $password
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property \Carbon\Carbon $deleted_at
+ * @property \App\Models\Mall $mall
  * @property \App\Models\Store $store
  *
  * @version   1.0.1
@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Developer extends Model implements Authorizable, Authenticatable
 {
-
     use \Illuminate\Foundation\Auth\Access\Authorizable, \Illuminate\Auth\Authenticatable, SoftDeletes;
 
     /**
@@ -88,7 +87,6 @@ class Developer extends Model implements Authorizable, Authenticatable
         'store_id' => 'Арендатор',
     ];
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      *
@@ -101,7 +99,7 @@ class Developer extends Model implements Authorizable, Authenticatable
         $builder->withTrashed();
 
         $builder->when(request('username'), function (Builder $builder): Builder {
-            return $builder->where('username', 'LIKE', '%' . request('username') . '%');
+            return $builder->where('username', 'LIKE', '%'.request('username').'%');
         });
 
         $builder->when(request('store_id'), function (Builder $builder): Builder {
@@ -128,7 +126,6 @@ class Developer extends Model implements Authorizable, Authenticatable
         return parent::scopeFilter($builder);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -137,7 +134,6 @@ class Developer extends Model implements Authorizable, Authenticatable
         return $this->belongsTo(Mall::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -145,5 +141,4 @@ class Developer extends Model implements Authorizable, Authenticatable
     {
         return $this->belongsTo(Store::class)->withTrashed();
     }
-
 }

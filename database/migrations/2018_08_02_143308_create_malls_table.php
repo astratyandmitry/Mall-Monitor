@@ -11,7 +11,6 @@ use Illuminate\Database\Migrations\Migration;
  */
 class CreateMallsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -26,7 +25,6 @@ class CreateMallsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -36,5 +34,4 @@ class CreateMallsTable extends Migration
     {
         Schema::dropIfExists('malls');
     }
-
 }

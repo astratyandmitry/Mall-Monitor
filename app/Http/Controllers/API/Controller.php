@@ -13,9 +13,10 @@ use Illuminate\Http\JsonResponse;
  */
 class Controller extends \App\Http\Controllers\Controller
 {
-
     const CODE_ERROR_PARAMETERS = 991;
+
     const CODE_ERROR_VALIDATION = 992;
+
     const CODE_ERROR_UNNAMED = 999;
 
     /**
@@ -28,12 +29,11 @@ class Controller extends \App\Http\Controllers\Controller
      */
     protected $errorData = [];
 
-
     /**
      * @param \Illuminate\Http\Request $request
-     * @param array                    $rules
-     * @param array                    $messages
-     * @param array                    $customAttributes
+     * @param array $rules
+     * @param array $messages
+     * @param array $customAttributes
      *
      * @return bool
      */
@@ -55,7 +55,6 @@ class Controller extends \App\Http\Controllers\Controller
         return true;
     }
 
-
     /**
      * @param array $data
      *
@@ -65,7 +64,6 @@ class Controller extends \App\Http\Controllers\Controller
     {
         return $this->responseSuccess($data);
     }
-
 
     /**
      * @param array $data
@@ -80,9 +78,8 @@ class Controller extends \App\Http\Controllers\Controller
         ]);
     }
 
-
     /**
-     * @param null|int    $code
+     * @param null|int $code
      * @param null|string $message
      *
      * @return \Illuminate\Http\JsonResponse
@@ -90,14 +87,14 @@ class Controller extends \App\Http\Controllers\Controller
     protected function responseError(?int $code = null, ?string $message = null): JsonResponse
     {
         $error = [
-            'code' => ( ! is_null($code)) ? $code : $this->errorCode,
+            'code' => (! is_null($code)) ? $code : $this->errorCode,
         ];
 
         if (count($this->errorData)) {
             $error['data'] = $this->errorData;
         }
 
-        if ( ! is_null($message)) {
+        if (! is_null($message)) {
             $error['message'] = $message;
         }
 
@@ -106,7 +103,6 @@ class Controller extends \App\Http\Controllers\Controller
             'error' => $error,
         ]);
     }
-
 
     /**
      * @param \Illuminate\Http\UploadedFile $fileInstance
@@ -122,5 +118,4 @@ class Controller extends \App\Http\Controllers\Controller
 
         return "/storage/files/{$filename}";
     }
-
 }

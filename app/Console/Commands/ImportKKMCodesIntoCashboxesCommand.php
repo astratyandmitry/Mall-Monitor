@@ -7,7 +7,6 @@ use Illuminate\Console\Command;
 
 class ImportKKMCodesIntoCashboxesCommand extends Command
 {
-
     /**
      * @var string
      */
@@ -17,7 +16,6 @@ class ImportKKMCodesIntoCashboxesCommand extends Command
      * @var string
      */
     protected $description = 'Import KKM codes into Cashboxes';
-
 
     /**
      * @return void
@@ -45,5 +43,4 @@ class ImportKKMCodesIntoCashboxesCommand extends Command
             $this->error('No available codes.');
         }
     }
-
 }

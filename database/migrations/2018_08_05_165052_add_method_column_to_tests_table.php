@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddMethodColumnToTestsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddMethodColumnToTestsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddMethodColumnToTestsTable extends Migration
             $table->dropColumn('method');
         });
     }
-
 }

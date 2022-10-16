@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddNumberColumnToChequesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddNumberColumnToChequesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddNumberColumnToChequesTable extends Migration
             $table->dropColumn('number');
         });
     }
-
 }

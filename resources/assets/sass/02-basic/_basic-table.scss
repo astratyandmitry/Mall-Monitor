@@ -1,137 +1,137 @@
 table.table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
 
-  thead {
-    th {
-      background: $color-grey-lighter;
-      color: $color-grey-dark;
+    thead {
+        th {
+            background: $color-grey-lighter;
+            color: $color-grey-dark;
 
-      a {
-        border-bottom: none;
-        margin-left: $size-0-1;
-        opacity: .32;
+            a {
+                border-bottom: none;
+                margin-left: $size-0-1;
+                opacity: .32;
+
+                &:hover {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        tr.is-filter {
+            th {
+                background: $color-grey-lighter;
+                padding: 0px 16px 8px 16px !important;
+
+                input,
+                select {
+                    border-color: $color-grey-light;
+
+                    &:focus,
+                    &:hover {
+                        border-color: $color-grey-light;
+                    }
+                }
+
+                button {
+                    padding: .750em;
+                    display: block;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    tfoot {
+        th {
+            background: $color-grey-light;
+            color: $color-grey-darker;
+
+            &:first-child {
+                @include radius-bottom-left($radius);
+            }
+
+            &:last-child {
+                @include radius-bottom-right($radius);
+            }
+        }
+    }
+
+    tr {
+        th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: $font-12;
+        }
+
+        td, th {
+            border-bottom: 1px solid $color-grey-lighter;
+            white-space: nowrap;
+            min-width: 48px;
+            padding: 16px;
+
+            @include mobile() {
+                padding: 10px;
+            }
+
+            &.is-center {
+                text-align: center;
+            }
+
+            &.is-right {
+                text-align: right;
+            }
+        }
+
+        td {
+            font-size: $font-14;
+            @include transition();
+
+            &.is-empty {
+                color: $color-grey-dark;
+                text-align: center;
+                padding: $size-4;
+
+                &:hover {
+                    background: $color-white;
+                }
+            }
+
+            &.is-icons {
+                text-align: center;
+
+                a {
+                    border-bottom: none;
+                    display: inline-block;
+                    margin: 0 .250em;
+                    color: transparent;
+
+                    @include mobile() {
+                        color: $color-grey;
+                    }
+
+                    &:hover {
+                        color: $color-grey-darkest !important;
+                    }
+                }
+            }
+        }
 
         &:hover {
-          opacity: 1;
-          cursor: pointer;
-        }
-      }
-    }
+            td {
+                background: $color-grey-lightest;
+                opacity: 1;
 
-    tr.is-filter {
-      th {
-        background: $color-grey-lighter;
-        padding: 0px 16px 8px 16px !important;
-
-        input,
-        select {
-          border-color: $color-grey-light;
-
-          &:focus,
-          &:hover {
-            border-color: $color-grey-light;
-          }
+                &.is-icons {
+                    a {
+                        color: $color-grey;
+                    }
+                }
+            }
         }
 
-        button {
-          padding: .750em;
-          display: block;
-          width: 100%;
-        }
-      }
     }
-  }
-
-  tfoot {
-    th {
-      background: $color-grey-light;
-      color: $color-grey-darker;
-
-      &:first-child {
-        @include radius-bottom-left($radius);
-      }
-
-      &:last-child {
-        @include radius-bottom-right($radius);
-      }
-    }
-  }
-
-  tr {
-    th {
-      text-align: left;
-      font-weight: 500;
-      text-transform: uppercase;
-      font-size: $font-12;
-    }
-
-    td, th {
-      border-bottom: 1px solid $color-grey-lighter;
-      white-space: nowrap;
-      min-width: 48px;
-      padding: 16px;
-
-      @include mobile() {
-        padding: 10px;
-      }
-
-      &.is-center {
-        text-align: center;
-      }
-
-      &.is-right {
-        text-align: right;
-      }
-    }
-
-    td {
-      font-size: $font-14;
-      @include transition();
-
-      &.is-empty {
-        color: $color-grey-dark;
-        text-align: center;
-        padding: $size-4;
-
-        &:hover {
-          background: $color-white;
-        }
-      }
-
-      &.is-icons {
-        text-align: center;
-
-        a {
-          border-bottom: none;
-          display: inline-block;
-          margin: 0 .250em;
-          color: transparent;
-
-          @include mobile() {
-            color: $color-grey;
-          }
-
-          &:hover {
-            color: $color-grey-darkest !important;
-          }
-        }
-      }
-    }
-
-    &:hover {
-      td {
-        background: $color-grey-lightest;
-        opacity: 1;
-
-        &.is-icons {
-          a {
-            color: $color-grey;
-          }
-        }
-      }
-    }
-
-  }
 }

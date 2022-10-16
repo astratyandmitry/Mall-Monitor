@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property integer           $id
- * @property integer           $mall_id
- * @property integer           $store_id
- * @property string            $number
- * @property string            $label
- * @property \Carbon\Carbon    $deleted_at
- * @property \Carbon\Carbon    $created_at
- * @property \Carbon\Carbon    $updated_at
- * @property \App\Models\Mall  $mall
+ * @property integer $id
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property string $number
+ * @property string $label
+ * @property \Carbon\Carbon $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \App\Models\Mall $mall
  * @property \App\Models\Store $store
  *
  * @version   1.0.1
@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class VisitCountmax extends Model
 {
-
     use SoftDeletes;
 
     /**
@@ -59,7 +58,6 @@ class VisitCountmax extends Model
         'deleted_at',
     ];
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -67,7 +65,6 @@ class VisitCountmax extends Model
     {
         return $this->belongsTo(Mall::class);
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -87,13 +84,13 @@ class VisitCountmax extends Model
         $builder->with(['mall', 'store']);
 
         $builder->withTrashed();
-        
+
         $builder->when(request('label'), function (Builder $builder): Builder {
-            return $builder->where('label', 'LIKE', '%' . request('label') . '%');
+            return $builder->where('label', 'LIKE', '%'.request('label').'%');
         });
-        
+
         $builder->when(request('number'), function (Builder $builder): Builder {
-            return $builder->where('number', 'LIKE', '%' . request('number') . '%');
+            return $builder->where('number', 'LIKE', '%'.request('number').'%');
         });
 
         $builder->when(request('store_id'), function (Builder $builder): Builder {
@@ -119,5 +116,4 @@ class VisitCountmax extends Model
 
         return parent::scopeFilter($builder);
     }
-
 }

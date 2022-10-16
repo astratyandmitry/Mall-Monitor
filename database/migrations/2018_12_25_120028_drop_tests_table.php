@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class DropTestsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -16,7 +15,6 @@ class DropTestsTable extends Migration
     {
         Schema::dropIfExists('tests');
     }
-
 
     /**
      * Reverse the migrations.
@@ -32,5 +30,4 @@ class DropTestsTable extends Migration
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
-
 }

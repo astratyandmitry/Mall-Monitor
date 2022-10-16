@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddIsActiveColumnToUsersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -23,7 +22,6 @@ class AddIsActiveColumnToUsersTable extends Migration
         ]);
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -35,5 +33,4 @@ class AddIsActiveColumnToUsersTable extends Migration
             $table->dropColumn('is_active');
         });
     }
-
 }

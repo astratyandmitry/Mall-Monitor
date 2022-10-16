@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateIntegrationSystemsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -21,7 +20,6 @@ class CreateIntegrationSystemsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class CreateIntegrationSystemsTable extends Migration
     {
         Schema::dropIfExists('integration_systems');
     }
-
 }

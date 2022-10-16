@@ -7,7 +7,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddMallIdColumnToVisitsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -27,7 +26,6 @@ class AddMallIdColumnToVisitsTable extends Migration
         }
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -39,5 +37,4 @@ class AddMallIdColumnToVisitsTable extends Migration
             $table->dropColumn('mall_id');
         });
     }
-
 }

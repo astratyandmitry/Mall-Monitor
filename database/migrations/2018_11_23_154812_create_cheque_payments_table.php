@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateChequePaymentsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -21,7 +20,6 @@ class CreateChequePaymentsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class CreateChequePaymentsTable extends Migration
     {
         Schema::dropIfExists('cheque_payments');
     }
-
 }

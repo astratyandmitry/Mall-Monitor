@@ -11,7 +11,6 @@ use Illuminate\Database\Migrations\Migration;
  */
 class CreateRolesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -26,7 +25,6 @@ class CreateRolesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -36,5 +34,4 @@ class CreateRolesTable extends Migration
     {
         Schema::dropIfExists('roles');
     }
-
 }

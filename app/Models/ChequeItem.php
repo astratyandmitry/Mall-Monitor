@@ -3,13 +3,13 @@
 namespace App\Models;
 
 /**
- * @property integer        $id
- * @property integer        $cheque_id
- * @property string         $name
- * @property string         $code
- * @property integer        $quantity
- * @property float          $price
- * @property float          $sum
+ * @property integer $id
+ * @property integer $cheque_id
+ * @property string $name
+ * @property string $code
+ * @property integer $quantity
+ * @property float $price
+ * @property float $sum
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  *
@@ -19,7 +19,6 @@ namespace App\Models;
  */
 class ChequeItem extends Model
 {
-
     /**
      * @var string
      */
@@ -64,7 +63,6 @@ class ChequeItem extends Model
      */
     public $timestamps = false;
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -72,5 +70,4 @@ class ChequeItem extends Model
     {
         return $this->belongsTo(Cheque::class);
     }
-
 }

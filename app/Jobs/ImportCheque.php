@@ -20,7 +20,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
  */
 abstract class ImportCheque
 {
-
     use Dispatchable;
 
     /**
@@ -53,13 +52,12 @@ abstract class ImportCheque
      */
     protected $cashbox;
 
-
     /**
      * ImportCheque constructor.
      *
      * @param \App\Models\Mall $mall
-     * @param \stdClass        $item
-     * @param \stdClass|null   $cashbox
+     * @param \stdClass $item
+     * @param \stdClass|null $cashbox
      */
     public function __construct(Mall $mall, \stdClass $item, ?\stdClass $cashbox = null)
     {
@@ -67,7 +65,6 @@ abstract class ImportCheque
         $this->item = $item;
         $this->cashbox = $cashbox;
     }
-
 
     /**
      * @param string $bin
@@ -84,9 +81,9 @@ abstract class ImportCheque
                 return $builder->where('business_identification_number', $bin);
             })->withTrashed()->first();
 
-        if ( ! $cashbox) {
+        if (! $cashbox) {
             /** @var Store $store */
-            if ( ! $store = Store::where('business_identification_number', $bin)->withTrashed()->first()) {
+            if (! $store = Store::where('business_identification_number', $bin)->withTrashed()->first()) {
                 $store = Store::create([
                     'mall_id' => $this->mall->id,
                     'name' => "БИН: {$bin}",
@@ -107,20 +104,18 @@ abstract class ImportCheque
         return $cashbox;
     }
 
-
     /**
      * @param string $amount
-     * @param int    $typeId
+     * @param int $typeId
      *
      * @return float
      */
     protected function getAmount(string $amount, int $typeId): float
     {
-        $amount = (float)str_replace(',', '.', $amount);
+        $amount = (float) str_replace(',', '.', $amount);
 
         return (in_array($typeId, [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])) ? $amount * -1 : $amount;
     }
-
 
     /**
      * @param string $key
@@ -133,7 +128,6 @@ abstract class ImportCheque
         return (isset($this->payments[$key])) ? $this->payments[$key] : $default;
     }
 
-
     /**
      * @param string $key
      * @param string $default
@@ -145,15 +139,13 @@ abstract class ImportCheque
         return (isset($this->types[$key])) ? $this->types[$key] : $default;
     }
 
-
     /**
      * @param \App\Models\Cheque $cheque
-     * @param \stdClass          $item
+     * @param \stdClass $item
      *
      * @return mixed
      */
     abstract protected function createChequeItem(Cheque $cheque, \stdClass $item): ?ChequeItem;
-
 
     /**
      * @param \stdClass $item
@@ -161,5 +153,4 @@ abstract class ImportCheque
      * @return \App\Models\Cheque|null
      */
     abstract protected function createCheque(\stdClass $item): ?Cheque;
-
 }

@@ -12,7 +12,6 @@ use App\Http\Requests\Manage\ManageUserRequest;
  */
 class ManageUsersController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -28,7 +27,6 @@ class ManageUsersController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -40,7 +38,6 @@ class ManageUsersController extends ManageController
             'entities' => User::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -54,7 +51,6 @@ class ManageUsersController extends ManageController
             'entity' => null,
         ]));
     }
-
 
     /**
      * @param \App\Http\Requests\Manage\ManageUserRequest $request
@@ -71,7 +67,6 @@ class ManageUsersController extends ManageController
         return redirect()->route('manage.users.index')
             ->with('status-success', 'Пользователь успешно добавлен');
     }
-
 
     /**
      * @param int $id
@@ -92,9 +87,8 @@ class ManageUsersController extends ManageController
         ]));
     }
 
-
     /**
-     * @param int                                         $id
+     * @param int $id
      * @param \App\Http\Requests\Manage\ManageUserRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -118,7 +112,6 @@ class ManageUsersController extends ManageController
             ->with('status-success', 'Пользователь успешно изменен');
     }
 
-
     /**
      * @param \App\Models\User $entity
      *
@@ -139,5 +132,4 @@ class ManageUsersController extends ManageController
         return redirect()->route('manage.users.index')
             ->with('status-danger', 'Пользователь успешно деактивирован');
     }
-
 }

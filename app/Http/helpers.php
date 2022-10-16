@@ -97,7 +97,7 @@ function isRequestEmpty(): bool
 
 /**
  * @param array $statistic
- * @param int   $mall_id
+ * @param int $mall_id
  * @param       $key
  *
  * @return int|mixed
@@ -218,5 +218,5 @@ function number($value): string
  */
 function spaces($value): string
 {
-    return implode(' ', str_split((string)$value, 3));
+    return implode(' ', str_split((string) $value, 3));
 }

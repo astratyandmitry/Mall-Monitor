@@ -4,8 +4,8 @@ namespace App\Models;
 
 /**
  * @property integer $id
- * @property string  $name
- * @property string  $system_key
+ * @property string $name
+ * @property string $system_key
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -13,12 +13,16 @@ namespace App\Models;
  */
 class ChequeType extends Model
 {
-
     const SELL = 1;
+
     const SELL_RETURN = 2;
+
     const BUY = 3;
+
     const BUY_RETURN = 4;
+
     const DEPOSIT = 5;
+
     const WITHDRAWAL = 6;
 
     /**
@@ -60,7 +64,6 @@ class ChequeType extends Model
         '_unique' => 'name|system_key',
     ];
 
-
     /**
      * @return string
      */
@@ -83,5 +86,4 @@ class ChequeType extends Model
 
         return '';
     }
-
 }

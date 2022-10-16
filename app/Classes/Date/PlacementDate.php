@@ -9,7 +9,6 @@ namespace App\Classes\Date;
  */
 class PlacementDate
 {
-
     /**
      * @return void
      */
@@ -73,11 +72,11 @@ class PlacementDate
                     if (date('Y.m.d', strtotime('last day this month')) == date('Y.m.d')) {
                         $month = date('m');
                     } else {
-                        if ((int)date('m') == 1) {
+                        if ((int) date('m') == 1) {
                             $year -= 1;
                             $month = 12;
                         } else {
-                            $month = (int)date('m') - 1;
+                            $month = (int) date('m') - 1;
                         }
                     }
 
@@ -89,11 +88,11 @@ class PlacementDate
                         'current_date_to' => date('t.m.Y', strtotime($date)),
                     ]);
 
-                    if ((int)$month == 1) {
+                    if ((int) $month == 1) {
                         $year -= 1;
                         $month = 12;
                     } else {
-                        $month = (int)$month - 1;
+                        $month = (int) $month - 1;
                     }
 
                     $month = ($month < 10) ? "0{$month}" : $month;
@@ -125,8 +124,8 @@ class PlacementDate
                 case 'year':
                     {
                         $request->merge([
-                            'past_date_from' => str_replace(date('Y'), (int)date('Y') - 1, $request->get('current_date_from')),
-                            'past_date_to' => str_replace(date('Y'), (int)date('Y') - 1, $request->get('current_date_to')),
+                            'past_date_from' => str_replace(date('Y'), (int) date('Y') - 1, $request->get('current_date_from')),
+                            'past_date_to' => str_replace(date('Y'), (int) date('Y') - 1, $request->get('current_date_to')),
                         ]);
                     };
                     break;
@@ -142,7 +141,6 @@ class PlacementDate
         }
     }
 
-
     /**
      * @param string $period
      * @param string $key
@@ -154,7 +152,7 @@ class PlacementDate
         if ($date = request()->query("{$period}_date_{$key}")) {
             $time = request()->query("{$period}_time_{$key}");
 
-            if ( ! $time) {
+            if (! $time) {
                 $time = ($key == 'from') ? '00:00' : '23:59';
             }
 
@@ -167,5 +165,4 @@ class PlacementDate
 
         return null;
     }
-
 }

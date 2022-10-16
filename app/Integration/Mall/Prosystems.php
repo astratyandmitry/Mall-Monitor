@@ -7,7 +7,6 @@ use App\Models\MallIntegrationLog;
 
 class Prosystems
 {
-
     /**
      * @var \SoapClient
      */
@@ -39,13 +38,12 @@ class Prosystems
      */
     protected $integration;
 
-
     /**
      * @param \App\Models\MallIntegration $integration
      *
+     * @return void
      * @throws \SoapFault
      *
-     * @return void
      */
     public function __construct(MallIntegration $integration)
     {
@@ -57,12 +55,11 @@ class Prosystems
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true,
-                    'cafile' => base_path('prosystems.cer')
+                    'cafile' => base_path('prosystems.cer'),
                 ],
             ]),
         ]);
     }
-
 
     /**
      * @param \App\Models\MallIntegration $integration
@@ -78,7 +75,6 @@ class Prosystems
 
         return self::$instance;
     }
-
 
     /**
      * @return bool
@@ -107,7 +103,6 @@ class Prosystems
 
         return $success;
     }
-
 
     /**
      * @return bool
@@ -140,7 +135,6 @@ class Prosystems
         return $success;
     }
 
-
     /**
      * @return bool
      */
@@ -164,7 +158,6 @@ class Prosystems
         return $success;
     }
 
-
     /**
      * @return mixed
      */
@@ -173,11 +166,10 @@ class Prosystems
         return $this->data;
     }
 
-
     /**
-     * @param string    $operation
+     * @param string $operation
      * @param \stdClass $response
-     * @param array     $data
+     * @param array $data
      *
      * @return void
      */
@@ -187,5 +179,4 @@ class Prosystems
             $this->integration->system_id, $this->integration->mall_id, $operation, $response->Code ?? 0, $response->Message ?? null, $data
         );
     }
-
 }

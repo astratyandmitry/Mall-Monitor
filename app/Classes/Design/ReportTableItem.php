@@ -11,7 +11,6 @@ use App\DateHelper;
  */
 class ReportTableItem
 {
-
     /**
      * @var array
      */
@@ -22,19 +21,17 @@ class ReportTableItem
      */
     protected $visitsCount = 0;
 
-
     /**
      * StatsTableItem constructor.
      *
      * @param array $stats
-     * @param int|null  $visitsCount
+     * @param int|null $visitsCount
      */
     public function __construct(array $stats, ?int $visitsCount = null)
     {
         $this->stats = $stats;
-        $this->visitsCount = (int)$visitsCount;
+        $this->visitsCount = (int) $visitsCount;
     }
-
 
     /**
      * @return string
@@ -44,7 +41,6 @@ class ReportTableItem
         return DateHelper::byDateGroup($this->stats['date']);
     }
 
-
     /**
      * @return int
      */
@@ -53,24 +49,21 @@ class ReportTableItem
         return $this->visitsCount;
     }
 
-
     /**
      * @return int
      */
     public function getChequesCount(): int
     {
-        return (int)$this->stats['count'];
+        return (int) $this->stats['count'];
     }
-
 
     /**
      * @return int
      */
     public function getChequesAmount(): int
     {
-        return (int)$this->stats['amount'];
+        return (int) $this->stats['amount'];
     }
-
 
     /**
      * @return int
@@ -83,7 +76,6 @@ class ReportTableItem
         return $amount && $count ? round($amount / $count) : 0;
     }
 
-
     /**
      * @return float
      */
@@ -91,7 +83,6 @@ class ReportTableItem
     {
         $chequesCount = $this->getChequesCount();
 
-        return ($chequesCount > 0 && $this->visitsCount > 0) ? round($chequesCount * 100 / $this->visitsCount, 2) : (float)0;
+        return ($chequesCount > 0 && $this->visitsCount > 0) ? round($chequesCount * 100 / $this->visitsCount, 2) : (float) 0;
     }
-
 }

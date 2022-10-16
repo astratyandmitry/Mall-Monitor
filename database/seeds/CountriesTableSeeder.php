@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 
 class CountriesTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -14,7 +13,6 @@ class CountriesTableSeeder extends Seeder
             'name' => 'Казахстан',
         ],
     ];
-
 
     /**
      * @return void
@@ -27,5 +25,4 @@ class CountriesTableSeeder extends Seeder
             Country::create($data);
         }
     }
-
 }

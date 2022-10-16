@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class ChequesWebkassaDeleteCommand extends Command
 {
-
     /**
      * @var string
      */
@@ -17,7 +16,6 @@ class ChequesWebkassaDeleteCommand extends Command
      * @var string
      */
     protected $description = 'Command description';
-
 
     /**
      * @return mixed
@@ -38,5 +36,4 @@ class ChequesWebkassaDeleteCommand extends Command
             }
         }
     }
-
 }

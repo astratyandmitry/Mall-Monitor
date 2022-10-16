@@ -15,7 +15,6 @@ use Illuminate\View\View;
  */
 class AuthController extends Controller
 {
-
     /**
      * @return \Illuminate\View\View
      */
@@ -26,7 +25,6 @@ class AuthController extends Controller
         return view('auth.signin', $this->withData());
     }
 
-
     /**
      * @param \Illuminate\Http\Request $request
      *
@@ -34,19 +32,19 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        if ( ! $request->get('email') || ! $request->get('password') || ! $user = User::query()->where('email', $request->get('email'))->first()) {
+        if (! $request->get('email') || ! $request->get('password') || ! $user = User::query()->where('email', $request->get('email'))->first()) {
             return back()
                 ->withInput($request->only(['email']))
                 ->withErrors(['Вы указали неверные данные авторизации']);
         }
 
-        if ( ! \Hash::check($request->password, $user->password)) {
+        if (! \Hash::check($request->password, $user->password)) {
             return back()
                 ->withInput($request->only(['email']))
                 ->withErrors(['Вы указали неверные данные авторизации']);
         }
 
-        if ( ! $user->is_active) {
+        if (! $user->is_active) {
             return back()
                 ->withInput($request->only(['email']))
                 ->withErrors(['Ваш аккаунт неактивирован, проверьте почту']);
@@ -57,7 +55,6 @@ class AuthController extends Controller
         return redirect()->to($this->redirectPath());
     }
 
-
     /**
      * @param \Illuminate\Http\Request $request
      *
@@ -65,9 +62,9 @@ class AuthController extends Controller
      */
     public function activate(Request $request): RedirectResponse
     {
-        if ( ! $request->get('email') || ! $request->get('activation_token') || ! $user = User::query()->where($request->only([
+        if (! $request->get('email') || ! $request->get('activation_token') || ! $user = User::query()->where($request->only([
                 'email',
-                'activation_token'
+                'activation_token',
             ]))->first()) {
             return redirect()->route('auth.signin')->withErrors(['Вы указали неверные данные активации']);
         }
@@ -79,7 +76,6 @@ class AuthController extends Controller
 
         return redirect()->route('auth.signin')->withErrors(['Ваш аккаунт активирован, теперь вы можете войти']);
     }
-
 
     /**
      * @return string
@@ -93,7 +89,6 @@ class AuthController extends Controller
         return '/';
     }
 
-
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -103,5 +98,4 @@ class AuthController extends Controller
 
         return redirect()->route('dashboard');
     }
-
 }

@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateCashboxesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -22,7 +21,6 @@ class CreateCashboxesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -32,5 +30,4 @@ class CreateCashboxesTable extends Migration
     {
         Schema::dropIfExists('cashboxes');
     }
-
 }

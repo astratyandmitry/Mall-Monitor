@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class RemoveCashboxIdColumnFromChequesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class RemoveCashboxIdColumnFromChequesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class RemoveCashboxIdColumnFromChequesTable extends Migration
             $table->integer('cashbox_id')->unsigned()->index()->after('data');
         });
     }
-
 }

@@ -14,7 +14,6 @@ use Illuminate\View\View;
  */
 class ManageDevelopersController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -30,7 +29,6 @@ class ManageDevelopersController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -42,7 +40,6 @@ class ManageDevelopersController extends ManageController
             'entities' => Developer::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -56,7 +53,6 @@ class ManageDevelopersController extends ManageController
             'entity' => null,
         ]));
     }
-
 
     /**
      * @param \App\Http\Requests\Manage\ManageDeveloperRequest $request
@@ -73,7 +69,6 @@ class ManageDevelopersController extends ManageController
         return redirect()->route('manage.developers.index')
             ->with('status-success', 'Разработчик успешно добавлен');
     }
-
 
     /**
      * @param int $id
@@ -95,9 +90,8 @@ class ManageDevelopersController extends ManageController
         ]));
     }
 
-
     /**
-     * @param int                                              $id
+     * @param int $id
      * @param \App\Http\Requests\Manage\ManageDeveloperRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -121,7 +115,6 @@ class ManageDevelopersController extends ManageController
             ->with('status-success', 'Разработчик успешно изменен');
     }
 
-
     /**
      * @param \App\Models\Developer $entity
      *
@@ -142,5 +135,4 @@ class ManageDevelopersController extends ManageController
         return redirect()->route('manage.developers.index')
             ->with('status-danger', 'Разработчик успешно деактивирован');
     }
-
 }

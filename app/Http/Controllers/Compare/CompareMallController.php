@@ -16,12 +16,10 @@ use App\Repositories\ChequeRepository;
  */
 class CompareMallController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('not-store');
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -41,7 +39,7 @@ class CompareMallController extends Controller
 
         foreach ($visits as $date => $data) {
             foreach ($data as $item) {
-                if ( ! isset($mall_names[$item->mall_id])) {
+                if (! isset($mall_names[$item->mall_id])) {
                     continue;
                 }
 
@@ -55,7 +53,7 @@ class CompareMallController extends Controller
             $graph->addMultiLabel($date, $date);
 
             foreach ($data as $item) {
-                if ( ! isset($mall_names[$item['mall_id']])) {
+                if (! isset($mall_names[$item['mall_id']])) {
                     continue;
                 }
 
@@ -63,15 +61,14 @@ class CompareMallController extends Controller
                     ->addMultiValue(GraphStorage::AMOUNT, $item['mall_id'], $date, $item['amount'])
                     ->addMultiValue(GraphStorage::COUNT, $item['mall_id'], $date, $item['count'])
                     ->addMultiValue(GraphStorage::AVG, $item['mall_id'], $date, $item['avg'])
-                    ->addMultiValue(GraphStorage::VISITS, $item['mall_id'], $date, (int)@$visitsSimplified[$date][$item['mall_id']]);
+                    ->addMultiValue(GraphStorage::VISITS, $item['mall_id'], $date, (int) @$visitsSimplified[$date][$item['mall_id']]);
             }
         }
 
         return view('compare.mall.index', $this->withData([
-            'statsExists' => (bool)count($stats),
+            'statsExists' => (bool) count($stats),
             'series' => $graph->getSeriesMultiData($mall_names),
             'graph' => $graph->getData(),
         ]));
     }
-
 }

@@ -3,15 +3,15 @@
 namespace App\Models;
 
 /**
- * @property integer                           $id
- * @property integer                           $system_id
- * @property integer                           $mall_id
- * @property string                            $operation
- * @property integer                           $code
- * @property string                            $message
- * @property array                             $data
+ * @property integer $id
+ * @property integer $system_id
+ * @property integer $mall_id
+ * @property string $operation
+ * @property integer $code
+ * @property string $message
+ * @property array $data
  * @property \App\Models\MallIntegrationSystem $system
- * @property \App\Models\Mall                  $mall
+ * @property \App\Models\Mall $mall
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -19,7 +19,6 @@ namespace App\Models;
  */
 class MallIntegrationLog extends Model
 {
-
     /**
      * @var string
      */
@@ -46,14 +45,13 @@ class MallIntegrationLog extends Model
         'data' => 'array',
     ];
 
-
     /**
-     * @param int    $system_id
-     * @param int    $mall_id
+     * @param int $system_id
+     * @param int $mall_id
      * @param string $operation
-     * @param int    $code
+     * @param int $code
      * @param string $message
-     * @param array  $data
+     * @param array $data
      *
      * @return \App\Models\MallIntegrationLog
      */
@@ -74,5 +72,4 @@ class MallIntegrationLog extends Model
             'data' => $data,
         ]);
     }
-
 }

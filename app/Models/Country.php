@@ -3,8 +3,8 @@
 namespace App\Models;
 
 /**
- * @property integer            $id
- * @property string             $name
+ * @property integer $id
+ * @property string $name
  * @property \App\Models\City[] $cities
  *
  * @version   1.0.1
@@ -13,7 +13,6 @@ namespace App\Models;
  */
 class Country extends Model
 {
-
     const KAZAKHSTAN = 1;
 
     /**
@@ -41,7 +40,6 @@ class Country extends Model
         '_unique' => 'name',
     ];
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -49,5 +47,4 @@ class Country extends Model
     {
         return $this->hasMany(City::class);
     }
-
 }

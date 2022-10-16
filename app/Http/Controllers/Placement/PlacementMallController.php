@@ -17,7 +17,6 @@ use App\Repositories\ChequeRepository;
  */
 class PlacementMallController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('not-store');
@@ -36,7 +35,6 @@ class PlacementMallController extends Controller
         return view('placement.mall.index', $this->withData($this->getData()));
     }
 
-
     /**
      * @return array
      */
@@ -48,8 +46,8 @@ class PlacementMallController extends Controller
         $periodPast = $this->getDataForPeriod('past');
 
         $dates = [
-            'current' => DateHelper::get($periodCurrent['date_from']) . ' - ' . DateHelper::get($periodCurrent['date_to']),
-            'past' => DateHelper::get($periodPast['date_from']) . ' - ' . DateHelper::get($periodPast['date_to']),
+            'current' => DateHelper::get($periodCurrent['date_from']).' - '.DateHelper::get($periodCurrent['date_to']),
+            'past' => DateHelper::get($periodPast['date_from']).' - '.DateHelper::get($periodPast['date_to']),
         ];
 
         $mall_ids = [];
@@ -66,7 +64,6 @@ class PlacementMallController extends Controller
             'dates' => $dates,
         ];
     }
-
 
     /**
      * @param string $period
@@ -90,16 +87,15 @@ class PlacementMallController extends Controller
         ];
     }
 
-
     /**
      * @param array|null $period
-     * @param array      $mall_ids
+     * @param array $mall_ids
      *
      * @return array
      */
     protected function setDataForPeriod(?array $period = null, array &$mall_ids): array
     {
-        if (is_null($period) || !isseT($period['stats'])) {
+        if (is_null($period) || ! isset($period['stats'])) {
             return [];
         }
 
@@ -108,12 +104,10 @@ class PlacementMallController extends Controller
         $stats = $period['stats']->keyBy('mall_id')->toArray();
         $visits = $period['visits']->pluck('count', 'mall_id')->toArray();
 
-
         foreach (array_keys($stats) as $mall_id) {
-            $stats[$mall_id]['visits'] = (int)@$visits[$mall_id];
+            $stats[$mall_id]['visits'] = (int) @$visits[$mall_id];
         }
 
         return $stats;
     }
-
 }

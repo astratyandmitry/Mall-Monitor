@@ -9,7 +9,6 @@ use App\Models\ChequePayment;
 
 class ImportChequeProsystem extends ImportCheque
 {
-
     /**
      * @var array
      */
@@ -32,7 +31,6 @@ class ImportChequeProsystem extends ImportCheque
         'Withdrawal' => ChequeType::WITHDRAWAL,
     ];
 
-
     /**
      * @return void
      */
@@ -40,7 +38,7 @@ class ImportChequeProsystem extends ImportCheque
     {
         $cheque = $this->createCheque($this->item);
 
-        if ( ! property_exists($this->item, 'Items') || ! count($this->item->Items)) {
+        if (! property_exists($this->item, 'Items') || ! count($this->item->Items)) {
             return;
         }
 
@@ -52,7 +50,6 @@ class ImportChequeProsystem extends ImportCheque
             $this->createChequeItem($cheque, $this->item->Items->Item);
         }
     }
-
 
     /**
      * @param \stdClass $item
@@ -82,7 +79,6 @@ class ImportChequeProsystem extends ImportCheque
         ]);
     }
 
-
     /**
      * @param \stdClass $item
      *
@@ -90,17 +86,16 @@ class ImportChequeProsystem extends ImportCheque
      */
     protected function getPaymentId(\stdClass $item): int
     {
-        if ( ! property_exists($item, 'Payments') || ! property_exists($item->Payments, 'Payment')) {
+        if (! property_exists($item, 'Payments') || ! property_exists($item->Payments, 'Payment')) {
             return ChequePayment::CASH;
         }
 
         return $this->getPayment((is_array($item->Payments->Payment)) ? $item->Payments->Payment[0]->Type : $item->Payments->Payment->Type);
     }
 
-
     /**
      * @param \App\Models\Cheque $cheque
-     * @param \stdClass          $item
+     * @param \stdClass $item
      *
      * @return \App\Models\ChequeItem|null
      */
@@ -109,10 +104,9 @@ class ImportChequeProsystem extends ImportCheque
         return $cheque->items()->create([
             'code' => $item->Code,
             'name' => $item->Name,
-            'price' => (float)$item->Price,
-            'quantity' => (int)$item->Quantity,
-            'sum' => (float)$item->Sum,
+            'price' => (float) $item->Price,
+            'quantity' => (int) $item->Quantity,
+            'sum' => (float) $item->Sum,
         ]);
     }
-
 }

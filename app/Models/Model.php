@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Model extends \Illuminate\Database\Eloquent\Model
 {
-
     /**
      * @var array
      */
@@ -23,7 +22,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * @var array
      */
     protected $messages = [];
-
 
     /**
      * Get rules for validation.
@@ -55,7 +53,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
         return array_merge($rules, $additional);
     }
 
-
     /**
      * Get messages of attributes.
      *
@@ -67,7 +64,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         return array_merge($this->messages, $additional);
     }
-
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
@@ -83,11 +79,11 @@ class Model extends \Illuminate\Database\Eloquent\Model
         $sort_key = request()->query('sort_key', 'id');
         $sort_type = request()->query('sort_type', 'desc');
 
-        if ( ! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
+        if (! \Schema::hasColumn($builder->getModel()->getTable(), $sort_key)) {
             $sort_key = 'id';
         }
 
-        if ( ! in_array($sort_type, ['asc', 'desc'])) {
+        if (! in_array($sort_type, ['asc', 'desc'])) {
             $sort_type = 'asc';
         }
 
@@ -95,7 +91,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
         return $builder;
     }
-
 
     /**
      * @param array $attributes
@@ -106,5 +101,4 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         return self::create(appendUserId($attributes));
     }
-
 }

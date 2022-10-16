@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateDevelopersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -24,7 +23,6 @@ class CreateDevelopersTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -34,5 +32,4 @@ class CreateDevelopersTable extends Migration
     {
         Schema::dropIfExists('developers');
     }
-
 }

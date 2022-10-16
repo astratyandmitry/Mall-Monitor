@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateVisitCountmaxesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -24,7 +23,6 @@ class CreateVisitCountmaxesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -34,5 +32,4 @@ class CreateVisitCountmaxesTable extends Migration
     {
         Schema::dropIfExists('visit_countmax');
     }
-
 }

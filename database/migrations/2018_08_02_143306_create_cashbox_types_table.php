@@ -11,7 +11,6 @@ use Illuminate\Database\Migrations\Migration;
  */
 class CreateCashboxTypesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -26,7 +25,6 @@ class CreateCashboxTypesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -36,5 +34,4 @@ class CreateCashboxTypesTable extends Migration
     {
         Schema::dropIfExists('cashbox_types');
     }
-
 }

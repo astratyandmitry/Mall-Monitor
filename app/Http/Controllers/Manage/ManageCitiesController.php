@@ -12,7 +12,6 @@ use App\Http\Requests\Manage\ManageCityRequest;
  */
 class ManageCitiesController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -28,7 +27,6 @@ class ManageCitiesController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -40,7 +38,6 @@ class ManageCitiesController extends ManageController
             'entities' => City::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -55,7 +52,6 @@ class ManageCitiesController extends ManageController
         ]));
     }
 
-
     /**
      * @param \App\Http\Requests\Manage\ManageCityRequest $request
      *
@@ -68,7 +64,6 @@ class ManageCitiesController extends ManageController
         return redirect()->route('manage.cities.index')
             ->with('status-success', 'Город успешно добавлен');
     }
-
 
     /**
      * @param int $id
@@ -87,9 +82,8 @@ class ManageCitiesController extends ManageController
         ]));
     }
 
-
     /**
-     * @param int                                         $id
+     * @param int $id
      * @param \App\Http\Requests\Manage\ManageCityRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -103,5 +97,4 @@ class ManageCitiesController extends ManageController
         return redirect()->route('manage.cities.index')
             ->with('status-success', 'Город успешно изменен');
     }
-
 }

@@ -16,7 +16,6 @@ use App\Repositories\ChequeRepository;
  */
 class ReportsDetailController extends Controller
 {
-
     /**
      * @return \Illuminate\View\View
      */
@@ -36,13 +35,12 @@ class ReportsDetailController extends Controller
         ]));
     }
 
-
     /**
      * @return string
      */
     public function exportExcel(): string
     {
-        $filename = 'keruenmonitor_reports.detail_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.detail_'.date('YmdHi');
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Детальный отчет', function ($sheet) {
@@ -55,13 +53,12 @@ class ReportsDetailController extends Controller
         return '<script>window.close();</script>';
     }
 
-
     /**
      * @return mixed
      */
     public function exportPDF()
     {
-        $filename = 'keruenmonitor_reports.detail_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.detail_'.date('YmdHi');
 
         $data = $this->getDataForExport($this->getPDFMaxItems());
 
@@ -69,7 +66,6 @@ class ReportsDetailController extends Controller
 
         return $pdf->download("{$filename}.pdf");
     }
-
 
     /**
      * @param int|null $limit
@@ -93,5 +89,4 @@ class ReportsDetailController extends Controller
             'cheques' => $cheques,
         ];
     }
-
 }

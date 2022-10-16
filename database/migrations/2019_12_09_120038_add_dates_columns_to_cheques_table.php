@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddDatesColumnsToChequesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -21,7 +20,6 @@ class AddDatesColumnsToChequesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -35,5 +33,4 @@ class AddDatesColumnsToChequesTable extends Migration
             $table->dropColumn('created_yearmonth');
         });
     }
-
 }

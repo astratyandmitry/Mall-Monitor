@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddApiTokenColumnToUsersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddApiTokenColumnToUsersTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddApiTokenColumnToUsersTable extends Migration
             $table->dropColumn('api_token');
         });
     }
-
 }

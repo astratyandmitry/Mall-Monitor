@@ -16,14 +16,12 @@ use App\Integration\Store\XMLChequeTransformer;
  */
 class ChequesImportXMLController extends Controller
 {
-
     /**
      * @var array
      */
     protected $rules = [
         'file' => 'required|file|mimetypes:text/xml,application/xml',
     ];
-
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -32,7 +30,7 @@ class ChequesImportXMLController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        if ( ! $this->validate($request, $this->rules)) {
+        if (! $this->validate($request, $this->rules)) {
             return $this->responseError();
         }
 
@@ -84,5 +82,4 @@ class ChequesImportXMLController extends Controller
 
         return $this->response($output);
     }
-
 }

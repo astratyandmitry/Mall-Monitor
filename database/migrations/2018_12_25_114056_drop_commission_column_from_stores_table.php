@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class DropCommissionColumnFromStoresTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class DropCommissionColumnFromStoresTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class DropCommissionColumnFromStoresTable extends Migration
             $table->double('commission', 8, 2)->after('mall_id');
         });
     }
-
 }

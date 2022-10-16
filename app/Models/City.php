@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @property integer             $id
- * @property string              $name
- * @property integer             $country_id
+ * @property integer $id
+ * @property string $name
+ * @property integer $country_id
  * @property \App\Models\Country $country
  *
  * @version   1.0.1
@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class City extends Model
 {
-
     const ASTANA = 1;
 
     /**
@@ -60,7 +59,6 @@ class City extends Model
      */
     public $timestamps = false;
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -68,7 +66,6 @@ class City extends Model
     {
         return $this->belongsTo(Country::class);
     }
-
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
@@ -80,7 +77,7 @@ class City extends Model
         $builder->with(['country']);
 
         $builder->when(request('name'), function (Builder $builder): Builder {
-            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+            return $builder->where('name', 'LIKE', '%'.request('name').'%');
         });
 
         $builder->when(request('country_id'), function (Builder $builder): Builder {
@@ -89,5 +86,4 @@ class City extends Model
 
         return parent::scopeFilter($builder);
     }
-
 }

@@ -6,23 +6,23 @@ use App\Mail\UserActivationMail;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @property integer           $id
- * @property string            $email
- * @property string            $phone
- * @property string            $given_name
- * @property string            $family_name
- * @property string            $password
- * @property integer           $role_id
- * @property integer           $mall_id
- * @property integer           $store_id
- * @property string            $remember_token
- * @property string            $api_token
- * @property string            $activation_token
- * @property boolean           $is_readonly
- * @property boolean           $is_active
- * @property \Carbon\Carbon    $deleted_at
- * @property \App\Models\Role  $role
- * @property \App\Models\Mall  $mall
+ * @property integer $id
+ * @property string $email
+ * @property string $phone
+ * @property string $given_name
+ * @property string $family_name
+ * @property string $password
+ * @property integer $role_id
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property string $remember_token
+ * @property string $api_token
+ * @property string $activation_token
+ * @property boolean $is_readonly
+ * @property boolean $is_active
+ * @property \Carbon\Carbon $deleted_at
+ * @property \App\Models\Role $role
+ * @property \App\Models\Mall $mall
  * @property \App\Models\Store $store
  *
  * @version   1.0.1
@@ -33,10 +33,9 @@ class User extends Model implements
     \Illuminate\Contracts\Auth\Access\Authorizable,
     \Illuminate\Contracts\Auth\Authenticatable
 {
-
-    use\Illuminate\Foundation\Auth\Access\Authorizable,
-        \Illuminate\Auth\Authenticatable,
-        \Illuminate\Database\Eloquent\SoftDeletes;
+use\Illuminate\Foundation\Auth\Access\Authorizable,
+\Illuminate\Auth\Authenticatable,
+\Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
      * @var string
@@ -118,7 +117,6 @@ class User extends Model implements
         'store_id' => 'Арендатор',
     ];
 
-
     /**
      * @return void
      */
@@ -144,7 +142,6 @@ class User extends Model implements
         });
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      *
@@ -157,15 +154,15 @@ class User extends Model implements
         $builder->withTrashed();
 
         $builder->when(request('email'), function (Builder $builder): Builder {
-            return $builder->where('email', 'LIKE', '%' . request('email') . '%');
+            return $builder->where('email', 'LIKE', '%'.request('email').'%');
         });
 
         $builder->when(request('name'), function (Builder $builder): Builder {
-            return $builder->where(\DB::raw('CONCAT(`given_name`, " ", `family_name`)'), 'LIKE', '%' . request('name') . '%');
+            return $builder->where(\DB::raw('CONCAT(`given_name`, " ", `family_name`)'), 'LIKE', '%'.request('name').'%');
         });
 
         $builder->when(request('phone'), function (Builder $builder): Builder {
-            return $builder->where('phone', 'LIKE', '%' . request('phone') . '%');
+            return $builder->where('phone', 'LIKE', '%'.request('phone').'%');
         });
 
         $builder->when(request('store_id'), function (Builder $builder): Builder {
@@ -192,7 +189,6 @@ class User extends Model implements
         return parent::scopeFilter($builder);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -201,7 +197,6 @@ class User extends Model implements
         return $this->belongsTo(Mall::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -209,5 +204,4 @@ class User extends Model implements
     {
         return $this->belongsTo(Store::class)->withTrashed();
     }
-
 }

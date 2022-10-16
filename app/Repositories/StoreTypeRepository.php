@@ -11,7 +11,6 @@ use App\Models\StoreType;
  */
 class StoreTypeRepository
 {
-
     /**
      * @return array
      */
@@ -19,5 +18,4 @@ class StoreTypeRepository
     {
         return StoreType::pluck('name', 'id')->toArray();
     }
-
 }

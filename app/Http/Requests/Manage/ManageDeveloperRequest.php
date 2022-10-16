@@ -11,7 +11,6 @@ use App\Models\Developer;
  */
 class ManageDeveloperRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\Developer $entity
      *
@@ -21,7 +20,6 @@ class ManageDeveloperRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 
     /**
      * @return array
@@ -36,5 +34,4 @@ class ManageDeveloperRequest extends \App\Http\Requests\Request
 
         return $rules;
     }
-
 }

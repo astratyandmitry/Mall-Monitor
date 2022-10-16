@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddActivationTokenColumnToUsersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddActivationTokenColumnToUsersTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddActivationTokenColumnToUsersTable extends Migration
             $table->dropColumn('activation_token');
         });
     }
-
 }

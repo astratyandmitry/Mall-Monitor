@@ -12,7 +12,6 @@ use App\Http\Requests\Manage\ManageCashboxRequest;
  */
 class ManageCashboxesController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -28,7 +27,6 @@ class ManageCashboxesController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -40,7 +38,6 @@ class ManageCashboxesController extends ManageController
             'entities' => Cashbox::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -55,7 +52,6 @@ class ManageCashboxesController extends ManageController
         ]));
     }
 
-
     /**
      * @param \App\Http\Requests\Manage\ManageCashboxRequest $request
      *
@@ -68,7 +64,6 @@ class ManageCashboxesController extends ManageController
         return redirect()->route('manage.cashboxes.index')
             ->with('status-success', 'Касса успешно добавлена');
     }
-
 
     /**
      * @param \App\Models\Cashbox $cashbox
@@ -85,9 +80,8 @@ class ManageCashboxesController extends ManageController
         ]));
     }
 
-
     /**
-     * @param \App\Models\Cashbox                            $cashbox
+     * @param \App\Models\Cashbox $cashbox
      * @param \App\Http\Requests\Manage\ManageCashboxRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -103,7 +97,6 @@ class ManageCashboxesController extends ManageController
         return redirect()->route('manage.cashboxes.index')
             ->with('status-success', 'Касса успешно изменена');
     }
-
 
     /**
      * @param \App\Models\Cashbox $entity
@@ -125,5 +118,4 @@ class ManageCashboxesController extends ManageController
         return redirect()->route('manage.cashboxes.index')
             ->with('status-danger', 'Касса успешно деактивирована');
     }
-
 }

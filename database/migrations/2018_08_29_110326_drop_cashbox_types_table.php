@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class DropCashboxTypesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -16,7 +15,6 @@ class DropCashboxTypesTable extends Migration
     {
         Schema::dropIfExists('cashbox_types');
     }
-
 
     /**
      * Reverse the migrations.
@@ -31,5 +29,4 @@ class DropCashboxTypesTable extends Migration
             $table->string('system_key', 40)->unique();
         });
     }
-
 }

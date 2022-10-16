@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddRentableAreaColumnToStoresTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddRentableAreaColumnToStoresTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddRentableAreaColumnToStoresTable extends Migration
             $table->dropColumn('rentable_area');
         });
     }
-
 }

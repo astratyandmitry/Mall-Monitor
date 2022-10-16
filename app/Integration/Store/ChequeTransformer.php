@@ -14,7 +14,6 @@ use App\Models\ChequePayment;
  */
 abstract class ChequeTransformer
 {
-
     /**
      * @var \App\Models\Developer
      */
@@ -35,7 +34,6 @@ abstract class ChequeTransformer
      */
     protected $optionsPayments;
 
-
     /**
      * @return void
      */
@@ -48,20 +46,18 @@ abstract class ChequeTransformer
         $this->optionsPayments = ChequePayment::query()->pluck('id', 'system_key')->toArray();
     }
 
-
     /**
      * @return array
      */
     public function onlyRequired(): array
     {
         return [
-            'code' => (string)$this->getAttribute('code'),
-            'number' => (string)$this->getAttribute('number'),
-            'amount' => (float)$this->getAttribute('amount'),
+            'code' => (string) $this->getAttribute('code'),
+            'number' => (string) $this->getAttribute('number'),
+            'amount' => (float) $this->getAttribute('amount'),
             'created_at' => $this->getDateAttribute(),
         ];
     }
-
 
     /**
      * @return array
@@ -74,9 +70,12 @@ abstract class ChequeTransformer
 
         return [
             'kkm_code' => $cashbox->code,
-            'code' => (string)($this->getAttribute('code')) ? $this->getAttribute('code') : $this->getAttribute('number'),
-            'number' => (string)$this->getAttribute('number'),
-            'amount' => (in_array($type_id, [ChequeType::BUY_RETURN, ChequeType::SELL_RETURN])) ? $amount * -1 : $amount,
+            'code' => (string) ($this->getAttribute('code')) ? $this->getAttribute('code') : $this->getAttribute('number'),
+            'number' => (string) $this->getAttribute('number'),
+            'amount' => (in_array($type_id, [
+                ChequeType::BUY_RETURN,
+                ChequeType::SELL_RETURN,
+            ])) ? $amount * -1 : $amount,
             'mall_id' => $this->developer->mall_id,
             'store_id' => $this->developer->store_id,
             'cashbox_id' => $cashbox->id,
@@ -86,7 +85,6 @@ abstract class ChequeTransformer
         ];
     }
 
-
     /**
      * @return \App\Models\Cashbox
      */
@@ -94,7 +92,7 @@ abstract class ChequeTransformer
     {
         $kkm_code = $this->getAttribute('kkm_code');
 
-        if ( ! $kkm_code) {
+        if (! $kkm_code) {
             $kkm_code = Cashbox::generateCodeFor($this->developer->store);
         }
 
@@ -110,7 +108,6 @@ abstract class ChequeTransformer
         ]);
     }
 
-
     /**
      * @return int
      */
@@ -118,7 +115,7 @@ abstract class ChequeTransformer
     {
         $type = $this->getAttribute('type_id');
 
-        if ( ! empty($type)) {
+        if (! empty($type)) {
             if ($this->integration) {
                 $key = array_search($type, $this->integration->types);
 
@@ -133,12 +130,9 @@ abstract class ChequeTransformer
         return ChequeType::SELL;
     }
 
-
     abstract protected function getAttribute(string $key);
 
-
     abstract protected function getDateAttribute(): string;
-
 
     /**
      * @return int
@@ -147,7 +141,7 @@ abstract class ChequeTransformer
     {
         $payment = $this->getAttribute('payment_id');
 
-        if ( ! empty($payment)) {
+        if (! empty($payment)) {
             if ($this->integration) {
                 $key = array_search($payment, $this->integration->payments);
 
@@ -161,5 +155,4 @@ abstract class ChequeTransformer
 
         return ChequePayment::CASH;
     }
-
 }

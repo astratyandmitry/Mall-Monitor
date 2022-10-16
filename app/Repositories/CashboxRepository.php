@@ -11,7 +11,6 @@ use App\Models\Cashbox;
  */
 class CashboxRepository
 {
-
     /**
      * @param int|null $store_id
      *
@@ -21,5 +20,4 @@ class CashboxRepository
     {
         return Cashbox::where('store_id', $store_id ?? -1)->pluck('code', 'id')->toArray();
     }
-
 }

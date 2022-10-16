@@ -9,7 +9,6 @@ namespace App\Classes\Graph;
  */
 class GraphDate
 {
-
     /**
      * @var array
      */
@@ -34,7 +33,6 @@ class GraphDate
      */
     protected static $instance = null;
 
-
     /**
      * @return void
      */
@@ -43,7 +41,6 @@ class GraphDate
         $selected = request()->query('graph_date_type', $this->defaultKey);
         $this->selectedKey = (array_key_exists($selected, $this->options)) ? $selected : $this->defaultKey;
     }
-
 
     /**
      * @return \App\Classes\GraphDate
@@ -57,7 +54,6 @@ class GraphDate
         return self::$instance;
     }
 
-
     /**
      * @return string
      */
@@ -65,7 +61,6 @@ class GraphDate
     {
         return $this->options[$this->selectedKey];
     }
-
 
     /**
      * @return string
@@ -84,5 +79,4 @@ class GraphDate
                 break;
         }
     }
-
 }

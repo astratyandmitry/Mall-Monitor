@@ -1,62 +1,62 @@
 .promo {
-  display: grid;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-
-  .container {
-    max-width: 800px;
-  }
-
-  .promo-box {
-    box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
-    grid-template-columns: auto minmax(400px, 1fr);
-    background: $color-brand-dark;
-    overflow: hidden;
-    align-items: center;
     display: grid;
-    @include radius($radius);
+    align-items: center;
+    width: 100%;
+    height: 100%;
 
-    @include mobile() {
-      grid-template-columns: 1fr;
+    .container {
+        max-width: 800px;
     }
 
-    .promo-box-brand {
-      background: $color-brand-dark;
-      z-index: 10;
-      padding: $size-2 $size-4;
-      text-align: center;
-
-      .promo-box-brand-logotype {
-        color: $color-white;
-        font-size: $font-36;
-        font-weight: 700;
+    .promo-box {
+        box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
+        grid-template-columns: auto minmax(400px, 1fr);
+        background: $color-brand-dark;
+        overflow: hidden;
+        align-items: center;
+        display: grid;
+        @include radius($radius);
 
         @include mobile() {
-          font-size: $font-28;
+            grid-template-columns: 1fr;
         }
-      }
+
+        .promo-box-brand {
+            background: $color-brand-dark;
+            z-index: 10;
+            padding: $size-2 $size-4;
+            text-align: center;
+
+            .promo-box-brand-logotype {
+                color: $color-white;
+                font-size: $font-36;
+                font-weight: 700;
+
+                @include mobile() {
+                    font-size: $font-28;
+                }
+            }
+        }
+
+        .promo-box-form {
+            z-index: 20;
+            box-shadow: -8px 0px 16px 0 rgba(0, 0, 0, .04);
+            background: $color-white;
+            padding: $size-2;
+
+            @include mobile() {
+                box-shadow: 0 -8px 16px 0 rgba(0, 0, 0, .04);
+            }
+
+            .field {
+                margin-bottom: $size-1;
+            }
+
+            .btn {
+                display: block;
+                width: 100%;
+            }
+        }
     }
-
-    .promo-box-form {
-      z-index: 20;
-      box-shadow: -8px 0px 16px 0 rgba(0, 0, 0, .04);
-      background: $color-white;
-      padding: $size-2;
-
-      @include mobile() {
-        box-shadow: 0 -8px 16px 0 rgba(0, 0, 0, .04);
-      }
-
-      .field {
-        margin-bottom: $size-1;
-      }
-
-      .btn {
-        display: block;
-        width: 100%;
-      }
-    }
-  }
 
 }

@@ -16,7 +16,6 @@ use App\Repositories\ChequeRepository;
  */
 class ReportsStoreController extends Controller
 {
-
     /**
      * @return \Illuminate\View\View
      */
@@ -30,13 +29,12 @@ class ReportsStoreController extends Controller
         return view('reports.store.index', $this->withData($this->getData()));
     }
 
-
     /**
      * @return string
      */
     public function exportExcel(): string
     {
-        $filename = 'keruenmonitor_reports.store_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.store_'.date('YmdHi');
 
         \Excel::create($filename, function ($excel) {
             $excel->sheet('Отчет по арендаторам', function ($sheet) {
@@ -49,13 +47,12 @@ class ReportsStoreController extends Controller
         return '<script>window.close();</script>';
     }
 
-
     /**
      * @return mixed
      */
     public function exportPDF()
     {
-        $filename = 'keruenmonitor_reports.store_' . date('YmdHi');
+        $filename = 'keruenmonitor_reports.store_'.date('YmdHi');
 
         $data = $this->getDataForExport($this->getPDFMaxItems());
 
@@ -63,7 +60,6 @@ class ReportsStoreController extends Controller
 
         return $pdf->download("{$filename}.pdf");
     }
-
 
     /**
      * @param int|null $limit
@@ -95,7 +91,6 @@ class ReportsStoreController extends Controller
         ];
     }
 
-
     /**
      * @param int|null $limit
      *
@@ -111,5 +106,4 @@ class ReportsStoreController extends Controller
 
         return $data;
     }
-
 }

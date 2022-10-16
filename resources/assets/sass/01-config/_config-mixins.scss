@@ -1,102 +1,102 @@
 @mixin clear() {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
 }
 
 @mixin transition() {
-  -webkit-transition: all 160ms linear;
-  -moz-transition: all 160ms linear;
-  -o-transition: all 160ms linear;
-  -ms-transition: all 160ms linear;
-  transition: all 160ms linear;
+    -webkit-transition: all 160ms linear;
+    -moz-transition: all 160ms linear;
+    -o-transition: all 160ms linear;
+    -ms-transition: all 160ms linear;
+    transition: all 160ms linear;
 }
 
 @mixin transitionSlow() {
-  -webkit-transition: all 320ms linear;
-  -moz-transition: all 320ms linear;
-  -o-transition: all 320ms linear;
-  -ms-transition: all 320ms linear;
-  transition: all 320ms linear;
+    -webkit-transition: all 320ms linear;
+    -moz-transition: all 320ms linear;
+    -o-transition: all 320ms linear;
+    -ms-transition: all 320ms linear;
+    transition: all 320ms linear;
 }
 
 @mixin radius($radius) {
-  -moz-border-radius: $radius;
-  -webkit-border-radius: $radius;
-  border-radius: $radius;
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+    border-radius: $radius;
 }
 
 @mixin radius-top($radius) {
-  -webkit-border-top-left-radius: $radius;
-  -webkit-border-top-right-radius: $radius;
-  -moz-border-radius-topleft: $radius;
-  -moz-border-radius-topright: $radius;
-  border-top-left-radius: $radius;
-  border-top-right-radius: $radius;
+    -webkit-border-top-left-radius: $radius;
+    -webkit-border-top-right-radius: $radius;
+    -moz-border-radius-topleft: $radius;
+    -moz-border-radius-topright: $radius;
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
 }
 
 @mixin radius-bottom($radius) {
-  -webkit-border-bottom-right-radius: $radius;
-  -webkit-border-bottom-left-radius: $radius;
-  -moz-border-radius-bottomright: $radius;
-  -moz-border-radius-bottomleft: $radius;
-  border-bottom-right-radius: $radius;
-  border-bottom-left-radius: $radius;
+    -webkit-border-bottom-right-radius: $radius;
+    -webkit-border-bottom-left-radius: $radius;
+    -moz-border-radius-bottomright: $radius;
+    -moz-border-radius-bottomleft: $radius;
+    border-bottom-right-radius: $radius;
+    border-bottom-left-radius: $radius;
 }
 
 @mixin radius-top-left($radius) {
-  -webkit-border-top-left-radius: $radius;
-  -moz-border-radius-topleft: $radius;
-  border-top-left-radius: $radius;
+    -webkit-border-top-left-radius: $radius;
+    -moz-border-radius-topleft: $radius;
+    border-top-left-radius: $radius;
 }
 
 @mixin radius-top-right($radius) {
-  -webkit-border-top-right-radius: $radius;
-  -moz-border-radius-topright: $radius;
-  border-top-right-radius: $radius;
+    -webkit-border-top-right-radius: $radius;
+    -moz-border-radius-topright: $radius;
+    border-top-right-radius: $radius;
 }
 
 @mixin radius-bottom-left($radius) {
-  -webkit-border-bottom-left-radius: $radius;
-  -moz-border-radius-bottomleft: $radius;
-  border-bottom-left-radius: $radius;
+    -webkit-border-bottom-left-radius: $radius;
+    -moz-border-radius-bottomleft: $radius;
+    border-bottom-left-radius: $radius;
 }
 
 @mixin radius-bottom-right($radius) {
-  -webkit-border-bottom-right-radius: $radius;
-  -moz-border-radius-bottomright: $radius;
-  border-bottom-right-radius: $radius;
+    -webkit-border-bottom-right-radius: $radius;
+    -moz-border-radius-bottomright: $radius;
+    border-bottom-right-radius: $radius;
 }
 
 @mixin mobile {
-  @media (max-width: 480px) {
-    @content;
-  }
+    @media (max-width: 480px) {
+        @content;
+    }
 }
 
 @mixin mobile-tablet {
-  @media (max-width: 1024px) {
-    @content;
-  }
+    @media (max-width: 1024px) {
+        @content;
+    }
 }
 
 @mixin tablet {
-  @media (min-width: 481px) and (max-width: 1024px) {
-    @content;
-  }
+    @media (min-width: 481px) and (max-width: 1024px) {
+        @content;
+    }
 }
 
 @mixin tablet_landscape {
-  @media (min-width: 481px) and (max-width: 1024px) and (orientation: landscape) {
-    @content;
-  }
+    @media (min-width: 481px) and (max-width: 1024px) and (orientation: landscape) {
+        @content;
+    }
 }
 
 @mixin desktop {
-  @media (min-width: 1025px) {
-    @content;
-  }
+    @media (min-width: 1025px) {
+        @content;
+    }
 }

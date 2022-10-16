@@ -11,7 +11,6 @@ use App\Models\ChequePayment;
  */
 class ChequePaymentRepository
 {
-
     /**
      * @return array
      */
@@ -19,5 +18,4 @@ class ChequePaymentRepository
     {
         return ChequePayment::query()->pluck('name', 'system_key')->toArray();
     }
-
 }

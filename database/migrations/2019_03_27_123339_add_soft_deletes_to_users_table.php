@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddSoftDeletesToUsersTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddSoftDeletesToUsersTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddSoftDeletesToUsersTable extends Migration
             $table->dropSoftDeletes();
         });
     }
-
 }

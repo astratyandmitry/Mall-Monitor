@@ -10,9 +10,10 @@ use Illuminate\Console\Command;
 
 class ImportKeruenParkFromXMLCommand extends Command
 {
-
     const MALL_ID = 1;
+
     const STORE_ID = 2;
+
     const KKM_CODE = 'keruenpark01';
 
     /**
@@ -25,7 +26,6 @@ class ImportKeruenParkFromXMLCommand extends Command
      */
     protected $description = 'Import Keruen Part from XML';
 
-
     /**
      * @return void
      */
@@ -33,7 +33,7 @@ class ImportKeruenParkFromXMLCommand extends Command
     {
         $filepath = storage_path('/import/keruen-park.xml');
 
-        if ( ! \File::exists($filepath)) {
+        if (! \File::exists($filepath)) {
             $this->error('The «keruen-park.xml» file not found');
 
             return;
@@ -48,7 +48,7 @@ class ImportKeruenParkFromXMLCommand extends Command
                 'kkm_code' => self::KKM_CODE,
                 'code' => $item->DOC_ID,
                 'number' => $item->DOC_NUMBER,
-                'amount' => (int)$item->DOC_AMNT,
+                'amount' => (int) $item->DOC_AMNT,
                 'data' => [],
                 'mall_id' => self::MALL_ID,
                 'store_id' => self::STORE_ID,
@@ -62,8 +62,6 @@ class ImportKeruenParkFromXMLCommand extends Command
         \File::delete($filepath);
     }
 
-
-
     protected function getCahsbox(): Cashbox
     {
         if ($cashbox = Cashbox::where('store_id', self::STORE_ID)->where('code', self::KKM_CODE)->first()) {
@@ -76,5 +74,4 @@ class ImportKeruenParkFromXMLCommand extends Command
             'code' => self::KKM_CODE,
         ]);
     }
-
 }

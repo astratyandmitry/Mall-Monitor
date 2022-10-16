@@ -11,7 +11,6 @@ use App\Models\Cashbox;
  */
 class ManageCashboxRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\Cashbox $entity
      *
@@ -21,5 +20,4 @@ class ManageCashboxRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 }

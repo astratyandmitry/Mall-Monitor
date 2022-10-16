@@ -12,7 +12,6 @@ use App\Http\Requests\Manage\ManageVisitCountmaxRequest;
  */
 class ManageVisitCountmaxController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -28,7 +27,6 @@ class ManageVisitCountmaxController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -40,7 +38,6 @@ class ManageVisitCountmaxController extends ManageController
             'entities' => VisitCountmax::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -54,7 +51,6 @@ class ManageVisitCountmaxController extends ManageController
             'entity' => null,
         ]));
     }
-
 
     /**
      * @param \App\Http\Requests\Manage\ManageVisitCountmaxRequest $request
@@ -71,7 +67,6 @@ class ManageVisitCountmaxController extends ManageController
         return redirect()->route('manage.visit_countmax.index')
             ->with('status-success', 'Счетчик успешно добавлен');
     }
-
 
     /**
      * @param int $id
@@ -92,9 +87,8 @@ class ManageVisitCountmaxController extends ManageController
         ]));
     }
 
-
     /**
-     * @param int                                         $id
+     * @param int $id
      * @param \App\Http\Requests\Manage\ManageVisitCountmaxRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -117,5 +111,4 @@ class ManageVisitCountmaxController extends ManageController
         return redirect()->route('manage.visit_countmax.index')
             ->with('status-success', 'Счетчик успешно изменен');
     }
-
 }

@@ -4,8 +4,8 @@ namespace App\Models;
 
 /**
  * @property integer $id
- * @property string  $name
- * @property string  $system_key
+ * @property string $name
+ * @property string $system_key
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -13,9 +13,10 @@ namespace App\Models;
  */
 class Role extends Model
 {
-
     const ADMIN = 1;
+
     const MALL = 2;
+
     const TENANT = 3;
 
     /**
@@ -44,5 +45,4 @@ class Role extends Model
         'system_key' => 'required|max:40',
         '_unique' => 'name|system_key',
     ];
-
 }

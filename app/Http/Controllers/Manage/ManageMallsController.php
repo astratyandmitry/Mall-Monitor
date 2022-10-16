@@ -12,7 +12,6 @@ use App\Http\Requests\Manage\ManageMallRequest;
  */
 class ManageMallsController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -28,7 +27,6 @@ class ManageMallsController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -40,7 +38,6 @@ class ManageMallsController extends ManageController
             'entities' => Mall::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -55,7 +52,6 @@ class ManageMallsController extends ManageController
         ]));
     }
 
-
     /**
      * @param \App\Http\Requests\Manage\ManageMallRequest $request
      *
@@ -68,7 +64,6 @@ class ManageMallsController extends ManageController
         return redirect()->route('manage.malls.index')
             ->with('status-success', 'ТРЦ успешно добавлен');
     }
-
 
     /**
      * @param int $id
@@ -87,9 +82,8 @@ class ManageMallsController extends ManageController
         ]));
     }
 
-
     /**
-     * @param int                                         $id
+     * @param int $id
      * @param \App\Http\Requests\Manage\ManageMallRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -103,5 +97,4 @@ class ManageMallsController extends ManageController
         return redirect()->route('manage.malls.index')
             ->with('status-success', 'ТРЦ успешно изменен');
     }
-
 }

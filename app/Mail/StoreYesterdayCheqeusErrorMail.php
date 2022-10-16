@@ -8,7 +8,6 @@ use Illuminate\Mail\Mailable;
 
 class StoreYesterdayCheqeusErrorMail extends Mailable
 {
-
     /**
      * @var \App\Models\Store
      */
@@ -19,10 +18,9 @@ class StoreYesterdayCheqeusErrorMail extends Mailable
      */
     public $date;
 
-
     /**
      * @param \App\Models\Store $store
-     * @param string            $date
+     * @param string $date
      *
      * @return void
      */
@@ -31,7 +29,6 @@ class StoreYesterdayCheqeusErrorMail extends Mailable
         $this->store = $store;
         $this->date = date('d.m.Y', strtotime($date));
     }
-
 
     /**
      * @return StoreYesterdayCheqeusErrorMail
@@ -42,5 +39,4 @@ class StoreYesterdayCheqeusErrorMail extends Mailable
             ->subject("{$this->store->mall->name}: {$this->store->name} отсуствутют данные за {$this->date}")
             ->markdown('mails.store-yesterday-cheques-error');
     }
-
 }

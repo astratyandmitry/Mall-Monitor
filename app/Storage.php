@@ -9,7 +9,6 @@ namespace App;
  */
 class Storage
 {
-
     /**
      * @var array
      */
@@ -27,5 +26,4 @@ class Storage
     public static $filterPastTypes = [
         'year' => 'За период прошлого года',
     ];
-
 }

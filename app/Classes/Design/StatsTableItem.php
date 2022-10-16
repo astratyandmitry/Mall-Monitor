@@ -2,7 +2,6 @@
 
 namespace App\Classes\Design;
 
-
 /**
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -10,7 +9,6 @@ namespace App\Classes\Design;
  */
 class StatsTableItem
 {
-
     /**
      * @var array
      */
@@ -21,19 +19,17 @@ class StatsTableItem
      */
     protected $visitsCount = 0;
 
-
     /**
      * StatsTableItem constructor.
      *
      * @param array $stats
-     * @param int|null  $visitsCount
+     * @param int|null $visitsCount
      */
     public function __construct(array $stats, ?int $visitsCount = null)
     {
         $this->stats = $stats;
-        $this->visitsCount = (int)$visitsCount;
+        $this->visitsCount = (int) $visitsCount;
     }
-
 
     /**
      * @return string
@@ -43,7 +39,6 @@ class StatsTableItem
         return date('d.m.Y', strtotime($this->stats['date']));
     }
 
-
     /**
      * @return int
      */
@@ -52,24 +47,21 @@ class StatsTableItem
         return $this->visitsCount;
     }
 
-
     /**
      * @return int
      */
     public function getChequesCount(): int
     {
-        return (int)$this->stats['count'];
+        return (int) $this->stats['count'];
     }
-
 
     /**
      * @return int
      */
     public function getChequesAmount(): int
     {
-        return (int)$this->stats['amount'];
+        return (int) $this->stats['amount'];
     }
-
 
     /**
      * @return int
@@ -82,7 +74,6 @@ class StatsTableItem
         return $amount && $count ? round($amount / $count) : 0;
     }
 
-
     /**
      * @return float
      */
@@ -90,7 +81,6 @@ class StatsTableItem
     {
         $chequesCount = $this->getChequesCount();
 
-        return ($chequesCount > 0 && $this->visitsCount > 0) ? round($chequesCount * 100 / $this->visitsCount, 2) : (float)0;
+        return ($chequesCount > 0 && $this->visitsCount > 0) ? round($chequesCount * 100 / $this->visitsCount, 2) : (float) 0;
     }
-
 }

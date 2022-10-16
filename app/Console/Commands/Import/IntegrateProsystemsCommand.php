@@ -10,7 +10,6 @@ use App\Jobs\ImportChequeProsystem;
 
 class IntegrateProsystemsCommand extends Command
 {
-
     /**
      * @var string
      */
@@ -30,7 +29,6 @@ class IntegrateProsystemsCommand extends Command
      * @var \App\Models\Mall
      */
     protected $mall;
-
 
     /**
      * @return void
@@ -64,5 +62,4 @@ class IntegrateProsystemsCommand extends Command
             $this->error('Unauthorized');
         }
     }
-
 }

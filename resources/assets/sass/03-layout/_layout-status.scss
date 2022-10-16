@@ -1,33 +1,33 @@
 .status {
-  margin-bottom: $size-1;
+    margin-bottom: $size-1;
 
-  .status-box {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.02);
-    padding: $size-1;
-    @include radius($radius);
+    .status-box {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.02);
+        padding: $size-1;
+        @include radius($radius);
 
-    .status-box-text {
-      font-size: $font-12;
-      font-weight: 500;
+        .status-box-text {
+            font-size: $font-12;
+            font-weight: 500;
 
-      i {
-        margin-right: $size-0-1;
-      }
+            i {
+                margin-right: $size-0-1;
+            }
+        }
+
+        &.is-success {
+            background: $color-green-lightest;
+            color: $color-green-dark;
+        }
+
+        &.is-warning {
+            background: $color-orange-lightest;
+            color: $color-orange-dark;
+        }
+
+        &.is-danger {
+            background: $color-red-lightest;
+            color: $color-red-dark;
+        }
     }
-
-    &.is-success {
-      background: $color-green-lightest;
-      color: $color-green-dark;
-    }
-
-    &.is-warning {
-      background: $color-orange-lightest;
-      color: $color-orange-dark;
-    }
-
-    &.is-danger {
-      background: $color-red-lightest;
-      color: $color-red-dark;
-    }
-  }
 }

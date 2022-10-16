@@ -11,7 +11,6 @@ use App\Models\StoreIntegration;
  */
 class ManageStoreIntegrationRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\StoreIntegration $entity
      *
@@ -22,7 +21,6 @@ class ManageStoreIntegrationRequest extends \App\Http\Requests\Request
         $this->entity = $entity;
     }
 
-
     /**
      * @return array
      */
@@ -32,5 +30,4 @@ class ManageStoreIntegrationRequest extends \App\Http\Requests\Request
             'file' => 'required',
         ]);
     }
-
 }

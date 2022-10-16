@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddStoreIdColumnToChequestTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddStoreIdColumnToChequestTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddStoreIdColumnToChequestTable extends Migration
             $table->dropColumn('store_id');
         });
     }
-
 }

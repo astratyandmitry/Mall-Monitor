@@ -2,50 +2,50 @@
 @import "./../../../../node_modules/font-awesome/scss/font-awesome";
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  color: $color-grey-darkest;
-  line-height: 1;
-  font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    color: $color-grey-darkest;
+    line-height: 1;
+    font-size: 16px;
 }
 
 input,
 textarea,
 select,
 button {
-  font-family: 'Montserrat', sans-serif;
-  color: $color-grey-darkest;
-  font-size: $font-14;
-  line-height: 1.5;
+    font-family: 'Montserrat', sans-serif;
+    color: $color-grey-darkest;
+    font-size: $font-14;
+    line-height: 1.5;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Montserrat', sans-serif;
-  color: $color-black;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: $color-black;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
 }
 
 h1 {
-  font-size: $font-32;
+    font-size: $font-32;
 
-  @include mobile() {
-    font-size: $font-28;
-  }
+    @include mobile() {
+        font-size: $font-28;
+    }
 }
 
 h2 {
-  font-size: $font-28;
+    font-size: $font-28;
 
-  @include mobile() {
-    font-size: $font-24;
-  }
+    @include mobile() {
+        font-size: $font-24;
+    }
 }
 
 h3, h4, h5, h6 {
-  font-size: $font-24;
+    font-size: $font-24;
 
-  @include mobile() {
-    font-size: $font-18;
-  }
+    @include mobile() {
+        font-size: $font-18;
+    }
 }

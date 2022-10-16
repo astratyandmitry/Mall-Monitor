@@ -9,7 +9,6 @@ namespace App\Classes\Date;
  */
 class ReportDate
 {
-
     /**
      * @var string
      */
@@ -35,7 +34,6 @@ class ReportDate
      */
     protected $dateTo;
 
-
     /**
      * @return void
      */
@@ -43,7 +41,6 @@ class ReportDate
     {
         $this->setup();
     }
-
 
     /**
      * @return  void
@@ -56,15 +53,14 @@ class ReportDate
         $diff = date_diff(date_create($this->dateFrom), date_create($this->dateTo));
         $group = 'date';
 
-        if (( ! $this->dateFrom && ! $this->dateTo) || (int)$diff->format("%Y") > 0) {
+        if ((! $this->dateFrom && ! $this->dateTo) || (int) $diff->format("%Y") > 0) {
             $group = 'year';
-        } elseif ((int)$diff->format("%m") > 0) {
+        } elseif ((int) $diff->format("%m") > 0) {
             $group = 'yearmonth';
         }
 
         $this->group = $group;
     }
-
 
     /**
      * @return \App\Classes\Date\ReportDate
@@ -78,7 +74,6 @@ class ReportDate
         return self::$instance;
     }
 
-
     /**
      * @param string $key
      *
@@ -89,7 +84,7 @@ class ReportDate
         if ($date = request()->query("date_{$key}")) {
             $time = request()->query("time_{$key}");
 
-            if ( ! $time) {
+            if (! $time) {
                 $time = ($key == 'from') ? '00:00' : '23:59';
             }
 
@@ -103,7 +98,6 @@ class ReportDate
         return null;
     }
 
-
     /**
      * @return string|null
      */
@@ -111,7 +105,6 @@ class ReportDate
     {
         return $this->dateFrom;
     }
-
 
     /**
      * @return string|null
@@ -121,7 +114,6 @@ class ReportDate
         return $this->dateTo;
     }
 
-
     /**
      * @return string
      */
@@ -130,7 +122,6 @@ class ReportDate
         return $this->group;
     }
 
-
     /**
      * @return array
      */
@@ -138,7 +129,6 @@ class ReportDate
     {
         return [$this->dateFrom, $this->dateTo, $this->group];
     }
-
 
     /**
      * @return string
@@ -162,5 +152,4 @@ class ReportDate
 
         return 'За все время';
     }
-
 }

@@ -7,12 +7,10 @@ use Illuminate\Mail\Mailable;
 
 class UserActivationMail extends Mailable
 {
-
     /**
      * @var \App\Models\User
      */
     public $user;
-
 
     /**
      * @param \App\Models\User $user
@@ -24,7 +22,6 @@ class UserActivationMail extends Mailable
         $this->user = $user;
     }
 
-
     /**
      * @return UserActivationMail
      */
@@ -32,5 +29,4 @@ class UserActivationMail extends Mailable
     {
         return $this->subject('Активация аккаунта')->markdown('mails.user-activation');
     }
-
 }

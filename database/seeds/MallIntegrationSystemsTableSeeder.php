@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 
 class MallIntegrationSystemsTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -20,7 +19,6 @@ class MallIntegrationSystemsTableSeeder extends Seeder
         ],
     ];
 
-
     /**
      * @return void
      */
@@ -32,5 +30,4 @@ class MallIntegrationSystemsTableSeeder extends Seeder
             IntegrationSystem::create($data);
         }
     }
-
 }

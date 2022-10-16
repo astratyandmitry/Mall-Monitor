@@ -12,11 +12,14 @@ use App\Models\Store;
  */
 class GraphStorage
 {
-
     const LABEL = 'labels';
+
     const AMOUNT = 'amount';
+
     const COUNT = 'count';
+
     const AVG = 'avg';
+
     const VISITS = 'visits';
 
     /**
@@ -135,13 +138,12 @@ class GraphStorage
         "#40e0d0",
         "#ee82ee",
         "#ffff00",
-        "#9acd32"
+        "#9acd32",
     ];
-
 
     /**
      * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \App\Classes\GraphStorage
      */
@@ -152,12 +154,11 @@ class GraphStorage
         return $this;
     }
 
-
     /**
      * @param string $key
-     * @param mixed  $data_key
-     * @param mixed  $data_index
-     * @param mixed  $value
+     * @param mixed $data_key
+     * @param mixed $data_index
+     * @param mixed $value
      *
      * @return \App\Classes\GraphStorage
      */
@@ -168,10 +169,9 @@ class GraphStorage
         return $this;
     }
 
-
     /**
      * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \App\Classes\GraphStorage
      */
@@ -181,7 +181,6 @@ class GraphStorage
 
         return $this;
     }
-
 
     /**
      * @param mixed $value
@@ -193,10 +192,9 @@ class GraphStorage
         return $this->addValue(self::LABEL, $this->formatDate($value));
     }
 
-
     /**
      * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \App\Classes\GraphStorage
      */
@@ -204,7 +202,6 @@ class GraphStorage
     {
         return $this->addValue($key, round($value));
     }
-
 
     /**
      * @param mixed $value
@@ -216,7 +213,6 @@ class GraphStorage
         return $this->addNumberValue(self::AMOUNT, $value);
     }
 
-
     /**
      * @param mixed $value
      *
@@ -227,7 +223,6 @@ class GraphStorage
         return $this->addNumberValue(self::COUNT, $value);
     }
 
-
     /**
      * @param mixed $value
      *
@@ -237,7 +232,6 @@ class GraphStorage
     {
         return $this->addNumberValue(self::AVG, $value);
     }
-
 
     /**
      * @param string $date
@@ -252,7 +246,7 @@ class GraphStorage
             return $date;
         }
 
-        $month = DateHelper::getMonthAbbr((int)$dates[1]);
+        $month = DateHelper::getMonthAbbr((int) $dates[1]);
 
         if (count($dates) == 2) {
             return "{$month} {$dates[0]}";
@@ -260,9 +254,8 @@ class GraphStorage
 
         $day = DateHelper::getDayAbbr(date('N', strtotime($date)));
 
-        return (int)$dates[2] . " {$month} {$dates[0]} ({$day})";
+        return (int) $dates[2]." {$month} {$dates[0]} ({$day})";
     }
-
 
     /**
      * @return array
@@ -271,7 +264,6 @@ class GraphStorage
     {
         return $this->data;
     }
-
 
     /**
      * @param array $names
@@ -328,7 +320,6 @@ class GraphStorage
         return $series;
     }
 
-
     /**
      * @return array
      */
@@ -342,5 +333,4 @@ class GraphStorage
 
         return $data;
     }
-
 }

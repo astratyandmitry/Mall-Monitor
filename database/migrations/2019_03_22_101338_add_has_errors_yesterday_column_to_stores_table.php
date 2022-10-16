@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddHasErrorsYesterdayColumnToStoresTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddHasErrorsYesterdayColumnToStoresTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddHasErrorsYesterdayColumnToStoresTable extends Migration
             $table->dropColumn('is_errors_yesterday');
         });
     }
-
 }

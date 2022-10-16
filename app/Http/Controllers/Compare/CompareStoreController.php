@@ -16,7 +16,6 @@ use App\Repositories\ChequeRepository;
  */
 class CompareStoreController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('not-store');
@@ -40,7 +39,7 @@ class CompareStoreController extends Controller
 
         foreach ($visits as $date => $data) {
             foreach ($data as $item) {
-                if ( ! isset($store_names[$item->store_id])) {
+                if (! isset($store_names[$item->store_id])) {
                     continue;
                 }
 
@@ -54,7 +53,7 @@ class CompareStoreController extends Controller
             $graph->addMultiLabel($date, $date);
 
             foreach ($data as $item) {
-                if ( ! isset($store_names[$item['store_id']])) {
+                if (! isset($store_names[$item['store_id']])) {
                     continue;
                 }
 
@@ -62,15 +61,14 @@ class CompareStoreController extends Controller
                     ->addMultiValue(GraphStorage::AMOUNT, $item['store_id'], $date, $item['amount'])
                     ->addMultiValue(GraphStorage::COUNT, $item['store_id'], $date, $item['count'])
                     ->addMultiValue(GraphStorage::AVG, $item['store_id'], $date, $item['avg'])
-                    ->addMultiValue(GraphStorage::VISITS, $item['store_id'], $date, (int)@$visitsSimplified[$date][$item['store_id']]);
+                    ->addMultiValue(GraphStorage::VISITS, $item['store_id'], $date, (int) @$visitsSimplified[$date][$item['store_id']]);
             }
         }
 
         return view('compare.store.index', $this->withData([
-            'statsExists' => (bool)count($stats),
+            'statsExists' => (bool) count($stats),
             'graph' => $graph->getData(),
             'series' => $graph->getSeriesMultiData($store_names),
         ]));
     }
-
 }

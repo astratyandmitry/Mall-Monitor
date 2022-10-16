@@ -3,14 +3,14 @@
 namespace App\Models;
 
 /**
- * @property integer                            $id
- * @property integer                            $mall_id
- * @property integer                            $system_id
- * @property string                             $host
- * @property string                             $username
- * @property string                             $password
- * @property string                             $data
- * @property  \App\Models\Mall                  $mall
+ * @property integer $id
+ * @property integer $mall_id
+ * @property integer $system_id
+ * @property string $host
+ * @property string $username
+ * @property string $password
+ * @property string $data
+ * @property  \App\Models\Mall $mall
  * @property  \App\Models\MallIntegrationSystem $system
  *
  * @version   1.0.1
@@ -19,7 +19,6 @@ namespace App\Models;
  */
 class MallIntegration extends Model
 {
-
     /**
      * @var string
      */
@@ -75,7 +74,6 @@ class MallIntegration extends Model
      */
     public $timestamps = false;
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -84,7 +82,6 @@ class MallIntegration extends Model
         return $this->belongsTo(Mall::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -92,5 +89,4 @@ class MallIntegration extends Model
     {
         return $this->belongsTo(MallIntegrationSystem::class);
     }
-
 }

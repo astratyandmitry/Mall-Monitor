@@ -12,7 +12,6 @@ use App\Models\Developer;
  */
 class ManageStoreRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\Store $entity
      *
@@ -22,7 +21,6 @@ class ManageStoreRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 
     /**
      * @return array
@@ -43,5 +41,4 @@ class ManageStoreRequest extends \App\Http\Requests\Request
 
         return $rules;
     }
-
 }

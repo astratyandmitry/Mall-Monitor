@@ -19,14 +19,12 @@ use App\Integration\Store\ExcelChequeTransformer;
  */
 class VisitsImportExcelController extends Controller
 {
-
     /**
      * @var array
      */
     protected $rules = [
         'file' => 'required|file',
     ];
-
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -35,7 +33,7 @@ class VisitsImportExcelController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        if ( ! $this->validate($request, $this->rules)) {
+        if (! $this->validate($request, $this->rules)) {
             return $this->responseError();
         }
 
@@ -49,7 +47,7 @@ class VisitsImportExcelController extends Controller
 
             $items = $reader->get()->toArray();
 
-            if ( ! isset($items[0]) || ! count($items[0])) {
+            if (! isset($items[0]) || ! count($items[0])) {
                 return $this->responseError();
             }
 
@@ -84,7 +82,7 @@ class VisitsImportExcelController extends Controller
                     ];
                 } else {
                     /** @var \App\Models\VisitCountmax $countmax */
-                    if ( ! $countmax = VisitCountmax::query()->where('number', $formattedItem['number'])->first()) {
+                    if (! $countmax = VisitCountmax::query()->where('number', $formattedItem['number'])->first()) {
                         $countmax = VisitCountmax::query()->create([
                             'mall_id' => \request()->get('mall_id', 1),
                             'store_id' => -1,
@@ -114,7 +112,6 @@ class VisitsImportExcelController extends Controller
         return $this->response($output);
     }
 
-
     /**
      * @param string $date
      *
@@ -122,10 +119,10 @@ class VisitsImportExcelController extends Controller
      */
     protected function formatDate(string $date): string
     {
-        list($date, $time) = explode(' ', $date);
+        [$date, $time] = explode(' ', $date);
 
-        list($hours, $minutes) = explode(':', $time);
-        list($day, $month, $year) = explode('.', $date);
+        [$hours, $minutes] = explode(':', $time);
+        [$day, $month, $year] = explode('.', $date);
 
         if ($hours < 10) {
             $hours = "0{$hours}";
@@ -133,5 +130,4 @@ class VisitsImportExcelController extends Controller
 
         return date('Y-m-d H:i:s', strtotime("{$year}-{$month}-{$day} {$hours}:{$minutes}"));
     }
-
 }

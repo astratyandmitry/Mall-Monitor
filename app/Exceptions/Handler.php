@@ -7,7 +7,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
-
     /**
      * A list of the exception types that are not reported.
      *
@@ -27,11 +26,10 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-
     /**
      * Report or log an exception.
      *
-     * @param  \Exception $exception
+     * @param \Exception $exception
      *
      * @return void
      */
@@ -40,12 +38,11 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Exception               $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $exception
      *
      * @return \Illuminate\Http\Response
      */
@@ -53,5 +50,4 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
-
 }

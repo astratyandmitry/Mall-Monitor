@@ -17,10 +17,9 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class VisitsRepository
 {
-
     /**
      * @param int|null $mall_id
-     * @param int      $limit
+     * @param int $limit
      *
      * @return \Illuminate\Support\Collection
      */
@@ -36,13 +35,12 @@ class VisitsRepository
             ->limit($limit)
             ->whereNull('store_id');
 
-        if ( ! is_null($mall_id)) {
+        if (! is_null($mall_id)) {
             $items = $items->where('mall_id', $mall_id);
         }
 
         return $items->get();
     }
-
 
     /**
      * @param int $store_id
@@ -63,13 +61,12 @@ class VisitsRepository
             ->get();
     }
 
-
     /**
      * @return array
      */
     public static function getAggregatedMonthForMall(): array
     {
-        $startedDate = date('Y') . '-' . date('m') . '-01 00:00:00';
+        $startedDate = date('Y').'-'.date('m').'-01 00:00:00';
 
         return DB::table('visits')
             ->select(DB::raw('COUNT(*) AS count, SUM(count) as count, mall_id'))
@@ -79,7 +76,6 @@ class VisitsRepository
             ->pluck('count', 'mall_id')->toArray();
     }
 
-
     /**
      * @param int|null $mall_id
      *
@@ -87,7 +83,7 @@ class VisitsRepository
      */
     public static function getAggregatedMonthForStore(?int $mall_id = null): array
     {
-        $startedDate = date('Y') . '-' . date('m') . '-01 00:00:00';
+        $startedDate = date('Y').'-'.date('m').'-01 00:00:00';
 
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = DB::table('visits')
@@ -96,13 +92,12 @@ class VisitsRepository
             ->where('store_id', '>', 0)
             ->groupBy('store_id');
 
-        if ( ! is_null($mall_id)) {
+        if (! is_null($mall_id)) {
             $items = $items->where('mall_id', $mall_id);
         }
 
         return $items->pluck('count', 'store_id')->toArray();
     }
-
 
     /**
      * @return \Illuminate\Support\Collection
@@ -137,7 +132,6 @@ class VisitsRepository
             })->get()->groupBy('date');
     }
 
-
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -170,13 +164,12 @@ class VisitsRepository
             })->get()->groupBy('date');
     }
 
-
     /**
      * @return \Illuminate\Support\Collection
      */
     public static function getReportForMall(): Collection
     {
-        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+        [$dateFrom, $dateTo, $dateGroup] = ReportDate::instance()->getData();
 
         return Visit::reportMall($dateFrom, $dateTo)
             ->select(DB::raw("SUM(count) AS count, mall_id, created_{$dateGroup} as date"))
@@ -186,13 +179,12 @@ class VisitsRepository
             ->get();
     }
 
-
     /**
      * @return \Illuminate\Support\Collection
      */
     public static function getReportForStore(): Collection
     {
-        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+        [$dateFrom, $dateTo, $dateGroup] = ReportDate::instance()->getData();
 
         return Visit::reportMall($dateFrom, $dateTo)
             ->select(DB::raw("SUM(count) AS count, mall_id, store_id, created_{$dateGroup} as date"))
@@ -200,7 +192,6 @@ class VisitsRepository
             ->groupBy('store_id')
             ->get();
     }
-
 
     /**
      * @param string $dateFrom
@@ -217,7 +208,6 @@ class VisitsRepository
             ->get();
     }
 
-
     /**
      * @param string $dateFrom
      * @param string $dateTo
@@ -231,5 +221,4 @@ class VisitsRepository
             ->groupBy('store_id')
             ->get();
     }
-
 }

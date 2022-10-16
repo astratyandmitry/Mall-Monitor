@@ -11,7 +11,6 @@ use App\Models\Mall;
  */
 class ManageMallRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\Mall $entity
      *
@@ -21,6 +20,4 @@ class ManageMallRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
-
 }

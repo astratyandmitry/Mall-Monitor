@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @property integer           $id
- * @property string            $code
- * @property integer           $mall_id
- * @property integer           $store_id
- * @property \Carbon\Carbon    $created_at
- * @property \Carbon\Carbon    $updated_at
- * @property \Carbon\Carbon    $deleted_at
+ * @property integer $id
+ * @property string $code
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
  * @property \App\Models\Store $store
  *
  * @version   1.0.1
@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Cashbox extends Model
 {
-
     use \Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
@@ -57,7 +56,6 @@ class Cashbox extends Model
         'store_id' => 'required|exists:stores,id',
     ];
 
-
     /**
      * @return void
      */
@@ -75,7 +73,6 @@ class Cashbox extends Model
         });
     }
 
-
     /**
      * @param \App\Models\Store $store
      *
@@ -89,7 +86,6 @@ class Cashbox extends Model
         return "AACN_{$mallIndex}_{$storeIndex}";
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -98,7 +94,6 @@ class Cashbox extends Model
         return $this->belongsTo(Mall::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -106,7 +101,6 @@ class Cashbox extends Model
     {
         return $this->belongsTo(Store::class)->withTrashed();
     }
-
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
@@ -120,7 +114,7 @@ class Cashbox extends Model
         $builder->withTrashed();
 
         $builder->when(request('code'), function (Builder $builder): Builder {
-            return $builder->where('code', 'LIKE', '%' . request('code') . '%');
+            return $builder->where('code', 'LIKE', '%'.request('code').'%');
         });
 
         $user = auth()->user();
@@ -152,5 +146,4 @@ class Cashbox extends Model
 
         return parent::scopeFilter($builder);
     }
-
 }

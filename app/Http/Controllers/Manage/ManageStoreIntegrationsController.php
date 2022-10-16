@@ -19,7 +19,6 @@ use Maatwebsite\Excel\Readers\LaravelExcelReader;
  */
 class ManageStoreIntegrationsController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -35,7 +34,6 @@ class ManageStoreIntegrationsController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -47,7 +45,6 @@ class ManageStoreIntegrationsController extends ManageController
             'entities' => StoreIntegration::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -61,7 +58,6 @@ class ManageStoreIntegrationsController extends ManageController
             'entity' => null,
         ]));
     }
-
 
     /**
      * @param int $id
@@ -78,9 +74,8 @@ class ManageStoreIntegrationsController extends ManageController
         ]));
     }
 
-
     /**
-     * @param int                                                           $id
+     * @param int $id
      * @param \App\Http\Requests\Manage\ManageStoreIntegrationConfigRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -95,7 +90,6 @@ class ManageStoreIntegrationsController extends ManageController
             ->with('status-success', 'Конфигурация успешно обновлена');
     }
 
-
     /**
      * @param \App\Http\Requests\Manage\ManageStoreIntegrationRequest $request
      *
@@ -109,7 +103,7 @@ class ManageStoreIntegrationsController extends ManageController
             $attrs = $this->getAttrsFromFileExcel($request->file('file'));
         }
 
-        if ( ! count($attrs)) {
+        if (! count($attrs)) {
             return redirect()->back();
         }
 
@@ -124,7 +118,6 @@ class ManageStoreIntegrationsController extends ManageController
         return redirect()->route('manage.store_integrations.configure', $entity->id)
             ->with('status-success', 'Конфигурация успешно добавлена');
     }
-
 
     /**
      * @param \Illuminate\Http\UploadedFile $file
@@ -148,7 +141,6 @@ class ManageStoreIntegrationsController extends ManageController
         return $attrs;
     }
 
-
     /**
      * @param \Illuminate\Http\UploadedFile $file
      *
@@ -159,7 +151,7 @@ class ManageStoreIntegrationsController extends ManageController
         $xml = simplexml_load_file($file->getRealPath(), "SimpleXMLElement", LIBXML_NOCDATA);
         $array = json_decode(json_encode($xml), true);
 
-        if ( ! is_array($array) || ! count($array)) {
+        if (! is_array($array) || ! count($array)) {
             return [];
         }
 
@@ -202,7 +194,6 @@ class ManageStoreIntegrationsController extends ManageController
         return $attrs;
     }
 
-
     /**
      * @param integer $id
      *
@@ -217,5 +208,4 @@ class ManageStoreIntegrationsController extends ManageController
         return redirect()->route('manage.store_integrations.index')
             ->with('status-danger', 'Конфигурация успешно удалена');
     }
-
 }

@@ -11,7 +11,6 @@ use App\Classes\Date\ReportDate;
  */
 class DateHelper
 {
-
     /**
      * @var array
      */
@@ -74,7 +73,6 @@ class DateHelper
         7 => 'Вс.',
     ];
 
-
     /**
      * @param string $date
      *
@@ -85,7 +83,6 @@ class DateHelper
         return date('Y.m.d H:i', strtotime($date));
     }
 
-
     /**
      * @param int|null $month
      *
@@ -94,12 +91,11 @@ class DateHelper
     public static function getMonthFull(?int $month = null): string
     {
         if (is_null($month)) {
-            $month = (int)date('m');
+            $month = (int) date('m');
         }
 
         return self::$monthFull[$month];
     }
-
 
     /**
      * @param int|null $month
@@ -109,12 +105,11 @@ class DateHelper
     public static function getMonthAbbr(?int $month = null): string
     {
         if (is_null($month)) {
-            $month = (int)date('m');
+            $month = (int) date('m');
         }
 
         return self::$monthAbbr[$month];
     }
-
 
     /**
      * @param int|null $day
@@ -124,12 +119,11 @@ class DateHelper
     public static function getDayFull(?int $day = null): string
     {
         if (is_null($day)) {
-            $day = (int)date('N');
+            $day = (int) date('N');
         }
 
         return self::$dayFull[$day];
     }
-
 
     /**
      * @param int|null $day
@@ -139,12 +133,11 @@ class DateHelper
     public static function getDayAbbr(?int $day = null): string
     {
         if (is_null($day)) {
-            $day = (int)date('N');
+            $day = (int) date('N');
         }
 
         return self::$dayAbbr[$day];
     }
-
 
     /**
      * @param string $date
@@ -158,7 +151,7 @@ class DateHelper
                 {
                     $dates = explode('-', $date);
 
-                    return self::getMonthAbbr($dates[1]) . ' ' . $dates[0];
+                    return self::getMonthAbbr($dates[1]).' '.$dates[0];
                 };
                 break;
             case 'date':
@@ -173,5 +166,4 @@ class DateHelper
                 break;
         }
     }
-
 }

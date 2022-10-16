@@ -12,7 +12,6 @@ use App\Http\Requests\Manage\ManageStoreTypeRequest;
  */
 class ManageStoreTypesController extends ManageController
 {
-
     /**
      * @return void
      */
@@ -28,7 +27,6 @@ class ManageStoreTypesController extends ManageController
         }
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -40,7 +38,6 @@ class ManageStoreTypesController extends ManageController
             'entities' => StoreType::filter()->paginate($this->itemsPerPage),
         ]));
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -55,7 +52,6 @@ class ManageStoreTypesController extends ManageController
         ]));
     }
 
-
     /**
      * @param \App\Http\Requests\Manage\ManageStoreTypeRequest $request
      *
@@ -68,7 +64,6 @@ class ManageStoreTypesController extends ManageController
         return redirect()->route('manage.store_types.index')
             ->with('status-success', 'Категория успешно добавлена');
     }
-
 
     /**
      * @param int $id
@@ -87,9 +82,8 @@ class ManageStoreTypesController extends ManageController
         ]));
     }
 
-
     /**
-     * @param int                                              $id
+     * @param int $id
      * @param \App\Http\Requests\Manage\ManageStoreTypeRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -103,5 +97,4 @@ class ManageStoreTypesController extends ManageController
         return redirect()->route('manage.store_types.index')
             ->with('status-success', 'Категория успешно изменена');
     }
-
 }

@@ -17,14 +17,12 @@ use App\Integration\Store\ExcelChequeTransformer;
  */
 class ChequesImportExcelController extends Controller
 {
-
     /**
      * @var array
      */
     protected $rules = [
         'file' => 'required|file|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     ];
-
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -33,7 +31,7 @@ class ChequesImportExcelController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        if ( ! $this->validate($request, $this->rules)) {
+        if (! $this->validate($request, $this->rules)) {
             return $this->responseError();
         }
 
@@ -87,5 +85,4 @@ class ChequesImportExcelController extends Controller
 
         return $this->response($output);
     }
-
 }

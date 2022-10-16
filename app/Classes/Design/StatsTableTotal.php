@@ -9,7 +9,6 @@ namespace App\Classes\Design;
  */
 class StatsTableTotal
 {
-
     /**
      * @var int
      */
@@ -25,7 +24,6 @@ class StatsTableTotal
      */
     protected $chequesAmount = 0;
 
-
     /**
      * @param \App\Classes\Design\StatsTableItem $tableItem
      *
@@ -38,7 +36,6 @@ class StatsTableTotal
         $this->chequesAmount += $tableItem->getChequesAmount();
     }
 
-
     /**
      * @return int
      */
@@ -46,7 +43,6 @@ class StatsTableTotal
     {
         return $this->visitsCount;
     }
-
 
     /**
      * @return int
@@ -56,7 +52,6 @@ class StatsTableTotal
         return $this->chequesCount;
     }
 
-
     /**
      * @return int
      */
@@ -65,7 +60,6 @@ class StatsTableTotal
         return $this->chequesAmount;
     }
 
-
     /**
      * @return int
      */
@@ -73,5 +67,4 @@ class StatsTableTotal
     {
         return $this->chequesAmount && $this->chequesCount ? round($this->chequesAmount / $this->chequesCount) : 0;
     }
-
 }

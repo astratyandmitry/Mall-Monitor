@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddMallIdColumnToIntegrationLogsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddMallIdColumnToIntegrationLogsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddMallIdColumnToIntegrationLogsTable extends Migration
             $table->dropColumn('mall_id');
         });
     }
-
 }

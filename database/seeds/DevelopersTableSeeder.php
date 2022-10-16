@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 
 class DevelopersTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -17,7 +16,6 @@ class DevelopersTableSeeder extends Seeder
             'store_id' => 1,
         ],
     ];
-
 
     /**
      * @return void
@@ -32,5 +30,4 @@ class DevelopersTableSeeder extends Seeder
             Developer::query()->create($data);
         }
     }
-
 }

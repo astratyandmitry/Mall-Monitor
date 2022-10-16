@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @property integer             $id
- * @property string              $name
- * @property string              $color
+ * @property integer $id
+ * @property string $name
+ * @property string $color
  * @property \App\Models\Store[] $store
  *
  * @version   1.0.1
@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class StoreType extends Model
 {
-
     const DEFAULT = 1;
 
     /**
@@ -53,7 +52,6 @@ class StoreType extends Model
         'color' => 'цвет',
     ];
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -61,7 +59,6 @@ class StoreType extends Model
     {
         return $this->hasMany(Store::class, 'type_id');
     }
-
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
@@ -71,10 +68,9 @@ class StoreType extends Model
     public static function scopeFilter(Builder $builder): Builder
     {
         $builder->when(request('name'), function (Builder $builder): Builder {
-            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+            return $builder->where('name', 'LIKE', '%'.request('name').'%');
         });
 
         return parent::scopeFilter($builder);
     }
-
 }

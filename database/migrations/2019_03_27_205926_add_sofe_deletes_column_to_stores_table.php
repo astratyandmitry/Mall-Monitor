@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddSofeDeletesColumnToStoresTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddSofeDeletesColumnToStoresTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddSofeDeletesColumnToStoresTable extends Migration
             $table->dropSoftDeletes();
         });
     }
-
 }

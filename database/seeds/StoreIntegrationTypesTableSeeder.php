@@ -5,7 +5,6 @@ use App\Models\StoreIntegrationType;
 
 class StoreIntegrationTypesTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -31,5 +30,4 @@ class StoreIntegrationTypesTableSeeder extends Seeder
             StoreIntegrationType::query()->create($data);
         }
     }
-
 }

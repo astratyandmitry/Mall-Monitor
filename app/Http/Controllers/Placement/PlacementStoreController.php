@@ -18,12 +18,10 @@ use App\Repositories\ChequeRepository;
  */
 class PlacementStoreController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('not-store');
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -38,7 +36,6 @@ class PlacementStoreController extends Controller
         return view('placement.store.index', $this->withData($this->getData()));
     }
 
-
     /**
      * @return array
      */
@@ -50,8 +47,8 @@ class PlacementStoreController extends Controller
         $periodPast = $this->getDataForPeriod('past');
 
         $dates = [
-            'current' => DateHelper::get($periodCurrent['date_from']) . ' - ' . DateHelper::get($periodCurrent['date_to']),
-            'past' => DateHelper::get($periodPast['date_from']) . ' - ' . DateHelper::get($periodPast['date_to']),
+            'current' => DateHelper::get($periodCurrent['date_from']).' - '.DateHelper::get($periodCurrent['date_to']),
+            'past' => DateHelper::get($periodPast['date_from']).' - '.DateHelper::get($periodPast['date_to']),
         ];
 
         $mall_ids = [];
@@ -72,7 +69,6 @@ class PlacementStoreController extends Controller
             'dates' => $dates,
         ];
     }
-
 
     /**
      * @param string $period
@@ -96,17 +92,16 @@ class PlacementStoreController extends Controller
         ];
     }
 
-
     /**
      * @param array|null $period
-     * @param array      $mall_ids
-     * @param array      $store_ids
+     * @param array $mall_ids
+     * @param array $store_ids
      *
      * @return array
      */
     protected function setDataForPeriod(?array $period = null, array &$mall_ids, array &$store_ids): array
     {
-        if (is_null($period) || !isset($period['stats'])) {
+        if (is_null($period) || ! isset($period['stats'])) {
             return [];
         }
 
@@ -117,10 +112,9 @@ class PlacementStoreController extends Controller
         $visits = $period['visits']->pluck('count', 'store_id')->toArray();
 
         foreach (array_keys($stats) as $store_id) {
-            $stats[$store_id]['visits'] = (int)@$visits[$store_id];
+            $stats[$store_id]['visits'] = (int) @$visits[$store_id];
         }
 
         return $stats;
     }
-
 }

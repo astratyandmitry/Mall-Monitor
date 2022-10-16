@@ -11,7 +11,6 @@ use App\Models\User;
  */
 class ManageUserRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\User $entity
      *
@@ -21,7 +20,6 @@ class ManageUserRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 
     /**
      * @return array
@@ -44,5 +42,4 @@ class ManageUserRequest extends \App\Http\Requests\Request
 
         return $rules;
     }
-
 }

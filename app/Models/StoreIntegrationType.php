@@ -4,8 +4,8 @@ namespace App\Models;
 
 /**
  * @property integer $id
- * @property string  $name
- * @property string  $system_key
+ * @property string $name
+ * @property string $system_key
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -13,8 +13,8 @@ namespace App\Models;
  */
 class StoreIntegrationType extends Model
 {
-
     const XML = 1;
+
     const EXCEL = 2;
 
     /**
@@ -43,5 +43,4 @@ class StoreIntegrationType extends Model
         'system_key' => 'required|max:40',
         '_unique' => 'name|system_key',
     ];
-
 }

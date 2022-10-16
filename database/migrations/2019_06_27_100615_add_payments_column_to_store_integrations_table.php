@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddPaymentsColumnToStoreIntegrationsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddPaymentsColumnToStoreIntegrationsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddPaymentsColumnToStoreIntegrationsTable extends Migration
             $table->dropColumn('payments');
         });
     }
-
 }

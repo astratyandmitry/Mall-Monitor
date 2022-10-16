@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateVisitsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -23,7 +22,6 @@ class CreateVisitsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -33,5 +31,4 @@ class CreateVisitsTable extends Migration
     {
         Schema::dropIfExists('visits');
     }
-
 }

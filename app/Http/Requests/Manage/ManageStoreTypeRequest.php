@@ -11,7 +11,6 @@ use App\Models\StoreType;
  */
 class ManageStoreTypeRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\StoreType $entity
      *
@@ -21,5 +20,4 @@ class ManageStoreTypeRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 }

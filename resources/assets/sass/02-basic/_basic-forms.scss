@@ -1,273 +1,273 @@
 .form-section {
-  border-bottom: 1px solid $color-grey-lighter;
-  padding: $size-2;
-
-  @include mobile() {
-    padding: $size-1-5;
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  .field:last-child {
-    margin-bottom: 0 !important;
-  }
-
-  .form-section-heading {
-    margin-bottom: $size-1-5;
-
-    .form-section-heading-text {
-      font-weight: 500;
-    }
-  }
-
-  .form-grid {
-    display: grid;
-    grid-column-gap: $size-1-5;
-    grid-row-gap: $size-1-5;
-
-    &.is-marged {
-      margin-bottom: $size-1-5;
-    }
-
-    .field {
-      margin-bottom: 0 !important;
-    }
-
-    &.is-2col {
-      grid-template-columns: repeat(2, 1fr);
-
-    }
-
-    &.is-3col {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    border-bottom: 1px solid $color-grey-lighter;
+    padding: $size-2;
 
     @include mobile() {
-      grid-template-columns: 1fr !important;
+        padding: $size-1-5;
     }
-  }
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .field:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .form-section-heading {
+        margin-bottom: $size-1-5;
+
+        .form-section-heading-text {
+            font-weight: 500;
+        }
+    }
+
+    .form-grid {
+        display: grid;
+        grid-column-gap: $size-1-5;
+        grid-row-gap: $size-1-5;
+
+        &.is-marged {
+            margin-bottom: $size-1-5;
+        }
+
+        .field {
+            margin-bottom: 0 !important;
+        }
+
+        &.is-2col {
+            grid-template-columns: repeat(2, 1fr);
+
+        }
+
+        &.is-3col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @include mobile() {
+            grid-template-columns: 1fr !important;
+        }
+    }
 }
 
 .form-action {
-  box-shadow: inset 0 16px 16px 0 rgba(0, 0, 0, 0.02);
-  border-top: 1px solid $color-grey-lighter;
-  padding: $size-2;
-  @include radius-bottom($radius);
+    box-shadow: inset 0 16px 16px 0 rgba(0, 0, 0, 0.02);
+    border-top: 1px solid $color-grey-lighter;
+    padding: $size-2;
+    @include radius-bottom($radius);
 
-  @include mobile() {
-    padding: $size-1-5;
-  }
+    @include mobile() {
+        padding: $size-1-5;
+    }
 }
 
 input,
 textarea,
 select,
 button {
-  box-sizing: border-box;
-  resize: none;
-  width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    width: 100%;
 
-  &:disabled {
-    background: $color-grey-lightest;
-    border-color: transparent;
-    cursor: not-allowed;
-  }
+    &:disabled {
+        background: $color-grey-lightest;
+        border-color: transparent;
+        cursor: not-allowed;
+    }
 }
 
 input,
 textarea,
 select {
-  box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.02);
-  border: 1px solid $color-grey-lighter;
-  background: $color-white;
-  padding: .750em;
-  display: block;
-  outline: none;
-  @include radius($radius);
-  @include transition();
+    box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.02);
+    border: 1px solid $color-grey-lighter;
+    background: $color-white;
+    padding: .750em;
+    display: block;
+    outline: none;
+    @include radius($radius);
+    @include transition();
 
-  &::-webkit-input-placeholder,
-  &::-moz-placeholder,
-  &:-moz-placeholder,
-  &:-ms-input-placeholder {
-    color: $color-grey-light;
-  }
+    &::-webkit-input-placeholder,
+    &::-moz-placeholder,
+    &:-moz-placeholder,
+    &:-ms-input-placeholder {
+        color: $color-grey-light;
+    }
 
-  &:focus {
-    border-color: $color-grey-light;
-  }
+    &:focus {
+        border-color: $color-grey-light;
+    }
 }
 
 select,
 textarea {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 input[type=datetime-local],
 input[type=datetime],
 input[type=date],
 input[type=time] {
-  -webkit-appearance: textfield;
-  -moz-appearance: textfield;
-  min-height: 44px;
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    min-height: 44px;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
 }
 
 input[type=checkbox],
 input[type=radio] {
-  display: inline-block;
-  width: auto;
+    display: inline-block;
+    width: auto;
 }
 
 select {
-  background: url('/images/dropdown-dots.png') $color-white no-repeat calc(100% - 1em) center;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  -ms-appearance: none !important;
-  -o-appearance: none !important;
-  appearance: none !important;
-  padding-right: 2em;
+    background: url('/images/dropdown-dots.png') $color-white no-repeat calc(100% - 1em) center;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    -ms-appearance: none !important;
+    -o-appearance: none !important;
+    appearance: none !important;
+    padding-right: 2em;
 }
 
 .field {
-  margin: 0 0 $size-1-5 0;
-
-  label {
-    color: $color-grey-dark;
-    display: block;
-    font-size: $font-12;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin: 0 0 $size-0-1 0;
-
-    strong {
-      color: $color-red-dark;
-    }
-
-    .is-details {
-      margin-left: $size-0-1;
-      text-transform: none;
-      font-weight: 400;
-    }
-  }
-
-  .help {
-    color: $color-grey-dark;
-    margin-top: $size-0-1;
-    font-size: $font-12;
-  }
-
-  &.is-checkbox {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-column-gap: $size-0-1;
-    align-items: center;
+    margin: 0 0 $size-1-5 0;
 
     label {
-      display: inline-block;
-      cursor: pointer;
-      margin: 0;
+        color: $color-grey-dark;
+        display: block;
+        font-size: $font-12;
+        text-transform: uppercase;
+        font-weight: 500;
+        margin: 0 0 $size-0-1 0;
+
+        strong {
+            color: $color-red-dark;
+        }
+
+        .is-details {
+            margin-left: $size-0-1;
+            text-transform: none;
+            font-weight: 400;
+        }
     }
 
-    .field {
-      margin: 0 0 $size-1 0;
-    }
-  }
-
-  &.is-invalidate {
-    label,
     .help {
-      color: $color-red-light;
+        color: $color-grey-dark;
+        margin-top: $size-0-1;
+        font-size: $font-12;
     }
 
-    input,
-    select,
-    textarea {
-      border-color: $color-red-lighter;
-      color: $color-red-light;
+    &.is-checkbox {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-column-gap: $size-0-1;
+        align-items: center;
 
-      &::-webkit-input-placeholder,
-      &::-moz-placeholder,
-      &:-moz-placeholder,
-      &:-ms-input-placeholder {
-        color: $color-red-lighter;
-      }
+        label {
+            display: inline-block;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .field {
+            margin: 0 0 $size-1 0;
+        }
     }
-  }
+
+    &.is-invalidate {
+        label,
+        .help {
+            color: $color-red-light;
+        }
+
+        input,
+        select,
+        textarea {
+            border-color: $color-red-lighter;
+            color: $color-red-light;
+
+            &::-webkit-input-placeholder,
+            &::-moz-placeholder,
+            &:-moz-placeholder,
+            &:-ms-input-placeholder {
+                color: $color-red-lighter;
+            }
+        }
+    }
 }
 
 .btn {
-  border: none;
-  background: $color-brand;
-  border: 1px solid $color-brand;
-  padding: $size-1 $size-2;
-  box-sizing: border-box;
-  display: inline-block;
-  text-decoration: none;
-  color: $color-white;
-  text-align: center;
-  font-size: $font-14;
-  font-weight: 500;
-  width: auto;
-  outline: none;
-  @include radius($radius);
-  @include transition();
+    border: none;
+    background: $color-brand;
+    border: 1px solid $color-brand;
+    padding: $size-1 $size-2;
+    box-sizing: border-box;
+    display: inline-block;
+    text-decoration: none;
+    color: $color-white;
+    text-align: center;
+    font-size: $font-14;
+    font-weight: 500;
+    width: auto;
+    outline: none;
+    @include radius($radius);
+    @include transition();
 
-  @include mobile() {
-    display: block;
-    width: 100%;
-  }
-
-  &:disabled {
-    background-color: $color-brand-dark;
-    cursor: not-allowed;
-
-    &:hover {
-      background-color: $color-brand-dark;
+    @include mobile() {
+        display: block;
+        width: 100%;
     }
-  }
 
-  &.is-sm {
-    font-size: $font-12;
-    padding: .750em $size-1;
-    @include radius(2px);
-  }
+    &:disabled {
+        background-color: $color-brand-dark;
+        cursor: not-allowed;
 
-  i {
-    margin-right: $size-0-1;
-  }
+        &:hover {
+            background-color: $color-brand-dark;
+        }
+    }
 
-  &:focus {
-    border-color: $color-brand-dark;
-    background: $color-brand-dark;
-    color: $color-white !important;
-  }
+    &.is-sm {
+        font-size: $font-12;
+        padding: .750em $size-1;
+        @include radius(2px);
+    }
 
-  &:hover {
-    color: $color-brand-lighter;
-    cursor: pointer;
-  }
-
-  &.is-outlined {
-    background: transparent;
-    color: $color-brand-dark;
-
-    &:hover {
-      border-color: $color-brand;
-      background: $color-brand;
-      color: $color-brand-lightest;
+    i {
+        margin-right: $size-0-1;
     }
 
     &:focus {
-      border-color: $color-brand-dark;
-      background: $color-brand-dark;
-      color: $color-white !important;
+        border-color: $color-brand-dark;
+        background: $color-brand-dark;
+        color: $color-white !important;
     }
-  }
+
+    &:hover {
+        color: $color-brand-lighter;
+        cursor: pointer;
+    }
+
+    &.is-outlined {
+        background: transparent;
+        color: $color-brand-dark;
+
+        &:hover {
+            border-color: $color-brand;
+            background: $color-brand;
+            color: $color-brand-lightest;
+        }
+
+        &:focus {
+            border-color: $color-brand-dark;
+            background: $color-brand-dark;
+            color: $color-white !important;
+        }
+    }
 }

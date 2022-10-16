@@ -1,79 +1,79 @@
 .filter {
-  box-shadow: inset 0 16px 32px 0 rgba(0, 0, 0, 0.02);
-  background: $color-grey-lighter;
-  margin-bottom: $size-2;
+    box-shadow: inset 0 16px 32px 0 rgba(0, 0, 0, 0.02);
+    background: $color-grey-lighter;
+    margin-bottom: $size-2;
 
-  .divider {
-    margin-bottom: $size-1-5;
-    background: $color-grey-light;
-    height: 1px;
-  }
-
-  #manual-dates {
-    border-top: 1px solid $color-grey-light;
-    padding-top: $size-1-5;
-  }
-
-  .filter-form {
-    padding: $size-2 0;
-
-    @include mobile() {
-      padding: $size-1-5 0;
-
-      .field {
-        margin-bottom: $size-1;
-      }
+    .divider {
+        margin-bottom: $size-1-5;
+        background: $color-grey-light;
+        height: 1px;
     }
 
-    input,
-    select {
-      border-color: $color-grey-light;
+    #manual-dates {
+        border-top: 1px solid $color-grey-light;
+        padding-top: $size-1-5;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-column-gap: $size-1-5;
-
-      &.is-hidden {
-        display: none;
-      }
-
-      &.is-3 {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-
-      @include mobile() {
-        grid-template-columns: 1fr !important;
-      }
-
-      .grid-sub {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-column-gap: $size-0-1;
-
-        &.is-sm-2 {
-          grid-template-columns: 3fr 1fr;
-        }
-
-        .grid-title {
-          font-size: $font-18;
-          margin-bottom: $size-1-5;
-        }
+    .filter-form {
+        padding: $size-2 0;
 
         @include mobile() {
-          grid-template-columns: 1fr;
+            padding: $size-1-5 0;
 
-          .field {
-            margin-bottom: $size-0-1;
-          }
+            .field {
+                margin-bottom: $size-1;
+            }
         }
-      }
-    }
 
-    label {
-      color: $color-grey-dark;
+        input,
+        select {
+            border-color: $color-grey-light;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: $size-1-5;
+
+            &.is-hidden {
+                display: none;
+            }
+
+            &.is-3 {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            @include mobile() {
+                grid-template-columns: 1fr !important;
+            }
+
+            .grid-sub {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-column-gap: $size-0-1;
+
+                &.is-sm-2 {
+                    grid-template-columns: 3fr 1fr;
+                }
+
+                .grid-title {
+                    font-size: $font-18;
+                    margin-bottom: $size-1-5;
+                }
+
+                @include mobile() {
+                    grid-template-columns: 1fr;
+
+                    .field {
+                        margin-bottom: $size-0-1;
+                    }
+                }
+            }
+        }
+
+        label {
+            color: $color-grey-dark;
+        }
     }
-  }
 
 }

@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddPaymentIdColumnToChequesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddPaymentIdColumnToChequesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddPaymentIdColumnToChequesTable extends Migration
             $table->dropColumn('payment_id');
         });
     }
-
 }

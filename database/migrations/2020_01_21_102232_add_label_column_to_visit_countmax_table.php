@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddLabelColumnToVisitCountmaxTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddLabelColumnToVisitCountmaxTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddLabelColumnToVisitCountmaxTable extends Migration
             $table->dropColumn('label');
         });
     }
-
 }

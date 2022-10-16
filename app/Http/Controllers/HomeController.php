@@ -11,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
  */
 class HomeController extends Controller
 {
-
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -19,5 +18,4 @@ class HomeController extends Controller
     {
         return redirect()->route('dashboard');
     }
-
 }

@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddTypeIdColumnToStoreIntegrationsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddTypeIdColumnToStoreIntegrationsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddTypeIdColumnToStoreIntegrationsTable extends Migration
             $table->dropColumn('type_id');
         });
     }
-
 }

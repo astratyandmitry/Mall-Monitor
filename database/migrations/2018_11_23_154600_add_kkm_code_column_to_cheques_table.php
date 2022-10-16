@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddKkmCodeColumnToChequesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddKkmCodeColumnToChequesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddKkmCodeColumnToChequesTable extends Migration
             $table->dropColumn('kkm_code');
         });
     }
-
 }

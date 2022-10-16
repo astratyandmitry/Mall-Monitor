@@ -10,7 +10,6 @@ use App\Models\MallIntegrationSystem;
 
 class IntegrateProsystemsMultiCommand extends Command
 {
-
     /**
      * @var string
      */
@@ -31,7 +30,6 @@ class IntegrateProsystemsMultiCommand extends Command
      */
     protected $mall;
 
-
     /**
      * @return void
      * @throws \SoapFault
@@ -48,7 +46,6 @@ class IntegrateProsystemsMultiCommand extends Command
             $status = $this->work();
         } while ($status == true);
     }
-
 
     /**
      * @return bool
@@ -77,5 +74,4 @@ class IntegrateProsystemsMultiCommand extends Command
             return false;
         }
     }
-
 }

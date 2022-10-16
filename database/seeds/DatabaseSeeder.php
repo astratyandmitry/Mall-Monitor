@@ -4,7 +4,6 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-
     /**
      * @return void
      */
@@ -22,5 +21,4 @@ class DatabaseSeeder extends Seeder
         $this->call(ChequeTypesTableSeeder::class);
         $this->call(ChequePaymentsTableSeeder::class);
     }
-
 }

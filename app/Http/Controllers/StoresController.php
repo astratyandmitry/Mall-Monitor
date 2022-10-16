@@ -17,12 +17,10 @@ use App\Repositories\VisitsRepository;
  */
 class StoresController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('not-store');
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -46,7 +44,6 @@ class StoresController extends Controller
             'stats' => $stats,
         ]));
     }
-
 
     /**
      * @param \App\Models\Store $store
@@ -123,5 +120,4 @@ class StoresController extends Controller
             'store' => $store,
         ]));
     }
-
 }

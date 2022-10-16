@@ -13,7 +13,6 @@ use Illuminate\View\View;
  */
 class AjaxController
 {
-
     /**
      * @return \Illuminate\View\View
      */
@@ -28,7 +27,6 @@ class AjaxController
         ]);
     }
 
-
     /**
      * @return \Illuminate\View\View
      */
@@ -41,5 +39,4 @@ class AjaxController
             'selected' => null,
         ]);
     }
-
 }

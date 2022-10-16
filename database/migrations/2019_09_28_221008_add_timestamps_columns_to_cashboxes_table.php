@@ -7,7 +7,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddTimestampsColumnsToCashboxesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -25,7 +24,6 @@ class AddTimestampsColumnsToCashboxesTable extends Migration
         ]);
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -37,5 +35,4 @@ class AddTimestampsColumnsToCashboxesTable extends Migration
             $table->dropTimestamps();
         });
     }
-
 }

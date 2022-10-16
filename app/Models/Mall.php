@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property integer              $id
- * @property string               $name
- * @property integer              $city_id
- * @property \App\Models\City     $city
+ * @property integer $id
+ * @property string $name
+ * @property integer $city_id
+ * @property \App\Models\City $city
  * @property \App\Models\Cheque[] $cheques
- * @property \App\Models\Store[]  $stores
+ * @property \App\Models\Store[] $stores
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Mall extends Model
 {
-
     const KERUEN_CITY = 1;
 
     /**
@@ -64,7 +63,6 @@ class Mall extends Model
      */
     public $timestamps = false;
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -72,7 +70,6 @@ class Mall extends Model
     {
         return $this->belongsTo(City::class);
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -82,7 +79,6 @@ class Mall extends Model
         return $this->hasMany(Cheque::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -91,7 +87,6 @@ class Mall extends Model
         return $this->hasMany(MallIntegration::class);
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -99,7 +94,6 @@ class Mall extends Model
     {
         return $this->hasMany(Store::class);
     }
-
 
     /**
      * @param int $system_id
@@ -111,7 +105,6 @@ class Mall extends Model
         return $this->integrations()->where('system_id', $system_id)->first();
     }
 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      *
@@ -122,7 +115,7 @@ class Mall extends Model
         $builder->with(['city']);
 
         $builder->when(request('name'), function (Builder $builder): Builder {
-            return $builder->where('name', 'LIKE', '%' . request('name') . '%');
+            return $builder->where('name', 'LIKE', '%'.request('name').'%');
         });
 
         $builder->when(request('city_id'), function (Builder $builder): Builder {
@@ -132,7 +125,6 @@ class Mall extends Model
         return parent::scopeFilter($builder);
     }
 
-
     /**
      * @return string
      */
@@ -140,5 +132,4 @@ class Mall extends Model
     {
         return route('malls.show', $this);
     }
-
 }

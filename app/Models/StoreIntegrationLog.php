@@ -3,16 +3,16 @@
 namespace App\Models;
 
 /**
- * @property integer                          $id
- * @property integer                          $type_id
- * @property integer                          $mall_id
- * @property integer                          $store_id
- * @property array                            $output
- * @property \Carbon\Carbon                   $created_at
- * @property \Carbon\Carbon                   $updated_at
+ * @property integer $id
+ * @property integer $type_id
+ * @property integer $mall_id
+ * @property integer $store_id
+ * @property array $output
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property \App\Models\StoreIntegrationType $type
- * @property \App\Models\Mall                 $mall
- * @property \App\Models\Store                $store
+ * @property \App\Models\Mall $mall
+ * @property \App\Models\Store $store
  *
  * @version   1.0.1
  * @author    Astratyan Dmitry <astratyandmitry@gmail.com>
@@ -20,7 +20,6 @@ namespace App\Models;
  */
 class StoreIntegrationLog extends Model
 {
-
     /**
      * @var string
      */
@@ -46,11 +45,10 @@ class StoreIntegrationLog extends Model
         'output' => 'array',
     ];
 
-
     /**
-     * @param int               $type_id
+     * @param int $type_id
      * @param \App\Models\Store $store
-     * @param array             $output
+     * @param array $output
      *
      * @return \App\Models\StoreIntegrationLog
      */
@@ -63,5 +61,4 @@ class StoreIntegrationLog extends Model
             'output' => $output,
         ]);
     }
-
 }

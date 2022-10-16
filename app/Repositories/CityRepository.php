@@ -11,7 +11,6 @@ use App\Models\City;
  */
 class CityRepository
 {
-
     /**
      * @return array
      */
@@ -19,7 +18,6 @@ class CityRepository
     {
         return City::pluck('name', 'id')->toArray();
     }
-
 
     /**
      * @return array
@@ -36,5 +34,4 @@ class CityRepository
 
         return $options;
     }
-
 }

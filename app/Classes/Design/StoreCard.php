@@ -11,7 +11,6 @@ use stdClass;
  */
 class StoreCard
 {
-
     /**
      * @var \stdClass
      */
@@ -27,19 +26,17 @@ class StoreCard
      */
     protected $amount = 0;
 
-
     /**
      * StoreItem constructor.
      *
      * @param \stdClass|null $stats
-     * @param int|null       $visitsCount
+     * @param int|null $visitsCount
      */
     public function __construct(?stdClass $stats = null, ?int $visitsCount = null)
     {
         $this->stats = $stats;
-        $this->visitsCount = (int)$visitsCount;
+        $this->visitsCount = (int) $visitsCount;
     }
-
 
     /**
      * @return int
@@ -49,7 +46,6 @@ class StoreCard
         return ! is_null($this->stats) ? round($this->stats->amount) : 0;
     }
 
-
     /**
      * @return int
      */
@@ -57,7 +53,6 @@ class StoreCard
     {
         return ! is_null($this->stats) ? $this->stats->count : 0;
     }
-
 
     /**
      * @return int
@@ -67,7 +62,6 @@ class StoreCard
         return $this->visitsCount;
     }
 
-
     /**
      * @return float
      */
@@ -75,7 +69,6 @@ class StoreCard
     {
         $chequesCount = $this->getChequesCount();
 
-        return ($chequesCount > 0 && $this->visitsCount > 0) ? round($chequesCount * 100 / $this->visitsCount, 2) : (float)0;
+        return ($chequesCount > 0 && $this->visitsCount > 0) ? round($chequesCount * 100 / $this->visitsCount, 2) : (float) 0;
     }
-
 }

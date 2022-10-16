@@ -11,7 +11,6 @@ use App\Models\StoreIntegration;
  */
 class ManageStoreIntegrationConfigRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\StoreIntegration $entity
      *
@@ -21,7 +20,6 @@ class ManageStoreIntegrationConfigRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 
     /**
      * @return array
@@ -42,5 +40,4 @@ class ManageStoreIntegrationConfigRequest extends \App\Http\Requests\Request
             'payments' => 'sometimes|array',
         ];
     }
-
 }

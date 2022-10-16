@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class DropCashboxesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -16,7 +15,6 @@ class DropCashboxesTable extends Migration
     {
         Schema::dropIfExists('cashboxes');
     }
-
 
     /**
      * Reverse the migrations.
@@ -32,5 +30,4 @@ class DropCashboxesTable extends Migration
             $table->integer('store_id')->unsigned()->index();
         });
     }
-
 }

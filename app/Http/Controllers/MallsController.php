@@ -16,12 +16,10 @@ use App\Repositories\VisitsRepository;
  */
 class MallsController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('not-mall');
     }
-
 
     /**
      * @return \Illuminate\View\View
@@ -44,7 +42,6 @@ class MallsController extends Controller
             'malls' => $malls,
         ]));
     }
-
 
     /**
      * @param \App\Models\Mall $mall
@@ -122,5 +119,4 @@ class MallsController extends Controller
             'mall' => $mall,
         ]));
     }
-
 }

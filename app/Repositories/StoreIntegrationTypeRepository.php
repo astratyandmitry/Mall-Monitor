@@ -11,7 +11,6 @@ use App\Models\StoreIntegrationType;
  */
 class StoreIntegrationTypeRepository
 {
-
     /**
      * @return array
      */
@@ -19,5 +18,4 @@ class StoreIntegrationTypeRepository
     {
         return StoreIntegrationType::query()->pluck('name', 'id')->toArray();
     }
-
 }

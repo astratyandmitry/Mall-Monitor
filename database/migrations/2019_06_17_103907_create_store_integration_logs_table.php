@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateStoreIntegrationLogsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -24,7 +23,6 @@ class CreateStoreIntegrationLogsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -34,5 +32,4 @@ class CreateStoreIntegrationLogsTable extends Migration
     {
         Schema::dropIfExists('store_integration_logs');
     }
-
 }

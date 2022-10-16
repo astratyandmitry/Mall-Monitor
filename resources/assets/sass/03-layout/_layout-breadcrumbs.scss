@@ -1,79 +1,79 @@
 .breadcrumbs {
-  border-bottom: 1px solid $color-grey-lighter;
-  background: $color-white;
-  padding: .750em 0;
+    border-bottom: 1px solid $color-grey-lighter;
+    background: $color-white;
+    padding: .750em 0;
 
-  .container {
-    //max-width: 100%;
-  }
-
-  .breadcrumbs-content {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-column-gap: $size-2;
-    align-items: center;
-
-    @include mobile() {
-      grid-template-columns: 1fr;
-
-      .breadcrumbs-user {
-        display: none !important;
-      }
+    .container {
+        //max-width: 100%;
     }
-  }
 
-  .breadcrumbs-list {
-    list-style: none;
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0;
-    margin: 0;
+    .breadcrumbs-content {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-column-gap: $size-2;
+        align-items: center;
 
-    .breadcrumbs-list-item {
-      margin-right: $size-0-1;
-      display: inline-block;
+        @include mobile() {
+            grid-template-columns: 1fr;
 
-      @include mobile() {
-        margin-right: .250em;
-      }
-
-      &:last-child {
-        margin-right: 0;
-      }
-
-      &.is-devider {
-
-      }
-
-      .breadcrumbs-list-item-link,
-      .breadcrumbs-list-item-value,
-      .breadcrumbs-list-item-devider {
-        font-size: $font-12;
-      }
-
-      .breadcrumbs-list-item-link {
-        color: $color-grey-dark;
-      }
-
-      .breadcrumbs-list-item-devider {
-        color: $color-grey-light;
-      }
-
-      .breadcrumbs-list-item-value {
-        color: $color-grey-dark;
-        font-weight: 500;
-      }
+            .breadcrumbs-user {
+                display: none !important;
+            }
+        }
     }
-  }
 
-  .breadcrumbs-user {
-    text-align: right;
+    .breadcrumbs-list {
+        list-style: none;
+        white-space: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0;
+        margin: 0;
 
-    .breadcrumbs-user-value {
-      color: $color-grey-dark;
-      font-size: $font-12;
-      font-weight: 500;
+        .breadcrumbs-list-item {
+            margin-right: $size-0-1;
+            display: inline-block;
+
+            @include mobile() {
+                margin-right: .250em;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &.is-devider {
+
+            }
+
+            .breadcrumbs-list-item-link,
+            .breadcrumbs-list-item-value,
+            .breadcrumbs-list-item-devider {
+                font-size: $font-12;
+            }
+
+            .breadcrumbs-list-item-link {
+                color: $color-grey-dark;
+            }
+
+            .breadcrumbs-list-item-devider {
+                color: $color-grey-light;
+            }
+
+            .breadcrumbs-list-item-value {
+                color: $color-grey-dark;
+                font-weight: 500;
+            }
+        }
     }
-  }
+
+    .breadcrumbs-user {
+        text-align: right;
+
+        .breadcrumbs-user-value {
+            color: $color-grey-dark;
+            font-size: $font-12;
+            font-weight: 500;
+        }
+    }
 }

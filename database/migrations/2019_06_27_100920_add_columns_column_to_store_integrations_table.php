@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddColumnsColumnToStoreIntegrationsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddColumnsColumnToStoreIntegrationsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddColumnsColumnToStoreIntegrationsTable extends Migration
             $table->dropColumn('columns');
         });
     }
-
 }

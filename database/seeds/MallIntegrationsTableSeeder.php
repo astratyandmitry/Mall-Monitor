@@ -7,7 +7,6 @@ use App\Models\IntegrationSystem;
 
 class MallIntegrationsTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -30,7 +29,6 @@ class MallIntegrationsTableSeeder extends Seeder
         ],
     ];
 
-
     /**
      * @return void
      */
@@ -42,5 +40,4 @@ class MallIntegrationsTableSeeder extends Seeder
             MallIntegration::create($data);
         }
     }
-
 }

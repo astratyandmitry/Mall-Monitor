@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 
 class MallsTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -16,7 +15,6 @@ class MallsTableSeeder extends Seeder
             'city_id' => City::ASTANA,
         ],
     ];
-
 
     /**
      * @return void
@@ -29,5 +27,4 @@ class MallsTableSeeder extends Seeder
             Mall::create($data);
         }
     }
-
 }

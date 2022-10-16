@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 
 class RolesTableSeeder extends Seeder
 {
-
     /**
      * @var array
      */
@@ -35,5 +34,4 @@ class RolesTableSeeder extends Seeder
             Role::create($data);
         }
     }
-
 }

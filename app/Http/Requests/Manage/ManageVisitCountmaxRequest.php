@@ -11,7 +11,6 @@ use App\Models\VisitCountmax;
  */
 class ManageVisitCountmaxRequest extends \App\Http\Requests\Request
 {
-
     /**
      * @param \App\Models\VisitCountmax $entity
      *
@@ -21,5 +20,4 @@ class ManageVisitCountmaxRequest extends \App\Http\Requests\Request
     {
         $this->entity = $entity;
     }
-
 }

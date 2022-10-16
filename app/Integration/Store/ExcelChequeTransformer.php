@@ -14,12 +14,10 @@ use App\Models\ChequePayment;
  */
 class ExcelChequeTransformer extends ChequeTransformer
 {
-
     /**
      * @var array
      */
     protected $item;
-
 
     /**
      * @param array $item
@@ -33,7 +31,6 @@ class ExcelChequeTransformer extends ChequeTransformer
         return $this;
     }
 
-
     /**
      * @param string $key
      *
@@ -46,13 +43,12 @@ class ExcelChequeTransformer extends ChequeTransformer
         return @$this->item[$key];
     }
 
-
     /**
      * @return string
      */
     protected function getDateAttribute(): string
     {
-        if ( ! $this->integration) {
+        if (! $this->integration) {
             return date('Y-m-d H:i:s', strtotime(@$this->item['created_at']));
         }
 
@@ -65,10 +61,9 @@ class ExcelChequeTransformer extends ChequeTransformer
         if ($this->integration->config['created_at_time']) {
             $timeKey = $this->integration->config['created_at_time'];
 
-            return date('Y-m-d H:i:s', strtotime(@$this->item[$dateKey] . ' ' . @$this->item[$timeKey]));
+            return date('Y-m-d H:i:s', strtotime(@$this->item[$dateKey].' '.@$this->item[$timeKey]));
         }
 
-        return date('Y-m-d', strtotime(@$this->item[$dateKey])) . ' 12:00:00';
+        return date('Y-m-d', strtotime(@$this->item[$dateKey])).' 12:00:00';
     }
-
 }

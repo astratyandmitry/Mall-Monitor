@@ -10,7 +10,6 @@ use App\Console\Commands\Import\IntegrateProsystemsMultiCommand;
 
 class Kernel extends ConsoleKernel
 {
-
     /**
      * The Artisan commands provided by your application.
      *
@@ -22,11 +21,10 @@ class Kernel extends ConsoleKernel
         'keruenmonitor:cheques-check-yesterday' => CheckYesterdayChequesCommand::class,
     ];
 
-
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      *
      * @return void
      */
@@ -38,7 +36,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('keruenmonitor:clear-duplicate-cheques-prosystems --limit=5000')->hourly();
     }
 
-
     /**
      * Register the commands for the application.
      *
@@ -46,9 +43,8 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }
-
 }

@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddDatesColumnsToVisitsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -21,7 +20,6 @@ class AddDatesColumnsToVisitsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -35,5 +33,4 @@ class AddDatesColumnsToVisitsTable extends Migration
             $table->dropColumn('created_yearmonth');
         });
     }
-
 }

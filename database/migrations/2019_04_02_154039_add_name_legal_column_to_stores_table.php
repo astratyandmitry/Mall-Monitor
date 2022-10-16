@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddNameLegalColumnToStoresTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -19,7 +18,6 @@ class AddNameLegalColumnToStoresTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -31,5 +29,4 @@ class AddNameLegalColumnToStoresTable extends Migration
             $table->dropColumn('name_legal');
         });
     }
-
 }

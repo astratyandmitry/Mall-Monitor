@@ -18,10 +18,9 @@ use Illuminate\Support\Facades\DB;
  */
 class ChequeRepository
 {
-
     /**
      * @param int|null $mall_id
-     * @param int      $limit
+     * @param int $limit
      *
      * @return \Illuminate\Support\Collection
      */
@@ -44,7 +43,7 @@ class ChequeRepository
             ->orderBy('date', 'desc')
             ->limit($limit);
 
-        if ( ! is_null($mall_id)) {
+        if (! is_null($mall_id)) {
             $amounts = $amounts->where('mall_id', $mall_id);
             $counts = $counts->where('mall_id', $mall_id);
         }
@@ -65,7 +64,6 @@ class ChequeRepository
 
         return collect($data);
     }
-
 
     /**
      * @param int $store_id
@@ -113,13 +111,12 @@ class ChequeRepository
         return collect($data);
     }
 
-
     /**
      * @return array
      */
     public static function getAggregatedMonthForMall(): array
     {
-        $startedDate = date('Y') . '-' . date('m') . '-01';
+        $startedDate = date('Y').'-'.date('m').'-01';
 
         return DB::table('cheques')
             ->select(DB::raw('COUNT(*) AS count, SUM(amount) as amount, mall_id'))
@@ -128,7 +125,6 @@ class ChequeRepository
             ->get()->keyBy('mall_id')->toArray();
     }
 
-
     /**
      * @param int|null $mall_id
      *
@@ -136,7 +132,7 @@ class ChequeRepository
      */
     public static function getAggregatedMonthForStore(?int $mall_id): array
     {
-        $startedDate = date('Y') . '-' . date('m') . '-01';
+        $startedDate = date('Y').'-'.date('m').'-01';
 
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = DB::table('cheques')
@@ -144,13 +140,12 @@ class ChequeRepository
             ->where('created_date', '>=', $startedDate)
             ->groupBy('store_id');
 
-        if ( ! is_null($mall_id)) {
+        if (! is_null($mall_id)) {
             $items = $items->where('mall_id', $mall_id);
         }
 
         return $items->get()->keyBy('store_id')->toArray();
     }
-
 
     /**
      * @return \Illuminate\Support\Collection
@@ -240,7 +235,6 @@ class ChequeRepository
         return collect($data);
     }
 
-
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -329,7 +323,6 @@ class ChequeRepository
         return collect($data);
     }
 
-
     /**
      * @param int|null $limit
      *
@@ -337,12 +330,12 @@ class ChequeRepository
      */
     public static function getReportForMall(?int $limit = null): Collection
     {
-        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+        [$dateFrom, $dateTo, $dateGroup] = ReportDate::instance()->getData();
 
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = Cheque::reportMall($dateFrom, $dateTo);
 
-        if ( ! is_null($limit)) {
+        if (! is_null($limit)) {
             $items = $items->limit($limit);
         }
 
@@ -354,7 +347,6 @@ class ChequeRepository
             ->get();
     }
 
-
     /**
      * @param int|null $limit
      *
@@ -362,12 +354,12 @@ class ChequeRepository
      */
     public static function getReportForStore(?int $limit = null): Collection
     {
-        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+        [$dateFrom, $dateTo, $dateGroup] = ReportDate::instance()->getData();
 
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = Cheque::reportStore($dateFrom, $dateTo);
 
-        if ( ! is_null($limit)) {
+        if (! is_null($limit)) {
             $items = $items->limit($limit);
         }
 
@@ -379,7 +371,6 @@ class ChequeRepository
             ->get();
     }
 
-
     /**
      * @param int|null $limit
      *
@@ -387,18 +378,17 @@ class ChequeRepository
      */
     public static function getReportDetail(?int $limit = null): Collection
     {
-        list($dateFrom, $dateTo, $dateGroup) = ReportDate::instance()->getData();
+        [$dateFrom, $dateTo, $dateGroup] = ReportDate::instance()->getData();
 
         /** @var \Illuminate\Database\Query\Builder $items */
         $items = Cheque::reportDetail($dateFrom, $dateTo)->with(['items']);
 
-        if ( ! is_null($limit)) {
+        if (! is_null($limit)) {
             $items = $items->limit($limit);
         }
 
         return $items->get();
     }
-
 
     /**
      * @param string $dateFrom
@@ -415,7 +405,6 @@ class ChequeRepository
             ->get();
     }
 
-
     /**
      * @param string $dateFrom
      * @param string $dateTo
@@ -431,9 +420,8 @@ class ChequeRepository
             ->get();
     }
 
-
     /**
-     * @param int    $storeId
+     * @param int $storeId
      * @param string $date
      *
      * @return bool
@@ -446,5 +434,4 @@ class ChequeRepository
             ->where('created_at', '<=', "{$date} 23:59:59")
             ->exists();
     }
-
 }

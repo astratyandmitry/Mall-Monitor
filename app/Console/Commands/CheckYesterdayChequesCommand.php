@@ -9,7 +9,6 @@ use App\Mail\StoreYesterdayCheqeusErrorMail;
 
 class CheckYesterdayChequesCommand extends Command
 {
-
     /**
      * @var string
      */
@@ -19,7 +18,6 @@ class CheckYesterdayChequesCommand extends Command
      * @var string
      */
     protected $description = 'Check Yesterdays Cheques exists';
-
 
     /**
      * @return void
@@ -38,7 +36,7 @@ class CheckYesterdayChequesCommand extends Command
                     'is_errors_yesterday' => ! ChequeRepository::isExistsForDate($store->id, $yesterdayDate),
                 ]);
 
-                if ( ! app()->isLocal()) {
+                if (! app()->isLocal()) {
                     \Mail::to(config('mallmonitor.mails.error_cheques'))->send(new StoreYesterdayCheqeusErrorMail($store, $yesterdayDate));
                 }
             }
@@ -46,5 +44,4 @@ class CheckYesterdayChequesCommand extends Command
             $this->error('No available Stores');
         }
     }
-
 }
