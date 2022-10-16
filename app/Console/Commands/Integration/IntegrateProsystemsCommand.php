@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Import;
+namespace App\Console\Commands\Integration;
 
 use App\Models\Mall;
 use Illuminate\Console\Command;

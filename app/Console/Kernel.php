@@ -4,9 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CheckYesterdayChequesCommand;
-use App\Console\Commands\Import\IntegrateWebKassaCommand;
+use App\Console\Commands\Integration\IntegrateWebKassaCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\Import\IntegrateProsystemsMultiCommand;
+use App\Console\Commands\Integration\IntegrateProsystemsMultiCommand;
 
 class Kernel extends ConsoleKernel
 {

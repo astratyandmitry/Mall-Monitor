@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Import;
+namespace App\Console\Commands\Integration;
 
 use App\Models\Cheque;
 use App\Models\Mall;
