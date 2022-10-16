@@ -36,30 +36,42 @@ class ImportChequeProsystem extends ImportCheque
      */
     public function handle(): void
     {
-        $cheque = $this->createCheque($this->item);
-
-        if (! property_exists($this->item, 'Items') || ! count($this->item->Items)) {
-            return;
-        }
-
-        if (is_array($this->item->Items->Item)) {
-            foreach ($this->item->Items->Item as $_item) {
-                $this->createChequeItem($cheque, $_item);
+        if ($cheque = $this->createCheque($this->item)) {
+            if (! property_exists($this->item, 'Items') || ! count($this->item->Items)) {
+                return;
             }
-        } else {
-            $this->createChequeItem($cheque, $this->item->Items->Item);
+
+            if (is_array($this->item->Items->Item)) {
+                foreach ($this->item->Items->Item as $_item) {
+                    $this->createChequeItem($cheque, $_item);
+                }
+            } else {
+                $this->createChequeItem($cheque, $this->item->Items->Item);
+            }
         }
     }
 
     /**
      * @param \stdClass $item
      *
-     * @return \App\Models\Cheque
+     * @return \App\Models\Cheque|null
      */
-    protected function createCheque(\stdClass $item): Cheque
+    protected function createCheque(\stdClass $item): ?Cheque
     {
         $cashbox = $this->loadCashbox($item->TaxPayerBIN, $item->KKMCode);
         $typeId = $this->getType($item->Type);
+
+        $exists = Cheque::query()->where([
+            'mall_id' => $cashbox->mall_id,
+            'store_id' => $cashbox->store_id,
+            'cashbox_id' => $cashbox->id,
+            'kkm_code' => $cashbox->code,
+            'code' => $item->Number,
+        ])->exists();
+
+        if ($exists) {
+            return null;
+        }
 
         return Cheque::create([
             'mall_id' => $cashbox->mall_id,
