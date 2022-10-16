@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \App\Models\ChequePayment $payment
  * @property \App\Models\ChequeItem[] $items
  *
- * @method static Builder uniqueAttrs(array $attrs)
+ * @method static Builder uniqueAttrs(int $store_id, array $attrs)
  * @method static Builder reportMall(?string $dateFrom, ?string $dateTo)
  * @method static Builder reportStore(?string $dateFrom, ?string $dateTo)
  * @method static Builder reportDetail(?string $dateFrom, ?string $dateTo)
@@ -193,17 +193,17 @@ class Cheque extends Model
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param int $store_id
      * @param array $attrs
-     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function scopeUniqueAttrs(Builder $builder, array $attrs): Builder
+    public static function scopeUniqueAttrs(Builder $builder, int $store_id, array $attrs): Builder
     {
         foreach ($attrs as $key => $value) {
             $builder->where($key, $value);
         }
 
-        $builder->where('store_id', auth('api')->user()->store_id);
+        $builder->where('store_id', $store_id);
 
         return $builder;
     }

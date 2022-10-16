@@ -24,8 +24,8 @@ else
     sudo mkdir /var/www/mallmonitor/storage/import/$USER
     sudo chown nobody:nogroup /var/www/mallmonitor/storage/import/$USER
     sudo chmod a-w /var/www/mallmonitor/storage/import/$USER
-    sudo mkdir /var/www/mallmonitor/storage/import/$USER/xml
-    sudo chown $USER:$USER /var/www/mallmonitor/storage/import/$USER/xml
+    sudo mkdir /var/www/mallmonitor/storage/import/$USER/files
+    sudo chown $USER:$USER /var/www/mallmonitor/storage/import/$USER/files
 
     echo "User created."
 fi

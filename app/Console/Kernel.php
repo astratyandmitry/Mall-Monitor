@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\ImportFTPChequesCommand;
 use App\Console\Commands\CheckYesterdayChequesCommand;
 use App\Console\Commands\Integration\IntegrateWebKassaCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
         'keruenmonitor:integrate-prosystems-multi' => IntegrateProsystemsMultiCommand::class,
         'keruenmonitor:integrate-webkassa' => IntegrateWebKassaCommand::class,
         'keruenmonitor:cheques-check-yesterday' => CheckYesterdayChequesCommand::class,
+        'keruenmonitor:import-ftp-cheques' => ImportFTPChequesCommand::class,
     ];
 
     /**
@@ -33,6 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('keruenmonitor:integrate-prosystems-multi')->hourly();
         $schedule->command('keruenmonitor:integrate-webkassa')->hourly();
         $schedule->command('keruenmonitor:cheques-check-yesterday')->dailyAt('04:00');
+        $schedule->command('keruenmonitor:import-ftp-cheques')->dailyAt('02:00');
         $schedule->command('keruenmonitor:clear-duplicate-cheques-prosystems --limit=5000')->hourly();
     }
 
