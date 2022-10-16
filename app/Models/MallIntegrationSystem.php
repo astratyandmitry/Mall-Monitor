@@ -17,6 +17,8 @@ class MallIntegrationSystem extends Model
 
     const WEBKASSA = 2;
 
+    const TRINITY  = 3;
+
     /**
      * @var string
      */

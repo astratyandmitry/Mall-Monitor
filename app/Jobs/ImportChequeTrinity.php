@@ -7,7 +7,7 @@ use App\Models\ChequeItem;
 use App\Models\ChequeType;
 use App\Models\ChequePayment;
 
-class ImportChequeWebKassa extends ImportCheque
+class ImportChequeTrinity extends ImportCheque
 {
     /**
      * @var array

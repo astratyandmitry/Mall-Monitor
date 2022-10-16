@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CheckYesterdayChequesCommand;
+use App\Console\Commands\Import\IntegrateTrinityCommand;
 use App\Console\Commands\Import\IntegrateWebKassaCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\Import\IntegrateProsystemsMultiCommand;
@@ -18,6 +19,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'keruenmonitor:integrate-prosystems-multi' => IntegrateProsystemsMultiCommand::class,
         'keruenmonitor:integrate-webkassa' => IntegrateWebKassaCommand::class,
+        'keruenmonitor:integrate-trinity' => IntegrateTrinityCommand::class,
         'keruenmonitor:cheques-check-yesterday' => CheckYesterdayChequesCommand::class,
     ];
 
@@ -30,10 +32,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('keruenmonitor:integrate-prosystems-multi')->hourly();
-        $schedule->command('keruenmonitor:integrate-webkassa')->hourly();
+        $schedule->command('keruenmonitor:integrate-prosystems-multi')->hourlyAt(15);
+        $schedule->command('keruenmonitor:integrate-webkassa')->hourlyAt(30);
+        $schedule->command('keruenmonitor:integrate-trinity')->hourlyAt(45);
+
         $schedule->command('keruenmonitor:cheques-check-yesterday')->dailyAt('04:00');
-        $schedule->command('keruenmonitor:clear-duplicate-cheques-prosystems --limit=5000')->hourly();
     }
 
     /**

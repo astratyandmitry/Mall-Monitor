@@ -2,24 +2,24 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Models\Cheque;
 use App\Models\Mall;
+use App\Models\Cheque;
 use Illuminate\Console\Command;
-use App\Integration\Mall\WebKassa;
-use App\Jobs\ImportChequeWebKassa;
+use App\Integration\Mall\Trinity;
+use App\Jobs\ImportChequeTrinity;
 use App\Models\MallIntegrationSystem;
 
-class IntegrateWebKassaCommand extends Command
+class IntegrateTrinityCommand extends Command
 {
     /**
      * @var string
      */
-    protected $signature = 'keruenmonitor:integrate-webkassa {--cashbox=}';
+    protected $signature = 'keruenmonitor:integrate-trinity {--cashbox=}';
 
     /**
      * @var string
      */
-    protected $description = 'Integrate with WebKassa';
+    protected $description = 'Integrate with Trinity';
 
     /**
      * @var \App\Integration\Mall\Prosystems
@@ -41,8 +41,8 @@ class IntegrateWebKassaCommand extends Command
 
         $this->mall = Mall::query()->find(Mall::KERUEN_CITY);
 
-        $this->integration = WebKassa::init(
-            $this->mall->getIntegration(MallIntegrationSystem::WEBKASSA)
+        $this->integration = Trinity::init(
+            $this->mall->getIntegration(MallIntegrationSystem::TRINITY)
         );
 
         if ($this->integration->authorize()) {
@@ -83,7 +83,7 @@ class IntegrateWebKassaCommand extends Command
                                 foreach ($cheques as $cheque) {
                                     $this->info("Working with Cheque {$cheque->Number}");
 
-                                    ImportChequeWebKassa::dispatch($this->mall, $cheque, $cashbox);
+                                    ImportChequeTrinity::dispatch($this->mall, $cheque, $cashbox);
                                 }
 
                                 $skipCheques += count($cheques);
