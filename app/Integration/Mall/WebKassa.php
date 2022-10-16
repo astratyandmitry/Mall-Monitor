@@ -167,7 +167,7 @@ class WebKassa
 
         $this->log('ShiftHistory', 0, null, $params);
 
-        if (! count($response->Data->Shifts)) {
+        if (! isset($response->Data) || ! isset($response->Data->Shifts) || ! count($response->Data->Shifts)) {
             return [];
         }
 
@@ -207,7 +207,7 @@ class WebKassa
 
         $this->log('History', 0, null, $params);
 
-        if (! count($response->Data->Items)) {
+        if (! isset($response->Data) || ! isset($response->Data->Items) || ! count($response->Data->Items)) {
             return [];
         }
 
