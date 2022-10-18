@@ -6,6 +6,7 @@ use App\Models\Cashbox;
 use App\Models\Developer;
 use App\Models\ChequeType;
 use App\Models\ChequePayment;
+use App\Models\StoreIntegration;
 
 /**
  * @version   1.0.1
@@ -15,14 +16,14 @@ use App\Models\ChequePayment;
 abstract class ChequeTransformer
 {
     /**
+     * @var \App\Models\StoreIntegration
+     */
+    public $integration;
+
+    /**
      * @var \App\Models\Developer
      */
     protected $developer;
-
-    /**
-     * @var \App\Models\StoreIntegration
-     */
-    protected $integration;
 
     /**
      * @var array
@@ -37,10 +38,14 @@ abstract class ChequeTransformer
     /**
      * @return void
      */
-    public function __construct()
+    public function __construct(?StoreIntegration $storeIntegration = null)
     {
-        $this->developer = Developer::query()->findOrFail(auth('api')->id());
-        $this->integration = $this->developer->store->integration;
+        if ($storeIntegration) {
+            $this->integration = $storeIntegration;
+        } else {
+            $this->developer = Developer::query()->findOrFail(auth('api')->id());
+            $this->integration = $this->developer->store->integration;
+        }
 
         $this->optionsTypes = ChequeType::query()->pluck('id', 'system_key')->toArray();
         $this->optionsPayments = ChequePayment::query()->pluck('id', 'system_key')->toArray();
@@ -76,8 +81,8 @@ abstract class ChequeTransformer
                 ChequeType::BUY_RETURN,
                 ChequeType::SELL_RETURN,
             ])) ? $amount * -1 : $amount,
-            'mall_id' => $this->developer->mall_id,
-            'store_id' => $this->developer->store_id,
+            'mall_id' => $this->integration->mall_id,
+            'store_id' => $this->integration->store_id,
             'cashbox_id' => $cashbox->id,
             'type_id' => $type_id,
             'payment_id' => $this->getPaymentId(),
@@ -93,18 +98,18 @@ abstract class ChequeTransformer
         $kkm_code = $this->getAttribute('kkm_code');
 
         if (! $kkm_code) {
-            $kkm_code = Cashbox::generateCodeFor($this->developer->store);
+            $kkm_code = Cashbox::generateCodeFor($this->integration->store);
         }
 
         /** @var \App\Models\Cashbox $cashbox */
-        if ($cashbox = Cashbox::query()->where('store_id', $this->developer->store_id)->where('code', $kkm_code)->first()) {
+        if ($cashbox = Cashbox::query()->where('store_id', $this->integration->store_id)->where('code', $kkm_code)->first()) {
             return $cashbox;
         }
 
-        return Cashbox::create([
+        return Cashbox::query()->create([
             'code' => $kkm_code,
-            'mall_id' => $this->developer->mall_id,
-            'store_id' => $this->developer->store_id,
+            'mall_id' => $this->integration->mall_id,
+            'store_id' => $this->integration->store_id,
         ]);
     }
 

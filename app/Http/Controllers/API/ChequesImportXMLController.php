@@ -62,7 +62,7 @@ class ChequesImportXMLController extends Controller
                         'validation' => $validator->errors(),
                     ];
                 } else {
-                    if (Cheque::uniqueAttrs($attributes)->exists()) {
+                    if (Cheque::uniqueAttrs($transformer->integration->store_id, $attributes)->exists()) {
                         $output['skip'][] = [
                             'data' => $attributes,
                         ];

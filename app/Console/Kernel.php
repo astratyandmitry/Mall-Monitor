@@ -4,7 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CheckYesterdayChequesCommand;
-use App\Console\Commands\Import\IntegrateTrinityCommand;
 use App\Console\Commands\Import\IntegrateWebKassaCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\Import\IntegrateProsystemsMultiCommand;
@@ -21,6 +20,7 @@ class Kernel extends ConsoleKernel
         'keruenmonitor:integrate-webkassa' => IntegrateWebKassaCommand::class,
         'keruenmonitor:integrate-trinity' => IntegrateTrinityCommand::class,
         'keruenmonitor:cheques-check-yesterday' => CheckYesterdayChequesCommand::class,
+        'keruenmonitor:import-ftp-cheques' => ImportFTPChequesCommand::class,
     ];
 
     /**
@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('keruenmonitor:integrate-trinity')->hourlyAt(45);
 
         $schedule->command('keruenmonitor:cheques-check-yesterday')->dailyAt('04:00');
+        $schedule->command('keruenmonitor:import-ftp-cheques')->dailyAt('02:00');
     }
 
     /**

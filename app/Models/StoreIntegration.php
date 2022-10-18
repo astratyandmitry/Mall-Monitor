@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property integer $mall_id
  * @property integer $store_id
  * @property integer $type_id
+ * @property string|null $ftp_username
  * @property array $config
  * @property array $columns
  * @property array $types
@@ -40,6 +41,7 @@ class StoreIntegration extends Model
         'columns',
         'types',
         'payments',
+        'ftp_username',
     ];
 
     /**
@@ -59,6 +61,7 @@ class StoreIntegration extends Model
      * @var array
      */
     protected $rules = [
+        'ftp_username' => 'nullable',
         'mall_id' => 'required|exists:malls,id',
         'store_id' => 'required|exists:stores,id',
         'type_id' => 'required|exists:store_integration_types,id',

@@ -96,6 +96,14 @@
                   </div>
                 @endforeach
               </div>
+
+              <div class="form-section">
+                @include('layouts.includes.form.input', [
+                      'attribute' => 'ftp_username',
+                      'label' => 'Логин FTP',
+                      'helper' => 'ftp-testuser',
+                  ])
+              </div>
             </div>
 
             <div class="form-action">
