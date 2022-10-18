@@ -80,7 +80,7 @@ class ImportFTPChequesCommand extends Command
                     ],
                 ]);
 
-                File::delete($file->getPathname());
+                //File::delete($file->getPathname());
             }
         }
     }

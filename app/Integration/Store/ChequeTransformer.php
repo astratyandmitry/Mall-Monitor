@@ -80,7 +80,7 @@ abstract class ChequeTransformer
             'amount' => (in_array($type_id, [
                 ChequeType::BUY_RETURN,
                 ChequeType::SELL_RETURN,
-            ])) ? $amount * -1 : $amount,
+            ])) ? ($amount < 0 ? $amount : $amount * -1) : $amount,
             'mall_id' => $this->integration->mall_id,
             'store_id' => $this->integration->store_id,
             'cashbox_id' => $cashbox->id,

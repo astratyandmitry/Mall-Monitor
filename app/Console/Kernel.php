@@ -2,11 +2,13 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Import\IntegrateTrinityCommand;
+use App\Console\Commands\Integration\IntegrateProsystemsMultiCommand;
+use App\Console\Commands\Integration\IntegrateWebKassaCommand;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\ImportFTPChequesCommand;
 use App\Console\Commands\CheckYesterdayChequesCommand;
-use App\Console\Commands\Import\IntegrateWebKassaCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\Import\IntegrateProsystemsMultiCommand;
 
 class Kernel extends ConsoleKernel
 {

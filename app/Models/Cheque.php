@@ -200,7 +200,11 @@ class Cheque extends Model
     public static function scopeUniqueAttrs(Builder $builder, int $store_id, array $attrs): Builder
     {
         foreach ($attrs as $key => $value) {
-            $builder->where($key, $value);
+            if ($key === 'created_at') {
+                $builder->whereDate($key, date('Y-m-d', strtotime($value)));
+            } else {
+                $builder->where($key, $value);
+            }
         }
 
         $builder->where('store_id', $store_id);
