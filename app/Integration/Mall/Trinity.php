@@ -92,14 +92,20 @@ class Trinity
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if (isset($response->Errors) && count($response->Errors)) {
-            $this->log('Authenticate', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+        if (isset($response->error)) {
+            $this->log('Authenticate', $response->error->cody, $response->error->text, $params);
+
+            return false;
+        }
+
+        if (! isset($response->data) || ! isset($response->data->accessToken)) {
+            $this->log('Authenticate', -1, 'Can not authenticate', $params);
 
             return false;
         }
 
         $this->log('Authenticate', 0, null, [
-            'token' => $this->token = $response->Data->accessToken,
+            'token' => $this->token = $response->data->accessToken,
         ]);
 
         return true;
@@ -113,20 +119,20 @@ class Trinity
     {
         $request = new Request('POST', '/api/External/ExportCashboxes', [
             'Content-Type' => 'application/json',
-            'authorization' => $this->token,
+            'authorization' => "bearer {$this->token}",
         ]);
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if (isset($response->Errors) && count($response->Errors)) {
-            $this->log('ExportCashboxes', $response->Errors[0]->Code, $response->Errors[0]->Text);
+        if (isset($response->error)) {
+            $this->log('ExportCashboxes', $response->error->cody, $response->error->text);
 
-            return [];
+            return false;
         }
 
-        $this->log('ExportCashboxes', 0, null);
+        $this->log('ExportCashboxes');
 
-        return $response->Data;
+        return $response->data;
     }
 
     /**
@@ -149,24 +155,20 @@ class Trinity
 
         $request = new Request('POST', '/api/External/ExportShifts', [
             'Content-Type' => 'application/json',
-            'authorization' => $this->token,
+            'authorization' => "bearer {$this->token}",
         ], json_encode($params));
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if (isset($response->Errors) && count($response->Errors)) {
-            $this->log('ShiftHistory', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+        if (isset($response->error)) {
+            $this->log('ExportShifts', $response->error->cody, $response->error->text, $params);
 
-            return [];
+            return false;
         }
 
         $this->log('ShiftHistory', 0, null, $params);
 
-        if (! isset($response->Data) || ! isset($response->Data->Shifts) || ! count($response->Data->Shifts)) {
-            return [];
-        }
-
-        return $response->Data->Shifts;
+        return $response->data->shifts ?? [];
     }
 
     /**
@@ -188,24 +190,20 @@ class Trinity
 
         $request = new Request('POST', '/api/External/ExportTickets', [
             'Content-Type' => 'application/json',
-            'authorization' => $this->token,
+            'authorization' => "bearer {$this->token}",
         ], json_encode($params));
 
         $response = json_decode($this->client->send($request)->getBody()->getContents());
 
-        if (isset($response->Errors) && count($response->Errors)) {
-            $this->log('ExportTickets', $response->Errors[0]->Code, $response->Errors[0]->Text, $params);
+        if (isset($response->error)) {
+            $this->log('ExportTickets', $response->error->cody, $response->error->text, $params);
 
-            return [];
+            return false;
         }
 
         $this->log('ExportTickets', 0, null, $params);
 
-        if (! isset($response->Data) || ! isset($response->Data->Items) || ! count($response->Data->Items)) {
-            return [];
-        }
-
-        return $response->Data->Items;
+        return $response->data->items;
     }
 
     /**

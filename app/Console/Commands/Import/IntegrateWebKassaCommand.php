@@ -75,7 +75,6 @@ class IntegrateWebKassaCommand extends Command
                             $this->info('— '.date('H:i:s').' START CALCULATING LAST SHIFT...');
 
                             $skipCheques = Cheque::query()->where('kkm_code', $cashboxNumber)->where('shift_number', $shift->ShiftNumber)->count();
-                            $skipCheques = $skipShifts > 0 ? $skipCheques - 1 : 0;
 
                             $this->info("— ".date('H:i:s')."  END CALCULATING LAST SHIFT ($skipCheques)");
 

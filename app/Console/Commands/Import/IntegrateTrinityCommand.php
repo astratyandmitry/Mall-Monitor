@@ -48,11 +48,11 @@ class IntegrateTrinityCommand extends Command
         if ($this->integration->authorize()) {
             if ($cashboxes = $this->integration->availableForReadHistory()) {
                 foreach ($cashboxes as $cashbox) {
-                    if ($_optionCashbox && $cashbox->CashboxUniqueNumber != $_optionCashbox) {
+                    if ($_optionCashbox && $cashbox->cashboxUniqueNumber != $_optionCashbox) {
                         continue;
                     }
 
-                    $cashboxNumber = $cashbox->CashboxUniqueNumber;
+                    $cashboxNumber = $cashbox->cashboxUniqueNumber;
 
                     $this->info("Working with Cashbox {$cashboxNumber}");
 
@@ -68,20 +68,19 @@ class IntegrateTrinityCommand extends Command
 
                     while ($shifts = $this->integration->shiftHistory($cashboxNumber, $dateFrom, $skipShifts)) {
                         foreach ($shifts as $shift) {
-                            $this->info("Working with Shift {$shift->ShiftNumber}");
+                            $this->info("Working with Shift {$shift->shiftNumber}");
 
-                            $this->info("Getting Cheques for Cashbox {$cashboxNumber} Shift {$shift->ShiftNumber}");
+                            $this->info("Getting Cheques for Cashbox {$cashboxNumber} Shift {$shift->shiftNumber}");
 
                             $this->info('— '.date('H:i:s').' START CALCULATING LAST SHIFT...');
 
-                            $skipCheques = Cheque::query()->where('kkm_code', $cashboxNumber)->where('shift_number', $shift->ShiftNumber)->count();
-                            $skipCheques = $skipShifts > 0 ? $skipCheques - 1 : 0;
+                            $skipCheques = Cheque::query()->where('kkm_code', $cashboxNumber)->where('shift_number', $shift->shiftNumber)->count();
 
                             $this->info("— ".date('H:i:s')."  END CALCULATING LAST SHIFT ($skipCheques)");
 
-                            while ($cheques = $this->integration->history($cashboxNumber, $shift->ShiftNumber, $skipCheques)) {
+                            while ($cheques = $this->integration->history($cashboxNumber, $shift->shiftNumber, $skipCheques)) {
                                 foreach ($cheques as $cheque) {
-                                    $this->info("Working with Cheque {$cheque->Number}");
+                                    $this->info("Working with Cheque {$cheque->number}");
 
                                     ImportChequeTrinity::dispatch($this->mall, $cheque, $cashbox);
                                 }
@@ -94,7 +93,7 @@ class IntegrateTrinityCommand extends Command
                     }
                 }
             } else {
-                $this->error('There are no available files for import');
+                $this->error('There are no available Cashboxes');
             }
         } else {
             $this->error('Unauthorized');

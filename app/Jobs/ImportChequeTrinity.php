@@ -39,11 +39,11 @@ class ImportChequeTrinity extends ImportCheque
     public function handle(): void
     {
         if ($cheque = $this->createCheque($this->item)) {
-            if (! property_exists($this->item, 'Positions') || ! count($this->item->Positions)) {
+            if (! property_exists($this->item, 'positions') || ! count($this->item->positions)) {
                 return;
             }
 
-            foreach ($this->item->Positions as $item) {
+            foreach ($this->item->positions as $item) {
                 $this->createChequeItem($cheque, $item);
             }
         }
@@ -56,15 +56,15 @@ class ImportChequeTrinity extends ImportCheque
      */
     protected function createCheque(\stdClass $item): ?Cheque
     {
-        $cashbox = $this->loadCashbox($this->cashbox->Xin, $this->cashbox->CashboxUniqueNumber);
-        $typeId = $this->getType($item->OperationType);
+        $cashbox = $this->loadCashbox($this->cashbox->xin, $this->cashbox->cashboxUniqueNumber);
+        $typeId = $this->getType($item->operationType);
 
         $exists = Cheque::query()->where([
             'mall_id' => $cashbox->mall_id,
             'store_id' => $cashbox->store_id,
             'cashbox_id' => $cashbox->id,
             'kkm_code' => $cashbox->code,
-            'code' => $item->Number,
+            'code' => $item->number,
         ])->exists();
 
         if ($exists) {
@@ -76,13 +76,13 @@ class ImportChequeTrinity extends ImportCheque
             'store_id' => $cashbox->store_id,
             'cashbox_id' => $cashbox->id,
             'kkm_code' => $cashbox->code,
-            'code' => $item->Number,
-            'number' => $item->OrderNumber,
-            'shift_number' => $item->ShiftNumber,
-            'amount' => $this->getAmount($item->Total, $typeId),
+            'code' => $item->number,
+            'number' => $item->orderNumber,
+            'shift_number' => $item->shiftNumber,
+            'amount' => $this->getAmount($item->total, $typeId),
             'type_id' => $typeId,
             'payment_id' => $this->getPaymentId($item),
-            'created_at' => \DateTime::createFromFormat('d.m.Y H:i:s', $item->RegistratedOn)->format('Y-m-d H:i:s'),
+            'created_at' => \DateTime::createFromFormat('d.m.Y H:i:s', $item->registratedOn)->format('Y-m-d H:i:s'),
             'data' => [],
         ]);
     }
@@ -94,11 +94,11 @@ class ImportChequeTrinity extends ImportCheque
      */
     protected function getPaymentId(\stdClass $item): int
     {
-        if (! property_exists($item, 'Payments') || ! count($item->Payments) || ! property_exists($item->Payments[0], 'PaymentTypeName')) {
+        if (! property_exists($item, 'payments') || ! count($item->payments) || ! property_exists($item->payments[0], 'paymentTypeName')) {
             return ChequePayment::CASH;
         }
 
-        return $this->getPayment($item->Payments[0]->PaymentTypeName);
+        return $this->getPayment($item->payments[0]->paymentTypeName);
     }
 
     /**
@@ -110,11 +110,11 @@ class ImportChequeTrinity extends ImportCheque
     protected function createChequeItem(Cheque $cheque, \stdClass $item): ?ChequeItem
     {
         return $cheque->items()->create([
-            'code' => $item->PositionCode ?? null,
-            'name' => $item->PositionName ?? 'Товар',
-            'price' => (float) $item->Price,
-            'quantity' => (int) $item->Count,
-            'sum' => (float) $item->Sum,
+            'code' => $item->positionCode ?? null,
+            'name' => $item->positionName ?? 'Товар',
+            'price' => (float) $item->price,
+            'quantity' => (int) $item->count,
+            'sum' => (float) $item->sum,
         ]);
     }
 }
