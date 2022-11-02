@@ -66,7 +66,7 @@ class ImportChequeProsystem extends ImportCheque
             'store_id' => $cashbox->store_id,
             'cashbox_id' => $cashbox->id,
             'kkm_code' => $cashbox->code,
-            'code' => $item->Number,
+            'code' => $item->DocumentNumber,
         ])->exists();
 
         if ($exists) {
