@@ -60,7 +60,7 @@ class IntegrateProskladCommand extends Command
                     ->latest('created_at')->first();
 
                 [$cheques, $hasMore] = $this->integration->getCheques(
-                    $latestCheque ? $latestCheque->id : 0
+                    $latestCheque ? $latestCheque->code : 0
                 );
 
                 if (! count($cheques)) {
