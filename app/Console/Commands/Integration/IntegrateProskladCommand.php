@@ -80,7 +80,7 @@ class IntegrateProskladCommand extends Command
                         continue;
                     }
 
-                    ImportChequeProsklad::dispatch($this->mall, $cheque, $cashboxes);
+                    ImportChequeProsklad::dispatch($this->mall, $cheque, $cashbox);
                 }
             } while ($hasMore);
         } else {
