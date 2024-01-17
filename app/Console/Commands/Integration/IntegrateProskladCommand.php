@@ -72,10 +72,10 @@ class IntegrateProskladCommand extends Command
                 foreach ($cheques as $cheque) {
                     $this->info("Working with Cheque {$cheque->receipt_number}");
 
-                    $cashbox = $cashboxes->get($cheque->cashbox->factory_number);
+                    $cashbox = $cashboxes->get($cheque->factory_number);
 
                     if (! $cashbox) {
-                        $this->error("Cashbox {$cheque->cashbox->factory_number} not found");
+                        $this->error("Cashbox {$cheque->factory_number} not found");
 
                         continue;
                     }
