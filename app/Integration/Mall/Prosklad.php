@@ -59,6 +59,7 @@ class Prosklad
 
         $this->client = new Client([
             'base_uri' => $this->integration->host,
+            'verify' => false,
         ]);
     }
 
