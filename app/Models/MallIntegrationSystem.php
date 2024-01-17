@@ -19,6 +19,8 @@ class MallIntegrationSystem extends Model
 
     const TRINITY  = 3;
 
+    const PROSKLAD  = 4;
+
     /**
      * @var string
      */

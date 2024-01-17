@@ -17,7 +17,7 @@ class ImportChequeTrinity extends ImportCheque
         'Банковская карта' => ChequePayment::CARD,
         'Оплата в кредит' => ChequePayment::CREDIT,
         'Оплата тарой' => ChequePayment::TARE,
-        0 => ChequePayment::CASH,
+        0 => CheqxuePayment::CASH,
         1 => ChequePayment::CARD,
         2 => ChequePayment::CREDIT,
         3 => ChequePayment::TARE,
