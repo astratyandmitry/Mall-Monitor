@@ -68,9 +68,9 @@ class ImportChequeProsklad extends ImportCheque
         return $cheque->items()->create([
             'code' => $cheque->number,
             'name' => 'Товар',
-            'price' => (float) $item->amount,
+            'price' => (float) $item->sum,
             'quantity' => 1,
-            'sum' => (float) $item->amount,
+            'sum' => (float) $item->sum,
         ]);
     }
 }
