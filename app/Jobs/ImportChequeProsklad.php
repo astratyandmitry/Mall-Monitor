@@ -54,7 +54,7 @@ class ImportChequeProsklad extends ImportCheque
             'amount' => $this->getAmount($item->sum, $typeId),
             'type_id' => $typeId,
             'payment_id' => ChequePayment::CARD,
-            'created_at' => \DateTime::createFromFormat('d.m.Y H:i:s', $item->date)->format('Y-m-d H:i:s'),
+            'created_at' => $item->date,
             'data' => [],
         ]);
     }
