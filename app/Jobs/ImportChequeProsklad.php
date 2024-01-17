@@ -15,9 +15,7 @@ class ImportChequeProsklad extends ImportCheque
     public function handle(): void
     {
         if ($cheque = $this->createCheque($this->item)) {
-            foreach ($this->item->positions as $item) {
-                $this->createChequeItem($cheque, $item);
-            }
+            $this->createChequeItem($cheque, $this->item);
         }
     }
 
