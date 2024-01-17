@@ -36,7 +36,7 @@ class ImportChequeProsklad extends ImportCheque
             'store_id' => $cashbox->store_id,
             'cashbox_id' => $cashbox->id,
             'kkm_code' => $cashbox->code,
-            'code' => $item->number,
+            'code' => $item->receipt_number,
         ])->exists();
 
         if ($exists) {
