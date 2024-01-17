@@ -87,7 +87,7 @@ class Prosklad
             'password' => $this->integration->password,
         ];
 
-        $request = new Request('POST', '/api/v1/oauth/token', [
+        $request = new Request('POST', '/v1/oauth/token', [
             'Content-Type' => 'application/json',
         ], json_encode($params));
 
@@ -114,7 +114,7 @@ class Prosklad
 
     public function getCashboxes(): array
     {
-        $request = new Request('POST', '/api/v1/employee/30977/company-group/cashbox', [
+        $request = new Request('POST', '/v1/employee/30977/company-group/cashbox', [
             'Content-Type' => 'application/json',
             'Authorization' => "Bearer {$this->token}",
         ]);
@@ -137,7 +137,7 @@ class Prosklad
      */
     public function getCheques(int $latestId = 0): array
     {
-        $request = new Request('POST', "/api/v1/employee/30977/company-group/sale?latest_id={$latestId}", [
+        $request = new Request('POST', "/v1/employee/30977/company-group/sale?latest_id={$latestId}", [
             'Content-Type' => 'application/json',
             'Authorization' => "Bearer {$this->token}",
         ]);
