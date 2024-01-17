@@ -10,16 +10,6 @@ use App\Models\ChequePayment;
 class ImportChequeProsklad extends ImportCheque
 {
     /**
-     * @var array
-     */
-    protected $payments = [
-        0 => ChequePayment::CASH,
-        1 => ChequePayment::CARD,
-        2 => ChequePayment::CREDIT,
-        3 => ChequePayment::TARE,
-    ];
-
-    /**
      * @return void
      */
     public function handle(): void
