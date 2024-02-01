@@ -32,8 +32,12 @@ class CheckYesterdayChequesCommand extends Command
             foreach ($stores as $store) {
                 $this->info("Working with Store #{$store->id}");
 
+                $exists = ChequeRepository::isExistsForDate($store->id, $yesterdayDate);
+
+                $this->info(" - exists: " . ($exists ? 'true' : 'false'));
+
                 $store->update([
-                    'is_errors_yesterday' => ! ChequeRepository::isExistsForDate($store->id, $yesterdayDate),
+                    'is_errors_yesterday' => ! $exists,
                 ]);
 
                 if (! app()->isLocal()) {
