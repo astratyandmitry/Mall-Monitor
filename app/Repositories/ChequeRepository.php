@@ -430,8 +430,7 @@ class ChequeRepository
     {
         return Cheque::query()
             ->where('store_id', $storeId)
-            ->where('created_at', '>=', "{$date} 00:00:00")
-            ->where('created_at', '<=', "{$date} 23:59:59")
+            ->whereDate('created_at', $date)
             ->exists();
     }
 }
