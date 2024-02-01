@@ -25,7 +25,7 @@ class CheckYesterdayChequesCommand extends Command
     public function handle(): void
     {
         $yesterdayDate = now()->subDay()->format('Y-m-d');
-        $stores = Store::query()->latest()->get();
+        $stores = Store::query()->latest('id')->get();
 
         if (count($stores)) {
             /** @var Store $store */
